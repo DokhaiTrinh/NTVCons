@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { history } from './common/history';
+import { HOME_ROUTES } from './contants/Index';
+// import HomeLayoutRoute from './common/Layout/HomeLayout/HomeLayout';
+
+
+// const renderNTVHomeRoutes = () => {
+//   let xhtml = null;
+//   xhtml = HOME_ROUTES.map((route) => {
+//     return (
+//       <HomeLayoutRoute
+//         key={route.path}
+//         path={route.path}
+//         component={route.component}
+//         exact={route.exact}
+//         name={route.name}
+//       />
+//     );
+//   });
+//   return xhtml;
+// };
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello World</h1>
     </div>
   );
 }
