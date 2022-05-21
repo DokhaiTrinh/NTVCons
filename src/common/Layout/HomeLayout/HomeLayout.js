@@ -1,11 +1,9 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { withStyles } from '@mui/styles';
-import Appbar from '../../../components/Appbar/index';
-import styles from './Style';
+import { Route } from 'react-router-dom';
+
 
 const HomeLayoutRoute = (props) => {
-  const classes = styles();
+
   const { component: YourComponent, ...remainsprops } = props;
   return (
     <Route
@@ -13,7 +11,7 @@ const HomeLayoutRoute = (props) => {
       render={(routeProps) => {
         return (
           <div>
-            <Appbar />
+   
             <div>
               <YourComponent {...routeProps} />
             </div>

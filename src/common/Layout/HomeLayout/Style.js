@@ -1,11 +1,11 @@
-import { makeStyles } from "@mui/styles";
+// import { makeStyles } from '@mui/styles';
 
-const Styles = makeStyles((theme) => ({
-    bgImgCenter:{
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        position: 'relative',
-        backgroundSize: "cover",
-    }
-}));
-export default Styles;
+// const Styles = makeStyles((theme) => ({
+//   bgImgCenter: {
+//     backgroundRepeat: 'no-repeat',
+//     backgroundPosition: 'center',
+//     position: 'relative',
+//     backgroundSize: 'cover',
+//   },
+// }));
+// export default Styles;
