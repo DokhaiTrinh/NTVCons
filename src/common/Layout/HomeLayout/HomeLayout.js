@@ -11,7 +11,6 @@ const HomeLayoutRoute = (props) => {
       render={(routeProps) => {
         return (
           <div>
-   
             <div>
               <YourComponent {...routeProps} />
             </div>
