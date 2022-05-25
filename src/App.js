@@ -3,6 +3,7 @@ import {Router, Switch} from "react-router-dom"
 import { HOME_ROUTES, LOGIN_ROUTES } from './contants/Index';
 import HomeLayoutRoute from './common/Layout/HomeLayout/HomeLayout';
 import LoginLayoutRoute from './common/Layout/LoginLayout/LoginLayout';
+import React from 'react';
 
 const renderHomePageRoutes = () => {
   let xhtml = null;
