@@ -51,6 +51,7 @@ const LoginPage = (props) => {
                         <Grid>
                             <Typography variant="h5">Log</Typography>
                         </Grid>
+                        
                         &nbsp;
                         <Grid>
                             <Typography variant="h5" color="#DD8501">In</Typography>
