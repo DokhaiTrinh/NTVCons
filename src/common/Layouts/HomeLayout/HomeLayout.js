@@ -1,9 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-
-
+import NavBar from '../../../Components/NavBar';
 const HomeLayoutRoute = (props) => {
-
   const { component: YourComponent, ...remainsprops } = props;
   return (
     <Route
@@ -11,6 +9,7 @@ const HomeLayoutRoute = (props) => {
       render={(routeProps) => {
         return (
           <div>
+            <NavBar />
             <div>
               <YourComponent {...routeProps} />
             </div>
