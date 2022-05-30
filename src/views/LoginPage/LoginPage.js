@@ -84,7 +84,7 @@ const LoginPage = (props) => {
                     </Grid>
                     <Grid container>
                         <FormControl fullWidth sx={{ width: 'wrap-parent' }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <InputLabel></InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password"
                                 type={values.showPassword ? 'text' : 'password'}
@@ -101,7 +101,7 @@ const LoginPage = (props) => {
                                             {values.showPassword ? <VisibilityOff /> : <Visibility />}
                                         </IconButton>
                                     </InputAdornment>
-                                }
+                                }   
                                 label="Password"
                             />
                         </FormControl>
