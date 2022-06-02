@@ -51,7 +51,7 @@ const LoginPage = (props) => {
                         <Grid>
                             <Typography variant="h5">Log</Typography>
                         </Grid>
-                        
+
                         &nbsp;
                         <Grid>
                             <Typography variant="h5" color="#DD8501">In</Typography>
@@ -69,9 +69,10 @@ const LoginPage = (props) => {
                         <Typography variant="body1" marginTop="22px">Phone Number</Typography>
                     </Grid>
                     <MuiPhoneNumber defaultCountry={'vn'} onChange={(e) => {
-                    this.setState({ number: e });}} fullWidth/>
+                        this.setState({ number: e });
+                    }} fullWidth />
                     {/* <Grid container> */}
-                        {/* <TextField
+                    {/* <TextField
                             id="full-width-text-field"
                             label="Number"
                             placeholder="Phone Number"
@@ -101,13 +102,13 @@ const LoginPage = (props) => {
                                             {values.showPassword ? <VisibilityOff /> : <Visibility />}
                                         </IconButton>
                                     </InputAdornment>
-                                }   
+                                }
                                 label="Password"
                             />
                         </FormControl>
                     </Grid>
                     <Grid>
-                    <Button variant="contained" style={{backgroundColor: "#DD8501", paddingRight: "50px", paddingLeft: "50px", borderRadius: 50, marginTop: "22px"}}>Log In</Button>
+                        <Button variant="contained" style={{ backgroundColor: "#DD8501", paddingRight: "50px", paddingLeft: "50px", borderRadius: 50, marginTop: "22px" }}>Log In</Button>
                     </Grid>
                 </Box>
             </Paper>

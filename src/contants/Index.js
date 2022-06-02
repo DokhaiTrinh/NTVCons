@@ -4,7 +4,7 @@ import ProjectPage from '../views/ProjectPage/ProjectPage';
 
 export const HOME_ROUTES = [
   {
-    path: '/home',
+    path: '/',
     name: 'Home Page',
     exact: true,
     component: HomePage,
@@ -19,7 +19,7 @@ export const HOME_ROUTES = [
 
 export const LOGIN_ROUTES = [
   {
-    path: '/',
+    path: '/login',
     name: 'Login Page',
     exact: true,
     component: LoginPage,
