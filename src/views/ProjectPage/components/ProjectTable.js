@@ -19,6 +19,8 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import {Link} from 'react-router-dom';
+import { Route } from 'react-router';
 
 function createData(admin, code, name, workers, process, works, start, end) {
   return {
@@ -325,7 +327,7 @@ export function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.admin)}
+                      // onClick={(event) => handleClick(event, row.admin)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -334,6 +336,7 @@ export function EnhancedTable() {
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
+                      onClick={(event) => handleClick(event, row.admin)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -356,6 +359,14 @@ export function EnhancedTable() {
                       <TableCell align="right">{row.works}</TableCell>
                       <TableCell align="right">{row.start}</TableCell>
                       <TableCell align="right">{row.end}</TableCell>
+                      <TableCell align="right">
+                        <Route>
+
+                        <Link underline="hover" to="/projectDetails">
+                          {'Chi Tiết'}
+                        </Link>
+                        </Route>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

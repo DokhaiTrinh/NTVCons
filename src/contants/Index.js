@@ -1,5 +1,6 @@
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
+import ProjectDetailsPage from '../views/ProjectDetailsPage/ProjectDetailsPage';
 import ProjectPage from '../views/ProjectPage/ProjectPage';
 
 export const HOME_ROUTES = [
@@ -14,6 +15,12 @@ export const HOME_ROUTES = [
     name: 'Project Page',
     exact: true,
     component: ProjectPage,
+  },
+  {
+    path: '/projectDetails',
+    name: 'Project Details Page',
+    exact: true,
+    component: ProjectDetailsPage,
   },
 ];
 
