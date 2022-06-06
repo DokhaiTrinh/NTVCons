@@ -1,3 +1,4 @@
+import CreateProjectPage from '../views/CreateProjectPage/CreateProjectPage';
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/ProjectDetailsPage';
@@ -21,6 +22,12 @@ export const HOME_ROUTES = [
     name: 'Project Details Page',
     exact: true,
     component: ProjectDetailsPage,
+  },
+  {
+    path: '/createProject',
+    name: 'Project Details Page',
+    exact: true,
+    component: CreateProjectPage,
   },
 ];
 
