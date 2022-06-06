@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     width: 250,
     background: '#511',
     height: '100%',
+    color: 'red',
   },
   avatar: {
     margin: '0.5rem auto',
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(13),
   },
   listItem: {
-    color: 'tan',
+    color: 'black',
   },
 }));
 
@@ -74,7 +75,7 @@ export default function App() {
   };
 
   const sideList = () => (
-    <Box className={classes.menuSliderContainer} component="div">
+    <Box className={classes.menuSliderContainer} component="div" style={{backgroundColor: '#f4d9b0'}}>
       <Avatar
         className={classes.avatar}
         src="https://i.ibb.co/rx5DFbs/avatar.png"
@@ -100,12 +101,15 @@ export default function App() {
     <>
       <CssBaseline />
       <Box component="nav">
-        <AppBar position="static">
+        <AppBar
+          position="static"
+          style={{backgroundColor: "#dd8500", color:"black"}}
+        >
           <Toolbar>
-            <IconButton onClick={toggleSlider}>
+            <IconButton onClick={toggleSlider} color="inherit">
               <Menu />
             </IconButton>
-            <Typography>Niềm Tin Vàng</Typography>
+            <Typography variant="h6">Golden Trust</Typography>
             <Drawer open={open} anchor="left" onClose={toggleSlider}>
               {sideList()}
             </Drawer>
