@@ -1,124 +1,121 @@
 import React, { useState } from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import { SideBarData } from './SideBarData';
 import './Navbar.css';
-import { IconContext } from 'react-icons';
-import styled from 'styled-components';
-import { NavLink as Link } from 'react-router-dom';
-import { FaBars } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  CssBaseline,
+  Drawer,
+  Typography,
+} from '@material-ui/core';
+import {
+  Apps,
+  Menu,
+  ContactMail,
+  AssignmentInd,
+  Home,
+} from '@material-ui/icons';
 
+const useStyles = makeStyles((theme) => ({
+  menuSliderContainer: {
+    width: 250,
+    background: '#511',
+    height: '100%',
+    color: 'red',
+  },
+  avatar: {
+    margin: '0.5rem auto',
+    padding: '1rem',
+    width: theme.spacing(13),
+    height: theme.spacing(13),
+  },
+  listItem: {
+    color: 'black',
+  },
+}));
 
+const listItems = [
+  {
+    listIcon: <Home />,
+    path: '/',
+    listText: 'Trang chủ',
+  },
+  {
+    listIcon: <AssignmentInd />,
+    path: '/project',
+    listText: 'Dự án',
+  },
+  {
+    listIcon: <Apps />,
+    path: '/products',
+    listText: 'Sản phẩm',
+  },
+  {
+    listIcon: <ContactMail />,
+    path: '/personnel',
+    listText: 'Thành viên',
+  },
+];
 
-export const Nav = styled.nav`
-  background: #000;
-  height: 80px,
-  display: flex,
-  justify-content" space-between;
-  padding: 0.5rem calc((100vw-1000px) / 2);
-  z-index: 10;
-`
-export const NavLink = styled(Link)`
-color: #fff;
-display: flex;
-align-items: center;
-text-decoration: none;
-padding: 0 1rem;
-height: 100%;
-cursor: pointer;
+export default function App() {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
 
-&.active {
-  color: #15cdfc;
-}
-`
-export const Bars = styled(FaBars)`
-display: none;
-color: #fff;
+  const toggleSlider = () => {
+    setOpen(!open);
+  };
 
-@media screen and (max-with: 760px) {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(-100%, 75%);
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-`
+  const sideList = () => (
+    <Box className={classes.menuSliderContainer} component="div" style={{backgroundColor: '#f4d9b0'}}>
+      <Avatar
+        className={classes.avatar}
+        src="https://i.ibb.co/rx5DFbs/avatar.png"
+        alt="Juaneme8"
+      />
+      <Divider />
+      <List>
+        {listItems.map((listItem, index) => (
+          <NavLink to={listItem.path} key={index}>
+            <ListItem className={classes.listItem} button key={index}>
+              <ListItemIcon className={classes.listItem}>
+                {listItem.listIcon}
+              </ListItemIcon>
+              <ListItemText primary={listItem.listText} />
+            </ListItem>
+          </NavLink>
+        ))}
+      </List>
+    </Box>
+  );
 
-export const NavMenu = styled.div`
-display: flex;
-algin-items: center;
-margin-right: -24px;
-
-@media screen and (max-width: 768px) {
-  display: none;
-}
-`
-export const NavBtn = styled.div`
-display: flex;
-algin-items: center;
-margin-right: 24px;
-
-@media screen and (max-width: 768px) {
-  display: none;
-}
-`
-
-export const NavBtnLink = styled(Link)`
-border-radius: 4px;
-background: #256ce1;
-padding: 10px 22px;
-color: #fff;
-border: none;
-outline: none;
-cursor: pointer;
-transition: all 0.2s ease-in-out;
-text-decoration: none;
-
-&hover {
-  transition: all 0.2s ease-in-out;
-  background: #fff;
-  color: #010606;
-}
-`
-
-
-
-const NavBar = () => {
-  const [sidebar, setSidebar] = useState(false);
-
-  const showSideBar = () => setSidebar(!sidebar);
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
-        <div className="navbar">
-          <Link to="#" className="menu-bars">
-            <FaIcons.FaBars onClick={showSideBar} />
-          </Link>
-        </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className="nav-menu-items" onClick={showSideBar}>
-            <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
-            {SideBarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </IconContext.Provider>
+      <CssBaseline />
+      <Box component="nav">
+        <AppBar
+          position="static"
+          style={{backgroundColor: "#dd8500", color:"black"}}
+        >
+          <Toolbar>
+            <IconButton onClick={toggleSlider} color="inherit">
+              <Menu />
+            </IconButton>
+            <Typography variant="h6">Golden Trust</Typography>
+            <Drawer open={open} anchor="left" onClose={toggleSlider}>
+              {sideList()}
+            </Drawer>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </>
   );
-};
-
-export default NavBar;
+}

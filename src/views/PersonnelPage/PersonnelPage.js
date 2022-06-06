@@ -1,99 +1,92 @@
 import * as React from 'react';
+import { Grid, Box, Typography } from '@mui/material';
+import {Link} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
 import OutputOutlinedIcon from '@mui/icons-material/OutputOutlined';
-import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import {ProjectTable} from './components/ProjectTable';
-import {Link} from 'react-router-dom';
-
+import { PersonnelTable } from './components/PersonnelTable';
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
   };
-}
-
+function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-  },
-}));
-const ProjectPage = (props) => {
-  const [value, setValue] = React.useState(0);
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  }));
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }));
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: '20ch',
+      },
+    },
+  }));
+const PersonnelPage = (props) => {
+    const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   return <div>
     <Grid container justify="center">
       <Grid container md="8">
@@ -112,7 +105,7 @@ const ProjectPage = (props) => {
             justifyContent="center"
             alignItems="center"
             sx={{ height: "100%" }}>
-            <Typography variant="body1">Danh sách dự án</Typography>
+            <Typography variant="body1">Danh sách nhân sự</Typography>
           </Box>
         </Grid>
       </Grid>
@@ -139,11 +132,6 @@ const ProjectPage = (props) => {
         <Tabs variant="scrollable"
           scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
           <Tab label="Tất cả" {...a11yProps(0)} />
-          <Tab label="Chờ" {...a11yProps(1)} />
-          <Tab label="Đang thực hiện" {...a11yProps(2)} />
-          <Tab label="Hoàn thành" {...a11yProps(3)} />
-          <Tab label="Tạm dừng" {...a11yProps(4)} />
-          <Tab label="Đã hủy" {...a11yProps(5)} />
           <Box sx={{ flex: 1 }}></Box>
           <IconButton aria-label="export">
             <Box>
@@ -181,26 +169,11 @@ const ProjectPage = (props) => {
       <TabPanel value={value} index={0}>
         <Box width="100%">
 
-        <ProjectTable></ProjectTable>
+        <PersonnelTable></PersonnelTable>
         </Box>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <ProjectTable></ProjectTable>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
       </TabPanel>
     </Box>
   </div>;
 };
 
-export default ProjectPage;
+export default PersonnelPage;

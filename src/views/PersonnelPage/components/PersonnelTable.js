@@ -22,33 +22,25 @@ import { visuallyHidden } from '@mui/utils';
 import {Link} from 'react-router-dom';
 import { Route } from 'react-router';
 
-function createData(admin, code, name, workers, process, works, start, end) {
+function createData(code, name, department, position, office, join, dob) {
   return {
-    admin,
     code,
     name,
-    workers,
-    process,
-    works,
-    start,
-    end
+    department,
+    position,
+    office,
+    join,
+    dob
   };
 }
 
 const rows = [
-  createData('Đỗ Nam Trung', 1, 'abcxyz', 67, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Tuyền Qua Minh Quân', 2, 'abcxyz', 51, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Vũ Trí Ba Tá Trợ', 3, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Xuân Dã Anh', 4, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kỳ Mộc Tạp Tạp Tây', 5, 'abcxyz', 49, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Mông Kỳ D. Lộ Phi', 6, 'abcxyz', 87, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('La La Nặc Á Sách Long', 7, 'abcxyz', 37, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Văn Tư Mạc Khắc Sơn Trị', 8, 'abcxyz', 94, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Na Mỹ', 9, 'abcxyz', 65, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ô Sách Phổ', 10, 'abcxyz', 98, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kiều Ba', 11, 'abcxyz', 81, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ni Khả La Tân', 12, 'abcxyz', 9, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Phất Lan Cơ', 13, 'abcxyz', 63, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', '01/01/2022', '31/12/1990'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -83,52 +75,46 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
+    id: 'manv',
     numeric: false,
     disablePadding: true,
-    label: 'Người quản trị',
+    label: 'Mã NV',
   },
   {
-    id: 'maduan',
-    numeric: true,
+    id: 'hovaten',
+    numeric: false,
     disablePadding: false,
-    label: 'Mã dự án',
+    label: 'Họ Và Tên',
   },
   {
-    id: 'tenduan',
-    numeric: true,
+    id: 'phongban',
+    numeric: false,
     disablePadding: false,
-    label: 'Tên dự án',
+    label: 'Phòng ban',
   },
   {
-    id: 'nguoithamgia',
-    numeric: true,
+    id: 'vitri',
+    numeric: false,
     disablePadding: false,
-    label: 'Người tham gia',
+    label: 'Vị trí',
   },
   {
-    id: 'tiendo',
-    numeric: true,
+    id: 'chucvu',
+    numeric: false,
     disablePadding: false,
-    label: 'Tiến độ',
+    label: 'Chức vụ',
   },
   {
-    id: 'congviec',
+    id: 'ngayvao',
     numeric: true,
     disablePadding: false,
-    label: 'Công việc',
+    label: 'Ngày vào',
   },
   {
-    id: 'batdau',
+    id: 'ngaysinh',
     numeric: true,
     disablePadding: false,
-    label: 'Bắt đầu',
-  },
-  {
-    id: 'ketthuc',
-    numeric: true,
-    disablePadding: false,
-    label: 'Kết thúc',
+    label: 'Ngày sinh',
   },
 ];
 
@@ -218,7 +204,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Dự án
+          Nhân viên
         </Typography>
       )}
 
@@ -243,7 +229,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProjectTable() {
+export function PersonnelTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -350,19 +336,18 @@ export function ProjectTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.admin}
+                        {row.code}
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
                       <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.workers}</TableCell>
-                      <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell>
-                      <TableCell align="right">{row.start}</TableCell>
-                      <TableCell align="right">{row.end}</TableCell>
+                      <TableCell align="right">{row.department}</TableCell>
+                      <TableCell align="right">{row.position}</TableCell>
+                      <TableCell align="right">{row.office}</TableCell>
+                      <TableCell align="right">{row.join}</TableCell>
+                      <TableCell align="right">{row.dob}</TableCell>
                       <TableCell align="right">
                         <Route>
 
-                        <Link underline="hover" to="/projectDetails">
+                        <Link underline="hover" to="/personnelProfile">
                           {'Chi Tiết'}
                         </Link>
                         </Route>
