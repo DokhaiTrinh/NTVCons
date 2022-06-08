@@ -1,16 +1,14 @@
 import * as React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import { PersonnelTable } from './components/PersonnelTable';
+import { RoleTable } from './components/RoleTable';
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -79,7 +77,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
-const PersonnelPage = (props) => {
+const RoleManagePage = (props) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -103,7 +101,7 @@ const PersonnelPage = (props) => {
                         justifyContent="center"
                         alignItems="center"
                         sx={{ height: "100%" }}>
-                        <Typography variant="body1">Danh sách nhân sự</Typography>
+                        <Typography variant="body1">Danh sách vai trò</Typography>
                     </Box>
                 </Grid>
             </Grid>
@@ -126,40 +124,20 @@ const PersonnelPage = (props) => {
             </Grid>
         </Grid>
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider', height: "70px" }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs variant="scrollable"
-                    scrollButtons="auto" value={value} onChange={handleChange} aria-label="" sx={{ height: "100%" }}>
+                    scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
                     <Tab label="Tất cả" {...a11yProps(0)} />
-                    <Box sx={{ flex: 1 }}></Box>
-                    <Box>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <IconButton aria-label="role manage" component={Link} to={('/roleManage')} sx={{ height: "100%"}}>
-                                    <Box sx={{height: "30px" }}>
-
-                                        <SupervisedUserCircleOutlinedIcon fontSize="large" />
-
-                                    </Box>
-                                </IconButton>
-                            </Grid>
-                            <Grid item xs={12}>
-
-                                <Typography variant="button">
-                                    Vai trò
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
                 <Box width="100%">
 
-                    <PersonnelTable></PersonnelTable>
+                    <RoleTable></RoleTable>
                 </Box>
             </TabPanel>
         </Box>
     </div>;
 };
 
-export default PersonnelPage;
+export default RoleManagePage;

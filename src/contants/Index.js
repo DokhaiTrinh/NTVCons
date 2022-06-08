@@ -1,4 +1,5 @@
 import CreateProjectPage from '../views/CreateProjectPage/CreateProjectPage';
+import RoleManagePage from '../views/RoleManagePage/RoleManagePage';
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
 import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
@@ -42,6 +43,12 @@ export const HOME_ROUTES = [
     name: 'Personnel Profile Page',
     exact: true,
     component: PersonnelProfilePage,
+  },
+  {
+    path: '/roleManage',
+    name: 'Role Manage Page',
+    exact: true,
+    component: RoleManagePage,
   },
 ];
 

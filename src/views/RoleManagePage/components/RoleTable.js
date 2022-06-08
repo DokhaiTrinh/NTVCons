@@ -19,30 +19,20 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
-import { Route } from 'react-router';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-function createData(code, name, department, position, office, role, join, dob) {
+function createData(id, name, date) {
   return {
-    code,
+    id,
     name,
-    department,
-    position,
-    office, 
-    role,
-    join,
-    dob
+    date
   };
 }
 
 const rows = [
-  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('2', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('3', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('4', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('5', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('6', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('1', 'Quản trị cấp cao', '06/06/2022'),
+  createData('2', 'Giám sát hiện trường', '06/06/2022'),
+  createData('3', 'Kho - vật tư', '06/06/2022'),
+  createData('4', 'QA - QC', '06/06/2022'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -77,52 +67,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'manv',
+    id: 'vaitriid',
     numeric: false,
     // disablePadding: true,
-    label: 'Mã NV',
+    label: 'Vai trò ID',
   },
   {
-    id: 'hovaten',
+    id: 'tenvaitro',
     numeric: false,
     // disablePadding: false,
-    label: 'Họ Và Tên',
+    label: 'Tên vai trò',
   },
   {
-    id: 'phongban',
+    id: 'ngaythem',
     numeric: false,
     // disablePadding: false,
-    label: 'Phòng ban',
-  },
-  {
-    id: 'vitri',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Vị trí',
-  },
-  {
-    id: 'chucvu',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Chức vụ',
-  },
-  {
-    id: 'vaitro',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Vai trò',
-  },
-  {
-    id: 'ngayvao',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Ngày vào',
-  },
-  {
-    id: 'ngaysinh',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Ngày sinh',
+    label: 'Ngày được thêm vào',
   },
 ];
 
@@ -212,7 +172,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Nhân viên
+          Vai trò
         </Typography>
       )}
 
@@ -237,7 +197,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function PersonnelTable() {
+export function RoleTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -252,19 +212,19 @@ export function PersonnelTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.code);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, admin) => {
-    const selectedIndex = selected.indexOf(admin);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, admin);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -288,7 +248,7 @@ export function PersonnelTable() {
     setPage(0);
   };
 
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -315,7 +275,7 @@ export function PersonnelTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.code);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -325,12 +285,12 @@ export function PersonnelTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.code}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                      onClick={(event) => handleClick(event, row.code)}
+                      onClick={(event) => handleClick(event, row.id)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -344,28 +304,10 @@ export function PersonnelTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.code}
+                        {row.id}
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.department}</TableCell>
-                      <TableCell align="left">{row.position}</TableCell>
-                      <TableCell align="left">{row.office}</TableCell>
-                      <TableCell align="left">
-                        {row.role}
-                          <IconButton aria-label="edit role" >
-                            <EditOutlinedIcon></EditOutlinedIcon>
-                          </IconButton>
-                      </TableCell>
-                      <TableCell align="left">{row.join}</TableCell>
-                      <TableCell align="left">{row.dob}</TableCell>
-                      <TableCell align="left">
-                        <Route>
-
-                        <Link underline="hover" to="/personnelProfile">
-                          {'Chi Tiết'}
-                        </Link>
-                        </Route>
-                      </TableCell>
+                      <TableCell align="left">{row.date}</TableCell>
                     </TableRow>
                   );
                 })}
