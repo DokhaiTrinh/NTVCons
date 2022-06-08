@@ -21,34 +21,28 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import {Link} from 'react-router-dom';
 import { Route } from 'react-router';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-function createData(admin, code, name, workers, process, works, start, end) {
+function createData(code, name, department, position, office, role, join, dob) {
   return {
-    admin,
     code,
     name,
-    workers,
-    process,
-    works,
-    start,
-    end
+    department,
+    position,
+    office, 
+    role,
+    join,
+    dob
   };
 }
 
 const rows = [
-  createData('Đỗ Nam Trung', 1, 'abcxyz', 67, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Tuyền Qua Minh Quân', 2, 'abcxyz', 51, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Vũ Trí Ba Tá Trợ', 3, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Xuân Dã Anh', 4, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kỳ Mộc Tạp Tạp Tây', 5, 'abcxyz', 49, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Mông Kỳ D. Lộ Phi', 6, 'abcxyz', 87, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('La La Nặc Á Sách Long', 7, 'abcxyz', 37, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Văn Tư Mạc Khắc Sơn Trị', 8, 'abcxyz', 94, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Na Mỹ', 9, 'abcxyz', 65, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ô Sách Phổ', 10, 'abcxyz', 98, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kiều Ba', 11, 'abcxyz', 81, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ni Khả La Tân', 12, 'abcxyz', 9, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Phất Lan Cơ', 13, 'abcxyz', 63, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
+  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('2', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('3', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('4', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('5', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData('6', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -83,52 +77,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
+    id: 'manv',
     numeric: false,
-    disablePadding: true,
-    label: 'Người quản trị',
+    // disablePadding: true,
+    label: 'Mã NV',
   },
   {
-    id: 'maduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Mã dự án',
+    id: 'hovaten',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Họ Và Tên',
   },
   {
-    id: 'tenduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tên dự án',
+    id: 'phongban',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Phòng ban',
   },
   {
-    id: 'nguoithamgia',
-    numeric: true,
-    disablePadding: false,
-    label: 'Người tham gia',
+    id: 'vitri',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Vị trí',
   },
   {
-    id: 'tiendo',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tiến độ',
+    id: 'chucvu',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Chức vụ',
   },
   {
-    id: 'congviec',
-    numeric: true,
-    disablePadding: false,
-    label: 'Công việc',
+    id: 'vaitro',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Vai trò',
   },
   {
-    id: 'batdau',
-    numeric: true,
-    disablePadding: false,
-    label: 'Bắt đầu',
+    id: 'ngayvao',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Ngày vào',
   },
   {
-    id: 'ketthuc',
-    numeric: true,
-    disablePadding: false,
-    label: 'Kết thúc',
+    id: 'ngaysinh',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Ngày sinh',
   },
 ];
 
@@ -218,7 +212,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Dự án
+          Nhân viên
         </Typography>
       )}
 
@@ -243,7 +237,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProjectTable() {
+export function PersonnelTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -258,7 +252,7 @@ export function ProjectTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.admin);
+      const newSelecteds = rows.map((n) => n.code);
       setSelected(newSelecteds);
       return;
     }
@@ -321,7 +315,7 @@ export function ProjectTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.admin);
+                  const isItemSelected = isSelected(row.code);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -331,12 +325,12 @@ export function ProjectTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.code}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                      onClick={(event) => handleClick(event, row.admin)}
+                      onClick={(event) => handleClick(event, row.code)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -350,19 +344,24 @@ export function ProjectTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.admin}
+                        {row.code}
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.workers}</TableCell>
-                      <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell>
-                      <TableCell align="right">{row.start}</TableCell>
-                      <TableCell align="right">{row.end}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.department}</TableCell>
+                      <TableCell align="left">{row.position}</TableCell>
+                      <TableCell align="left">{row.office}</TableCell>
+                      <TableCell align="left">
+                        {row.role}
+                          <IconButton aria-label="edit role" >
+                            <EditOutlinedIcon></EditOutlinedIcon>
+                          </IconButton>
+                      </TableCell>
+                      <TableCell align="left">{row.join}</TableCell>
+                      <TableCell align="left">{row.dob}</TableCell>
+                      <TableCell align="left">
                         <Route>
 
-                        <Link underline="hover" to="/projectDetails">
+                        <Link underline="hover" to="/personnelProfile">
                           {'Chi Tiết'}
                         </Link>
                         </Route>

@@ -61,7 +61,7 @@ const listItems = [
   },
   {
     listIcon: <ContactMail />,
-    path: '',
+    path: '/personnel',
     listText: 'Thành viên',
   },
 ];

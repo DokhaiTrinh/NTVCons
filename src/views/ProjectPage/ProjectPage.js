@@ -13,7 +13,8 @@ import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import {EnhancedTable} from './components/ProjectTable';
+import {ProjectTable} from './components/ProjectTable';
+import {Link} from 'react-router-dom';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -101,7 +102,7 @@ const ProjectPage = (props) => {
             justifyContent="center"
             alignItems="center"
             sx={{ margin: "20px" }}>
-            <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }}>
+            <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }} component={Link} to={('/createProject')}>
               <Add sx={{ color: "white" }}></Add>
             </IconButton>
           </Box>
@@ -180,11 +181,11 @@ const ProjectPage = (props) => {
       <TabPanel value={value} index={0}>
         <Box width="100%">
 
-        <EnhancedTable></EnhancedTable>
+        <ProjectTable></ProjectTable>
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <EnhancedTable></EnhancedTable>
+      <ProjectTable></ProjectTable>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three

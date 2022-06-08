@@ -19,36 +19,20 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
-import { Route } from 'react-router';
 
-function createData(admin, code, name, workers, process, works, start, end) {
+function createData(id, name, date) {
   return {
-    admin,
-    code,
+    id,
     name,
-    workers,
-    process,
-    works,
-    start,
-    end
+    date
   };
 }
 
 const rows = [
-  createData('Đỗ Nam Trung', 1, 'abcxyz', 67, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Tuyền Qua Minh Quân', 2, 'abcxyz', 51, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Vũ Trí Ba Tá Trợ', 3, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Xuân Dã Anh', 4, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kỳ Mộc Tạp Tạp Tây', 5, 'abcxyz', 49, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Mông Kỳ D. Lộ Phi', 6, 'abcxyz', 87, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('La La Nặc Á Sách Long', 7, 'abcxyz', 37, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Văn Tư Mạc Khắc Sơn Trị', 8, 'abcxyz', 94, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Na Mỹ', 9, 'abcxyz', 65, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ô Sách Phổ', 10, 'abcxyz', 98, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kiều Ba', 11, 'abcxyz', 81, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ni Khả La Tân', 12, 'abcxyz', 9, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Phất Lan Cơ', 13, 'abcxyz', 63, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
+  createData('1', 'Quản trị cấp cao', '06/06/2022'),
+  createData('2', 'Giám sát hiện trường', '06/06/2022'),
+  createData('3', 'Kho - vật tư', '06/06/2022'),
+  createData('4', 'QA - QC', '06/06/2022'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -83,52 +67,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
+    id: 'vaitriid',
     numeric: false,
-    disablePadding: true,
-    label: 'Người quản trị',
+    // disablePadding: true,
+    label: 'Vai trò ID',
   },
   {
-    id: 'maduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Mã dự án',
+    id: 'tenvaitro',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Tên vai trò',
   },
   {
-    id: 'tenduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tên dự án',
-  },
-  {
-    id: 'nguoithamgia',
-    numeric: true,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
-  {
-    id: 'tiendo',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tiến độ',
-  },
-  {
-    id: 'congviec',
-    numeric: true,
-    disablePadding: false,
-    label: 'Công việc',
-  },
-  {
-    id: 'batdau',
-    numeric: true,
-    disablePadding: false,
-    label: 'Bắt đầu',
-  },
-  {
-    id: 'ketthuc',
-    numeric: true,
-    disablePadding: false,
-    label: 'Kết thúc',
+    id: 'ngaythem',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Ngày được thêm vào',
   },
 ];
 
@@ -218,7 +172,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Dự án
+          Vai trò
         </Typography>
       )}
 
@@ -243,7 +197,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProjectTable() {
+export function RoleTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -258,19 +212,19 @@ export function ProjectTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.admin);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, admin) => {
-    const selectedIndex = selected.indexOf(admin);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, admin);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -294,7 +248,7 @@ export function ProjectTable() {
     setPage(0);
   };
 
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -321,7 +275,7 @@ export function ProjectTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.admin);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -331,12 +285,12 @@ export function ProjectTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                      onClick={(event) => handleClick(event, row.admin)}
+                      onClick={(event) => handleClick(event, row.id)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -350,23 +304,10 @@ export function ProjectTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.admin}
+                        {row.id}
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.workers}</TableCell>
-                      <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell>
-                      <TableCell align="right">{row.start}</TableCell>
-                      <TableCell align="right">{row.end}</TableCell>
-                      <TableCell align="right">
-                        <Route>
-
-                        <Link underline="hover" to="/projectDetails">
-                          {'Chi Tiết'}
-                        </Link>
-                        </Route>
-                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.date}</TableCell>
                     </TableRow>
                   );
                 })}
