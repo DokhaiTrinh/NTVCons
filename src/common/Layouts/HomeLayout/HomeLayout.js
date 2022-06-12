@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-
+import NavBar from '../../../Components/NavBar';
+// import { BrowserRouter as Router } from 'react-router-dom';
 
 const HomeLayoutRoute = (props) => {
-
   const { component: YourComponent, ...remainsprops } = props;
   return (
     <Route
@@ -11,6 +11,7 @@ const HomeLayoutRoute = (props) => {
       render={(routeProps) => {
         return (
           <div>
+            <NavBar />
             <div>
               <YourComponent {...routeProps} />
             </div>
