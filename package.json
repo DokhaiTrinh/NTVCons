@@ -20,6 +20,7 @@
     "date-fns": "^2.28.0",
     "material-ui-icons": "^1.0.0-beta.36",
     "material-ui-phone-number": "^3.0.0",
+    "material-ui-popup-state": "^3.1.1",
     "material-ui-search-bar": "^1.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

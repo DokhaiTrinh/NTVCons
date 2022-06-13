@@ -56,7 +56,7 @@ const listItems = [
   },
   {
     listIcon: <Apps />,
-    path: '/products',
+    path: '/product',
     listText: 'Sản phẩm',
   },
   {

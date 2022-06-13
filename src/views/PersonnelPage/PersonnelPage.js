@@ -11,6 +11,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import { PersonnelTable } from './components/PersonnelTable';
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -93,7 +94,7 @@ const PersonnelPage = (props) => {
                         justifyContent="center"
                         alignItems="center"
                         sx={{ margin: "20px" }}>
-                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }}>
+                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }} component={Link} to={"/createPersonnel"}>
                             <Add sx={{ color: "white" }}></Add>
                         </IconButton>
                     </Box>
