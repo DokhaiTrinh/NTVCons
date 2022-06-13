@@ -9,6 +9,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import { RoleTable } from './components/RoleTable';
+import { Link } from 'react-router-dom';
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -91,7 +93,7 @@ const RoleManagePage = (props) => {
                         justifyContent="center"
                         alignItems="center"
                         sx={{ margin: "20px" }}>
-                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }}>
+                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }} component={Link} to={('/createRole')}>
                             <Add sx={{ color: "white" }}></Add>
                         </IconButton>
                     </Box>
