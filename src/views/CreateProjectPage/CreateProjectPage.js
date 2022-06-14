@@ -9,10 +9,37 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import * as React from 'react';
+import axios from 'axios';
+import { Image } from 'cloudinary-react';
+
+import React, { useState } from 'react';
 
 const CreateProjectPage = (props) => {
   const [value, setValue] = React.useState(new Date());
+
+  const [imageSelected, setImageSelected] = useState('');
+  const [ imageData, setImageData] = useState('');
+
+  const uploadImage = () => {
+    const formData = new FormData();
+    formData.append('file', imageSelected);
+    formData.append('upload_preset', 'u78fm100');
+
+    const postImage = async () => {
+      try {
+        const response = await axios.post(
+          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+          formData
+        );
+        console.log(response);
+        setImageData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postImage();
+  };
+
   return (
     <div>
       <Typography
@@ -116,8 +143,23 @@ const CreateProjectPage = (props) => {
             <Typography variant="body2" color="#DD8501">
               Chọn file
             </Typography>
-            <input type="file" name="file" onChange={(e)=> this.handleFile(e)}/>
+            <input
+              type="file"
+              name="file"
+              onChange={(event) => {
+                setImageSelected(event.target.files[0]);
+              }}
+            />
           </Grid>
+          <Grid>
+            {imageData && (
+              <Image
+                cloudName="niem-tin-vang"
+                publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
+              />
+            )}
+          </Grid>
+
           <Grid item xs={12}>
             <Box
               sx={{
@@ -135,6 +177,7 @@ const CreateProjectPage = (props) => {
                   width: '200px',
                   alignSelf: 'center',
                 }}
+                onClick={uploadImage}
               >
                 Lưu
               </Button>
