@@ -1,5 +1,5 @@
 import CreateProjectPage from '../views/CreateProjectPage/CreateProjectPage';
-import RoleManagePage from '../views/RoleManagePage/RoleManagePage';
+import RoleManagePage from '../views/RoleManagePage/index';
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
 import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
