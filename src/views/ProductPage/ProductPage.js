@@ -10,7 +10,8 @@ import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import { ProductTable } from './components/ServiceTable';
+import { ServiceTable } from './components/ServiceTable';
+import { ProductTable } from './components/ProductTable';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
@@ -112,7 +113,7 @@ const ProductPage = (props) => {
                   </IconButton>
                   <Menu {...bindMenu(popupState)}>
                     <MenuItem onClick={() => {history.push('/createService')}}>Tạo mới dịch vụ</MenuItem>
-                    <MenuItem onClick={popupState.close}>Tạo mới sản phẩm</MenuItem>
+                    <MenuItem onClick={() => {history.push('/createProduct')}}>Tạo mới sản phẩm</MenuItem>
                   </Menu>
                 </React.Fragment>
               )}
@@ -167,11 +168,11 @@ const ProductPage = (props) => {
       </Box>
       <TabPanel value={value} index={0}>
         <Box width="100%">
-
-          <ProductTable></ProductTable>
+          <ServiceTable></ServiceTable>
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
+          <ProductTable></ProductTable>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Product

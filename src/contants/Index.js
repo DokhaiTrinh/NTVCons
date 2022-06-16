@@ -15,6 +15,8 @@ import EditServicePage from '../views/ProductPage/EditServicePage';
 import CreateServicePage from '../views/ProductPage/CreateServicePage';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
+import CreateProductPage from '../views/ProductPage/CreateProductPage';
+import EditProductPage from '../views/ProductPage/EditProductPage';
 
 export const HOME_ROUTES = [
   {
@@ -96,10 +98,22 @@ export const HOME_ROUTES = [
     component: EditServicePage,
   },
   {
+    path: '/editProduct',
+    name: 'Edit Product Page',
+    exact: true,
+    component: EditProductPage,
+  },
+  {
     path: '/createService',
     name: 'Create Service Page',
     exact: true,
     component: CreateServicePage,
+  },
+  {
+    path: '/createProduct',
+    name: 'Create Product Page',
+    exact: true,
+    component: CreateProductPage,
   },
   {
     path: '/editPersonnelProfile',

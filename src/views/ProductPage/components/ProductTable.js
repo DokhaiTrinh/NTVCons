@@ -21,22 +21,20 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import {Link} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import photo from "../../../assets/images/toa-nha-van-phong.jpeg";
+import photo from "../../../assets/images/nha-cap-4.jpeg";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-function createData(id, image, name, category, scale, location) {
+function createData(id, image, style, price) {
   return {
     id,
     image,
-    name,
-    category,
-    scale, 
-    location
+    style,
+    price,
   };
 }
 
 const rows = [
-  createData('1', photo, 'Tòa nhà văn phòng', 'Thiết kế nhà đẹp', 'Trệt + 3 lầu', 'Dĩ An, Bình Dương'),
+  createData('1', photo, 'Nhà cấp 4', '7.500.000 vnđ/m2'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -83,28 +81,16 @@ const headCells = [
     label: 'Hình Ảnh',
   },
   {
-    id: 'ten',
+    id: 'kieudang',
     numeric: false,
     disablePadding: false,
-    label: 'Tên dự án',
+    label: 'Kiểu dáng',
   },
   {
-    id: 'theloai',
+    id: 'dongia',
     numeric: false,
     disablePadding: false,
-    label: 'Thể loại',
-  },
-  {
-    id: 'quymo',
-    numeric: false,
-    disablePadding: false,
-    label: 'Quy mô',
-  },
-  {
-    id: 'vitri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Vị trí',
+    label: 'Đơn giá',
   },
 ];
 
@@ -219,7 +205,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ServiceTable() {
+export function ProductTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('id');
   const [selected, setSelected] = React.useState([]);
@@ -334,12 +320,10 @@ export function ServiceTable() {
                                     </Avatar>
                                 </Box>
                       </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.category}</TableCell>
-                      <TableCell align="left">{row.scale}</TableCell>
-                      <TableCell align="left">{row.location}</TableCell>
+                      <TableCell align="left">{row.style}</TableCell>
+                      <TableCell align="left">{row.price}</TableCell>
                       <TableCell align="left">
-                      <IconButton aria-label="edit role" component={Link} to={'/editService'}>
+                      <IconButton aria-label="edit role" component={Link} to={'/editProduct'}>
                             <EditOutlinedIcon></EditOutlinedIcon>
                           </IconButton>
                       </TableCell>
