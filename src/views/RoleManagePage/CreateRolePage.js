@@ -37,7 +37,7 @@ const CreateRolePage = (props) => {
   const {
     register,
     handleSubmit,
-    formState: { error },
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(validateSchema),
   });
@@ -56,7 +56,7 @@ const CreateRolePage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/createRole');
+      window.location.replace('/roleManage');
     } catch (error) {
       swal.fire({
         icon: 'error',
@@ -98,10 +98,10 @@ const CreateRolePage = (props) => {
                   Tên vai trò
                 </Typography>
                 <TextFieldComponent
-                  resgister={register}
+                  register={register}
                   name="roleName"
-                  label="RoleName"
-                  errors={error.roleName}
+                  label="Tên vai trò"
+                  errors={errors.roleName}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -111,8 +111,8 @@ const CreateRolePage = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="roleDesc"
-                  label="roleDesc"
-                  errors={error.roleDesc}
+                  label="Chi tiết vai trò"
+                  errors={errors.roleDesc}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />

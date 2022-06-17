@@ -23,7 +23,6 @@ const TextFieldComponent = (props) => {
       autoFocus
       multiline={multiline}
       rows={maxRows}
-      
       helperText={errors?.message}
       type={isPassword ? (showPassword ? "text" : "password") : ""}
       InputProps={
