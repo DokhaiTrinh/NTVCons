@@ -58,7 +58,7 @@ const Details = (props) => {
                 Kỹ sư quản lý
               </Typography>
               <Typography variant="body1">
-                
+                {allProjectDetails.userId}
               </Typography>
             </Grid>
             <Grid item xs="6">
@@ -130,10 +130,8 @@ const Details = (props) => {
                 Địa chỉ
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.addressNumber}  {' '}
-                {allProjectDetails.street}  {' '}
-                {allProjectDetails.district} {' '}
-                {allProjectDetails.city}
+                {allProjectDetails.addressNumber} {allProjectDetails.street}{' '}
+                {allProjectDetails.district} {allProjectDetails.city}
               </Typography>
             </Grid>
             <Grid item xs="6">

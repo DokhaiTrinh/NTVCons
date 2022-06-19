@@ -275,6 +275,7 @@ const EditProjectDetailsPage = (props) => {
                     </Typography>
                     <TextField
                       {...register('projectId')}
+                      inputProps={{ readOnly: true }}
                       name="projectId"
                       variant="outlined"
                       autoComplete="projectId"
@@ -457,6 +458,38 @@ const EditProjectDetailsPage = (props) => {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="#DD8501">
+                      Coordinate
+                    </Typography>
+                    <TextField
+                      {...register('coodinater')}
+                      name="coodinater"
+                      variant="outlined"
+                      autoComplete="coodinater"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].coodinater}
+                      error={errors.coodinater != null}
+                      helperText={errors.coodinater?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Country
+                    </Typography>
+                    <TextField
+                      {...register('country')}
+                      name="country"
+                      variant="outlined"
+                      autoComplete="country"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].country}
+                      error={errors.country != null}
+                      helperText={errors.country?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
                       Tên đường
                     </Typography>
                     <TextField
@@ -516,6 +549,22 @@ const EditProjectDetailsPage = (props) => {
                       defaultValue={allProjectDetails[0].country}
                       error={errors.country != null}
                       helperText={errors.country?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Ward
+                    </Typography>
+                    <TextField
+                      {...register('ward')}
+                      name="ward"
+                      variant="outlined"
+                      autoComplete="ward"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].ward}
+                      error={errors.ward != null}
+                      helperText={errors.ward?.message}
                       sx={{ width: '100%' }}
                     />
                   </Grid>

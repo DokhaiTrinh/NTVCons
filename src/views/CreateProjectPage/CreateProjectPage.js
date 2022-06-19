@@ -19,9 +19,12 @@ import swal from 'sweetalert2-react';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { getUserForDropDownApi } from '../../apis/Project/getUserForDropDown';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateProjectPage = (props) => {
+  const [userId, userName] = useState('');
+
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
   );
@@ -253,7 +256,6 @@ const CreateProjectPage = (props) => {
               <TextFieldComponent
                 register={register}
                 name="projectName"
-                label="Tên dự án"
                 errors={errors.projectName}
                 variant="outlined"
                 sx={{ width: '100%' }}
