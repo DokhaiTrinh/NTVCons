@@ -221,7 +221,7 @@ const ProjectPage = (props) => {
               allProject.length > 0 ? (
                 <ProjectTable allProject={allProject}></ProjectTable>
               ) : (
-                <div>Khong co du lieu</div>
+                <div>Không có dữ liệu để hiển thị</div>
               )
             ) : null}
           </Box>

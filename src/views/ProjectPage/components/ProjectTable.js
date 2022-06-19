@@ -95,12 +95,12 @@ const headCells = [
     disablePadding: false,
     label: 'Tiến độ',
   },
-  {
-    id: 'congviec',
-    numeric: true,
-    disablePadding: false,
-    label: 'Công việc',
-  },
+  // {
+  //   id: 'congviec',
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: 'Công việc',
+  // },
   {
     id: 'batdau',
     numeric: true,
@@ -320,13 +320,13 @@ export const ProjectTable = (props) => {
                       scope="row"
                       padding="none"
                     >
-                      {row.admin}
+                      {row.createdBy}
                     </TableCell>
                     <TableCell align="right">{row.projectId}</TableCell>
                     <TableCell align="right">{row.projectName}</TableCell>
-                    <TableCell align="right">{row.userId}</TableCell>
-                    {/* <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell> */}
+                    <TableCell align="right">{row.addressNumber}</TableCell>
+                    <TableCell align="right">{}</TableCell>
+                    {/* <TableCell align="right">{row.works}</TableCell> */}
                     <TableCell align="right">{row.actualStartDate}</TableCell>
                     <TableCell align="right">{row.actualEndDate}</TableCell>
                     <TableCell align="right">
