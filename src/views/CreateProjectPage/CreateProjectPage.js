@@ -18,21 +18,25 @@ import * as yup from 'yup';
 import swal from 'sweetalert2-react';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateProjectPage = (props) => {
-  const [valueStartDate, setValueStartDate] = React.useState(new Date("2022-06-19T12:00:00"));
-  const [valueEnd, setValueEnd] = React.useState(new Date());
-  console.log(valueStartDate);
+  const [valueActualStartDate, setValueActualStartDate] = React.useState(
+    new Date()
+  );
+  const [valueActualEndDate, setValueActualEndDate] = React.useState(
+    new Date()
+  );
+  const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
+    new Date()
+  );
+  const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   // const date = `${current.getDate()}/${
   //   current.getMonth() + 1
   // }/${current.getFullYear()}`;
-  const handleFormat = (newDate) => {
-
-  }
   const handleGetDate = (date) => {
     const getDate = date.substring(0, 10);
     const getDateCom = getDate.split('-');
@@ -47,13 +51,15 @@ const CreateProjectPage = (props) => {
   };
 
   const [loading, setLoading] = useState('');
-  console.log(valueStartDate);
-
   const submitForm = (data) => {
-    console.log(data);
+    const actualStartDate =
+      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
+    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
+    const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
+    const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
     handleCreateProject(
-      data.actualEndDate,
-      data.actualStartDate,
+      actualEndDate,
+      actualStartDate,
       data.addressNumber,
       data.area,
       data.blueprintEstimateCost,
@@ -62,16 +68,18 @@ const CreateProjectPage = (props) => {
       data.country,
       data.designerName,
       data.district,
-      data.planEndDate,
-      data.planStartDate,
+      planEndDate,
+      planStartDate,
       data.projectActualCost,
       data.projectBlueprintName,
       data.projectEstimateCost,
       data.projectName,
       data.province,
       data.street,
+      data.userId,
       data.ward
     );
+    console.log(data);
   };
   const handleCreateProject = async (
     actualEndDate,
@@ -92,6 +100,7 @@ const CreateProjectPage = (props) => {
     projectName,
     province,
     street,
+    userId,
     ward
   ) => {
     try {
@@ -115,6 +124,7 @@ const CreateProjectPage = (props) => {
         projectName,
         province,
         street,
+        userId,
         ward,
       });
       setLoading(false);
@@ -136,8 +146,7 @@ const CreateProjectPage = (props) => {
   };
   const valideSchema = yup
     .object({
-      addressNumber: yup.number(),
-      area: yup.string().min(5, 'Tên khu vực phải lớn hơn 5'),
+      addressNumber: yup.string(),
       blueprintEstimateCost: yup
         .number()
         .min(1, 'Giá tiền phải lớn hơn 0')
@@ -145,14 +154,6 @@ const CreateProjectPage = (props) => {
       city: yup
         .string()
         .min(5, 'Tên thành phố phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      coordinate: yup
-        .string()
-        .min(5, 'Tên điều phối phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      country: yup
-        .string()
-        .min(5, 'Tên quốc gia phải lớn hơn 5')
         .max(50, 'Tên thành phố không được quá 50'),
       designerName: yup
         .string()
@@ -181,7 +182,6 @@ const CreateProjectPage = (props) => {
         .required(),
       province: yup.string(),
       street: yup.string(),
-      ward: yup.string(),
     })
     .required();
   const {
@@ -192,13 +192,11 @@ const CreateProjectPage = (props) => {
     resolver: yupResolver(valideSchema),
   });
 
- 
   // const handleChangeDate = (date) => {
-  //   // console.log(date);
+  //   console.log(date);
   //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   let dateString =  new Date(date).toLocaleDateString([],options);
-    
-  // } 
+  //   let dateString = new Date(date).toLocaleDateString([], options);
+  // };
   // const uploadImage = () => {
   //   const formData = new FormData();
   //   formData.append('file', imageSelected);
@@ -306,39 +304,99 @@ const CreateProjectPage = (props) => {
               <Grid item xs={6}>
                 <Typography variant="body2">Bắt đầu dự kiến</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={valueStartDate}
-                  format={'yyyy-MM-dd HH:ms'}
-                  onChange={(newValue) => {
-                    setValueStartDate(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} fullWidth />
-                  )}
-                />
-                </LocalizationProvider>
-              </Grid>
-              {/* <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc dự kiến</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                  
-                    openTo="year"
-                    views={['year', 'month', 'day']}
-                    value={valueEnd}
+                  <DateTimePicker
+                    value={valuePlanStartDate}
                     onChange={(newValue) => {
-                      setValueEnd(newValue);
+                      setValuePlanStartDate(newValue);
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} fullWidth />
+                      <TextField
+                        {...params}
+                        {...register('planStartDate')}
+                        fullWidth
+                      />
                     )}
                   />
                 </LocalizationProvider>
-              </Grid> */}
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">Kết thúc dự kiến</Typography>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    value={valuePlanEndDate}
+                    onChange={(newValue) => {
+                      setValuePlanEndDate(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...register('planEndDate')}
+                        fullWidth
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid container item xs={12} spacing={1}>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Thời gian chính thức
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">Bắt đầu chính thức</Typography>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    value={valueActualStartDate}
+                    onChange={(newValue) => {
+                      setValueActualStartDate(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...register('actualStartDate')}
+                        fullWidth
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">Kết thúc chính thức</Typography>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    value={valueActualEndDate}
+                    onChange={(newValue) => {
+                      setValueActualEndDate(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...register('actualEndDate')}
+                        fullWidth
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+            </Grid>
+            {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Kỹ sư phụ trách
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="city"
+                label="Địa chỉ"
+                errors={errors.city}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid> */}
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Thành phố
               </Typography>
               <TextFieldComponent
                 register={register}
@@ -351,13 +409,118 @@ const CreateProjectPage = (props) => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
-                Địa chỉ
+                Coordinate
               </Typography>
               <TextFieldComponent
                 register={register}
-                name="city"
+                name="coordinate"
                 label="Địa chỉ"
-                errors={errors.city}
+                errors={errors.coordinate}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Country
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="country"
+                label="Địa chỉ"
+                errors={errors.country}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Tên đường
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="street"
+                label=""
+                errors={errors.street}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Số nhà
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="addressNumber"
+                label=""
+                errors={errors.addressNumber}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Tỉnh
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="province"
+                label=""
+                errors={errors.province}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Quốc gia
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="country"
+                label=""
+                errors={errors.country}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                UserId
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="userId"
+                label=""
+                errors={errors.userId}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Ward
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="ward"
+                label=""
+                errors={errors.ward}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body2" color="#DD8501">
+                Diện tích
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="area"
+                label="Địa chỉ"
+                errors={errors.area}
                 variant="outlined"
                 sx={{ width: '100%' }}
               />

@@ -20,6 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import swal from 'sweetalert2-react';
 import moment from 'moment';
+import { updateProjectApi } from '../../apis/Project/updateProject';
 
 const status = [
   { label: 'Hoàn thành' },
@@ -32,10 +33,20 @@ const EditProjectDetailsPage = (props) => {
   const [actualEnd, setActualEnd] = React.useState();
   const [expectedStart, setExpectedStart] = React.useState();
   const [expectedEnd, setExpectedEnd] = React.useState();
-  const today = moment().format('YYYY-MM-DD HH:ms');
+  const today = moment().format('YYYY-MM-DD HH:mm');
   const { id } = useParams();
   console.log(id);
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  const [valueActualStartDate, setValueActualStartDate] = React.useState(
+    new Date()
+  );
+  const [valueActualEndDate, setValueActualEndDate] = React.useState(
+    new Date()
+  );
+  const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
+    new Date()
+  );
+  const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   React.useEffect(() => {
     (async () => {
       try {
@@ -113,9 +124,116 @@ const EditProjectDetailsPage = (props) => {
   });
 
   const submitForm = (data) => {
-
-
-    
+    const actualStartDate =
+      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
+    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
+    const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
+    const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+    swal
+      .fire({
+        title: 'Cập nhật dự án ?',
+        target: document.getElementById('form-modal12'),
+        text: 'Lưu ý cập nhật sẽ thay đổi dữ liệu của dự án!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#25723F',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'CẬP NHẬT',
+        cancelButtonText: 'HỦY',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          handleUpdateProject(
+            actualEndDate,
+            actualStartDate,
+            data.addressNumber,
+            data.area,
+            data.blueprintEstimateCost,
+            data.city,
+            data.coordinate,
+            data.country,
+            data.designerName,
+            data.district,
+            planEndDate,
+            planStartDate,
+            data.projectActualCost,
+            data.projectBlueprintName,
+            data.projectEstimateCost,
+            data.projectName,
+            data.province,
+            data.street,
+            data.ward
+          );
+        }
+      });
+  };
+  const handleUpdateProject = async (
+    actualCost,
+    actualEndDate,
+    actualStartDate,
+    addressNumber,
+    area,
+    blueprintEstimateCost,
+    blueprintId,
+    blueprintName,
+    city,
+    coordinate,
+    country,
+    designerName,
+    district,
+    locationId,
+    planEndDate,
+    plantStartDate,
+    projectEstimateCost,
+    projectId,
+    projectName,
+    province,
+    street,
+    userId,
+    ward
+  ) => {
+    try {
+      await updateProjectApi({
+        actualCost,
+        actualEndDate,
+        actualStartDate,
+        addressNumber,
+        area,
+        blueprintEstimateCost,
+        blueprintId,
+        blueprintName,
+        city,
+        coordinate,
+        country,
+        designerName,
+        district,
+        locationId,
+        planEndDate,
+        plantStartDate,
+        projectEstimateCost,
+        projectId,
+        projectName,
+        province,
+        street,
+        userId,
+        ward,
+      });
+      await swal.fire({
+        icon: 'success',
+        text: 'Cập nhật thành công',
+        target: document.getElementById('form-modal'),
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        text: 'Cập nhật thất bại',
+        target: document.getElementById('form-modal'),
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
   };
   return (
     <div>
@@ -147,174 +265,320 @@ const EditProjectDetailsPage = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Mã dự án
-              </Typography>
-              <TextField
-                id="project-name"
-                value="1"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên dự án
-              </Typography>
-              <TextField
-                id="project-name"
-                value="Xây dựng tòa nhà văn phòng ABC"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Người quản trị
-              </Typography>
-              <TextField
-                id="project-name"
-                value="Đỗ Nam Trung"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tiến độ
-              </Typography>
-              <TextField
-                id="project-name"
-                value="10%"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Trạng thái
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={status}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} value="Đang thực hiện" />
-                )}
-              />
-            </Grid>
-            <Grid container item xs={12} spacing={1}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thời gian dự kiến
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Bắt đầu</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    value={expectedStart}
-                    onChange={(newValue) => {
-                      setExpectedStart(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                  
-                    value={expectedEnd}
-                    onChange={(newValue) => {
-                      setExpectedEnd(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={1}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thời gian thực tế
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Bắt đầu</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    selected={actualStart}
-                    value={actualStart}
-                    onChange={(newValue) => {
-                      setActualStart(newValue);
-                    }}
-                   
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    disableFuture
-                    value={actualEnd}
-                    onChange={(newValue) => {
-                      setActualEnd(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Người tham gia
-              </Typography>
-              <TextField
-                id="outlined-multiline-static"
-                value="Nguyễn Văn A, Trần Thị B, Vũ Văn C, Huỳnh Thị N, Đỗ Văn T"
-                multiline
-                rows={4}
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <Button
-                  variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    borderRadius: 50,
-                    width: '200px',
-                    alignSelf: 'center',
-                  }}
-                >
-                  Lưu
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
+          {allProjectDetails ? (
+            allProjectDetails.length > 0 ? (
+              <form onSubmit={handleSubmit(submitForm)}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Mã dự án
+                    </Typography>
+                    <TextField
+                      {...register('projectId')}
+                      name="projectId"
+                      variant="outlined"
+                      autoComplete="projectId"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].projectId}
+                      error={errors.projectId != null}
+                      helperText={errors.projectId?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Tên dự án
+                    </Typography>
+                    <TextField
+                      {...register('projectName')}
+                      name="projectName"
+                      variant="outlined"
+                      autoComplete="projectName"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].projectName}
+                      error={errors.projectName != null}
+                      helperText={errors.projectName?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Tên bản vẽ
+                    </Typography>
+                    <TextField
+                      {...register('projectBlueprintName')}
+                      name="projectBlueprintName"
+                      variant="outlined"
+                      autoComplete="projectBlueprintName"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].projectBlueprintName}
+                      error={errors.projectBlueprintName != null}
+                      helperText={errors.projectBlueprintName?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Giá bản vẽ
+                    </Typography>
+                    <TextField
+                      {...register('projectBlueprintCost')}
+                      name="projectBlueprintCost"
+                      variant="outlined"
+                      autoComplete="projectBlueprintCost"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].projectBlueprintCost}
+                      error={errors.projectBlueprintCost != null}
+                      helperText={errors.projectBlueprintCost?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Người thiết kế
+                    </Typography>
+                    <TextField
+                      {...register('designerName')}
+                      name="designerName"
+                      variant="outlined"
+                      autoComplete="designerName"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].designerName}
+                      error={errors.designerName != null}
+                      helperText={errors.designerName?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Thời gian dự kiến
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">Bắt đầu dự kiến</Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                          value={valueActualStartDate}
+                          onChange={(newValue) => {
+                            setValueActualStartDate(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">Kết thúc dự kiến</Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                          value={valueActualEndDate}
+                          onChange={(newValue) => {
+                            setValueActualEndDate(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                  </Grid>
+                  <Grid container item xs={12} spacing={1}>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Thời gian thực tế
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Bắt đầu chính thức
+                      </Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                          value={valuePlanStartDate}
+                          onChange={(newValue) => {
+                            setValuePlanStartDate(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="body2">
+                        Kết thúc chính thức
+                      </Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                          value={valuePlanEndDate}
+                          onChange={(newValue) => {
+                            setValuePlanEndDate(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Kỹ sư phụ trách
+                    </Typography>
+                    <TextField
+                      {...register('designerName')}
+                      name="userId"
+                      variant="outlined"
+                      autoComplete="userId"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].userId}
+                      error={errors.userId != null}
+                      helperText={errors.userId?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Thành phố
+                    </Typography>
+                    <TextField
+                      {...register('designerName')}
+                      name="city"
+                      variant="outlined"
+                      autoComplete="city"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].city}
+                      error={errors.city != null}
+                      helperText={errors.city?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Tên đường
+                    </Typography>
+                    <TextField
+                      {...register('street')}
+                      name="street"
+                      variant="outlined"
+                      autoComplete="street"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].street}
+                      error={errors.street != null}
+                      helperText={errors.street?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Số nhà
+                    </Typography>
+                    <TextField
+                      {...register('addressNumber')}
+                      name="addressNumber"
+                      variant="outlined"
+                      autoComplete="addressNumber"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].addressNumber}
+                      error={errors.addressNumber != null}
+                      helperText={errors.addressNumber?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Tỉnh
+                    </Typography>
+                    <TextField
+                      {...register('province')}
+                      name="province"
+                      variant="outlined"
+                      autoComplete="province"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].province}
+                      error={errors.province != null}
+                      helperText={errors.province?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Quốc gia
+                    </Typography>
+                    <TextField
+                      {...register('country')}
+                      name="country"
+                      variant="outlined"
+                      autoComplete="country"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].country}
+                      error={errors.country != null}
+                      helperText={errors.country?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Diện tích
+                    </Typography>
+                    <TextField
+                      {...register('area')}
+                      name="area"
+                      variant="outlined"
+                      autoComplete="area"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].area}
+                      error={errors.area != null}
+                      helperText={errors.area?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Giá dự kiến
+                    </Typography>
+                    <TextField
+                      {...register('projectEstimateCost')}
+                      name="projectEstimateCost"
+                      variant="outlined"
+                      autoComplete="projectEstimateCost"
+                      autoFocus
+                      defaultValue={allProjectDetails[0].projectEstimateCost}
+                      error={errors.projectEstimateCost != null}
+                      helperText={errors.projectEstimateCost?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        display: 'flex',
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Lưu
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </form>
+            ) : (
+              'Không có dữ liệu để hiển thị'
+            )
+          ) : null}
         </Box>
       </Box>
     </div>

@@ -141,13 +141,13 @@ const ProjectDetailsPage = (props) => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-        {allProjectDetails ? (
-              allProjectDetails.length > 0 ? (
-                <Details allProjectDetails={allProjectDetails[0]}/>
-              ) : (
-                <div>Không có dữ liệu để hiển thị</div>
-              )
-            ) : null}
+          {allProjectDetails ? (
+            allProjectDetails.length > 0 ? (
+              <Details allProjectDetails={allProjectDetails[0]} />
+            ) : (
+              <div>Không có dữ liệu để hiển thị</div>
+            )
+          ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ReportTable></ReportTable>
