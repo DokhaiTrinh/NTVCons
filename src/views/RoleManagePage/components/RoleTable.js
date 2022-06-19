@@ -19,22 +19,23 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import { Route } from 'react-router';
-import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
-function createData(admin, code, name, workers, process, works, start, end) {
+
+function createData(id, name, date) {
   return {
-    admin,
-    code,
+    id,
     name,
-    workers,
-    process,
-    works,
-    start,
-    end,
+    date,
   };
 }
-function descendingComparator(a, b, orderBy) {
+
+const rows = [
+  createData('1', 'Quản trị cấp cao', '06/06/2022'),
+  createData('2', 'Giám sát hiện trường', '06/06/2022'),
+  createData('3', 'Kho - vật tư', '06/06/2022'),
+  createData('4', 'QA - QC', '06/06/2022'),
+];
+
+const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -42,7 +43,7 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}
+};
 
 function getComparator(order, orderBy) {
   return order === 'desc'
@@ -66,56 +67,26 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
+    id: 'vaitriid',
     numeric: false,
-    disablePadding: true,
-    label: 'Người quản trị',
+    // disablePadding: true,
+    label: 'Vai trò ID',
   },
   {
-    id: 'maduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Mã dự án',
+    id: 'tenvaitro',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Tên vai trò',
   },
   {
-    id: 'tenduan',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tên dự án',
-  },
-  {
-    id: 'nguoithamgia',
-    numeric: true,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
-  {
-    id: 'tiendo',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tiến độ',
-  },
-  {
-    id: 'congviec',
-    numeric: true,
-    disablePadding: false,
-    label: 'Công việc',
-  },
-  {
-    id: 'batdau',
-    numeric: true,
-    disablePadding: false,
-    label: 'Bắt đầu',
-  },
-  {
-    id: 'ketthuc',
-    numeric: true,
-    disablePadding: false,
-    label: 'Kết thúc',
+    id: 'ngaythem',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Ngày được thêm vào',
   },
 ];
 
-function EnhancedTableHead(props) {
+const EnhancedTableHead = (props) => {
   const {
     onSelectAllClick,
     order,
@@ -166,7 +137,7 @@ function EnhancedTableHead(props) {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -210,7 +181,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Dự án
+          Vai trò
         </Typography>
       )}
 
@@ -235,13 +206,12 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export const ProjectTable = (props) => {
-  const { allProject } = props;
-  console.log(allProject);
+const RoleTable = () => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -249,12 +219,21 @@ export const ProjectTable = (props) => {
     setOrderBy(property);
   };
 
-  const handleClick = (event, admin) => {
-    const selectedIndex = selected.indexOf(admin);
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = rows.map((n) => n.id);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, admin);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -273,9 +252,16 @@ export const ProjectTable = (props) => {
     setPage(newPage);
   };
 
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -287,61 +273,67 @@ export const ProjectTable = (props) => {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
+              rowCount={rows.length}
             />
             <TableBody>
-              {allProject.map((row, index) => {
-                const isItemSelected = isSelected(row.admin);
-                const labelId = `enhanced-table-checkbox-${index}`;
+              {stableSort(rows, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    // onClick={(event) => handleClick(event, row.admin)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        onClick={(event) => handleClick(event, row.admin)}
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
+                  return (
+                    <TableRow
+                      hover
+                      // onClick={(event) => handleClick(event, row.admin)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
                     >
-                      {row.admin}
-                    </TableCell>
-                    <TableCell align="right">{row.projectId}</TableCell>
-                    <TableCell align="right">{row.projectName}</TableCell>
-                    <TableCell align="right">{row.userId}</TableCell>
-                    {/* <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell> */}
-                    <TableCell align="right">{row.actualStartDate}</TableCell>
-                    <TableCell align="right">{row.actualEndDate}</TableCell>
-                    <TableCell align="right">
-                      <Route>
-                        <Link underline="hover" to="/projectDetails">
-                          {'Chi Tiết'}
-                        </Link>
-                      </Route>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          onClick={(event) => handleClick(event, row.id)}
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.id}
+                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.date}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
     </Box>
   );

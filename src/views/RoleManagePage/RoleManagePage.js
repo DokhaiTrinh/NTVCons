@@ -1,22 +1,16 @@
 import * as React from 'react';
+import { Grid, Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import OutputOutlinedIcon from '@mui/icons-material/OutputOutlined';
+import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import { ProjectTable } from './components/ProjectTable';
+// import { RoleTable } from './components/RoleTable';
 import { Link } from 'react-router-dom';
-//Get all project
-import { getAllProjectApi } from '../../apis/Project/getAllProject';
+import { getAllRoleApi } from './../../apis/Role/GetAllRole';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 
 const TabPanel = (props) => {
@@ -44,14 +38,12 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
-}
-
+};
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -67,7 +59,6 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -90,7 +81,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const ProjectPage = (props) => {
+const RoleManagePage = (props) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -98,24 +89,25 @@ const ProjectPage = (props) => {
   };
   const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
     useStateValue();
-  console.log(pageNo, pageSize, sortBy, sortType);
-  const [allProject, setAllProject] = React.useState([]);
-  console.log(allProject);
+
+  const [allRole, setAllRole] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllProject = await getAllProjectApi({
+        const listAllRole = await getAllRoleApi({
           pageNo,
           pageSize,
           sortBy,
           sortType,
         });
-        setAllProject(listAllProject.data);
+        setAllRole(listAllRole.data);
       } catch (error) {
-        console.log('Không thể lấy danh sách dự án');
+        console.log('Không thể lấy danh sách role');
       }
     })();
   }, [pageNo, pageSize, sortBy, sortType]);
+  console.log(allRole);
 
   return (
     <div>
@@ -132,7 +124,7 @@ const ProjectPage = (props) => {
                 aria-label="add"
                 sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
                 component={Link}
-                to={'/createProject'}
+                to={'/createRole'}
               >
                 <Add sx={{ color: 'white' }}></Add>
               </IconButton>
@@ -145,7 +137,7 @@ const ProjectPage = (props) => {
               alignItems="center"
               sx={{ height: '100%' }}
             >
-              <Typography variant="body1">Danh sách dự án</Typography>
+              <Typography variant="body1">Danh sách vai trò</Typography>
             </Box>
           </Grid>
         </Grid>
@@ -183,67 +175,17 @@ const ProjectPage = (props) => {
             aria-label=""
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Chờ" {...a11yProps(1)} />
-            <Tab label="Đang thực hiện" {...a11yProps(2)} />
-            <Tab label="Hoàn thành" {...a11yProps(3)} />
-            <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <IconButton aria-label="export">
-              <Box>
-                <OutputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Xuất</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="import">
-              <Box>
-                <InputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Nhập</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="setting">
-              <Box>
-                <SettingsOutlinedIcon />
-                <div>
-                  <Typography variant="button">Cài đặt</Typography>
-                </div>
-              </Box>
-            </IconButton>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            {allProject ? (
-              allProject.length > 0 ? (
-                <ProjectTable allProject={allProject}></ProjectTable>
-              ) : (
-                <div>Khong co du lieu</div>
-              )
-            ) : null}
+            {/* <RoleTable></RoleTable> */}
+         
           </Box>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ProjectTable></ProjectTable>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          Item Five
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
         </TabPanel>
       </Box>
     </div>
   );
 };
 
-export default ProjectPage;
+export default RoleManagePage;

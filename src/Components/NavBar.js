@@ -56,12 +56,12 @@ const listItems = [
   },
   {
     listIcon: <Apps />,
-    path: '/products',
+    path: '/product',
     listText: 'Sản phẩm',
   },
   {
     listIcon: <ContactMail />,
-    path: '',
+    path: '/personnel',
     listText: 'Thành viên',
   },
 ];
