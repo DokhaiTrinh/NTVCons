@@ -10,108 +10,151 @@ import PropTypes from 'prop-types';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { getProjectByIdApi } from '../../apis/Project/getProjectById';
+import { useStateValue } from '../../common/StateProvider/StateProvider';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
 }
 
 TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
 }
 const ProjectDetailsPage = (props) => {
-    const {row} = props;
-    console.log(row);
-    const [value, setValue] = React.useState(0);
+  const { row } = props;
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  const [value, setValue] = React.useState(0);
 
-    return <div>
-        <Grid container justify="center">
-            <Grid container md="8">
-                <Grid item>
-                    <Box display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ margin: "20px" }}>
-                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }}>
-                            <Add sx={{ color: "white" }}></Add>
-                        </IconButton>
-                    </Box>
-                </Grid>
-                <Grid item>
-                    <Box display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ height: "100%" }}>
-                        <Typography variant="body1">Dự án - Xây dựng tòa nhà văn phòng ABC</Typography>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Grid>
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs variant="scrollable"
-                    scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
-                    <Tab label="Chi tiết" {...a11yProps(0)} />
-                    <Tab label="Báo cáo" {...a11yProps(1)} />
-                    <Box sx={{ flex: 1 }}></Box>
-                    <Box>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <IconButton aria-label="edit report" component={Link} to={('/editProjectDetails')} sx={{ height: "100%"}}>
-                                    <Box sx={{height: "30px" }}>
-
-                                        <EditOutlinedIcon fontSize="large" />
-
-                                    </Box>
-                                </IconButton>
-                            </Grid>
-                            <Grid item xs={12}>
-
-                                <Typography variant="button">
-                                    Chỉnh sửa
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Tabs>
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const [{ pageNo, pageSize, projectId, sortBy, sortType, loading }, dispatch] =
+    useStateValue();
+  const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllProjectDetails = await getProjectByIdApi({
+          pageNo,
+          pageSize,
+          projectId,
+          sortBy,
+          sortType,
+        });
+        setAllProjectDetails(listAllProjectDetails.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+  }, [pageNo, pageSize, projectId, sortBy, sortType]);
+  console.log(allProjectDetails);
+  return (
+    <div>
+      <Grid container justify="center">
+        <Grid container md="8">
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ margin: '20px' }}
+            >
+              <IconButton
+                aria-label="add"
+                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+              >
+                <Add sx={{ color: 'white' }}></Add>
+              </IconButton>
             </Box>
-            <TabPanel value={value} index={0}>
-                <Details></Details>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <ReportTable></ReportTable>
-            </TabPanel>
+          </Grid>
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ height: '100%' }}
+            >
+              <Typography variant="body1">
+                Dự án - Xây dựng tòa nhà văn phòng ABC
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            variant="scrollable"
+            scrollButtons="auto"
+            value={value}
+            onChange={handleChange}
+            aria-label=""
+          >
+            <Tab label="Chi tiết" {...a11yProps(0)} />
+            <Tab label="Báo cáo" {...a11yProps(1)} />
+            <Box sx={{ flex: 1 }}></Box>
+            <Box>
+              <Grid container>
+                <Grid item xs={12}>
+                  <IconButton
+                    aria-label="edit report"
+                    component={Link}
+                    to={`/editProjectDetails/${projectId}`}
+                    sx={{ height: '100%' }}
+                  >
+                    <Box sx={{ height: '30px' }}>
+                      <EditOutlinedIcon fontSize="large" />
+                    </Box>
+                  </IconButton>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="button">Chỉnh sửa</Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          </Tabs>
         </Box>
-    </div>;
+        <TabPanel value={value} index={0}>
+        {allProjectDetails ? (
+              allProjectDetails.length > 0 ? (
+                <Details allProjectDetails={allProjectDetails[0]}/>
+              ) : (
+                <div>Không có dữ liệu để hiển thị</div>
+              )
+            ) : null}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ReportTable></ReportTable>
+        </TabPanel>
+      </Box>
+    </div>
+  );
 };
 
 export default ProjectDetailsPage;

@@ -16,21 +16,23 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import swal from 'sweetalert2-react';
-import Moment from 'react-moment';
+import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateProjectPage = (props) => {
-  const [valueStart, setValueStart] = React.useState(new Date());
+  const [valueStartDate, setValueStartDate] = React.useState(new Date("2022-06-19T12:00:00"));
   const [valueEnd, setValueEnd] = React.useState(new Date());
-
+  console.log(valueStartDate);
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   // const date = `${current.getDate()}/${
   //   current.getMonth() + 1
   // }/${current.getFullYear()}`;
+  const handleFormat = (newDate) => {
 
+  }
   const handleGetDate = (date) => {
     const getDate = date.substring(0, 10);
     const getDateCom = getDate.split('-');
@@ -45,7 +47,7 @@ const CreateProjectPage = (props) => {
   };
 
   const [loading, setLoading] = useState('');
-  console.log(valueStart);
+  console.log(valueStartDate);
 
   const submitForm = (data) => {
     console.log(data);
@@ -305,13 +307,10 @@ const CreateProjectPage = (props) => {
                 <Typography variant="body2">Bắt đầu dự kiến</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  
-                  openTo="year"
-                  views={['year', 'month', 'day']}
-                  value={valueEnd}
-                  format="DD-MM-YYYY HH:ss"
+                  value={valueStartDate}
+                  format={'yyyy-MM-dd HH:ms'}
                   onChange={(newValue) => {
-                    setValueStart(newValue);
+                    setValueStartDate(newValue);
                   }}
                   renderInput={(params) => (
                     <TextField {...params} fullWidth />

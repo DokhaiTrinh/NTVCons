@@ -4,7 +4,7 @@ import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
 import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
-import ProjectDetailsPage from '../views/ProjectDetailsPage/ProjectDetailsPage';
+import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
 import ProductPage from '../views/ProductPage/ProductPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
@@ -78,7 +78,7 @@ export const HOME_ROUTES = [
     component: EditReportPage,
   },
   {
-    path: '/editProjectDetails',
+    path: '/editProjectDetails/:id',
     name: 'Edit Project Details Page',
     exact: true,
     component: EditProjectDetailsPage,

@@ -235,6 +235,20 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const handleGetDate = (date) => {
+  const getDate = date.substring(0, 10);
+  const getDateCom = getDate.split('-');
+  const getDateReformat = ''.concat(
+    getDateCom[2],
+    '/',
+    getDateCom[1],
+    '/',
+    getDateCom[0]
+  );
+  return getDateReformat;
+};
+
+
 export const ProjectTable = (props) => {
   const { allProject } = props;
   console.log(allProject);
@@ -291,7 +305,7 @@ export const ProjectTable = (props) => {
             />
             <TableBody>
               {allProject.map((row, index) => {
-                const isItemSelected = isSelected(row.admin);
+                // const isItemSelected = isSelected(row.admin);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -299,16 +313,16 @@ export const ProjectTable = (props) => {
                     hover
                     // onClick={(event) => handleClick(event, row.admin)}
                     role="checkbox"
-                    aria-checked={isItemSelected}
+                    // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
-                    selected={isItemSelected}
+                    // selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         onClick={(event) => handleClick(event, row.admin)}
                         color="primary"
-                        checked={isItemSelected}
+                        // checked={isItemSelected}
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
@@ -327,11 +341,14 @@ export const ProjectTable = (props) => {
                     <TableCell align="right">{row.addressNumber}</TableCell>
                     <TableCell align="right">{}</TableCell>
                     {/* <TableCell align="right">{row.works}</TableCell> */}
-                    <TableCell align="right">{row.actualStartDate}</TableCell>
-                    <TableCell align="right">{row.actualEndDate}</TableCell>
+                    <TableCell align="right">{handleGetDate(row.actualStartDate)}</TableCell>
+                    <TableCell align="right">{handleGetDate(row.actualEndDate)}</TableCell>
                     <TableCell align="right">
                       <Route>
-                        <Link underline="hover" to="/projectDetails">
+                        <Link
+                          underline="hover"
+                          to={`/projectDetails/${row.projectId}`}
+                        >
                           {'Chi Tiết'}
                         </Link>
                       </Route>

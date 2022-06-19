@@ -1,10 +1,10 @@
 
 //Api link của project
-export const GET_ALL_PROJECT = "http://niemtinvang.herokuapp.com/project/v1/getAll";
+export const GET_ALL_PROJECT = "http://niemtinvang.herokuapp.com/Project/v1/getAll";
 export const CREATE_PROJECT = "http://niemtinvang.herokuapp.com/Project/createProject";
-export const UPDATE_PROJECT = "https://niemtinvang.herokuapp.com/Project/updateProject";
+export const UPDATE_PROJECT = "http://niemtinvang.herokuapp.com/Project/v1/updateProject";
 export const DELETE_PROJECT = "https://niemtinvang.herokuapp.com/Project/deleteProject/{projectId}";
-export const GET_ALL_BY_ID = "http://niemtinvang.herokuapp.com/project/v1/getAllById";
+export const GET_ALL_BY_ID = "http://niemtinvang.herokuapp.com/Project/v1/getAllById";
 
 
 //Api link của role

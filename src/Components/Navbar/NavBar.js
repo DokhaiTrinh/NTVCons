@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Navbar.css';
+// import '../Navbar/';
 import { NavLink } from 'react-router-dom';
 import {
   AppBar,
@@ -75,7 +75,11 @@ export default function App() {
   };
 
   const sideList = () => (
-    <Box className={classes.menuSliderContainer} component="div" style={{backgroundColor: '#f4d9b0'}}>
+    <Box
+      className={classes.menuSliderContainer}
+      component="div"
+      style={{ backgroundColor: '#f4d9b0' }}
+    >
       <Avatar
         className={classes.avatar}
         src="https://i.ibb.co/rx5DFbs/avatar.png"
@@ -103,7 +107,7 @@ export default function App() {
       <Box component="nav">
         <AppBar
           position="static"
-          style={{backgroundColor: "#dd8500", color:"black"}}
+          style={{ backgroundColor: '#dd8500', color: 'black' }}
         >
           <Toolbar>
             <IconButton onClick={toggleSlider} color="inherit">
