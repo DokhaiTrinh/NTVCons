@@ -9,7 +9,6 @@ import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Details from './components/Details';
-import ReportTable from './components/ReportTable';
 import { Link } from 'react-router-dom';
 
 function TabPanel(props) {
@@ -44,9 +43,7 @@ function a11yProps(index) {
         'aria-controls': `simple-tabpanel-${index}`,
     };
 }
-const ProjectDetailsPage = (props) => {
-    const {row} = props;
-    console.log(row);
+const WorkDetailsPage = (props) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -81,12 +78,12 @@ const ProjectDetailsPage = (props) => {
                 <Tabs variant="scrollable"
                     scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
                     <Tab label="Chi tiết" {...a11yProps(0)} />
-                    <Tab label="Báo cáo" {...a11yProps(1)} />
+                    <Tab label="Đính kèm" {...a11yProps(1)} />
                     <Box sx={{ flex: 1 }}></Box>
                     <Box>
                         <Grid container>
                             <Grid item xs={12}>
-                                <IconButton aria-label="edit report" component={Link} to={('/editProjectDetails')} sx={{ height: "100%"}}>
+                                <IconButton aria-label="edit report" component={Link} to={('/editReport')} sx={{ height: "100%"}}>
                                     <Box sx={{height: "30px" }}>
 
                                         <EditOutlinedIcon fontSize="large" />
@@ -108,10 +105,12 @@ const ProjectDetailsPage = (props) => {
                 <Details></Details>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <ReportTable></ReportTable>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                Đính kèm
             </TabPanel>
         </Box>
     </div>;
 };
 
-export default ProjectDetailsPage;
+export default WorkDetailsPage;
