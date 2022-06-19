@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import swal from 'sweetalert2-react';
+import Moment from 'react-moment';
 import { createProjectApi } from '../../apis/Project/createProject';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -188,6 +189,14 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
+
+ 
+  // const handleChangeDate = (date) => {
+  //   // console.log(date);
+  //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  //   let dateString =  new Date(date).toLocaleDateString([],options);
+    
+  // } 
   // const uploadImage = () => {
   //   const formData = new FormData();
   //   formData.append('file', imageSelected);
@@ -295,14 +304,19 @@ const CreateProjectPage = (props) => {
               <Grid item xs={6}>
                 <Typography variant="body2">Bắt đầu dự kiến</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    label="Basic example"
-                    value={valueStart}
-                    onChange={(newValue) => {
-                      setValueStart(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                <DatePicker
+                  
+                  openTo="year"
+                  views={['year', 'month', 'day']}
+                  value={valueEnd}
+                  format="DD-MM-YYYY HH:ss"
+                  onChange={(newValue) => {
+                    setValueStart(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} fullWidth />
+                  )}
+                />
                 </LocalizationProvider>
               </Grid>
               {/* <Grid item xs={6}>

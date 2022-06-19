@@ -5,7 +5,7 @@ import LoginPage from '../views/LoginPage/LoginPage';
 import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/ProjectDetailsPage';
-import ProjectPage from '../views/ProjectPage/ProjectPage';
+import ProjectPage from '../views/ProjectPage/indexGetAllProject';
 import ProductPage from '../views/ProductPage/ProductPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
 import EditReportPage from '../views/WorkDetailsPage/EditReportPage';
@@ -30,7 +30,7 @@ export const HOME_ROUTES = [
     component: ProjectPage,
   },
   {
-    path: '/projectDetails',
+    path: '/projectDetails/:id',
     name: 'Project Details Page',
     exact: true,
     component: ProjectDetailsPage,

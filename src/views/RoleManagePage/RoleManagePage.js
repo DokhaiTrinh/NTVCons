@@ -179,7 +179,8 @@ const RoleManagePage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            <RoleTable></RoleTable>
+            {/* <RoleTable></RoleTable> */}
+         
           </Box>
         </TabPanel>
       </Box>

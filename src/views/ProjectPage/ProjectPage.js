@@ -96,27 +96,26 @@ const ProjectPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  // const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
-  //   useStateValue();
-
+  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+    useStateValue();
+  console.log(pageNo, pageSize, sortBy, sortType);
   const [allProject, setAllProject] = React.useState([]);
-
-  // React.useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const listAllProject = await getAllProjectApi({
-  //         pageNo,
-  //         pageSize,
-  //         sortBy,
-  //         sortType,
-  //       });
-  //       setAllProject(listAllProject.data);
-  //     } catch (error) {
-  //       console.log('Không thể lấy danh sách dự án');
-  //     }
-  //   })();
-  // }, [pageNo, pageSize, sortBy, sortType]);
-  // console.log(allProject);
+  console.log(allProject);
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllProject = await getAllProjectApi({
+          pageNo,
+          pageSize,
+          sortBy,
+          sortType,
+        });
+        setAllProject(listAllProject.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+  }, [pageNo, pageSize, sortBy, sortType]);
 
   return (
     <div>
@@ -218,7 +217,13 @@ const ProjectPage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            <ProjectTable></ProjectTable>
+            {allProject ? (
+              allProject.length > 0 ? (
+                <ProjectTable allProject={allProject}></ProjectTable>
+              ) : (
+                <div>Khong co du lieu</div>
+              )
+            ) : null}
           </Box>
         </TabPanel>
         <TabPanel value={value} index={1}>

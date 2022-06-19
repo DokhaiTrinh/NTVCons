@@ -45,6 +45,8 @@ function a11yProps(index) {
     };
 }
 const ProjectDetailsPage = (props) => {
+    const {row} = props;
+    console.log(row);
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
