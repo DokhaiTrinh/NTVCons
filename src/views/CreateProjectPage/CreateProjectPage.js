@@ -56,10 +56,10 @@ const CreateProjectPage = (props) => {
   const [loading, setLoading] = useState('');
   const submitForm = (data) => {
     const actualStartDate =
-      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
-    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
-    const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
-    const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+      moment(valueActualStartDate).format('yyyy-MM-dd HH:mm');
+    const actualEndDate = moment(valueActualEndDate).format('yyyy-MM-dd HH:mm');
+    const planStartDate = moment(valuePlanStartDate).format('yyyy-MM-dd HH:mm');
+    const planEndDate = moment(valuePlanEndDate).format('yyyy-MM-dd HH:mm');
     handleCreateProject(
       actualEndDate,
       actualStartDate,

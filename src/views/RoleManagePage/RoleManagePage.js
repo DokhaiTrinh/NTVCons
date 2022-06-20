@@ -8,7 +8,7 @@ import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-// import { RoleTable } from './components/RoleTable';
+import { RoleTable } from './components/RoleTable';
 import { Link } from 'react-router-dom';
 import { getAllRoleApi } from './../../apis/Role/GetAllRole';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
@@ -179,8 +179,14 @@ const RoleManagePage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            {/* <RoleTable></RoleTable> */}
-         
+            {/* {allRole ? (
+              allRole.length > 0 ? (
+                // <RoleTable allRole={allRole}></RoleTable>
+             
+              ) : (
+                <div>Không có dữ liệu để hiển thị</div>
+              )
+            ) : null} */}
           </Box>
         </TabPanel>
       </Box>
