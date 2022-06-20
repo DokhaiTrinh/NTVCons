@@ -225,12 +225,17 @@ const CreateProjectPage = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
+        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: "30px" }}
       >
         TẠO MỚI DỰ ÁN
       </Typography>
       <Divider></Divider>
-      <Box sx={{ paddingLeft: '10px', paddingTop: '10px', width: '40%' }}>
+      <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }}>
+      <Box sx={{ paddingLeft: '10px', paddingTop: '10px', width: '40%', marginBottom: "30px" }}>
         <Typography variant="body1" color="#DD8501" fontWeight="bold">
           Thông tin dự án
         </Typography>
@@ -600,6 +605,7 @@ const CreateProjectPage = (props) => {
             </Grid>
           </Grid>
         </form>
+      </Box>
       </Box>
     </div>
   );
