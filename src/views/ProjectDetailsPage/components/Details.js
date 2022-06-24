@@ -63,18 +63,10 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="6">
               <Typography variant="body1" color="gray">
-                Mã bản vẽ
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.blueprintId}
-              </Typography>
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
                 Tên bản vẽ
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.blueprintName}
+                {allProjectDetails.projectBlueprintName }
               </Typography>
             </Grid>
             <Grid item xs="6">

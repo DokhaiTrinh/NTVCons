@@ -10,9 +10,15 @@ import PropTypes from 'prop-types';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
+import TaskTable from './components/TaskTable';
 import { Link, useParams } from 'react-router-dom';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import { getAllReportApi } from '../../apis/Report/getAllReport';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,13 +56,17 @@ const ProjectDetailsPage = (props) => {
   const { row } = props;
 
   const [value, setValue] = React.useState(0);
-
+  const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const [{ pageNo, pageSize, projectId, sortBy, sortType, loading }, dispatch] =
     useStateValue();
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  const handleChange1 = (event) => {
+    setAge(event.target.value);
+  };
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -74,6 +84,7 @@ const ProjectDetailsPage = (props) => {
     })();
   }, [pageNo, pageSize, projectId, sortBy, sortType]);
   console.log(allProjectDetails);
+
   return (
     <div>
       <Grid container justify="center">
@@ -107,6 +118,22 @@ const ProjectDetailsPage = (props) => {
           </Grid>
         </Grid>
       </Grid>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={age}
+            label="Age"
+            onChange={handleChange1}
+          >
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -118,6 +145,7 @@ const ProjectDetailsPage = (props) => {
           >
             <Tab label="Chi tiết" {...a11yProps(0)} />
             <Tab label="Báo cáo" {...a11yProps(1)} />
+            <Tab label="Công việc" {...a11yProps(2)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box>
               <Grid container>
@@ -150,7 +178,10 @@ const ProjectDetailsPage = (props) => {
           ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ReportTable></ReportTable>
+          <ReportTable projectId={projectId}></ReportTable>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <TaskTable projectId={projectId}></TaskTable>
         </TabPanel>
       </Box>
     </div>

@@ -21,6 +21,7 @@ import { createProjectApi } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { getUserForDropDownApi } from '../../apis/Project/getUserForDropDown';
 import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
 const CreateProjectPage = (props) => {
   const [userId, userName] = useState('');
@@ -56,10 +57,11 @@ const CreateProjectPage = (props) => {
   const [loading, setLoading] = useState('');
   const submitForm = (data) => {
     const actualStartDate =
-      moment(valueActualStartDate).format('yyyy-MM-dd HH:mm');
-    const actualEndDate = moment(valueActualEndDate).format('yyyy-MM-dd HH:mm');
-    const planStartDate = moment(valuePlanStartDate).format('yyyy-MM-dd HH:mm');
-    const planEndDate = moment(valuePlanEndDate).format('yyyy-MM-dd HH:mm');
+      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
+    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
+    const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
+    const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+    console.log(planEndDate);
     handleCreateProject(
       actualEndDate,
       actualStartDate,
@@ -130,6 +132,7 @@ const CreateProjectPage = (props) => {
         userId,
         ward,
       });
+
       setLoading(false);
       await swal.fire({
         icon: 'success',
@@ -146,6 +149,7 @@ const CreateProjectPage = (props) => {
       });
       setLoading(false);
     }
+    console.log(planStartDate);
   };
   const valideSchema = yup
     .object({
@@ -225,25 +229,34 @@ const CreateProjectPage = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: "30px" }}
+        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         TẠO MỚI DỰ ÁN
       </Typography>
       <Divider></Divider>
-      <Box sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-        }}>
-      <Box sx={{ paddingLeft: '10px', paddingTop: '10px', width: '40%', marginBottom: "30px" }}>
-        <Typography variant="body1" color="#DD8501" fontWeight="bold">
-          Thông tin dự án
-        </Typography>
-        <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-        <Box sx={{ width: '100%', height: '20px' }}></Box>
-        <form onSubmit={handleSubmit(submitForm)}>
-          <Grid container spacing={2}>
-            {/* <Grid item xs={12}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            paddingLeft: '10px',
+            paddingTop: '10px',
+            width: '40%',
+            marginBottom: '30px',
+          }}
+        >
+          <Typography variant="body1" color="#DD8501" fontWeight="bold">
+            Thông tin dự án
+          </Typography>
+          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+          <Box sx={{ width: '100%', height: '20px' }}></Box>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <Grid container spacing={2}>
+              {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Mã dự án
               </Typography>
@@ -254,141 +267,119 @@ const CreateProjectPage = (props) => {
                 sx={{ width: '100%' }}
               />
             </Grid> */}
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên dự án
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectName"
-                errors={errors.projectName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên Bản vẽ
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectBlueprintName"
-                errors={errors.projectBlueprintName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá bản vẽ
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="blueprintEstimateCost"
-                errors={errors.blueprintEstimateCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Người thiết kế
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="designerName"
-                errors={errors.designerName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid container item xs={12} spacing={1}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thời gian dự kiến
+                  Tên dự án
                 </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="projectName"
+                  errors={errors.projectName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Bắt đầu dự kiến</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    value={valuePlanStartDate}
-                    onChange={(newValue) => {
-                      setValuePlanStartDate(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register('planStartDate')}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc dự kiến</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    value={valuePlanEndDate}
-                    onChange={(newValue) => {
-                      setValuePlanEndDate(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register('planEndDate')}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={1}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thời gian chính thức
+                  Tên Bản vẽ
                 </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="projectBlueprintName"
+                  errors={errors.projectBlueprintName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Bắt đầu chính thức</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    value={valueActualStartDate}
-                    onChange={(newValue) => {
-                      setValueActualStartDate(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register('actualStartDate')}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Giá bản vẽ
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="blueprintEstimateCost"
+                  errors={errors.blueprintEstimateCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc chính thức</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    value={valueActualEndDate}
-                    onChange={(newValue) => {
-                      setValueActualEndDate(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register('actualEndDate')}
-                        fullWidth
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Người thiết kế
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="designerName"
+                  errors={errors.designerName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
-            </Grid>
-            {/* <Grid item xs={12}>
+              <Grid container item xs={12} spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Thời gian dự kiến
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Bắt đầu dự kiến</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => (
+                        <TextField {...props} />
+                      )}
+                      value={valuePlanStartDate}
+                      onChange={(newValue) => {
+                        setValuePlanStartDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Kết thúc dự kiến</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={valuePlanEndDate}
+                      onChange={(newValue) => {
+                        setValuePlanEndDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
+              <Grid container item xs={12} spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Thời gian chính thức
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Bắt đầu chính thức</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={valueActualStartDate}
+                      onChange={(newValue) => {
+                        setValueActualStartDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Kết thúc chính thức</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={valueActualEndDate}
+                      onChange={(newValue) => {
+                        setValueActualEndDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
+              {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Kỹ sư phụ trách
               </Typography>
@@ -401,164 +392,164 @@ const CreateProjectPage = (props) => {
                 sx={{ width: '100%' }}
               />
             </Grid> */}
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Thành phố
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="city"
-                label="Địa chỉ"
-                errors={errors.city}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Coordinate
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="coordinate"
-                label="Địa chỉ"
-                errors={errors.coordinate}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Country
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="country"
-                label="Địa chỉ"
-                errors={errors.country}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên đường
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="street"
-                label=""
-                errors={errors.street}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Số nhà
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="addressNumber"
-                label=""
-                errors={errors.addressNumber}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tỉnh
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="province"
-                label=""
-                errors={errors.province}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Quốc gia
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="country"
-                label=""
-                errors={errors.country}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                UserId
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="userId"
-                label=""
-                errors={errors.userId}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Ward
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="ward"
-                label=""
-                errors={errors.ward}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Thành phố
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="city"
+                  label="Địa chỉ"
+                  errors={errors.city}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Coordinate
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="coordinate"
+                  label="Địa chỉ"
+                  errors={errors.coordinate}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Country
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="country"
+                  label="Địa chỉ"
+                  errors={errors.country}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tên đường
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="street"
+                  label=""
+                  errors={errors.street}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Số nhà
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="addressNumber"
+                  label=""
+                  errors={errors.addressNumber}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tỉnh
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="province"
+                  label=""
+                  errors={errors.province}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Quốc gia
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="country"
+                  label=""
+                  errors={errors.country}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  UserId
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="userId"
+                  label=""
+                  errors={errors.userId}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Ward
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="ward"
+                  label=""
+                  errors={errors.ward}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Diện tích
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="area"
-                label="Địa chỉ"
-                errors={errors.area}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá dự kiến
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectEstimateCost"
-                label="Giá dự kiến"
-                errors={errors.projectEstimateCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá thực tế
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectActualCost"
-                label="Giá thực té"
-                errors={errors.projectActualCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            {/* <Grid item xs={12}>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Diện tích
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="area"
+                  label="Địa chỉ"
+                  errors={errors.area}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Giá dự kiến
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="projectEstimateCost"
+                  label="Giá dự kiến"
+                  errors={errors.projectEstimateCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Giá thực tế
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="projectActualCost"
+                  label="Giá thực té"
+                  errors={errors.projectActualCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Chọn file
               </Typography>
@@ -570,7 +561,7 @@ const CreateProjectPage = (props) => {
                 }}
               />
             </Grid> */}
-            {/* <Grid>
+              {/* <Grid>
               {imageData && (
                 <Image
                   cloudName="niem-tin-vang"
@@ -579,33 +570,33 @@ const CreateProjectPage = (props) => {
               )}
             </Grid> */}
 
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    borderRadius: 50,
-                    width: '200px',
-                    alignSelf: 'center',
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
                   }}
-                  // onClick={uploadImage}
                 >
-                  Lưu
-                </Button>
-              </Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#DD8501',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    // onClick={uploadImage}
+                  >
+                    Lưu
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </Box>
+          </form>
+        </Box>
       </Box>
     </div>
   );

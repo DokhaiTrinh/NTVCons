@@ -8,13 +8,15 @@ import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
 import ProductPage from '../views/ProductPage/ProductPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
-import EditReportPage from '../views/WorkDetailsPage/EditReportPage';
+import EditReportPage from '../views/ProjectDetailsPage/indexGetAllReport';
 import EditProjectDetailsPage from '../views/ProjectDetailsPage/EditProejectDetailsPage';
 import CreateRolePage from '../views/RoleManagePage/CreateRolePage';
 import EditServicePage from '../views/ProductPage/EditServicePage';
 import CreateServicePage from '../views/ProductPage/CreateServicePage';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
+import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
+import CreateReportPage from '../views/ReportPage/CreateReportProject';
 
 export const HOME_ROUTES = [
   {
@@ -40,6 +42,18 @@ export const HOME_ROUTES = [
     name: 'Create Project Page',
     exact: true,
     component: CreateProjectPage,
+  },
+  {
+    path: '/createTask/:id',
+    name: 'Create Task Page',
+    exact: true,
+    component: CreateTaskPage,
+  },
+  {
+    path: '/createReport/:id',
+    name: 'Create Report Page',
+    exact: true,
+    component: CreateReportPage,
   },
   {
     path: '/personnel',

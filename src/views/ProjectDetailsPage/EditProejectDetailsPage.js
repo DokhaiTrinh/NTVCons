@@ -21,6 +21,7 @@ import * as yup from 'yup';
 import swal from 'sweetalert2-react';
 import moment from 'moment';
 import { updateProjectApi } from '../../apis/Project/updateProject';
+import { getAllReportApi } from '../../apis/Report/getAllReport';
 
 const status = [
   { label: 'Hoàn thành' },
@@ -37,6 +38,8 @@ const EditProjectDetailsPage = (props) => {
   const { id } = useParams();
   console.log(id);
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  // const [allReport, setAllReport] = React.useState([]);
+  // const [searchParam, searchType] = useStateValue();
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
   );
@@ -63,7 +66,7 @@ const EditProjectDetailsPage = (props) => {
       }
     })();
   }, []);
-  console.log(allProjectDetails);
+
   const valideSchema = yup
     .object({
       addressNumber: yup.number(),
