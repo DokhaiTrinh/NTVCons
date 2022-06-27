@@ -11,6 +11,7 @@ const ProjectDetailPageContainer = () => {
     projectId: id,
     sortBy: 'createdAt',
     sortType: true,
+    searchType: 'REPORT_BY_PROJECT_ID',
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -38,6 +39,11 @@ const ProjectDetailPageContainer = () => {
         return {
           ...state,
           sortType: action.newSortType,
+        };
+      case 'CHANGE_SEARCHTYPE':
+        return {
+          ...state,
+          searchType: action.searchType,
         };
       default:
         break;

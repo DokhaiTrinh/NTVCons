@@ -3,6 +3,6 @@ import * as API_LINK from './../../contants/ApiLinks/apiLinks';
 
 export const getReportByProjectIdApi = (data) => {
   return axiosService.get(
-    `${API_LINK.GET_REPORT_BY_PROJECT_ID}?searchParam=${data.searchParam}&searchType=${data.searchType}`
+    `${API_LINK.GET_REPORT_BY_PROJECT_ID}?searchParam=${data.projectId}&searchType=${data.searchType}`
   );
 };
