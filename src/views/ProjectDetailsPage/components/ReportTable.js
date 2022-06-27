@@ -23,37 +23,24 @@ import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
 function createData(
+  id,
   name,
-  progress,
-  perform,
-  start,
-  end,
-  durationn,
-  status,
-  prioritized
+  date,
+  category,
 ) {
   return {
+    id,
     name,
-    progress,
-    perform,
-    start,
-    end,
-    durationn,
-    status,
-    prioritized,
+    date,
+    category,
   };
 }
 
 const rows = [
   createData(
     'Buildlink trên PBN 05/09',
-    '100%',
-    'Nguyễn Văn A',
     '05/09/2022',
-    '06/09/2022',
-    1,
-    'Hoàn thành',
-    ''
+    'Thể loại',
   ),
 ];
 
@@ -89,53 +76,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: 'id',
+    numeric: false,
+    disablePadding: false,
+    label: 'Mã báo cáo',
+  },
+  {
     id: 'tenconviec',
     numeric: false,
     disablePadding: false,
     label: 'Tên công việc',
   },
   {
-    id: 'tiendo',
+    id: 'ngay',
     numeric: false,
     disablePadding: false,
-    label: 'Tiến độ',
+    label: 'Ngày',
   },
   {
-    id: 'thuchien',
+    id: 'theloai',
     numeric: false,
     disablePadding: false,
-    label: 'Thực hiện',
+    label: 'Thể loại',
   },
   {
-    id: 'batdau',
+    id: '',
     numeric: false,
     disablePadding: false,
-    label: 'Bắt đầu',
+    label: '',
   },
   {
-    id: 'ketthuc',
+    id: '',
     numeric: false,
     disablePadding: false,
-    label: 'Kết thúc',
-  },
-
-  {
-    id: 'thoihanthucte',
-    numeric: false,
-    disablePadding: false,
-    label: 'Thời hạn thực tế',
-  },
-  {
-    id: 'trangthai',
-    numeric: false,
-    disablePadding: false,
-    label: 'Trạng thái',
-  },
-  {
-    id: 'uutien',
-    numeric: false,
-    disablePadding: false,
-    label: 'Ưu tiên',
+    label: '',
   },
 ];
 
@@ -155,7 +129,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -165,7 +139,7 @@ function EnhancedTableHead(props) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -318,13 +292,19 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Box sx={{width: "100%", display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "flex-end", 
+        marginBottom: "30px"}}>
+        
       <Button
         sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
         component={Link}
         to={`/createReport/${projectId}`}
       >
-        Tạo báo cáo
+        <Typography color="white">Tạo báo cáo</Typography>
       </Button>
+      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
@@ -352,38 +332,49 @@ export default function ReportTable(props) {
                     key={row.name}
                     // selected={isItemSelected}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
-                        onClick={(event) => handleClick(event, row.admin)}
+                        onClick={(event) => handleClick(event, row.projectId)}
                         color="primary"
                         // checked={isItemSelected}
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
-                      padding="none"
+                      // padding="none"
+                      align="left"
                     >
-                      {row.reportDesc}
+                      {row.reportId}
                     </TableCell>
-                    <TableCell align="right">{row.projectId}</TableCell>
-                    <TableCell align="right">{row.projectName}</TableCell>
-                    <TableCell align="right">{row.addressNumber}</TableCell>
-                    <TableCell align="right">{}</TableCell>
-                    {/* <TableCell align="right">{row.works}</TableCell> */}
-                    {/* <TableCell align="right">{handleGetDate(row.actualStartDate)}</TableCell>
-                    <TableCell align="right">{handleGetDate(row.actualEndDate)}</TableCell> */}
-                    <TableCell align="right">
+                    <TableCell align="left">{row.reportDesc}</TableCell>
+                    {/* <TableCell align="left">{row.}</TableCell> */}
+                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
+                    <TableCell align="left">{row.reportDate}</TableCell>
+                    <TableCell align="left">{row.reportTypeId}</TableCell>
+                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
+                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
+                    <TableCell align="left">
                       <Route>
                         <Link
                           underline="hover"
                           to={`/projectDetails/${row.projectId}`}
                         >
                           {'Chi Tiết'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          // to={}
+                        >
+                          {'Xóa'}
                         </Link>
                       </Route>
                     </TableCell>

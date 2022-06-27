@@ -18,6 +18,7 @@ import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
 import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
+import UpdateTaskProject from '../views/TaskPage/UpdateTaskProject';
 
 export const HOME_ROUTES = [
   {
@@ -133,6 +134,12 @@ export const HOME_ROUTES = [
     name: 'Create Personnel Page',
     exact: true,
     component: CreatePersonnelPage,
+  },
+  {
+    path: '/updateTask',
+    name: 'Update Task Page',
+    exact: true,
+    component: UpdateTaskProject,
   },
 ];
 

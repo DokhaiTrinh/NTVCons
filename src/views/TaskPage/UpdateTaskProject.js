@@ -157,7 +157,7 @@ const UpdateTaskProject = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        TẠO CÔNG VIỆC
+       CẬP NHẬT CÔNG VIỆC
       </Typography>
       <Divider></Divider>
       <Box
