@@ -7,195 +7,187 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
-import PauseCircleOutlineOutlinedIcon from '@mui/icons-material/PauseCircleOutlineOutlined';
-import Paper from '@mui/material/Paper';
-import { Divider } from '@mui/material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Details from './components/Details';
+import ReportTable from './components/ReportTable';
+import TaskTable from './components/TaskTable';
+import { Link, useParams } from 'react-router-dom';
+import { getProjectByIdApi } from '../../apis/Project/getProjectById';
+import { useStateValue } from '../../common/StateProvider/StateProvider';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import RequestTable from './components/RequestTable';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
 }
 
 TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
 }
 const ProjectDetailsPage = (props) => {
-    const [value, setValue] = React.useState(0);
+  const { row } = props;
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  const [value, setValue] = React.useState(0);
+  const [age, setAge] = React.useState('');
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const [{ pageNo, pageSize, projectId, sortBy, sortType, loading }, dispatch] =
+    useStateValue();
+  const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  const handleChange1 = (event) => {
+    setAge(event.target.value);
+  };
 
-    return <div>
-        <Grid container justify="center">
-            <Grid container md="8">
-                <Grid item>
-                    <Box display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ margin: "20px" }}>
-                        <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }}>
-                            <Add sx={{ color: "white" }}></Add>
-                        </IconButton>
-                    </Box>
-                </Grid>
-                <Grid item>
-                    <Box display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        sx={{ height: "100%" }}>
-                        <Typography variant="body1">Dự án - Xây dựng tòa nhà văn phòng ABC</Typography>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Grid>
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs variant="scrollable"
-                    scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
-                    <Tab label="Chi tiết" {...a11yProps(0)} />
-                    <Tab label="Danh mục" {...a11yProps(1)} />
-                    <Tab label="Báo cáo" {...a11yProps(2)} />
-                    <Tab label="Liên quan" {...a11yProps(3)} />
-                    <Tab label="Đính kèm" {...a11yProps(4)} />
-                    <Box sx={{ flex: 1 }}></Box>
-                    <IconButton aria-label="status">
-                        <Box>
-                            <PauseCircleOutlineOutlinedIcon />
-                            <div>
-                                <Typography variant="button">
-                                    Trạng thái
-                                </Typography>
-                            </div>
-                        </Box>
-                    </IconButton>
-                    <IconButton aria-label="join">
-                        <Box>
-                            <PersonAddAltOutlinedIcon />
-                            <div>
-                                <Typography variant="button">
-                                    Tham gia
-                                </Typography>
-                            </div>
-                        </Box>
-                    </IconButton>
-                    <IconButton aria-label="category">
-                        <Box>
-
-                            <FormatListBulletedOutlinedIcon />
-                            <div>
-                                <Typography variant="button">
-                                    Danh mục
-                                </Typography>
-                            </div>
-                        </Box>
-                    </IconButton>
-                    <IconButton aria-label="addWork">
-                        <Box>
-
-                            <Add />
-                            <div>
-                                <Typography variant="button">
-                                    Thêm việc
-                                </Typography>
-                            </div>
-                        </Box>
-                    </IconButton>
-                </Tabs>
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllProjectDetails = await getProjectByIdApi({
+          pageNo,
+          pageSize,
+          projectId,
+          sortBy,
+          sortType,
+        });
+        setAllProjectDetails(listAllProjectDetails.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+  }, [pageNo, pageSize, projectId, sortBy, sortType]);
+  return (
+    <div>
+      <Grid container justify="center">
+        <Grid container md="8">
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ margin: '20px' }}
+            >
+              <IconButton
+                aria-label="add"
+                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+              >
+                <Add sx={{ color: 'white' }}></Add>
+              </IconButton>
             </Box>
-            <TabPanel value={value} index={0}>
-                <Box sx={{ width: '100%' }}>
-                    <Paper sx={{ width: "100%", mp: 2, borderRadius: "30px", padding: "20px" }} variant="elevation">
-                        <Typography variant="h6" sx={{ marginBottom: "20px" }}>
-                            Thông tin chung
-                        </Typography>
-                        <Divider sx={{ marginBottom: "20px" }}></Divider>
-                        <Grid container rowSpacing={{ xs: 5 }}>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Mã dự án</Typography>
-                                <Typography variant="body1" >1</Typography>
-                            </Grid>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Tên dự án</Typography>
-                                <Typography variant="body1" >Dự án - Xây dựng tòa nhà văn phòng ABC</Typography>
-                            </Grid>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Người quản trị</Typography>
-                                <Typography variant="body1" >Đỗ Nam Trung</Typography>
-                            </Grid>
-                            <Grid item  xs="6">
-                                    <Typography variant="body1" color="gray">Trạng thái</Typography>
-                                    <Typography variant="body1" >10%</Typography>
-                            </Grid>
-                                <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Trạng thái</Typography>
-                                    <Box sx={{ width: '50%', borderRadius: "10px", backgroundColor: "pink" }}>
-                                        <Typography variant="body1" sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            color: 'gray'
-                                        }}>Đang thực hiện</Typography>
-                                    </Box>
-                                </Grid>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Người tham gia</Typography>
-                                <Typography variant="body1" paragraph >Nguyễn Văn A, Trần Thị B, Vũ Văn C, Huỳnh Thị N, Đỗ Văn T</Typography>
-                            </Grid>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Thời gian dự kiến</Typography>
-                                <Typography variant="body1" >06/09/2021 - 24/09/2021</Typography>
-                            </Grid>
-                            <Grid item xs="6">
-                                <Typography variant="body1" color="gray">Thời gian thực tế</Typography>
-                                <Typography variant="body1" >06/09/2021 - 24/09/2021</Typography>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Box>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                Item Four
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                Item Five
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                Item Six
-            </TabPanel>
+          </Grid>
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ height: '100%' }}
+            >
+              <Typography variant="body1">
+                Dự án - Xây dựng tòa nhà văn phòng ABC
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={age}
+            label="Age"
+            onChange={handleChange1}
+          >
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            variant="scrollable"
+            scrollButtons="auto"
+            value={value}
+            onChange={handleChange}
+            aria-label=""
+          >
+            <Tab label="Chi tiết" {...a11yProps(0)} />
+            <Tab label="Báo cáo" {...a11yProps(1)} />
+            <Tab label="Công việc" {...a11yProps(2)} />
+            <Tab label="Yêu cầu" {...a11yProps(3)} />
+            <Box sx={{ flex: 1 }}></Box>
+            <Box>
+              <Grid container>
+                <Grid item xs={12}>
+                  <IconButton
+                    aria-label="edit report"
+                    component={Link}
+                    to={`/editProjectDetails/${projectId}`}
+                    sx={{ height: '100%' }}
+                  >
+                    <Box sx={{ height: '30px' }}>
+                      <EditOutlinedIcon fontSize="large" />
+                    </Box>
+                  </IconButton>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="button">Chỉnh sửa</Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          </Tabs>
         </Box>
-    </div>;
+        <TabPanel value={value} index={0}>
+          {allProjectDetails ? (
+            allProjectDetails.length > 0 ? (
+              <Details allProjectDetails={allProjectDetails[0]} />
+            ) : (
+              <div>Không có dữ liệu để hiển thị</div>
+            )
+          ) : null}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ReportTable projectId={projectId}></ReportTable>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <TaskTable projectId={projectId}></TaskTable>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <RequestTable projectId={projectId}></RequestTable>
+        </TabPanel>
+      </Box>
+    </div>
+  );
 };
 
 export default ProjectDetailsPage;
