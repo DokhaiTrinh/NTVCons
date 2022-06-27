@@ -19,6 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
+import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,29 +61,49 @@ const ProjectDetailsPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, projectId, sortBy, sortType, loading }, dispatch] =
-    useStateValue();
+  const [
+    { pageNo, pageSize, projectId, sortBy, sortType, searchType, loading },
+    dispatch,
+  ] = useStateValue();
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  const [allReport, setAllReport] = React.useState([]);
   const handleChange1 = (event) => {
     setAge(event.target.value);
   };
 
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const listAllProjectDetails = await getProjectByIdApi({
-          pageNo,
-          pageSize,
-          projectId,
-          sortBy,
-          sortType,
-        });
-        setAllProjectDetails(listAllProjectDetails.data);
-      } catch (error) {
-        console.log('Không thể lấy danh sách dự án');
-      }
-    })();
-  }, [pageNo, pageSize, projectId, sortBy, sortType]);
+  React.useEffect(
+    () => {
+      (async () => {
+        try {
+          const listAllProjectDetails = await getProjectByIdApi({
+            pageNo,
+            pageSize,
+            projectId,
+            sortBy,
+            sortType,
+            searchType,
+          });
+          setAllProjectDetails(listAllProjectDetails.data);
+        } catch (error) {
+          console.log('Không thể lấy danh sách dự án');
+        }
+      })();
+      (async () => {
+        try {
+          const listAllReport = await getReportByProjectIdApi({
+            projectId,
+            searchType,
+          });
+          setAllReport(listAllReport.data);
+          console.log(listAllReport);
+        } catch (error) {
+          console.log('Không thể lấy danh sách báo cáo');
+        }
+      })();
+    },
+    [pageNo, pageSize, projectId, sortBy, sortType],
+    [projectId, searchType]
+  );
   return (
     <div>
       <Grid container justify="center">
@@ -177,7 +198,13 @@ const ProjectDetailsPage = (props) => {
           ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ReportTable projectId={projectId}></ReportTable>
+          {allReport ? (
+            allReport.length > 0 ? (
+              <ReportTable projectId={projectId} allReport={allReport}></ReportTable>
+            ) : (
+              <div>Không có dữ liệu của báo cáo để hiển thị</div>
+            )
+          ) : null}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <TaskTable projectId={projectId}></TaskTable>

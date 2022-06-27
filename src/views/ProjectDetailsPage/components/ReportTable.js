@@ -265,8 +265,7 @@ export default function ReportTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId } = props;
-
+  const { projectId, allReport } = props;
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -338,63 +337,59 @@ export default function ReportTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+          <TableBody>
+              {allReport.map((row, index) => {
+                // const isItemSelected = isSelected(row.admin);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
+                return (
+                  <TableRow
+                    hover
+                    // onClick={(event) => handleClick(event, row.admin)}
+                    role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    // selected={isItemSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        onClick={(event) => handleClick(event, row.admin)}
+                        color="primary"
+                        // checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.name)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="left">{row.progress}</TableCell>
-                      <TableCell align="left">{row.perform}</TableCell>
-                      <TableCell align="left">{row.start}</TableCell>
-                      <TableCell align="left">{row.end}</TableCell>
-                      <TableCell align="left">{row.durationn}</TableCell>
-                      <TableCell align="left">{row.status}</TableCell>
-                      <TableCell align="left">{row.prioritized}</TableCell>
-                      <TableCell align="left">
-                        <Route>
-                          <Link underline="hover" to="/workDetails">
-                            {'Chi Tiết'}
-                          </Link>
-                        </Route>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                      {row.reportDesc}
+                    </TableCell>
+                    <TableCell align="right">{row.projectId}</TableCell>
+                    <TableCell align="right">{row.projectName}</TableCell>
+                    <TableCell align="right">{row.addressNumber}</TableCell>
+                    <TableCell align="right">{}</TableCell>
+                    {/* <TableCell align="right">{row.works}</TableCell> */}
+                    {/* <TableCell align="right">{handleGetDate(row.actualStartDate)}</TableCell>
+                    <TableCell align="right">{handleGetDate(row.actualEndDate)}</TableCell> */}
+                    <TableCell align="right">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          to={`/projectDetails/${row.projectId}`}
+                        >
+                          {'Chi Tiết'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

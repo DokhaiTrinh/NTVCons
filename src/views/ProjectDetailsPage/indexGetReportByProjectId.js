@@ -4,9 +4,10 @@ import ProjectDetailsPage from './ProjectDetailsPage';
 import { useParams } from 'react-router-dom';
 const ProjectDetailPageContainer = () => {
   const { id } = useParams();
+  const idN = parseFloat(id);
   const initialState = {
     loading: false,
-    searchParam: id,
+    searchParam: idN,
     searchType: 'REPORT_BY_PROJECT_ID',
   };
   const reducer = (state, action) => {
