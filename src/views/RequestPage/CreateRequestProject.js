@@ -233,12 +233,12 @@ const CreateRequestProject = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Ngày báo cáo
+                  Ngày yêu cầu
                 </Typography>
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => <TextField {...props} fullWidth/>}
                       value={valueRequestDate}
                       onChange={(newValue) => {
                         setValueRequestDate(newValue);
@@ -256,7 +256,7 @@ const CreateRequestProject = (props) => {
                     alignItems: 'center',
                     display: 'flex',
                   }}
-                >
+                  >
                   <Button
                     variant="contained"
                     style={{
@@ -266,14 +266,17 @@ const CreateRequestProject = (props) => {
                       alignSelf: 'center',
                     }}
                     onClick={() => handleOpenRequestDetailDialog()}
-                  >
-                    Chi tiết báo cáo
+                    >
+                    Chi tiết yêu cầu
                   </Button>
                 </Box>
-                <Grid item xs={3} md={2.4}>
+                    </Grid>
+                <Grid item container columns={12} spacing={2}>
                   {requestDetail.length ? (
                     requestDetail.map((request, index) => (
-                      <Card sx={{ width: 200 }}>
+                      <Grid item xs={4}>
+                      <Box sx={{ width: "100%" }}>
+                      <Card sx={{ width: "100%" }}>
                         <CardContent>
                           <Typography>
                             Thông tin báo cáo chi tiết: {request.itemDesc}
@@ -285,15 +288,19 @@ const CreateRequestProject = (props) => {
                           <Typography>Đơn vị: {request.itemUnit}</Typography>
                         </CardContent>
                       </Card>
+                      </Box>
+                      </Grid>
                     ))
                   ) : (
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    <Grid item sx={12}>
+
+                      <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    </Grid>
                   )}
                 </Grid>
-              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Loại báo cáo
+                  Loại yêu cầu
                 </Typography>
                 <FormControl sx={{ width: 580 }}>
                   <Select
@@ -317,7 +324,7 @@ const CreateRequestProject = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Người báo cáo
+                  Người yêu cầu
                 </Typography>
                 <TextFieldComponent
                   register={register}

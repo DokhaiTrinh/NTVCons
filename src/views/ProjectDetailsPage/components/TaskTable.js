@@ -137,6 +137,18 @@ const headCells = [
     disablePadding: false,
     label: 'Ưu tiên',
   },
+  {
+    id: '',
+    numeric: false,
+    disablePadding: false,
+    label: '',
+  },
+  {
+    id: '',
+    numeric: false,
+    disablePadding: false,
+    label: '',
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -155,7 +167,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -165,7 +177,7 @@ function EnhancedTableHead(props) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -328,9 +340,9 @@ export default function ReportTable(props) {
         <Button
           sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
           component={Link}
-          to={`/createReport/${projectId}`}
+          to={`/createTask/${projectId}`}
         >
-          Tạo công việc
+          <Typography color="white">Tạo công việc</Typography>
         </Button>
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -362,7 +374,7 @@ export default function ReportTable(props) {
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
+                      {/* <TableCell padding="checkbox">
                         <Checkbox
                           onClick={(event) => handleClick(event, row.name)}
                           color="primary"
@@ -371,12 +383,12 @@ export default function ReportTable(props) {
                             'aria-labelledby': labelId,
                           }}
                         />
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        // padding="none"
                       >
                         {row.name}
                       </TableCell>
@@ -391,6 +403,13 @@ export default function ReportTable(props) {
                         <Route>
                           <Link underline="hover" to="/workDetails">
                             {'Chi Tiết'}
+                          </Link>
+                        </Route>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Route>
+                          <Link underline="hover">
+                            {'Xóa'}
                           </Link>
                         </Route>
                       </TableCell>
