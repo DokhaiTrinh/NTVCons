@@ -260,14 +260,14 @@ const CreateReportProject = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item container xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Ngày báo cáo
                 </Typography>
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => <TextField {...props} fullWidth />}
                       value={valueReportDate}
                       onChange={(newValue) => {
                         setValueReportDate(newValue);
@@ -277,7 +277,7 @@ const CreateReportProject = (props) => {
                 </Grid>
               </Grid>
 
-              <Grid item sx={12}>
+              <Grid item container sx={12}>
                 <Box
                   sx={{
                     width: '100%',
@@ -299,30 +299,38 @@ const CreateReportProject = (props) => {
                     Chi tiết báo cáo
                   </Button>
                 </Box>
-                <Grid item xs={3} md={2.4}>
-                  {reportDetail.length ? (
-                    reportDetail.map((report, index) => (
-                      <Card sx={{ width: 200 }}>
-                        <CardContent>
-                          <Typography>
-                            Thông tin báo cáo chi tiết: {report.itemDesc}
-                          </Typography>
-                          <Typography>Số lượng:{report.itemAmount}</Typography>
-                          <Typography>Giá tiền: {report.itemPrice} </Typography>
-                          <Typography>Đơn vị: {report.itemUnit}</Typography>
-                        </CardContent>
-                      </Card>
-                    ))
-                  ) : (
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  )}
-                </Grid>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+
+                {reportDetail.length ? (
+                  reportDetail.map((report, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: "100%" }}>
+                        <Card sx={{ width: "100%" }}>
+                          <CardContent>
+                            <Typography>
+                              Thông tin báo cáo chi tiết: {report.itemDesc}
+                            </Typography>
+                            <Typography>Số lượng:{report.itemAmount}</Typography>
+                            <Typography>Giá tiền: {report.itemPrice} </Typography>
+                            <Typography>Đơn vị: {report.itemUnit}</Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+
+                  <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Loại báo cáo
                 </Typography>
-                <FormControl sx={{ width: 580 }}>
+                <FormControl sx={{ width: "100%" }}>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}

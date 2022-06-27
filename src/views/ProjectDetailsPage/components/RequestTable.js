@@ -319,13 +319,21 @@ export default function RequestTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Button
-        sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-        component={Link}
-        to={`/createRequest/${projectId}`}
-      >
-        Tạo yêu cầu
-      </Button>
+      <Box sx={{
+        width: "100%", display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        marginBottom: "30px"
+      }}>
+
+        <Button
+          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+          component={Link}
+          to={`/createReport/${projectId}`}
+        >
+          Tạo yêu cầu
+        </Button>
+      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>

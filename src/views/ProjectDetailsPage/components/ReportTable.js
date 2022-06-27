@@ -319,6 +319,11 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Box sx={{width: "100%", display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "flex-end", 
+        marginBottom: "30px"}}>
+        
       <Button
         sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
         component={Link}
@@ -326,6 +331,7 @@ export default function ReportTable(props) {
       >
         Tạo báo cáo
       </Button>
+      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
