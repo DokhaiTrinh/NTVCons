@@ -31,6 +31,7 @@ import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import { parse } from 'date-fns';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -43,6 +44,7 @@ const MenuProps = {
 };
 const CreateReportProject = (props) => {
   const { id } = useParams();
+  const idN = parseFloat(id);
   //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
 
@@ -71,21 +73,26 @@ const CreateReportProject = (props) => {
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleCreateReport(
-      id,
+      idN,
       reportDate,
       data.reportDesc,
-      data.reportDetailList,
+      reportDetail,
       reportTypeSelected,
       data.reporterId,
-      data.taskReportList
+      null
     );
-    handleCreateReportDetails(
-      data.itemAmount,
-      data.itemDesc,
-      data.itemPrice,
-      data.itemUnit,
-      data.reportId
-    );
+    console.log(reportDetail);
+    if (reportDetail.length > 0) {
+      for (let rp of reportDetail) {
+        handleCreateReportDetails(
+          rp.itemAmount,
+          rp.itemDesc,
+          rp.itemPrice,
+          rp.itemUnit,
+          rp.reportId
+        );
+      }
+    }
     console.log(data);
   };
   const handleCreateReport = async (
@@ -99,6 +106,15 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
+      console.log(
+        typeof projectId,
+        typeof reportDate,
+        typeof reportDesc,
+        typeof reportDetailList,
+        typeof reportTypeId,
+        typeof reporterId,
+        typeof taskReportList
+      );
       await createReportApi({
         projectId,
         reportDate,
@@ -165,6 +181,7 @@ const CreateReportProject = (props) => {
         .string()
         .min(5, 'Thông tin báo cáo phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
+      reporterId: yup.number(),
     })
     .required();
   const {

@@ -15,7 +15,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2-react';
 import moment from 'moment';
 import { createRequestApi } from '../../apis/Request/createRequest';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -43,6 +43,7 @@ const MenuProps = {
 };
 const CreateRequestProject = (props) => {
   const { id } = useParams();
+  const idN = parseFloat(id);
   const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openRequestDetailDialog, setOpenRequestDetailDialog] = useState(false);
@@ -52,51 +53,60 @@ const CreateRequestProject = (props) => {
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
     handleCreateRequest(
-      id,
+      idN,
       requestDate,
-      data.reportDesc,
-      data.reportDetailList,
+      data.requestDesc,
+      requestDetail,
       requestTypeSelected,
-      data.reporterId,
-      data.taskReportList
+      data.requesterId
     );
-    handleCreateRequestDetails(
-      data.itemAmount,
-      data.itemDesc,
-      data.itemPrice,
-      data.itemUnit,
-      data.reportId
-    );
+    if (requestDetail.length > 0) {
+      for (let rq of requestDetail) {
+        handleCreateRequestDetails(
+          rq.itemAmount,
+          rq.itemDesc,
+          rq.itemPrice,
+          rq.itemUnit
+        );
+      }
+    }
+    console.log(requestDetail);
   };
   const handleCreateRequest = async (
     projectId,
-    reportDate,
-    reportDesc,
-    reportDetailList,
-    reportTypeId,
-    reporterId,
-    taskReportList
+    requestDate,
+    requestDesc,
+    modelList,
+    requestTypeId,
+    requesterId
   ) => {
     try {
       setLoading(true);
+      console.log(
+        typeof projectId,
+        typeof requestDate,
+        typeof requestDesc,
+        typeof modelList,
+        typeof requestTypeId,
+        typeof requesterId
+      );
       await createRequestApi({
         projectId,
-        reportDate,
-        reportDesc,
-        reportDetailList,
-        reportTypeId,
-        reporterId,
-        taskReportList,
+        requestDate,
+        requestDesc,
+        modelList,
+        requestTypeId,
+        requesterId,
       });
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo yêu cầu thành công',
         timer: 3000,
         showConfirmButton: false,
       });
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,
@@ -109,8 +119,7 @@ const CreateRequestProject = (props) => {
     itemAmount,
     itemDesc,
     itemPrice,
-    itemUnit,
-    reportId
+    itemUnit
   ) => {
     try {
       setLoading(true);
@@ -119,18 +128,17 @@ const CreateRequestProject = (props) => {
         itemDesc,
         itemPrice,
         itemUnit,
-        reportId,
       });
 
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo yêu cầu chi tiết thành công',
         timer: 3000,
         showConfirmButton: false,
       });
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,
@@ -141,7 +149,7 @@ const CreateRequestProject = (props) => {
   };
   const valideSchema = yup
     .object({
-      reportDesc: yup
+      requestDesc: yup
         .string()
         .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
@@ -217,8 +225,8 @@ const CreateRequestProject = (props) => {
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="reportDesc"
-                  errors={errors.reportDesc}
+                  name="requestDesc"
+                  errors={errors.requestDesc}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -264,7 +272,7 @@ const CreateRequestProject = (props) => {
                 </Box>
                 <Grid item xs={3} md={2.4}>
                   {requestDetail.length ? (
-                    requestDetail.map((request) => (
+                    requestDetail.map((request, index) => (
                       <Card sx={{ width: 200 }}>
                         <CardContent>
                           <Typography>
@@ -313,8 +321,8 @@ const CreateRequestProject = (props) => {
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="reporterId"
-                  errors={errors.reportDesc}
+                  name="requesterId"
+                  errors={errors.requesterId}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />

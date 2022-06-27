@@ -64,13 +64,13 @@ export const DELETE_REPORT_TYPES =
 
 //API link của REQUEST
 export const CREATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/reportDetail/v1/createRequest';
+  'http://niemtinvang.herokuapp.com/Request/v1/createRequest';
 export const UPDATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/reportDetail/v1/updateRequest';
+  'http://niemtinvang.herokuapp.com/Request/v1/updateRequest';
 export const DELETE_REQUEST =
-  'http://niemtinvang.herokuapp.com/reportDetail/v1/deleteRequest/{requestId}';
+  'http://niemtinvang.herokuapp.com/Request/v1/deleteRequest/{requestId}';
 export const GET_ALL_REQUEST =
-  'http://niemtinvang.herokuapp.com/reportDetail/v1/getAll';
+  'http://niemtinvang.herokuapp.com/Request/v1/getAll';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';
