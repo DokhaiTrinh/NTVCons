@@ -14,11 +14,11 @@ import TaskTable from './components/TaskTable';
 import { Link, useParams } from 'react-router-dom';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import { getAllReportApi } from '../../apis/Report/getAllReport';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import RequestTable from './components/RequestTable';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,8 +83,6 @@ const ProjectDetailsPage = (props) => {
       }
     })();
   }, [pageNo, pageSize, projectId, sortBy, sortType]);
-  console.log(allProjectDetails);
-
   return (
     <div>
       <Grid container justify="center">
@@ -146,6 +144,7 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Chi tiết" {...a11yProps(0)} />
             <Tab label="Báo cáo" {...a11yProps(1)} />
             <Tab label="Công việc" {...a11yProps(2)} />
+            <Tab label="Yêu cầu" {...a11yProps(3)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box>
               <Grid container>
@@ -182,6 +181,9 @@ const ProjectDetailsPage = (props) => {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <TaskTable projectId={projectId}></TaskTable>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <RequestTable projectId={projectId}></RequestTable>
         </TabPanel>
       </Box>
     </div>

@@ -80,4 +80,4 @@ export const GET_ALL_REQUEST_DETAIL = '';
 export const CREATE_REQUEST_TYPE = '';
 export const UPDATE_REQUEST_TYPE = '';
 export const DELETE_REQUEST_TYPE = '';
-export const GET_ALL_REQUEST_TYPE = '';
+export const GET_ALL_REQUEST_TYPE = 'http://niemtinvang.herokuapp.com/requestType/v1/getAll';

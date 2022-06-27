@@ -30,16 +30,9 @@ const status = [
   { label: 'Đã hủy' },
 ];
 const EditProjectDetailsPage = (props) => {
-  const [actualStart, setActualStart] = React.useState();
-  const [actualEnd, setActualEnd] = React.useState();
-  const [expectedStart, setExpectedStart] = React.useState();
-  const [expectedEnd, setExpectedEnd] = React.useState();
-  const today = moment().format('YYYY-MM-DD HH:mm');
   const { id } = useParams();
   console.log(id);
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
-  // const [allReport, setAllReport] = React.useState([]);
-  // const [searchParam, searchType] = useStateValue();
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
   );

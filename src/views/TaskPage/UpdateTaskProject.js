@@ -150,32 +150,6 @@ const UpdateTaskProject = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
-  // const handleChangeDate = (date) => {
-  //   console.log(date);
-  //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   let dateString = new Date(date).toLocaleDateString([], options);
-  // };
-  // const uploadImage = () => {
-  //   const formData = new FormData();
-  //   formData.append('file', imageSelected);
-  //   formData.append('upload_preset', 'u78fm100');
-
-  //   const postImage = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-  //         formData
-  //       );
-  //       console.log(response);
-  //       setImageData(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   postImage();
-  // };
-
   return (
     <div>
       <Typography
@@ -208,17 +182,6 @@ const UpdateTaskProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Mã dự án
-                  </Typography>
-                  <TextField
-                    id="project-name"
-                    placeholder="Mã dự án"
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên công việc
@@ -324,7 +287,6 @@ const UpdateTaskProject = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    // onClick={uploadImage}
                   >
                     Lưu
                   </Button>

@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import swal from 'sweetalert2-react';
 import moment from 'moment';
-import { createReportApi } from '../../apis/Report/createReport';
+import { createRequestApi } from '../../apis/Request/createRequest';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
@@ -25,12 +25,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Dialog from '@mui/material/Dialog';
-import DialogReportDetail from './Components/DialogReportDetail';
+import DialogRequestProject from './Components/DialogRequestDetail';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
-import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
+import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -41,54 +41,34 @@ const MenuProps = {
     },
   },
 };
-const CreateReportProject = (props) => {
+const CreateRequestProject = (props) => {
   const { id } = useParams();
-  //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
-  const [valueReportDate, setValueReportDate] = React.useState(new Date());
-
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '-',
-      getDateCom[1],
-      '-',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
+  const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
-  const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
-  const [reportDetail, setReportDetail] = React.useState([]);
-  const [allReportType, setAllReportType] = React.useState([]);
-  const [reportTypeSelected, setReportTypeSelected] = React.useState();
+  const [openRequestDetailDialog, setOpenRequestDetailDialog] = useState(false);
+  const [requestDetail, setRequestDetail] = React.useState([]);
+  const [allRequestType, setAllRequestType] = React.useState([]);
+  const [requestTypeSelected, setRequestTypeSelected] = React.useState();
   const submitForm = (data) => {
-    const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    handleCreateReport(
+    const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
+    handleCreateRequest(
       id,
-      reportDate,
+      requestDate,
       data.reportDesc,
       data.reportDetailList,
-      reportTypeSelected,
+      requestTypeSelected,
       data.reporterId,
       data.taskReportList
     );
-    handleCreateReportDetails(
+    handleCreateRequestDetails(
       data.itemAmount,
       data.itemDesc,
       data.itemPrice,
       data.itemUnit,
       data.reportId
     );
-    console.log(data);
   };
-  const handleCreateReport = async (
+  const handleCreateRequest = async (
     projectId,
     reportDate,
     reportDesc,
@@ -99,7 +79,7 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
-      await createReportApi({
+      await createRequestApi({
         projectId,
         reportDate,
         reportDesc,
@@ -111,7 +91,7 @@ const CreateReportProject = (props) => {
       setLoading(false);
       await swal.fire({
         icon: 'success',
-        text: 'Tạo báo cáo thành công',
+        text: 'Tạo yêu cầu thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -125,7 +105,7 @@ const CreateReportProject = (props) => {
       setLoading(false);
     }
   };
-  const handleCreateReportDetails = async (
+  const handleCreateRequestDetails = async (
     itemAmount,
     itemDesc,
     itemPrice,
@@ -134,7 +114,7 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
-      await createReportDetailApi({
+      await createRequestDetailApi({
         itemAmount,
         itemDesc,
         itemPrice,
@@ -145,7 +125,7 @@ const CreateReportProject = (props) => {
       setLoading(false);
       await swal.fire({
         icon: 'success',
-        text: 'Tạo báo cáo chi tiết thành công',
+        text: 'Tạo yêu cầu chi tiết thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -163,7 +143,7 @@ const CreateReportProject = (props) => {
     .object({
       reportDesc: yup
         .string()
-        .min(5, 'Thông tin báo cáo phải có thông tin nhiều hơn 5 ký tự!')
+        .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
     })
     .required();
@@ -175,25 +155,25 @@ const CreateReportProject = (props) => {
     resolver: yupResolver(valideSchema),
   });
   const handleChange = (event) => {
-    setReportTypeSelected(event.target.value);
+    setRequestTypeSelected(event.target.value);
   };
 
-  const handleOpenReportDetailDialog = () => {
-    setOpenReportDetailDialog(true);
+  const handleOpenRequestDetailDialog = () => {
+    setOpenRequestDetailDialog(true);
   };
-  const handleCloseReportDetailDialog = () => {
-    setOpenReportDetailDialog(false);
+  const handleCloseRequestDetailDialog = () => {
+    setOpenRequestDetailDialog(false);
   };
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllReportType = await getAllReportTypeApi(
+        const listAllRequestType = await getAllRequestTypeApi(
           0,
           15,
           'createdAt',
           true
         );
-        setAllReportType(listAllReportType.data);
+        setAllRequestType(listAllRequestType.data);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
@@ -206,7 +186,7 @@ const CreateReportProject = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        TẠO BÁO CÁO
+        TẠO YÊU CẦU
       </Typography>
       <Divider></Divider>
       <Box
@@ -225,7 +205,7 @@ const CreateReportProject = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin báo cáo
+            Thông tin yêu cầu
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -233,7 +213,7 @@ const CreateReportProject = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thông tin báo cáo
+                  Thông tin yêu cầu
                 </Typography>
                 <TextFieldComponent
                   register={register}
@@ -251,9 +231,9 @@ const CreateReportProject = (props) => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
                       renderInput={(props) => <TextField {...props} />}
-                      value={valueReportDate}
+                      value={valueRequestDate}
                       onChange={(newValue) => {
-                        setValueReportDate(newValue);
+                        setValueRequestDate(newValue);
                       }}
                     />
                   </LocalizationProvider>
@@ -277,22 +257,24 @@ const CreateReportProject = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    onClick={() => handleOpenReportDetailDialog()}
+                    onClick={() => handleOpenRequestDetailDialog()}
                   >
                     Chi tiết báo cáo
                   </Button>
                 </Box>
                 <Grid item xs={3} md={2.4}>
-                  {reportDetail.length ? (
-                    reportDetail.map((report, index) => (
+                  {requestDetail.length ? (
+                    requestDetail.map((request) => (
                       <Card sx={{ width: 200 }}>
                         <CardContent>
                           <Typography>
-                            Thông tin báo cáo chi tiết: {report.itemDesc}
+                            Thông tin báo cáo chi tiết: {request.itemDesc}
                           </Typography>
-                          <Typography>Số lượng:{report.itemAmount}</Typography>
-                          <Typography>Giá tiền: {report.itemPrice} </Typography>
-                          <Typography>Đơn vị: {report.itemUnit}</Typography>
+                          <Typography>Số lượng:{request.itemAmount}</Typography>
+                          <Typography>
+                            Giá tiền: {request.itemPrice}{' '}
+                          </Typography>
+                          <Typography>Đơn vị: {request.itemUnit}</Typography>
                         </CardContent>
                       </Card>
                     ))
@@ -309,12 +291,12 @@ const CreateReportProject = (props) => {
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
-                    value={reportTypeSelected}
+                    value={requestTypeSelected}
                   >
-                    {allReportType.length > 0 ? (
-                      allReportType.map((reportType, index) => (
-                        <MenuItem value={reportType.reportTypeId} key={index}>
-                          {reportType.reportTypeName}
+                    {allRequestType.length > 0 ? (
+                      allRequestType.map((requestType, index) => (
+                        <MenuItem value={requestType.requestTypeId} key={index}>
+                          {requestType.requestTypeName}
                         </MenuItem>
                       ))
                     ) : (
@@ -365,17 +347,17 @@ const CreateReportProject = (props) => {
         </Box>
       </Box>
       <Dialog
-        open={openReportDetailDialog}
-        onClose={handleCloseReportDetailDialog}
+        open={openRequestDetailDialog}
+        onClose={handleCloseRequestDetailDialog}
       >
-        <DialogReportDetail
-          handleCloseReportDetailDialog={handleCloseReportDetailDialog}
-          setReportDetail={setReportDetail}
-          reportDetail={reportDetail}
-        ></DialogReportDetail>
+        <DialogRequestProject
+          handleCloseRequestDetailDialog={handleCloseRequestDetailDialog}
+          setRequestDetail={setRequestDetail}
+          requestDetail={requestDetail}
+        ></DialogRequestProject>
       </Dialog>
     </div>
   );
 };
 
-export default CreateReportProject;
+export default CreateRequestProject;

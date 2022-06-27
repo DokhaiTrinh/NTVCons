@@ -25,6 +25,7 @@ import { useParams } from 'react-router-dom';
 
 const CreateTaskProject = (props) => {
   const { id } = useParams();
+  console.log(id);
   //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
@@ -41,18 +42,6 @@ const CreateTaskProject = (props) => {
   // const date = `${current.getDate()}/${
   //   current.getMonth() + 1
   // }/${current.getFullYear()}`;
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '-',
-      getDateCom[1],
-      '-',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
   const [loading, setLoading] = useState('');
   const submitForm = (data) => {
     const actualStartDate =
@@ -60,17 +49,15 @@ const CreateTaskProject = (props) => {
     const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    console.log(planEndDate);
     handleCreateTask(
       actualEndDate,
       actualStartDate,
       planEndDate,
       planStartDate,
-      data.projectId,
+      id,
       data.taskDesc,
       data.taskName
     );
-    console.log(data);
   };
   const handleCreateTask = async (
     actualEndDate,
@@ -177,25 +164,14 @@ const CreateTaskProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Mã dự án
-                </Typography>
-                <TextField
-                  id="project-name"
-                  placeholder="Mã dự án"
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên công việc
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskDesk"
-                  errors={errors.taskDesc}
+                  name="taskName"
+                  errors={errors.taskName}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -206,8 +182,8 @@ const CreateTaskProject = (props) => {
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskName"
-                  errors={errors.taskName}
+                  name="taskDesc"
+                  errors={errors.taskDesc}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -295,7 +271,7 @@ const CreateTaskProject = (props) => {
                     }}
                     // onClick={uploadImage}
                   >
-                    Lưu
+                    Lưu công việc
                   </Button>
                 </Box>
               </Grid>

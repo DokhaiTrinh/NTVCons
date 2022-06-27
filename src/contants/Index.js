@@ -17,6 +17,7 @@ import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelPro
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
+import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
 
 export const HOME_ROUTES = [
   {
@@ -54,6 +55,12 @@ export const HOME_ROUTES = [
     name: 'Create Report Page',
     exact: true,
     component: CreateReportPage,
+  },
+  {
+    path: '/createRequest/:id',
+    name: 'Create Request Page',
+    exact: true,
+    component: CreateRequestPage,
   },
   {
     path: '/personnel',
