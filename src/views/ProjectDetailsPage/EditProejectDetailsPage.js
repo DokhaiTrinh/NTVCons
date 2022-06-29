@@ -18,7 +18,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 import { updateProjectApi } from '../../apis/Project/updateProject';
 import { getAllReportApi } from '../../apis/Report/getAllReport';
@@ -125,7 +125,7 @@ const EditProjectDetailsPage = (props) => {
     const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    swal
+   Swal
       .fire({
         title: 'Cập nhật dự án ?',
         target: document.getElementById('form-modal12'),
@@ -214,7 +214,7 @@ const EditProjectDetailsPage = (props) => {
         userId,
         ward,
       });
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Cập nhật thành công',
         target: document.getElementById('form-modal'),
@@ -222,7 +222,7 @@ const EditProjectDetailsPage = (props) => {
         showConfirmButton: false,
       });
     } catch (error) {
-      swal.fire({
+      Swal.fire({
         icon: 'error',
         text: 'Cập nhật thất bại',
         target: document.getElementById('form-modal'),

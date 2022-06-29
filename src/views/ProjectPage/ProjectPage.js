@@ -98,9 +98,9 @@ const ProjectPage = (props) => {
   };
   const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
     useStateValue();
-  
+
   const [allProject, setAllProject] = React.useState([]);
-  // console.log(allProject);
+  console.log(allProject);
   React.useEffect(() => {
     (async () => {
       try {

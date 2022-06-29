@@ -22,12 +22,7 @@ import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
-function createData(
-  id,
-  name,
-  date,
-  category,
-) {
+function createData(id, name, date, category) {
   return {
     id,
     name,
@@ -36,13 +31,7 @@ function createData(
   };
 }
 
-const rows = [
-  createData(
-    'Buildlink trên PBN 05/09',
-    '05/09/2022',
-    'Thể loại',
-  ),
-];
+const rows = [createData('Buildlink trên PBN 05/09', '05/09/2022', 'Thể loại')];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -129,17 +118,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -232,14 +210,26 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-
+const handleGetDate = (date) => {
+  const getDate = date.substring(0, 10);
+  const getDateCom = getDate.split('-');
+  const getDateReformat = ''.concat(
+    getDateCom[2],
+    '/',
+    getDateCom[1],
+    '/',
+    getDateCom[0]
+  );
+  return getDateReformat;
+};
 export default function ReportTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId, allReport } = props;
+  const { projectId, allReportDetails } = props;
+  console.log(allReportDetails);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -292,18 +282,22 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{width: "100%", display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "flex-end", 
-        marginBottom: "30px"}}>
-        
-      <Button
-        sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-        component={Link}
-        to={`/createReport/${projectId}`}
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          marginBottom: '30px',
+        }}
       >
-        <Typography color="white">Tạo báo cáo</Typography>
-      </Button>
+        <Button
+          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+          component={Link}
+          to={`/createReport/${projectId}`}
+        >
+          <Typography color="white">Tạo báo cáo</Typography>
+        </Button>
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -317,11 +311,10 @@ export default function ReportTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-          <TableBody>
-              {allReport.map((row, index) => {
+            <TableBody>
+              {allReportDetails.map((row, index) => {
                 // const isItemSelected = isSelected(row.admin);
                 const labelId = `enhanced-table-checkbox-${index}`;
-
                 return (
                   <TableRow
                     hover
@@ -354,7 +347,9 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.reportDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">{row.reportDate}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.reportDate)}
+                    </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
@@ -362,9 +357,19 @@ export default function ReportTable(props) {
                       <Route>
                         <Link
                           underline="hover"
-                          to={`/projectDetails/${row.projectId}`}
+                          to={`/reportDetails/${row.reportId}`}
                         >
                           {'Chi Tiết'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          to={`/updateReportDetails/${row.reportId}`}
+                        >
+                          {'Cập nhật'}
                         </Link>
                       </Route>
                     </TableCell>

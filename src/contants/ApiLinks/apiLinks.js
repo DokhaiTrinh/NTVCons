@@ -2,7 +2,7 @@
 export const GET_ALL_PROJECT =
   'http://niemtinvang.herokuapp.com/Project/v1/getAll';
 export const CREATE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1/createProject';
+  'http://niemtinvang.herokuapp.com/Project/v1.1/createProject';
 export const UPDATE_PROJECT =
   'http://niemtinvang.herokuapp.com/Project/v1/updateProject';
 export const DELETE_PROJECT =
@@ -21,7 +21,7 @@ export const UPDATE_ROLE =
 export const DELETE_ROLE =
   'http://niemtinvang.herokuapp.com/role/v1/deleteRole/{roleId}';
 export const GET_ROLE_BY_ID =
-  'http://niemtinvang.herokuapp.com/role/v1/getByParam';
+  'http://niemtinvang.herokuapp.com/role/v1/getAllByParam';
 //Api link của TASK
 export const GET_ALL_TASK = 'http://niemtinvang.herokuapp.com/task/v1/getAll';
 export const CREATE_TASK =
@@ -36,7 +36,7 @@ export const DELETE_TASK =
 export const GET_ALL_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/getAll';
 export const GET_REPORT_BY_PROJECT_ID =
-  'http://niemtinvang.herokuapp.com/report/v1/getByParam';
+  'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
 export const CREATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/createReport';
 export const UPDATE_REPORT =
@@ -71,6 +71,8 @@ export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/deleteRequest/{requestId}';
 export const GET_ALL_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/getAll';
+export const GET_REQUEST_BY_PROJECT_ID =
+  'http://niemtinvang.herokuapp.com/Request/v1/getByProjectId';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';
@@ -80,4 +82,5 @@ export const GET_ALL_REQUEST_DETAIL = '';
 export const CREATE_REQUEST_TYPE = '';
 export const UPDATE_REQUEST_TYPE = '';
 export const DELETE_REQUEST_TYPE = '';
-export const GET_ALL_REQUEST_TYPE = 'http://niemtinvang.herokuapp.com/requestType/v1/getAll';
+export const GET_ALL_REQUEST_TYPE =
+  'http://niemtinvang.herokuapp.com/requestType/v1/getAll';

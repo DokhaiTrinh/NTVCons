@@ -15,7 +15,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createRequestApi } from '../../apis/Request/createRequest';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';

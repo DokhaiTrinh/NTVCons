@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const DialogReportProject = (props) => {
-  const { reportDetail, setReportDetail } = props;
+  const { updateReportDetail, setUpdateReportDetail } = props;
   const [loading, setLoading] = useState('');
 
   const valideSchema = yup
@@ -36,7 +36,7 @@ const DialogReportProject = (props) => {
   });
 
   const submitForm = (data) => {
-    const detailReport = {
+    const updateDetailReport = {
       itemAmount: data.itemAmount,
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
@@ -44,7 +44,7 @@ const DialogReportProject = (props) => {
       reportId: null,
     };
 
-    setReportDetail((reportDetail) => [...reportDetail, detailReport]);
+    setUpdateReportDetail((updateReportDetail) => [...updateReportDetail, updateDetailReport]);
 
     props.handleCloseReportDetailDialog();
   };

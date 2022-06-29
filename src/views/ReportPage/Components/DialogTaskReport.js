@@ -7,24 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const DialogReportProject = (props) => {
-  const { reportDetail, setReportDetail } = props;
+const DialogTaskReport = (props) => {
+  const { taskReportDetail, setTaskReportDetail } = props;
   const [loading, setLoading] = useState('');
 
   const valideSchema = yup
     .object({
-      itemAmount: yup
-        .number()
-        .typeError('amount is invalide')
-        .min(1, 'Số lượng phải lớn hơn 0!')
-        .required(),
-      itemDesc: yup.string().required(),
-      itemPrice: yup
-        .number()
-        .typeError('Price is invalide')
-        .min(1, 'Giá tiền phải lớn hơn 0!')
-        .required(),
-      itemUnit: yup.string().required('Đơn vị đo lườngf'),
+      taskId: yup.number().required(),
+      taskNote: yup.string().required(),
+      taskProgress: yup.string().required(),
     })
     .required();
   const {
@@ -36,15 +27,14 @@ const DialogReportProject = (props) => {
   });
 
   const submitForm = (data) => {
-    const detailReport = {
-      itemAmount: data.itemAmount,
-      itemDesc: data.itemDesc,
-      itemPrice: data.itemPrice,
-      itemUnit: data.itemUnit,
+    const detailTaskReport = {
+      taskId: data.taskId,
+      taskNote: data.taskNote,
+      taskProgress: data.taskProgress,
       reportId: null,
     };
 
-    setReportDetail((reportDetail) => [...reportDetail, detailReport]);
+    setTaskReportDetail((taskReportDetail) => [...taskReportDetail, detailTaskReport]);
 
     props.handleCloseReportDetailDialog();
   };
@@ -56,7 +46,7 @@ const DialogReportProject = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        BÁO CÁO CHI TIẾT
+        CÔNG VIỆC CHI TIẾT
       </Typography>
       <Divider></Divider>
       <Box
@@ -75,7 +65,7 @@ const DialogReportProject = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin báo cáo chi tiết
+            Thông tin công việc chi tiết
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -83,50 +73,37 @@ const DialogReportProject = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thông tin báo cáo chi tiết
+                   Công việc
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="itemDesc"
-                  errors={errors.itemDesc}
+                  name="taskId"
+                  errors={errors.taskId}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Số lượng
+                  Thông tin công việc
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="itemAmount"
-                  errors={errors.itemAmount}
+                  name="taskNote"
+                  errors={errors.taskNote}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Giá tiền
+                 Tiến độ
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="itemPrice"
-                  label="Giá tiền (VNĐ)"
-                  errors={errors.itemPrice}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Đơn vị tính
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemUnit"
-                  label="Đơn vị"
-                  errors={errors.itemUnit}
+                  name="taskProgress"
+                  label="Tiến độ"
+                  errors={errors.taskProgress}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -162,4 +139,4 @@ const DialogReportProject = (props) => {
   );
 };
 
-export default DialogReportProject;
+export default DialogTaskReport;

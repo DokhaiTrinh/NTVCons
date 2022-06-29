@@ -13,7 +13,6 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -89,53 +88,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: 'id',
+    numeric: false,
+    disablePadding: false,
+    label: 'Mã báo cáo',
+  },
+  {
     id: 'tenconviec',
     numeric: false,
     disablePadding: false,
     label: 'Tên công việc',
   },
   {
-    id: 'tiendo',
+    id: 'ngay',
     numeric: false,
     disablePadding: false,
-    label: 'Tiến độ',
+    label: 'Ngày',
   },
   {
-    id: 'thuchien',
+    id: 'theloai',
     numeric: false,
     disablePadding: false,
-    label: 'Thực hiện',
-  },
-  {
-    id: 'batdau',
-    numeric: false,
-    disablePadding: false,
-    label: 'Bắt đầu',
-  },
-  {
-    id: 'ketthuc',
-    numeric: false,
-    disablePadding: false,
-    label: 'Kết thúc',
-  },
-
-  {
-    id: 'thoihanthucte',
-    numeric: false,
-    disablePadding: false,
-    label: 'Thời hạn thực tế',
-  },
-  {
-    id: 'trangthai',
-    numeric: false,
-    disablePadding: false,
-    label: 'Trạng thái',
-  },
-  {
-    id: 'uutien',
-    numeric: false,
-    disablePadding: false,
-    label: 'Ưu tiên',
+    label: 'Thể loại',
   },
   {
     id: '',
@@ -270,15 +244,26 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-
+const handleGetDate = (date) => {
+  const getDate = date.substring(0, 10);
+  const getDateCom = getDate.split('-');
+  const getDateReformat = ''.concat(
+    getDateCom[2],
+    '/',
+    getDateCom[1],
+    '/',
+    getDateCom[0]
+  );
+  return getDateReformat;
+};
 export default function RequestTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId } = props;
-
+  const { projectId, allRequestDetails } = props;
+  console.log(allRequestDetails);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -331,13 +316,15 @@ export default function RequestTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{
-        width: "100%", display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "flex-end",
-        marginBottom: "30px"
-      }}>
-
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          marginBottom: '30px',
+        }}
+      >
         <Button
           sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
           component={Link}
@@ -359,69 +346,68 @@ export default function RequestTable(props) {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
+              {allRequestDetails.map((row, index) => {
+                // const isItemSelected = isSelected(row.admin);
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <TableRow
+                    hover
+                    // onClick={(event) => handleClick(event, row.admin)}
+                    role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    // selected={isItemSelected}
+                  >
+                    {/* <TableCell padding="checkbox">
+                      <Checkbox
+                        onClick={(event) => handleClick(event, row.projectId)}
+                        color="primary"
+                        // checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell> */}
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      // padding="none"
+                      align="left"
                     >
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.name)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell> */}
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        // padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="left">{row.progress}</TableCell>
-                      <TableCell align="left">{row.perform}</TableCell>
-                      <TableCell align="left">{row.start}</TableCell>
-                      <TableCell align="left">{row.end}</TableCell>
-                      <TableCell align="left">{row.durationn}</TableCell>
-                      <TableCell align="left">{row.status}</TableCell>
-                      <TableCell align="left">{row.prioritized}</TableCell>
-                      <TableCell align="left">
-                        <Route>
-                          <Link underline="hover" to="/workDetails">
-                            {'Chi Tiết'}
-                          </Link>
-                        </Route>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Route>
-                          <Link underline="hover">
-                            {'Xóa'}
-                          </Link>
-                        </Route>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                      {row.requestId}
+                    </TableCell>
+                    <TableCell align="left">{row.projectName}</TableCell>
+                    {/* <TableCell align="left">{row.}</TableCell> */}
+                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
+                    <TableCell align="left">{handleGetDate(row.requestDate)}</TableCell>
+                    <TableCell align="left">{row.reportTypeId}</TableCell>
+                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
+                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
+                    <TableCell align="left">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          to={`/requestDetails/${row.requestId}`}
+                        >
+                          {'Chi Tiết'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          // to={}
+                        >
+                          {'Xóa'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

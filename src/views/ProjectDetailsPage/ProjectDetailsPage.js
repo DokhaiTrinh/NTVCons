@@ -20,6 +20,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
+import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +67,9 @@ const ProjectDetailsPage = (props) => {
     dispatch,
   ] = useStateValue();
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
-  const [allReport, setAllReport] = React.useState([]);
+  const [allReportDetails, setAllReportDetails] = React.useState([]);
+  const [allRequestDetails, setAllRequestDetails] = React.useState([]);
+
   const handleChange1 = (event) => {
     setAge(event.target.value);
   };
@@ -83,19 +86,26 @@ const ProjectDetailsPage = (props) => {
             sortType,
             searchType,
           });
+          const listAllRequestDetails = await getRequestByProjectIdApi({
+            pageNo,
+            pageSize,
+            projectId,
+            sortBy,
+            sortType,
+          });
           setAllProjectDetails(listAllProjectDetails.data);
+          setAllRequestDetails(listAllRequestDetails.data);
         } catch (error) {
           console.log('Không thể lấy danh sách dự án');
         }
       })();
       (async () => {
         try {
-          const listAllReport = await getReportByProjectIdApi({
+          const listAllReportDetails = await getReportByProjectIdApi({
             projectId,
             searchType,
           });
-          setAllReport(listAllReport.data);
-          console.log(listAllReport);
+          setAllReportDetails(listAllReportDetails.data);
         } catch (error) {
           console.log('Không thể lấy danh sách báo cáo');
         }
@@ -198,9 +208,12 @@ const ProjectDetailsPage = (props) => {
           ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {allReport ? (
-            allReport.length > 0 ? (
-              <ReportTable projectId={projectId} allReport={allReport}></ReportTable>
+          {allReportDetails ? (
+            allReportDetails.length > 0 ? (
+              <ReportTable
+                projectId={projectId}
+                allReportDetails={allReportDetails}
+              ></ReportTable>
             ) : (
               <div>Không có dữ liệu của báo cáo để hiển thị</div>
             )
@@ -210,7 +223,13 @@ const ProjectDetailsPage = (props) => {
           <TaskTable projectId={projectId}></TaskTable>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <RequestTable projectId={projectId}></RequestTable>
+          {allRequestDetails ? (
+            allRequestDetails.length > 0 ? (
+              <RequestTable projectId={projectId} allRequestDetails={allRequestDetails}></RequestTable>
+            ) : (
+              <div>Không có dữ liệu yêu cầu để hiển thị</div>
+            )
+          ) : null}
         </TabPanel>
       </Box>
     </div>

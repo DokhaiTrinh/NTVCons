@@ -6,3 +6,4 @@ export const getAllReportApi = (data) => {
     `${API_LINK.GET_ALL_REPORT}?pageNo=${data.pageNo}&pageSize=${data.pageSize}&sortBy=${data.sortBy}&sortType=${data.sortType}`
   );
 };
+

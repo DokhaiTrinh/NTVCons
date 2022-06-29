@@ -15,7 +15,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -65,48 +65,21 @@ const CreateProjectPage = (props) => {
     handleCreateProject(
       actualEndDate,
       actualStartDate,
-      data.addressNumber,
-      data.area,
-      data.blueprintEstimateCost,
-      data.city,
-      data.coordinate,
-      data.country,
-      data.designerName,
-      data.district,
       planEndDate,
       planStartDate,
       data.projectActualCost,
-      data.projectBlueprintName,
       data.projectEstimateCost,
-      data.projectName,
-      data.province,
-      data.street,
-      data.userId,
-      data.ward
     );
     console.log(data);
   };
   const handleCreateProject = async (
     actualEndDate,
     actualStartDate,
-    addressNumber,
-    area,
-    blueprintEstimateCost,
-    city,
-    coordinate,
-    country,
-    designerName,
-    district,
     planEndDate,
     planStartDate,
     projectActualCost,
-    projectBlueprintName,
     projectEstimateCost,
     projectName,
-    province,
-    street,
-    userId,
-    ward
   ) => {
     try {
       setLoading(true);
@@ -134,14 +107,14 @@ const CreateProjectPage = (props) => {
       });
 
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo dự án thành công',
         timer: 3000,
         showConfirmButton: false,
       });
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,

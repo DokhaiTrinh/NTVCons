@@ -15,7 +15,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createReportApi } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -26,12 +26,13 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Dialog from '@mui/material/Dialog';
 import DialogReportDetail from './Components/DialogReportDetail';
+import DialogTaskReport from './Components/DialogTaskReport';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import { parse } from 'date-fns';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -45,31 +46,15 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
-
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '-',
-      getDateCom[1],
-      '-',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
   const [reportDetail, setReportDetail] = React.useState([]);
   const [allReportType, setAllReportType] = React.useState([]);
   const [reportTypeSelected, setReportTypeSelected] = React.useState();
+  const [taskReportDetail, setTaskReportDetail] = React.useState([]);
+  const [openTaskReportDetailDialog, setOpenTaskReportDetailDialog] =
+    useState(false);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleCreateReport(
@@ -79,7 +64,8 @@ const CreateReportProject = (props) => {
       reportDetail,
       reportTypeSelected,
       data.reporterId,
-      null
+      data.reportName,
+      taskReportDetail
     );
     console.log(reportDetail);
     if (reportDetail.length > 0) {
@@ -102,19 +88,12 @@ const CreateReportProject = (props) => {
     reportDetailList,
     reportTypeId,
     reporterId,
+    reportName,
     taskReportList
   ) => {
     try {
       setLoading(true);
-      console.log(
-        typeof projectId,
-        typeof reportDate,
-        typeof reportDesc,
-        typeof reportDetailList,
-        typeof reportTypeId,
-        typeof reporterId,
-        typeof taskReportList
-      );
+
       await createReportApi({
         projectId,
         reportDate,
@@ -122,17 +101,18 @@ const CreateReportProject = (props) => {
         reportDetailList,
         reportTypeId,
         reporterId,
+        reportName,
         taskReportList,
       });
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo báo cáo thành công',
         timer: 3000,
         showConfirmButton: false,
       });
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,
@@ -159,14 +139,14 @@ const CreateReportProject = (props) => {
       });
 
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo báo cáo chi tiết thành công',
         timer: 3000,
         showConfirmButton: false,
       });
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,
@@ -181,7 +161,11 @@ const CreateReportProject = (props) => {
         .string()
         .min(5, 'Thông tin báo cáo phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
-      reporterId: yup.number(),
+      reporterId: yup.number().required(),
+      reportName: yup
+        .string()
+        .min(5, 'Tên báo cáo phải có ít nhất 5 ký tự')
+        .required(),
     })
     .required();
   const {
@@ -200,6 +184,12 @@ const CreateReportProject = (props) => {
   };
   const handleCloseReportDetailDialog = () => {
     setOpenReportDetailDialog(false);
+  };
+  const handleOpenTaskReportDetailDialog = () => {
+    setOpenTaskReportDetailDialog(true);
+  };
+  const handleCloseTaskReportDetailDialog = () => {
+    setOpenTaskReportDetailDialog(false);
   };
   React.useEffect(() => {
     (async () => {
@@ -250,6 +240,18 @@ const CreateReportProject = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
+                  Tên báo cáo
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="reportName"
+                  errors={errors.reportName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
                   Thông tin báo cáo
                 </Typography>
                 <TextFieldComponent
@@ -267,7 +269,9 @@ const CreateReportProject = (props) => {
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} fullWidth />}
+                      renderInput={(props) => (
+                        <TextField {...props} fullWidth />
+                      )}
                       value={valueReportDate}
                       onChange={(newValue) => {
                         setValueReportDate(newValue);
@@ -301,18 +305,21 @@ const CreateReportProject = (props) => {
                 </Box>
               </Grid>
               <Grid item container columns={12} spacing={2}>
-
                 {reportDetail.length ? (
                   reportDetail.map((report, index) => (
                     <Grid item xs={4}>
-                      <Box sx={{ width: "100%" }}>
-                        <Card sx={{ width: "100%" }}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
                           <CardContent>
                             <Typography>
                               Thông tin báo cáo chi tiết: {report.itemDesc}
                             </Typography>
-                            <Typography>Số lượng:{report.itemAmount}</Typography>
-                            <Typography>Giá tiền: {report.itemPrice} </Typography>
+                            <Typography>
+                              Số lượng:{report.itemAmount}
+                            </Typography>
+                            <Typography>
+                              Giá tiền: {report.itemPrice}{' '}
+                            </Typography>
                             <Typography>Đơn vị: {report.itemUnit}</Typography>
                           </CardContent>
                         </Card>
@@ -321,8 +328,55 @@ const CreateReportProject = (props) => {
                   ))
                 ) : (
                   <Grid item sx={12}>
-
-                  <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenTaskReportDetailDialog()}
+                  >
+                    Chi tiết công việc
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {taskReportDetail.length ? (
+                  taskReportDetail.map((task, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Thông tin báo cáo chi tiết: {task.taskId}
+                            </Typography>
+                            <Typography>Số lượng:{task.taskNote}</Typography>
+                            <Typography>
+                              Giá tiền: {task.taskProgress}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu chi tiết!</div>
                   </Grid>
                 )}
               </Grid>
@@ -330,7 +384,7 @@ const CreateReportProject = (props) => {
                 <Typography variant="body2" color="#DD8501">
                   Loại báo cáo
                 </Typography>
-                <FormControl sx={{ width: "100%" }}>
+                <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
@@ -398,6 +452,16 @@ const CreateReportProject = (props) => {
           setReportDetail={setReportDetail}
           reportDetail={reportDetail}
         ></DialogReportDetail>
+      </Dialog>
+      <Dialog
+        open={openTaskReportDetailDialog}
+        onClose={handleCloseTaskReportDetailDialog}
+      >
+        <DialogTaskReport
+          handleCloseTaskReportDetailDialog={handleCloseTaskReportDetailDialog}
+          setTaskReportDetail={setTaskReportDetail}
+          taskReportDetail={taskReportDetail}
+        ></DialogTaskReport>
       </Dialog>
     </div>
   );
