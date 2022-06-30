@@ -41,7 +41,6 @@ const DialogReportProject = (props) => {
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
-      reportId: null,
     };
 
     setReportDetail((reportDetail) => [...reportDetail, detailReport]);

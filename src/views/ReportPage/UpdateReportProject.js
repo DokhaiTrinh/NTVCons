@@ -27,6 +27,8 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import DialogUpdateReportDetail from './Components/DialogUpdateReportDetail';
 import DialogUpdateTaskReport from './Components/DialogUpdateTaskReport';
+import DialogNewReportDetail from './Components/DialogNewReportDetail';
+import DialogNewTaskDetail from './Components/DialogNewTaskReport';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 const ITEM_HEIGHT = 48;
@@ -46,15 +48,20 @@ const UpdateReportProject = (props) => {
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [allReportType, setAllReportType] = React.useState([]);
+  const [reportTypeSelected, setReportTypeSelected] = React.useState();
   const [openUpdateReportDetailDialog, setOpenUpdateReportDetailDialog] =
     React.useState(false);
   const [openUpdateTaskReportDialog, setOpenUpdateTaskReportDialog] =
     React.useState(false);
+  const [openNewReportDialog, setOpenNewReportDialog] = React.useState(false);
+  const [openNewTaskDialog, setOpenNewTaskDialog] = React.useState(false);
   const [updateReportDetail, setUpdateReportDetail] = React.useState([]);
   const [updateTaskReportDetail, setUpdateTaskReportDetail] = React.useState(
     []
   );
-  const [reportTypeSelected, setReportTypeSelected] = React.useState();
+  const [newReportDetail, setNewReportDetail] = React.useState([]);
+  const [newTaskReport, setNewTaskReport] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -71,14 +78,27 @@ const UpdateReportProject = (props) => {
     })();
   }, []);
   const submitForm = (data) => {
-    const ReportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    handleUpdateReport();
+    const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
+    handleUpdateReport(
+      newReportDetail,
+      newTaskReport,
+      idN,
+      reportDate,
+      data.reportDesc,
+      data.reportId,
+      data.reportName,
+      reportTypeSelected,
+      data.reporerId,
+      updateReportDetail,
+      updateTaskReportDetail
+    );
   };
   const handleUpdateReport = async (
     newReportDetailList,
     newTaskReportList,
     projectId,
     reportDate,
+    reportDesc,
     reportId,
     reportName,
     reportTypeId,
@@ -93,6 +113,7 @@ const UpdateReportProject = (props) => {
         newTaskReportList,
         projectId,
         reportDate,
+        reportDesc,
         reportId,
         reportName,
         reportTypeId,
@@ -151,6 +172,18 @@ const UpdateReportProject = (props) => {
   };
   const handleCloseUpdateTaskReportDetailDialog = () => {
     setOpenUpdateTaskReportDialog(false);
+  };
+  const handleOpenNewReportDetailDialog = () => {
+    setOpenNewReportDialog(true);
+  };
+  const handleCloseNewReportDetailDialog = () => {
+    setOpenNewReportDialog(false);
+  };
+  const handleOpenNewTaskDetailDialog = () => {
+    setOpenNewTaskDialog(true);
+  };
+  const handleCloseNewTaskDetailDialog = () => {
+    setOpenNewTaskDialog(false);
   };
   return (
     <div>
@@ -250,23 +283,17 @@ const UpdateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              {/* <Grid item container columns={12} spacing={2}>
-                {updateReportApi.length ? (
-                  updateReportApi.map((report, index) => (
+              <Grid item container columns={12} spacing={2}>
+                {updateReportDetail.length ? (
+                  updateReportDetail.map((report, index) => (
                     <Grid item xs={4}>
                       <Box sx={{ width: '100%' }}>
                         <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: {report.itemDesc}
-                            </Typography>
-                            <Typography>
-                              Số lượng:{report.itemAmount}
-                            </Typography>
-                            <Typography>
-                              Giá tiền: {report.itemPrice}{' '}
-                            </Typography>
-                            <Typography>Đơn vị: {report.itemUnit}</Typography>
+                          <CardContent></CardContent>
+                            <Typography>Thông tin báo cáo chi tiết:</Typography>
+                            <Typography>Số lượng:</Typography>
+                            <Typography>Giá tiền:</Typography>
+                            <Typography>Đơn vị:</Typography>
                           </CardContent>
                         </Card>
                       </Box>
@@ -277,7 +304,148 @@ const UpdateReportProject = (props) => {
                     <div>Không có dữ liệu của báo cáo chi tiết!</div>
                   </Grid>
                 )}
-              </Grid> */}
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenNewTaskDetailDialog()}
+                  >
+                    Chi tiết báo cáo
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {updateReportDetail.length ? (
+                  updateReportDetail.map((report, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Thông tin báo cáo chi tiết: 
+                            </Typography>
+                            <Typography>
+                              Số lượng:
+                            </Typography>
+                            <Typography>
+                              Giá tiền:
+                            </Typography>
+                            <Typography>Đơn vị: </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenNewReportDetailDialog()}
+                  >
+                    Chi tiết báo cáo new
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {newReportDetail.length ? (
+                  newReportDetail.map((report, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>Thông tin báo cáo chi tiết:</Typography>
+                            <Typography>Số lượng:</Typography>
+                            <Typography>Giá tiền:</Typography>
+                            <Typography>Đơn vị: </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo mới chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenNewTaskDetailDialog()}
+                  >
+                    Chi tiết cong viec new
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {newTaskReport.length ? (
+                  newTaskReport.map((report, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>Thông tin báo cáo chi tiết:</Typography>
+                            <Typography>Số lượng:</Typography>
+                            <Typography>Giá tiền:</Typography>
+                            <Typography>Đơn vị:</Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của mới của báo cáo</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item container sx={12}>
                 <Box
                   sx={{
@@ -301,7 +469,7 @@ const UpdateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              {/* <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12} spacing={2}>
                 {updateTaskReportDetail.length ? (
                   updateTaskReportDetail.map((task, index) => (
                     <Grid item xs={4}>
@@ -322,10 +490,10 @@ const UpdateReportProject = (props) => {
                   ))
                 ) : (
                   <Grid item sx={12}>
-                    <div>Không có dữ liệu chi tiết!</div>
+                    <div>Không có dữ liệu mới của công việc</div>
                   </Grid>
                 )}
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Loại báo cáo
@@ -412,6 +580,23 @@ const UpdateReportProject = (props) => {
           setUpdateTaskReportDetail={setUpdateTaskReportDetail}
           updateTaskReportDetail={updateTaskReportDetail}
         ></DialogUpdateTaskReport>
+      </Dialog>
+      <Dialog
+        open={openNewReportDialog}
+        onClose={handleCloseNewReportDetailDialog}
+      >
+        <DialogNewReportDetail
+          handleCloseNewReportDetailDialog={handleCloseNewReportDetailDialog}
+          setNewReportDetail={setNewReportDetail}
+          newReportDetail={newReportDetail}
+        ></DialogNewReportDetail>
+      </Dialog>
+      <Dialog open={openNewTaskDialog} onClose={handleCloseNewTaskDetailDialog}>
+        <DialogNewTaskDetail
+          handleCloseNewTaskDetailDialog={handleCloseNewTaskDetailDialog}
+          setNewTaskReport={setNewTaskReport}
+          newTaskReport={newTaskReport}
+        ></DialogNewTaskDetail>
       </Dialog>
     </div>
   );

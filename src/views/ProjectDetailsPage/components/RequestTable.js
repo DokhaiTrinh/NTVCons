@@ -21,6 +21,12 @@ import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
+import Swal from 'sweetalert2';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
+
 function createData(
   name,
   progress,
@@ -246,6 +252,33 @@ export default function RequestTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { projectId, allRequestDetails } = props;
   console.log(allRequestDetails);
+  const [{ loading }, dispatch] = useStateValue();
+  const handleDeleteRequest = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteRequest(id);
+      }
+    });
+  };
+  const DeleteRequest = async (id) => {
+    try {
+      await deleteRequestApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -357,34 +390,43 @@ export default function RequestTable(props) {
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     <TableCell align="left">
-                      <Route>
+                      <IconButton
+                        component={Link}
+                        to={`/requestDetails/${row.requestId}`}
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                      {/* <Route>
                         <Link
                           underline="hover"
                           to={`/requestDetails/${row.requestId}`}
                         >
                           {'Chi Tiết'}
                         </Link>
-                      </Route>
+                      </Route> */}
                     </TableCell>
                     <TableCell align="left">
-                      <Route>
-                        <Link
-                          underline="hover"
-                          // to={}
-                        >
-                          {'Cập nhật'}
-                        </Link>
-                      </Route>
+                      <IconButton
+                        component={Link}
+                        to={`/updateRequestDetails/${row.requestId}`}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
+                      {/* <Route>
+                        <Link underline="hover">{'Cập nhật'}</Link>
+                      </Route> */}
                     </TableCell>
                     <TableCell align="left">
-                      <Route>
-                        <Link
-                          underline="hover"
-                          // to={}
-                        >
-                          {'Xóa'}
-                        </Link>
-                      </Route>
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        onClick={() => handleDeleteRequest(row.requestId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      {/* <Route>
+                        <Link underline="hover">{'Xóa'}</Link>
+                      </Route> */}
                     </TableCell>
                   </TableRow>
                 );

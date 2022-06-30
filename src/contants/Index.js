@@ -22,6 +22,9 @@ import UpdateTaskProject from '../views/TaskPage/UpdateTaskProject';
 //import UpdateReportProject from '../views/ReportPage/UpdateReportProject';
 import ReportDetailPage from '../views/ReportPage/indexReportDetail';
 import UpdateReportProject from '../views/ReportPage/UpdateReportProject';
+import RequestDetailPage from '../views/RequestPage/RequestDetailPage';
+import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
+
 
 export const HOME_ROUTES = [
   {
@@ -47,6 +50,12 @@ export const HOME_ROUTES = [
     name: 'Report Details Page',
     exact: true,
     component: ReportDetailPage,
+  },
+  {
+    path: '/requestDetails/:id',
+    name: 'Request Details Page',
+    exact: true,
+    component: RequestDetailPage,
   },
   {
     path: '/createProject',
@@ -119,6 +128,12 @@ export const HOME_ROUTES = [
     name: 'Update Report Details Page',
     exact: true,
     component: UpdateReportProject,
+  },
+  {
+    path: '/updateRequestDetails/:id',
+    name: 'Update Request Details Page',
+    exact: true,
+    component: UpdateRequestPage,
   },
   {
     path: '/createRole',

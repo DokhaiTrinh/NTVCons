@@ -13,10 +13,9 @@ import moment from 'moment';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const DialogUpdateRequestDetail = (props) => {
-  const { requestDetail, setRequestDetail } = props;
+const DialogNewUpdateRequest = (props) => {
+  const { newRequestDetail, setNewRequestDetail } = props;
   const [loading, setLoading] = useState('');
-
   const valideSchema = yup
     .object({
       itemAmount: yup
@@ -42,18 +41,19 @@ const DialogUpdateRequestDetail = (props) => {
   });
 
   const submitForm = (data) => {
-    const detailRequest = {
+    const detailNewRequest = {
       itemAmount: data.itemAmount,
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
     };
+    setNewRequestDetail((newRequestDetail) => [
+      ...newRequestDetail,
+      detailNewRequest,
+    ]);
 
-    setRequestDetail((requestDetail) => [...requestDetail, detailRequest]);
-
-    props.handleCloseRequestDetailDialog();
+    props.handleCloseNewRequestDetailDialog();
   };
-
   return (
     <div>
       <Typography
@@ -167,4 +167,4 @@ const DialogUpdateRequestDetail = (props) => {
   );
 };
 
-export default DialogUpdateRequestDetail;
+export default DialogNewUpdateRequest;

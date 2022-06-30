@@ -13,15 +13,21 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import Swal from 'sweetalert2';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import { deleteReportApi } from '../../../apis/Report/deleteReport';
+
 function createData(id, name, date, category, detail, update1, delete1) {
   return {
     id,
@@ -239,6 +245,33 @@ export default function ReportTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { projectId, allReportDetails } = props;
   console.log(allReportDetails);
+  const [{ loading }, dispatch] = useStateValue();
+  const handleDeleteReport = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteReport(id);
+      }
+    });
+  };
+  const DeleteReport = async (id) => {
+    try {
+      await deleteReportApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -331,29 +364,29 @@ export default function ReportTable(props) {
                     </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
                     <TableCell align="left">
-                      <Route>
-                        <Link
-                          underline="hover"
-                          to={`/reportDetails/${row.reportId}`}
-                        >
-                          {'Chi Tiết'}
-                        </Link>
-                      </Route>
+                      <IconButton
+                        component={Link}
+                        to={`/reportDetails/${row.reportId}`}
+                      >
+                        <InfoIcon />
+                      </IconButton>
                     </TableCell>
                     <TableCell align="left">
-                      <Route>
-                        <Link
-                          underline="hover"
-                          to={`/updateReportDetails/${row.reportId}`}
-                        >
-                          {'Cập nhật'}
-                        </Link>
-                      </Route>
+                      <IconButton
+                        component={Link}
+                        to={`/updateReportDetails/${row.reportId}`}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
                     </TableCell>
                     <TableCell align="left">
-                      <Route>
-                        <Link underline="hover">{'Xóa'}</Link>
-                      </Route>
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        onClick={() => handleDeleteReport(row.reportId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 );

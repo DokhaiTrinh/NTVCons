@@ -8,9 +8,8 @@ import TextFieldComponent from '../../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
-import { createRequestDetailApi } from '../../../apis/RequestDetail/createRequestDetail';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 

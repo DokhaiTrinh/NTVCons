@@ -74,8 +74,7 @@ const CreateReportProject = (props) => {
           rp.itemAmount,
           rp.itemDesc,
           rp.itemPrice,
-          rp.itemUnit,
-          rp.reportId
+          rp.itemUnit
         );
       }
     }
@@ -93,7 +92,6 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
-
       await createReportApi({
         projectId,
         reportDate,
@@ -111,6 +109,7 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
+      await window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -125,8 +124,7 @@ const CreateReportProject = (props) => {
     itemAmount,
     itemDesc,
     itemPrice,
-    itemUnit,
-    reportId
+    itemUnit
   ) => {
     try {
       setLoading(true);
@@ -135,9 +133,7 @@ const CreateReportProject = (props) => {
         itemDesc,
         itemPrice,
         itemUnit,
-        reportId,
       });
-
       setLoading(false);
       await Swal.fire({
         icon: 'success',
@@ -145,7 +141,6 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetails/${id}`)
     } catch (error) {
       await Swal.fire({
         icon: 'error',
