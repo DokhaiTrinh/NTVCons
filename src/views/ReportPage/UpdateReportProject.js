@@ -289,7 +289,7 @@ const UpdateReportProject = (props) => {
                     <Grid item xs={4}>
                       <Box sx={{ width: '100%' }}>
                         <Card sx={{ width: '100%' }}>
-                          <CardContent></CardContent>
+                          <CardContent>
                             <Typography>Thông tin báo cáo chi tiết:</Typography>
                             <Typography>Số lượng:</Typography>
                             <Typography>Giá tiền:</Typography>
@@ -335,15 +335,9 @@ const UpdateReportProject = (props) => {
                       <Box sx={{ width: '100%' }}>
                         <Card sx={{ width: '100%' }}>
                           <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: 
-                            </Typography>
-                            <Typography>
-                              Số lượng:
-                            </Typography>
-                            <Typography>
-                              Giá tiền:
-                            </Typography>
+                            <Typography>Thông tin báo cáo chi tiết:</Typography>
+                            <Typography>Số lượng:</Typography>
+                            <Typography>Giá tiền:</Typography>
                             <Typography>Đơn vị: </Typography>
                           </CardContent>
                         </Card>
