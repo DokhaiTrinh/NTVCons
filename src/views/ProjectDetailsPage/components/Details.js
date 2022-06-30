@@ -51,7 +51,7 @@ const Details = (props) => {
               <Typography variant="body1" color="gray">
                 Người quản trị
               </Typography>
-              <Typography variant="body1">Đỗ Nam Trung</Typography>
+              <Typography variant="body1">{allProjectDetails.createdBy}</Typography>
             </Grid>
             <Grid item xs="6">
               <Typography variant="body1" color="gray">
@@ -63,17 +63,9 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="6">
               <Typography variant="body1" color="gray">
-                Tên bản vẽ
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.projectBlueprintName }
-              </Typography>
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
                 Trạng thái
               </Typography>
-              {/* <Box
+              <Box
                 sx={{
                   width: '50%',
                   borderRadius: '10px',
@@ -91,7 +83,7 @@ const Details = (props) => {
                 >
                   Đang thực hiện
                 </Typography>
-              </Box> */}
+              </Box>
             </Grid>
             <Grid item xs="6">
               <Typography variant="body1" color="gray">

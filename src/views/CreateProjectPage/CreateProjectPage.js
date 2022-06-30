@@ -19,13 +19,13 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { getUserForDropDownApi } from '../../apis/Project/getUserForDropDown';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
-
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import DialogLocation from './Components/DialogLocation';
+import { getProjectByIdApi } from '../../apis/Project/updateProject';
 const CreateProjectPage = (props) => {
-  const [userId, userName] = useState('');
-
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
   );
@@ -36,76 +36,64 @@ const CreateProjectPage = (props) => {
     new Date()
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
+  const [locationDetail, setLocationDetail] = React.useState();
+  const [openLocationDialog, setOpenLocationDialog] = useState(false);
+  const [loading, setLoading] = useState('');
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '-',
-      getDateCom[1],
-      '-',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
-
-  const [loading, setLoading] = useState('');
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
     const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    console.log(planEndDate);
     handleCreateProject(
       actualEndDate,
       actualStartDate,
       planEndDate,
       planStartDate,
-      data.projectActualCost,
-      data.projectEstimateCost,
+      locationDetail,
+      data.createdBy,
+      data.actualCost,
+      data.estimatedCost,
+      data.projectName
     );
-    console.log(data);
   };
   const handleCreateProject = async (
     actualEndDate,
     actualStartDate,
     planEndDate,
     planStartDate,
-    projectActualCost,
-    projectEstimateCost,
-    projectName,
+    location,
+    createdBy,
+    actualCost,
+    estimatedCost,
+    projectName
   ) => {
     try {
       setLoading(true);
+      console.log(
+        actualEndDate,
+        actualStartDate,
+        planEndDate,
+        planStartDate,
+        location,
+        createdBy,
+        actualCost,
+        estimatedCost,
+        projectName
+      );
       await createProjectApi({
         actualEndDate,
         actualStartDate,
-        addressNumber,
-        area,
-        blueprintEstimateCost,
-        city,
-        coordinate,
-        country,
-        designerName,
-        district,
         planEndDate,
         planStartDate,
-        projectActualCost,
-        projectBlueprintName,
-        projectEstimateCost,
+        location,
+        createdBy,
+        actualCost,
+        estimatedCost,
         projectName,
-        province,
-        street,
-        userId,
-        ward,
       });
-
       setLoading(false);
       await Swal.fire({
         icon: 'success',
@@ -126,32 +114,12 @@ const CreateProjectPage = (props) => {
   };
   const valideSchema = yup
     .object({
-      addressNumber: yup.string(),
-      blueprintEstimateCost: yup
-        .number()
-        .min(1, 'Giá tiền phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ'),
-      city: yup
-        .string()
-        .min(5, 'Tên thành phố phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      designerName: yup
-        .string()
-        .min(5, 'Người thiết kế phải có tên lớn hon 5')
-        .required('Phải nhập tên người thiết kế'),
-      district: yup
-        .string()
-        .min(5, 'Tên quận phải lớn hon 5')
-        .max(50, ' Tên quận không được lớn hơn 50'),
-      projectActualCost: yup
+      actualCost: yup
         .number()
         .min(1, 'Số lượng phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ'),
-      projectBlueprintName: yup
-        .string()
-        .min(5, 'Tên bản vẽ phải lớn hơn 5')
-        .required('Phải nhập bản vẽ'),
-      projectEstimateCost: yup
+        .typeError('Giá tiền phải là số tính theo VNĐ')
+        .required(),
+      estimatedCost: yup
         .number()
         .min(1, 'Số lượng phải lớn hơn 0')
         .typeError('Giá tiền phải là số tính theo VNĐ'),
@@ -159,9 +127,8 @@ const CreateProjectPage = (props) => {
         .string()
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
-        .required(),
-      province: yup.string(),
-      street: yup.string(),
+        .required('Dự án '),
+      createdBy: yup.number().required(),
     })
     .required();
   const {
@@ -171,12 +138,6 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
-  // const handleChangeDate = (date) => {
-  //   console.log(date);
-  //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   let dateString = new Date(date).toLocaleDateString([], options);
-  // };
   // const uploadImage = () => {
   //   const formData = new FormData();
   //   formData.append('file', imageSelected);
@@ -196,7 +157,12 @@ const CreateProjectPage = (props) => {
   //   };
   //   postImage();
   // };
-
+  const handleOpenLocationDialog = () => {
+    setOpenLocationDialog(true);
+  };
+  const handleCloseLocationDialog = () => {
+    setOpenLocationDialog(false);
+  };
   return (
     <div>
       <Typography
@@ -229,17 +195,6 @@ const CreateProjectPage = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Mã dự án
-              </Typography>
-              <TextField
-                id="project-name"
-                placeholder="Mã dự án"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên dự án
@@ -254,36 +209,12 @@ const CreateProjectPage = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Tên Bản vẽ
+                  Chi phí ước tính
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="projectBlueprintName"
-                  errors={errors.projectBlueprintName}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Giá bản vẽ
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="blueprintEstimateCost"
-                  errors={errors.blueprintEstimateCost}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người thiết kế
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="designerName"
-                  errors={errors.designerName}
+                  name="estimatedCost"
+                  errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -298,9 +229,7 @@ const CreateProjectPage = (props) => {
                   <Typography variant="body2">Bắt đầu dự kiến</Typography>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField {...props} />
-                      )}
+                      renderInput={(props) => <TextField {...props} />}
                       value={valuePlanStartDate}
                       onChange={(newValue) => {
                         setValuePlanStartDate(newValue);
@@ -352,172 +281,95 @@ const CreateProjectPage = (props) => {
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Kỹ sư phụ trách
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="city"
-                label="Địa chỉ"
-                errors={errors.city}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid> */}
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenLocationDialog()}
+                  >
+                    Chi tiết địa điểm
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {locationDetail ? (
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Số nhà: {locationDetail.addressNumber}
+                          </Typography>
+                          <Typography>
+                            Tên đường:{locationDetail.street}
+                          </Typography>
+                          <Typography>
+                            Quận: {locationDetail.district}{' '}
+                          </Typography>
+                          <Typography>
+                            Thành phố: {locationDetail.city}
+                          </Typography>
+                          <Typography>
+                            Khu vực: {locationDetail.ward}
+                          </Typography>
+                          <Typography>
+                            Địa bàn tỉnh: {locationDetail.province}
+                          </Typography>
+                          <Typography>
+                            Quốc gia: {locationDetail.country}
+                          </Typography>
+                          <Typography>
+                            Diện tích: {locationDetail.area}
+                          </Typography>
+                          <Typography>
+                            Điều phối: {locationDetail.coordinate}
+                          </Typography>
+                          <Typography>
+                            Người tạo: {locationDetail.createdBy}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thành phố
+                  Người quản lý
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="city"
-                  label="Địa chỉ"
-                  errors={errors.city}
+                  name="createdBy"
+                  errors={errors.createdBy}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Coordinate
+                  Giá chính thức
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="coordinate"
-                  label="Địa chỉ"
-                  errors={errors.coordinate}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Country
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="country"
-                  label="Địa chỉ"
-                  errors={errors.country}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tên đường
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="street"
-                  label=""
-                  errors={errors.street}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Số nhà
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="addressNumber"
-                  label=""
-                  errors={errors.addressNumber}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tỉnh
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="province"
-                  label=""
-                  errors={errors.province}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Quốc gia
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="country"
-                  label=""
-                  errors={errors.country}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  UserId
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="userId"
-                  label=""
-                  errors={errors.userId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Ward
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="ward"
-                  label=""
-                  errors={errors.ward}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Diện tích
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="area"
-                  label="Địa chỉ"
-                  errors={errors.area}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Giá dự kiến
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="projectEstimateCost"
-                  label="Giá dự kiến"
-                  errors={errors.projectEstimateCost}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Giá thực tế
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="projectActualCost"
-                  label="Giá thực té"
-                  errors={errors.projectActualCost}
+                  name="actualCost"
+                  errors={errors.actualCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -542,7 +394,6 @@ const CreateProjectPage = (props) => {
                 />
               )}
             </Grid> */}
-
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -563,7 +414,7 @@ const CreateProjectPage = (props) => {
                     }}
                     // onClick={uploadImage}
                   >
-                    Lưu
+                    Tạo mới dự án
                   </Button>
                 </Box>
               </Grid>
@@ -571,6 +422,13 @@ const CreateProjectPage = (props) => {
           </form>
         </Box>
       </Box>
+      <Dialog open={openLocationDialog} onClose={handleCloseLocationDialog}>
+        <DialogLocation
+          handleCloseLocationDialog={handleCloseLocationDialog}
+          setLocationDetail={setLocationDetail}
+          locationDetail={locationDetail}
+        ></DialogLocation>
+      </Dialog>
     </div>
   );
 };

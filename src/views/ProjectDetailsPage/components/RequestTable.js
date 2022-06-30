@@ -43,19 +43,6 @@ function createData(
   };
 }
 
-const rows = [
-  createData(
-    'Buildlink trên PBN 05/09',
-    '100%',
-    'Nguyễn Văn A',
-    '05/09/2022',
-    '06/09/2022',
-    1,
-    'Hoàn thành',
-    ''
-  ),
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -91,7 +78,7 @@ const headCells = [
     id: 'id',
     numeric: false,
     disablePadding: false,
-    label: 'Mã báo cáo',
+    label: 'Mã yêu cầu',
   },
   {
     id: 'tenconviec',
@@ -115,13 +102,19 @@ const headCells = [
     id: '',
     numeric: false,
     disablePadding: false,
-    label: '',
+    label: 'Chi tiết',
   },
   {
     id: '',
     numeric: false,
     disablePadding: false,
-    label: '',
+    label: 'Cập nhật',
+  },
+  {
+    id: '',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
@@ -141,17 +134,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -270,15 +252,6 @@ export default function RequestTable(props) {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -311,8 +284,6 @@ export default function RequestTable(props) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -341,9 +312,7 @@ export default function RequestTable(props) {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody>
               {allRequestDetails.map((row, index) => {
@@ -381,7 +350,9 @@ export default function RequestTable(props) {
                     <TableCell align="left">{row.projectName}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">{handleGetDate(row.requestDate)}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.requestDate)}
+                    </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
@@ -392,6 +363,16 @@ export default function RequestTable(props) {
                           to={`/requestDetails/${row.requestId}`}
                         >
                           {'Chi Tiết'}
+                        </Link>
+                      </Route>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Route>
+                        <Link
+                          underline="hover"
+                          // to={}
+                        >
+                          {'Cập nhật'}
                         </Link>
                       </Route>
                     </TableCell>
@@ -414,7 +395,6 @@ export default function RequestTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

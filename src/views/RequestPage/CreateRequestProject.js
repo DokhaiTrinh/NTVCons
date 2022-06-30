@@ -31,6 +31,7 @@ import CardContent from '@mui/material/CardContent';
 import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
+import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -60,16 +61,6 @@ const CreateRequestProject = (props) => {
       requestTypeSelected,
       data.requesterId
     );
-    if (requestDetail.length > 0) {
-      for (let rq of requestDetail) {
-        handleCreateRequestDetails(
-          rq.itemAmount,
-          rq.itemDesc,
-          rq.itemPrice,
-          rq.itemUnit
-        );
-      }
-    }
     console.log(requestDetail);
   };
   const handleCreateRequest = async (
@@ -105,38 +96,7 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-    } catch (error) {
-      await Swal.fire({
-        icon: 'error',
-        text: error.response.data,
-        timer: 3000,
-        showConfirmButton: false,
-      });
-      setLoading(false);
-    }
-  };
-  const handleCreateRequestDetails = async (
-    itemAmount,
-    itemDesc,
-    itemPrice,
-    itemUnit
-  ) => {
-    try {
-      setLoading(true);
-      await createRequestDetailApi({
-        itemAmount,
-        itemDesc,
-        itemPrice,
-        itemUnit,
-      });
-
-      setLoading(false);
-      await Swal.fire({
-        icon: 'success',
-        text: 'Tạo yêu cầu chi tiết thành công',
-        timer: 3000,
-        showConfirmButton: false,
-      });
+      await window.location.replace(`/projectDetails/${id}`)
     } catch (error) {
       await Swal.fire({
         icon: 'error',

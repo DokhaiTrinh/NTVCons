@@ -208,28 +208,19 @@ const ProjectDetailsPage = (props) => {
           ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {allReportDetails ? (
-            allReportDetails.length > 0 ? (
-              <ReportTable
-                projectId={projectId}
-                allReportDetails={allReportDetails}
-              ></ReportTable>
-            ) : (
-              <div>Không có dữ liệu của báo cáo để hiển thị</div>
-            )
-          ) : null}
+          <ReportTable
+            projectId={projectId}
+            allReportDetails={allReportDetails}
+          ></ReportTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <TaskTable projectId={projectId}></TaskTable>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          {allRequestDetails ? (
-            allRequestDetails.length > 0 ? (
-              <RequestTable projectId={projectId} allRequestDetails={allRequestDetails}></RequestTable>
-            ) : (
-              <div>Không có dữ liệu yêu cầu để hiển thị</div>
-            )
-          ) : null}
+          <RequestTable
+            projectId={projectId}
+            allRequestDetails={allRequestDetails}
+          ></RequestTable>
         </TabPanel>
       </Box>
     </div>

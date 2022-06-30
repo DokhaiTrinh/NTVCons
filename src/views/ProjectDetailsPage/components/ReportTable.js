@@ -22,12 +22,15 @@ import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
-function createData(id, name, date, category) {
+function createData(id, name, date, category, detail, update1, delete1) {
   return {
     id,
     name,
     date,
     category,
+    detail,
+    update1,
+    delete1,
   };
 }
 
@@ -89,16 +92,22 @@ const headCells = [
     label: 'Thể loại',
   },
   {
-    id: '',
+    id: 'Chitiet',
     numeric: false,
     disablePadding: false,
-    label: '',
+    label: 'Chi tiết',
   },
   {
-    id: '',
+    id: 'Capnhat',
     numeric: false,
     disablePadding: false,
-    label: '',
+    label: 'Cập nhật',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
@@ -313,46 +322,14 @@ export default function ReportTable(props) {
             />
             <TableBody>
               {allReportDetails.map((row, index) => {
-                // const isItemSelected = isSelected(row.admin);
-                const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow
-                    hover
-                    // onClick={(event) => handleClick(event, row.admin)}
-                    role="checkbox"
-                    // aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    // selected={isItemSelected}
-                  >
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        onClick={(event) => handleClick(event, row.projectId)}
-                        color="primary"
-                        // checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell> */}
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      // padding="none"
-                      align="left"
-                    >
-                      {row.reportId}
-                    </TableCell>
+                  <TableRow>
+                    <TableCell>{row.reportId}</TableCell>
                     <TableCell align="left">{row.reportDesc}</TableCell>
-                    {/* <TableCell align="left">{row.}</TableCell> */}
-                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
                     </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
-                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
-                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     <TableCell align="left">
                       <Route>
                         <Link
@@ -375,12 +352,7 @@ export default function ReportTable(props) {
                     </TableCell>
                     <TableCell align="left">
                       <Route>
-                        <Link
-                          underline="hover"
-                          // to={}
-                        >
-                          {'Xóa'}
-                        </Link>
+                        <Link underline="hover">{'Xóa'}</Link>
                       </Route>
                     </TableCell>
                   </TableRow>

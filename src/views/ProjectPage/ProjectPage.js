@@ -115,7 +115,7 @@ const ProjectPage = (props) => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType]);
+  }, [pageNo, pageSize, sortBy, sortType, loading]);
 
   return (
     <div>

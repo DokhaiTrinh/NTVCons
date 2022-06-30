@@ -14,14 +14,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
+import Swal from 'sweetalert2';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+
 function createData(admin, code, name, workers, process, works, start, end) {
   return {
     admin,
@@ -95,12 +100,6 @@ const headCells = [
     disablePadding: false,
     label: 'Tiến độ',
   },
-  // {
-  //   id: 'congviec',
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: 'Công việc',
-  // },
   {
     id: 'batdau',
     numeric: true,
@@ -112,6 +111,18 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'Kết thúc',
+  },
+  {
+    id: 'xoa',
+    numeric: true,
+    disablePadding: false,
+    label: 'Xóa',
+  },
+  {
+    id: 'chitiet',
+    numeric: true,
+    disablePadding: false,
+    label: 'Chi tiết',
   },
 ];
 
@@ -248,9 +259,10 @@ const handleGetDate = (date) => {
   return getDateReformat;
 };
 
-
 export const ProjectTable = (props) => {
   const { allProject } = props;
+
+  const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
@@ -262,7 +274,33 @@ export const ProjectTable = (props) => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  const handleDeleteProject = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteProject(id);
+      }
+    });
+  };
 
+  const DeleteProject = async (id) => {
+    try {
+      await deleteProjectApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
     let newSelected = [];
@@ -305,7 +343,6 @@ export const ProjectTable = (props) => {
             />
             <TableBody>
               {allProject.map((row, index) => {
-                // const isItemSelected = isSelected(row.admin);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -341,17 +378,28 @@ export const ProjectTable = (props) => {
                     <TableCell align="right">{row.addressNumber}</TableCell>
                     <TableCell align="right">{}</TableCell>
                     {/* <TableCell align="right">{row.works}</TableCell> */}
-                    <TableCell align="right">{handleGetDate(row.actualStartDate)}</TableCell>
-                    <TableCell align="right">{handleGetDate(row.actualEndDate)}</TableCell>
                     <TableCell align="right">
-                      <Route>
-                        <Link
-                          underline="hover"
-                          to={`/projectDetails/${row.projectId}`}
-                        >
-                          {'Chi Tiết'}
-                        </Link>
-                      </Route>
+                      {handleGetDate(row.actualStartDate)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {handleGetDate(row.actualEndDate)}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        onClick={() => handleDeleteProject(row.projectId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        component={Link}
+                        to={`/projectDetails/${row.projectId}`}
+                      >
+                        <InfoIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 );

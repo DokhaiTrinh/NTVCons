@@ -145,6 +145,7 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
+      await window.location.replace(`/projectDetails/${id}`)
     } catch (error) {
       await Swal.fire({
         icon: 'error',
