@@ -20,6 +20,7 @@ import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 function TabPanel(props) {
@@ -69,6 +70,7 @@ const ProjectDetailsPage = (props) => {
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [allReportDetails, setAllReportDetails] = React.useState([]);
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
+
   const handleChange1 = (event) => {
     setAge(event.target.value);
   };
@@ -109,10 +111,12 @@ const ProjectDetailsPage = (props) => {
           console.log('Không thể lấy danh sách báo cáo');
         }
       })();
+
     },
     [pageNo, pageSize, projectId, sortBy, sortType],
-    [projectId, searchType]
+    [projectId, searchType],
   );
+
   return (
     <div>
       <Grid container justify="center">
@@ -176,9 +180,7 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Công việc" {...a11yProps(2)} />
             <Tab label="Yêu cầu" {...a11yProps(3)} />
             <Box sx={{ flex: 1 }}></Box>
-            <Box>
-              
-            </Box>
+            <Box></Box>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
