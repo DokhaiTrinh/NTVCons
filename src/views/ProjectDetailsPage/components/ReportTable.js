@@ -99,19 +99,19 @@ const headCells = [
   },
   {
     id: 'Chitiet',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Chi tiết',
   },
   {
     id: 'Capnhat',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Cập nhật',
   },
   {
     id: 'xoa',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Xóa',
   },
@@ -136,7 +136,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'center' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -205,7 +205,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -217,7 +217,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -363,7 +363,7 @@ export default function ReportTable(props) {
                       {handleGetDate(row.reportDate)}
                     </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
                         component={Link}
                         edge="start"
@@ -372,7 +372,7 @@ export default function ReportTable(props) {
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
                         component={Link}
                         edge="start"
@@ -381,7 +381,7 @@ export default function ReportTable(props) {
                         <UpdateIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
                         aria-label="delete"
                         color="warning"
