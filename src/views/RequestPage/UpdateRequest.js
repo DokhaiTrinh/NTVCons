@@ -33,6 +33,8 @@ import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
+import { getRequestIdApi } from '../../apis/Request/getRequestByProjectId';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -56,6 +58,7 @@ const UpdateRequest = () => {
   const [newRequestDetail, setNewRequestDetail] = React.useState([]);
   const [allRequestType, setAllRequestType] = React.useState([]);
   const [requestTypeSelected, setRequestTypeSelected] = React.useState();
+  const [allRequestId, setAllRequestId] = React.useState([]);
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
     handleUpdateRequest(
@@ -151,7 +154,16 @@ const UpdateRequest = () => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
+    (async () => {
+      try {
+        const listAllRequestDetail = await getRequestIdApi(id);
+        setAllRequestId(listAllRequestDetail.data);
+      } catch (error) {
+        console.log('Không thể lấy dữ liệu của báo cáo');
+      }
+    })();
   }, []);
+  console.log(allRequestId);
   return (
     <div>
       <Typography

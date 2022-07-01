@@ -27,6 +27,21 @@ import Button from '@mui/material/Button';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteTaskApi } from '../../../apis/Task/deleteTask';
 import Swal from 'sweetalert2';
+import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
+import { useParams } from 'react-router-dom';
+
+const handleGetDate = (date) => {
+  const getDate = date.substring(0, 10);
+  const getDateCom = getDate.split('-');
+  const getDateReformat = ''.concat(
+    getDateCom[2],
+    '/',
+    getDateCom[1],
+    '/',
+    getDateCom[0]
+  );
+  return getDateReformat;
+};
 function createData(
   name,
   progress,
@@ -284,6 +299,23 @@ export default function ReportTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [{ loading }, dispatch] = useStateValue();
+  const [allTaskDetails, setAllTaskDetails] = React.useState([]);
+  const { id } = useParams();
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllTaskDetail = await getTaskByProjectIdApi(
+          id,
+          'TASK_BY_PROJECT_ID'
+        );
+        setAllTaskDetails(listAllTaskDetail.data);
+      } catch (error) {
+        console.log('Không thể lấy dữ liệu của báo công việc');
+      }
+    })();
+  }, []);
+  console.log(allTaskDetails);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -393,81 +425,89 @@ export default function ReportTable(props) {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
+              {allTaskDetails.map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <TableRow
+                    hover
+                    // onClick={(event) => handleClick(event, row.admin)}
+                    role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    // selected={isItemSelected}
+                  >
+                    {/* <TableCell padding="checkbox">
+                      <Checkbox
+                        onClick={(event) => handleClick(event, row.projectId)}
+                        color="primary"
+                        // checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell> */}
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      // padding="none"
+                      align="left"
                     >
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.name)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell> */}
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        // padding="none"
+                      {row.taskId}
+                    </TableCell>
+                    <TableCell align="left">{row.taskName}</TableCell>
+                    <TableCell align="left">{row.taskDesc}</TableCell>
+                    {/* <TableCell align="left">{row.}</TableCell> */}
+                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
+                    <TableCell align="left">
+                      {(row.actualStartDate)}
+                    </TableCell>
+                    <TableCell align="left">{row.actualEndDate}</TableCell>
+                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
+                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
+                    <TableCell align="left">
+                      <IconButton
+                        component={Link}
+                        to={`/requestDetails/${row.requestId}`}
                       >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="left">{row.progress}</TableCell>
-                      <TableCell align="left">{row.perform}</TableCell>
-                      <TableCell align="left">{row.start}</TableCell>
-                      <TableCell align="left">{row.end}</TableCell>
-                      <TableCell align="left">{row.durationn}</TableCell>
-                      <TableCell align="left">{row.status}</TableCell>
-                      <TableCell align="left">{row.prioritized}</TableCell>
-                      <TableCell align="left">
-                        <IconButton
-                          component={Link}
-                          to={`/updateTask/${row.requestId}`}
+                        <InfoIcon />
+                      </IconButton>
+                      {/* <Route>
+                        <Link
+                          underline="hover"
+                          to={`/requestDetails/${row.requestId}`}
                         >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Route>
-                          <Link underline="hover" to="/workDetails">
-                            {'Chi Tiết'}
-                          </Link>
-                        </Route> */}
-                      </TableCell>
-                      <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          size="large"
-                          onClick={() => handleDeleteTask(row.requestId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        {/* <Route>
-                          <Link underline="hover">{'Xóa'}</Link>
-                        </Route> */}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                          {'Chi Tiết'}
+                        </Link>
+                      </Route> */}
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        component={Link}
+                        to={`/updateRequestDetails/${row.requestId}`}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
+                      {/* <Route>
+                        <Link underline="hover">{'Cập nhật'}</Link>
+                      </Route> */}
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        onClick={() => handleDeleteTask(row.taskId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      {/* <Route>
+                        <Link underline="hover">{'Xóa'}</Link>
+                      </Route> */}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

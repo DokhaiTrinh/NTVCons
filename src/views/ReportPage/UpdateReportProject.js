@@ -64,7 +64,7 @@ const UpdateReportProject = (props) => {
   );
   const [newReportDetail, setNewReportDetail] = React.useState([]);
   const [newTaskReport, setNewTaskReport] = React.useState([]);
-
+  const [allReportDetail, setAllReportDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -79,7 +79,16 @@ const UpdateReportProject = (props) => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
+    (async () => {
+      try {
+        const listAllReportDetail = await getReportById(id, 'REPORT_BY_ID');
+        setAllReportDetail(listAllReportDetail.data);
+      } catch (error) {
+        console.log('Không thể lấy dữ liệu của báo cáo');
+      }
+    })();
   }, []);
+  console.log(allReportDetail);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleUpdateReport(

@@ -22,7 +22,7 @@ const handleGetDate = (date) => {
 };
 const Details = (props) => {
   const { allProjectDetails } = props;
-  console.log(props);
+  const { id } = useParams();
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -30,23 +30,24 @@ const Details = (props) => {
           sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
           variant="elevation"
         >
-          <Grid container spacing={0}
-            alignItems="center"
-            justify="center">
+          <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item xs={11}>
               <Typography variant="h6" sx={{ marginBottom: '20px' }}>
                 Thông tin chung
               </Typography>
             </Grid>
-            <Grid item container xs={1} >
+            <Grid item container xs={1}>
               <Grid item xs={12}>
-                <Box sx={{ width: "100%" }} display="flex"
+                <Box
+                  sx={{ width: '100%' }}
+                  display="flex"
                   justifyContent="center"
-                  alignItems="center">
+                  alignItems="center"
+                >
                   <IconButton
                     aria-label="edit report"
                     component={Link}
-                    // to={`/editProjectDetails/${projectId}`}
+                    to={`/editProjectDetails/${id}`}
                     sx={{ height: '100%' }}
                   >
                     <Box sx={{ height: '30px' }}>
@@ -56,10 +57,7 @@ const Details = (props) => {
                 </Box>
               </Grid>
               <Grid item xs={12} justify="start">
-                <Box display="flex"
-                  justifyContent="center"
-                  alignItems="center">
-
+                <Box display="flex" justifyContent="center" alignItems="center">
                   <Typography variant="button">Chỉnh sửa</Typography>
                 </Box>
               </Grid>
@@ -87,7 +85,9 @@ const Details = (props) => {
               <Typography variant="body1" color="gray">
                 Người quản trị
               </Typography>
-              <Typography variant="body1">{allProjectDetails.createdBy}</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.createdBy}
+              </Typography>
             </Grid>
             <Grid item xs="6">
               <Typography variant="body1" color="gray">

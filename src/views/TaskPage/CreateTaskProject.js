@@ -15,7 +15,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createTaskApi } from '../../apis/Task/createTask';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -81,16 +81,17 @@ const CreateTaskProject = (props) => {
       });
 
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo công việc thành công',
         timer: 3000,
         showConfirmButton: false,
       });
+      window.location.replace(`projectDetails/${id}`);
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Tạo công việc thất bại',
         timer: 3000,
         showConfirmButton: false,
       });
