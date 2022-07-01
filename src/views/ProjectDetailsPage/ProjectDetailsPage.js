@@ -11,7 +11,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
-import { Link, useParams } from 'react-router-dom';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import InputLabel from '@mui/material/InputLabel';
@@ -178,23 +177,7 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Yêu cầu" {...a11yProps(3)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box>
-              <Grid container>
-                <Grid item xs={12}>
-                  <IconButton
-                    aria-label="edit report"
-                    component={Link}
-                    to={`/editProjectDetails/${projectId}`}
-                    sx={{ height: '100%' }}
-                  >
-                    <Box sx={{ height: '30px' }}>
-                      <EditOutlinedIcon fontSize="large" />
-                    </Box>
-                  </IconButton>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="button">Chỉnh sửa</Typography>
-                </Grid>
-              </Grid>
+              
             </Box>
           </Tabs>
         </Box>
