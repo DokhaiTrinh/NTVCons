@@ -40,7 +40,7 @@ function RequestDetailPage() {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '90%', mp: 2, borderRadius: '30px', padding: '20px', margin: "5%" }}
           variant="elevation"
         >
           <Typography variant="h6" sx={{ marginBottom: '20px' }}>
@@ -48,8 +48,8 @@ function RequestDetailPage() {
           </Typography>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           {allRequestId ? (
-            <Grid container rowSpacing={{ xs: 5 }}>
-              <Grid item xs="6">
+            <Grid container spacing={2}>
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Mã dự án
                 </Typography>
@@ -57,7 +57,7 @@ function RequestDetailPage() {
                   {allRequestId.projectId}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Tên dự án
                 </Typography>
@@ -65,7 +65,7 @@ function RequestDetailPage() {
                   {allRequestId.projectName}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Mã yêu cầu
                 </Typography>
@@ -73,7 +73,7 @@ function RequestDetailPage() {
                   {allRequestId.requestId}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Thông tin yêu cầu
                 </Typography>
@@ -82,7 +82,7 @@ function RequestDetailPage() {
                   {allRequestId.requestDesc}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Kiểu yêu cầu
                 </Typography>
@@ -90,7 +90,7 @@ function RequestDetailPage() {
                   {allRequestId.requestTypeName}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Người yêu cầu
                 </Typography>
@@ -98,17 +98,19 @@ function RequestDetailPage() {
                   {allRequestId.requesterName}
                 </Typography>
               </Grid>
-              <Grid item xs="6">
+              <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Ngày yêu cầu
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  {handleGetDate(allRequestId.requestDate)}
+                  {(allRequestId.requestDate)}
                 </Typography>
               </Grid>
               {allRequestId.requestDetailList ? (
-                <Grid item container columns={12} spacing={2}>
-                  <Grid item xs={4}>
+                <Grid item container xs="4">
+                    <Typography variant="body1" color="gray">
+                      Chi tiết yêu cầu
+                    </Typography>
                     <Box sx={{ width: '100%' }}>
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
@@ -134,7 +136,6 @@ function RequestDetailPage() {
                         </CardContent>
                       </Card>
                     </Box>
-                  </Grid>
                 </Grid>
               ) : (
                 <div>Không có chi tiết</div>

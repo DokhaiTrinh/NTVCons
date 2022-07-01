@@ -366,6 +366,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       <IconButton
                         component={Link}
+                        edge="start"
                         to={`/reportDetails/${row.reportId}`}
                       >
                         <InfoIcon />
@@ -374,6 +375,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       <IconButton
                         component={Link}
+                        edge="start"
                         to={`/updateReportDetails/${row.reportId}`}
                       >
                         <UpdateIcon />
@@ -382,7 +384,8 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       <IconButton
                         aria-label="delete"
-                        size="large"
+                        color="warning"
+                        edge="start"
                         onClick={() => handleDeleteReport(row.reportId)}
                       >
                         <DeleteIcon />
