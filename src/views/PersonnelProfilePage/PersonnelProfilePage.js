@@ -10,6 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import { Divider } from '@mui/material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Link } from 'react-router-dom';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -78,6 +80,26 @@ const PersonnelProfilePage = (props) => {
                 <Tabs variant="scrollable"
                     scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
                     <Tab label="Sơ yếu lý lịch" {...a11yProps(0)} />
+                    <Box sx={{ flex: 1 }}></Box>
+                    <Box>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <IconButton aria-label="edit report" component={Link} to={('/editPersonnelProfile')} sx={{ height: "100%"}}>
+                                    <Box sx={{height: "30px" }}>
+
+                                        <EditOutlinedIcon fontSize="large" />
+
+                                    </Box>
+                                </IconButton>
+                            </Grid>
+                            <Grid item xs={12}>
+
+                                <Typography variant="button">
+                                    Chỉnh sửa
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -233,6 +255,57 @@ const PersonnelProfilePage = (props) => {
                                 </Grid>
                                 <Grid item xs={8}>
                                         <Typography variant="body2">222 Hoàng Hoa Thám, phường 12, quận Tân Bình, Tp HCM</Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Box>
+                <Box sx={{ height: "30px" }}></Box>
+                <Box sx={{ width: '100%' }}>
+                    <Paper sx={{ width: "100%", mp: 2, borderRadius: "30px", padding: "20px" }} variant="elevation">
+                        <Typography variant="h6" sx={{ marginBottom: "20px" }} fontWeight="bold">
+                            Hồ sơ nhân viên
+                        </Typography>
+                        <Divider sx={{ marginBottom: "20px" }}></Divider>
+                        <Grid container spacing={3}>
+                            <Grid container item xs={6}>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2" color="gray">Phòng ban</Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                        <Typography variant="body2">Kiểm thử phần mềm</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid container item xs={6}>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2" color="gray">Vị trí</Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                        <Typography variant="body2">IT</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid container item xs={6}>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2" color="gray">Chức vụ</Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                        <Typography variant="body2">Trưởng phòng kỹ thuật</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid container item xs={6}>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2" color="gray">Vai trò</Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                        <Typography variant="body2">Nhân viên</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid container item xs={6}>
+                                <Grid item xs={4}>
+                                    <Typography variant="body2" color="gray">Ngày vào</Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                        <Typography variant="body2">01/01/2022</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

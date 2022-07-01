@@ -13,10 +13,13 @@ import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import {ProjectTable} from './components/ProjectTable';
-import {Link} from 'react-router-dom';
+import { ProjectTable } from './components/ProjectTable';
+import { Link } from 'react-router-dom';
+//Get all project
+import { getAllProjectApi } from '../../apis/Project/getAllProject';
+import { useStateValue } from '../../common/StateProvider/StateProvider';
 
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -34,7 +37,7 @@ function TabPanel(props) {
       )}
     </div>
   );
-}
+};
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -93,114 +96,154 @@ const ProjectPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+    useStateValue();
 
-  return <div>
-    <Grid container justify="center">
-      <Grid container md="8">
-        <Grid item>
-          <Box display="flex"
+  const [allProject, setAllProject] = React.useState([]);
+  console.log(allProject);
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllProject = await getAllProjectApi({
+          pageNo,
+          pageSize,
+          sortBy,
+          sortType,
+        });
+        setAllProject(listAllProject.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+  }, [pageNo, pageSize, sortBy, sortType, loading]);
+
+  return (
+    <div>
+      <Grid container justify="center">
+        <Grid container md="8">
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ margin: '20px' }}
+            >
+              <IconButton
+                aria-label="add"
+                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+                component={Link}
+                to={'/createProject'}
+              >
+                <Add sx={{ color: 'white' }}></Add>
+              </IconButton>
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ height: '100%' }}
+            >
+              <Typography variant="body1">Danh sách dự án</Typography>
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid item md="4">
+          <Box
+            display="flex"
             justifyContent="center"
             alignItems="center"
-            sx={{ margin: "20px" }}>
-            <IconButton aria-label="add" sx={{ alignSelf: "center", backgroundColor: "#DD8501" }} component={Link} to={('/createProject')}>
-              <Add sx={{ color: "white" }}></Add>
+            sx={{
+              margin: '20px',
+              border: 2,
+              borderColor: '#DD8501',
+              borderRadius: '10px',
+            }}
+          >
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Tìm kiếm"
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </Search>
+          </Box>
+        </Grid>
+      </Grid>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            variant="scrollable"
+            scrollButtons="auto"
+            value={value}
+            onChange={handleChange}
+            aria-label=""
+          >
+            <Tab label="Tất cả" {...a11yProps(0)} />
+            <Tab label="Chờ" {...a11yProps(1)} />
+            <Tab label="Đang thực hiện" {...a11yProps(2)} />
+            <Tab label="Hoàn thành" {...a11yProps(3)} />
+            <Tab label="Tạm dừng" {...a11yProps(4)} />
+            <Tab label="Đã hủy" {...a11yProps(5)} />
+            <Box sx={{ flex: 1 }}></Box>
+            <IconButton aria-label="export">
+              <Box>
+                <OutputOutlinedIcon />
+                <div>
+                  <Typography variant="button">Xuất</Typography>
+                </div>
+              </Box>
             </IconButton>
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "100%" }}>
-            <Typography variant="body1">Danh sách dự án</Typography>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid item md="4">
-        <Box display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{margin: "20px", border: 2, borderColor: "#DD8501", borderRadius: "10px"}}>
-
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Tìm kiếm"
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </Search>
+            <IconButton aria-label="import">
+              <Box>
+                <InputOutlinedIcon />
+                <div>
+                  <Typography variant="button">Nhập</Typography>
+                </div>
+              </Box>
+            </IconButton>
+            <IconButton aria-label="setting">
+              <Box>
+                <SettingsOutlinedIcon />
+                <div>
+                  <Typography variant="button">Cài đặt</Typography>
+                </div>
+              </Box>
+            </IconButton>
+          </Tabs>
         </Box>
-      </Grid>
-    </Grid>
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs variant="scrollable"
-          scrollButtons="auto" value={value} onChange={handleChange} aria-label="">
-          <Tab label="Tất cả" {...a11yProps(0)} />
-          <Tab label="Chờ" {...a11yProps(1)} />
-          <Tab label="Đang thực hiện" {...a11yProps(2)} />
-          <Tab label="Hoàn thành" {...a11yProps(3)} />
-          <Tab label="Tạm dừng" {...a11yProps(4)} />
-          <Tab label="Đã hủy" {...a11yProps(5)} />
-          <Box sx={{ flex: 1 }}></Box>
-          <IconButton aria-label="export">
-            <Box>
-            <OutputOutlinedIcon />
-            <div>
-            <Typography variant="button">
-              Xuất
-            </Typography>
-            </div>
-            </Box>
-          </IconButton>
-          <IconButton aria-label="import">
-            <Box>
-            <InputOutlinedIcon />
-            <div>
-            <Typography variant="button">
-              Nhập
-            </Typography>
-            </div>
-            </Box>
-          </IconButton>
-          <IconButton aria-label="setting">
-            <Box>
-
-            <SettingsOutlinedIcon />
-            <div>
-            <Typography variant="button">
-              Cài đặt
-            </Typography>
-            </div>
-            </Box>
-          </IconButton>
-        </Tabs>
+        <TabPanel value={value} index={0}>
+          <Box width="100%">
+            {allProject ? (
+              allProject.length > 0 ? (
+                <ProjectTable allProject={allProject}></ProjectTable>
+              ) : (
+                <div>Không có dữ liệu để hiển thị</div>
+              )
+            ) : null}
+          </Box>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ProjectTable></ProjectTable>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Item Three
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Item Four
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          Item Five
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          Item Six
+        </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        <Box width="100%">
-
-        <ProjectTable></ProjectTable>
-        </Box>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <ProjectTable></ProjectTable>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-    </Box>
-  </div>;
+    </div>
+  );
 };
 
 export default ProjectPage;

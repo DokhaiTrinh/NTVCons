@@ -24,7 +24,7 @@ function createData(id, name, date) {
   return {
     id,
     name,
-    date
+    date,
   };
 }
 
@@ -35,7 +35,7 @@ const rows = [
   createData('4', 'QA - QC', '06/06/2022'),
 ];
 
-function descendingComparator(a, b, orderBy) {
+const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -43,7 +43,7 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}
+};
 
 function getComparator(order, orderBy) {
   return order === 'desc'
@@ -86,9 +86,15 @@ const headCells = [
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+const EnhancedTableHead = (props) => {
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -131,7 +137,7 @@ function EnhancedTableHead(props) {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -152,7 +158,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -197,7 +206,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function RoleTable() {
+const RoleTable = () => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -232,7 +241,7 @@ export function RoleTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -259,10 +268,7 @@ export function RoleTable() {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -290,7 +296,7 @@ export function RoleTable() {
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                      onClick={(event) => handleClick(event, row.id)}
+                          onClick={(event) => handleClick(event, row.id)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -312,8 +318,7 @@ export function RoleTable() {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow
-                >
+                <TableRow>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
@@ -332,4 +337,4 @@ export function RoleTable() {
       </Paper>
     </Box>
   );
-}
+};
