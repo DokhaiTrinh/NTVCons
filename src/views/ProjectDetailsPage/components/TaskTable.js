@@ -104,12 +104,12 @@ const headCells = [
     disablePadding: false,
     label: 'Kết thúc',
   },
-  {
-    id: 'detail',
-    character: false,
-    disablePadding: false,
-    label: 'Chi tiết',
-  },
+  // {
+  //   id: 'detail',
+  //   character: false,
+  //   disablePadding: false,
+  //   label: 'Chi tiết',
+  // },
   {
     id: 'update',
     character: false,
@@ -419,7 +419,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.actualEndDate}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       <IconButton
                         edge="start"
                         component={Link}
@@ -427,15 +427,15 @@ export default function ReportTable(props) {
                       >
                         <InfoIcon />
                       </IconButton>
-                      {/* <Route>
+                      <Route>
                         <Link
                           underline="hover"
                           to={`/requestDetails/${row.requestId}`}
                         >
                           {'Chi Tiết'}
                         </Link>
-                      </Route> */}
-                    </TableCell>
+                      </Route>
+                    </TableCell>  */}
                     <TableCell align="center">
                       <IconButton
                         edge="start"
