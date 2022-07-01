@@ -28,20 +28,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
 
-function createData(id, name, date, category, detail, update1, delete1) {
-  return {
-    id,
-    name,
-    date,
-    category,
-    detail,
-    update1,
-    delete1,
-  };
-}
-
-const rows = [createData('Buildlink trên PBN 05/09', '05/09/2022', 'Thể loại')];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -280,7 +266,7 @@ export default function ReportTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = allReportDetails.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -320,7 +306,7 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -351,7 +337,7 @@ export default function ReportTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={allReportDetails.length}
             />
             <TableBody>
               {allReportDetails.map((row, index) => {
@@ -400,7 +386,7 @@ export default function ReportTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={allReportDetails.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

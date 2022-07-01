@@ -42,40 +42,6 @@ const handleGetDate = (date) => {
   );
   return getDateReformat;
 };
-function createData(
-  name,
-  progress,
-  perform,
-  start,
-  end,
-  durationn,
-  status,
-  prioritized
-) {
-  return {
-    name,
-    progress,
-    perform,
-    start,
-    end,
-    durationn,
-    status,
-    prioritized,
-  };
-}
-
-const rows = [
-  createData(
-    'Buildlink trên PBN 05/09',
-    '100%',
-    'Nguyễn Văn A',
-    '05/09/2022',
-    '06/09/2022',
-    1,
-    'Hoàn thành',
-    ''
-  ),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -109,65 +75,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: 'macongviec',
+    character: true,
+    disablePadding: false,
+    label: 'Mã công việc',
+  },
+  {
     id: 'tenconviec',
-    numeric: false,
+    character: true,
     disablePadding: false,
     label: 'Tên công việc',
   },
   {
-    id: 'tiendo',
-    numeric: false,
+    id: 'chitiet',
+    character: true,
     disablePadding: false,
-    label: 'Tiến độ',
-  },
-  {
-    id: 'thuchien',
-    numeric: false,
-    disablePadding: false,
-    label: 'Thực hiện',
+    label: 'Chi tiết công việc',
   },
   {
     id: 'batdau',
-    numeric: false,
+    character: true,
     disablePadding: false,
     label: 'Bắt đầu',
   },
   {
     id: 'ketthuc',
-    numeric: false,
+    character: true,
     disablePadding: false,
     label: 'Kết thúc',
   },
-
   {
-    id: 'thoihanthucte',
-    numeric: false,
+    id: 'detail',
+    character: false,
     disablePadding: false,
-    label: 'Thời hạn thực tế',
-  },
-  {
-    id: 'trangthai',
-    numeric: false,
-    disablePadding: false,
-    label: 'Trạng thái',
-  },
-  {
-    id: 'uutien',
-    numeric: false,
-    disablePadding: false,
-    label: 'Ưu tiên',
+    label: 'Chi tiết',
   },
   {
     id: 'update',
-    numeric: false,
+    character: false,
     disablePadding: false,
-    label: '',
+    label: 'Cập nhật',
   },
   {
     id: 'delete',
-    numeric: false,
+    character: false,
     disablePadding: false,
-    label: '',
+    label: 'Xóa',
   },
 ];
 
@@ -201,7 +154,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.character ? 'left' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -270,7 +223,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -282,7 +235,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -324,7 +277,7 @@ export default function ReportTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = allTaskDetails.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -364,7 +317,7 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length) : 0;
 
   const handleDeleteTask = (id) => {
     Swal.fire({
@@ -422,7 +375,7 @@ export default function ReportTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={allTaskDetails.length}
             />
             <TableBody>
               {allTaskDetails.map((row, index) => {
@@ -466,8 +419,9 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.actualEndDate}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
+                        edge="start"
                         component={Link}
                         to={`/requestDetails/${row.requestId}`}
                       >
@@ -482,8 +436,9 @@ export default function ReportTable(props) {
                         </Link>
                       </Route> */}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
+                        edge="start"
                         component={Link}
                         to={`/updateRequestDetails/${row.requestId}`}
                       >
@@ -493,10 +448,11 @@ export default function ReportTable(props) {
                         <Link underline="hover">{'Cập nhật'}</Link>
                       </Route> */}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center">
                       <IconButton
                         aria-label="delete"
-                        size="large"
+                        edge="start"
+                        color="warning"
                         onClick={() => handleDeleteTask(row.taskId)}
                       >
                         <DeleteIcon />
@@ -514,7 +470,7 @@ export default function ReportTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={allTaskDetails.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
