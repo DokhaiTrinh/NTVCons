@@ -143,13 +143,13 @@ const headCells = [
     label: 'Ưu tiên',
   },
   {
-    id: '',
+    id: 'update',
     numeric: false,
     disablePadding: false,
     label: '',
   },
   {
-    id: '',
+    id: 'delete',
     numeric: false,
     disablePadding: false,
     label: '',
@@ -449,20 +449,8 @@ export default function ReportTable(props) {
                       </TableCell>
                       <TableCell align="left">
                         <IconButton
-                          component={Link}
-                          to={`/updateTask/${row.requestId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Route>
-                          <Link underline="hover" to="/workDetails">
-                            {'Chi Tiết'}
-                          </Link>
-                        </Route> */}
-                      </TableCell>
-                      <TableCell align="left">
-                        <IconButton
                           aria-label="delete"
+                          color="warning"
                           size="large"
                           onClick={() => handleDeleteTask(row.requestId)}
                         >

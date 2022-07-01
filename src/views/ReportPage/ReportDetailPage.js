@@ -40,7 +40,7 @@ const ReportDetailPage = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '90%', mp: 2, borderRadius: '30px', padding: '20px', margin: "5%" }}
           variant="elevation"
         >
           <Typography variant="h6" sx={{ marginBottom: '20px' }}>
@@ -49,8 +49,8 @@ const ReportDetailPage = (props) => {
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           {allReportDetail ? (
             allReportDetail.length > 0 ? (
-              <Grid container rowSpacing={{ xs: 5 }}>
-                <Grid item xs="6">
+              <Grid container spacing={2} >
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Mã dự án
                   </Typography>
@@ -58,7 +58,7 @@ const ReportDetailPage = (props) => {
                     {allReportDetail[0].projectId}
                   </Typography>
                 </Grid>
-                <Grid item xs="6">
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Mã báo cáo
                   </Typography>
@@ -66,7 +66,7 @@ const ReportDetailPage = (props) => {
                     {allReportDetail[0].reportId}
                   </Typography>
                 </Grid>
-                <Grid item xs="6">
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Tên báo báo cáo
                   </Typography>
@@ -74,7 +74,7 @@ const ReportDetailPage = (props) => {
                     {allReportDetail[0].reportName}
                   </Typography>
                 </Grid>
-                <Grid item xs="6">
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Ngày báo cáo
                   </Typography>
@@ -82,7 +82,7 @@ const ReportDetailPage = (props) => {
                     {handleGetDate(allReportDetail[0].reportDate)}
                   </Typography>
                 </Grid>
-                <Grid item xs="6">
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Mô tả báo cáo
                   </Typography>
@@ -90,7 +90,7 @@ const ReportDetailPage = (props) => {
                     {allReportDetail[0].reportDesc}
                   </Typography>
                 </Grid>
-                <Grid item xs="6">
+                <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Người báo cáo
                   </Typography>
@@ -98,68 +98,65 @@ const ReportDetailPage = (props) => {
                     {allReportDetail[0].reporterId}
                   </Typography>
                 </Grid>
-                <Grid item container columns={12} spacing={2}>
-                  <Grid item xs={4}>
-                    <Box sx={{ width: '100%' }}>
-                      <Typography variant="body1" color="gray">
-                        Báo cáo chi tiết
-                      </Typography>
-                      <Card sx={{ width: '100%' }}>
-                        <CardContent>
-                          <Typography>
-                            Thông tin báo cáo chi tiết:{' '}
-                            {allReportDetail[0].reportDetailList[2].itemDesc}
-                          </Typography>
-                          <Typography>
-                            Số lượng:
-                            {allReportDetail[0].reportDetailList[2].itemAmount}
-                          </Typography>
-                          <Typography>
-                            Giá tiền:{' '}
-                            {allReportDetail[0].reportDetailList[2].itemPrice}{' '}
-                          </Typography>
-                          <Typography>
-                            Đơn vị:{' '}
-                            {allReportDetail[0].reportDetailList[2].itemUnit}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Grid item container columns={12} spacing={2}>
-                  <Grid item xs={4}>
-                    <Box sx={{ width: '100%' }}>
-                      <Typography variant="body1" color="gray">
-                        Loại báo cáo
-                      </Typography>
-                      <Card sx={{ width: '100%' }}>
-                        <CardContent>
-                          <Typography>
-                            Mã : {allReportDetail[0].reportType.reportTypeId}
-                          </Typography>
+                <Grid item xs="4">
+                  <Typography variant="body1" color="gray">
+                    Báo cáo chi tiết
+                  </Typography>
+                  <Card sx={{ width: '100%', height: "200px" }}>
+                    <CardContent>
+                      <Card sx={{ witdh: '90%', padding: '10px' }}>
 
-                          <Typography>
-                            Tên loại báo cáo:{' '}
-                            {allReportDetail[0].reportType.reportTypeName}
-                          </Typography>
-                          <Typography>
-                            Chi tiết loại báo cáo:{' '}
-                            {allReportDetail[0].reportType.reportTypeDesc}
-                          </Typography>
-                        </CardContent>
+                        <Typography>
+                          Thông tin báo cáo chi tiết:{' '}
+                          {allReportDetail[0].reportDetailList[2].itemDesc}
+                        </Typography>
+                        <Typography>
+                          Số lượng:
+                          {allReportDetail[0].reportDetailList[2].itemAmount}
+                        </Typography>
+                        <Typography>
+                          Giá tiền:{' '}
+                          {allReportDetail[0].reportDetailList[2].itemPrice}{' '}
+                        </Typography>
+                        <Typography>
+                          Đơn vị:{' '}
+                          {allReportDetail[0].reportDetailList[2].itemUnit}
+                        </Typography>
                       </Card>
-                    </Box>
-                  </Grid>
+                    </CardContent>
+                  </Card>
                 </Grid>
-                <Grid item container columns={12} spacing={2}>
-                  <Grid item xs={4}>
-                    <Box sx={{ width: '100%' }}>
-                      <Typography variant="body1" color="gray">
-                        Công việc chi tiết
-                      </Typography>
-                      <Card sx={{ width: '100%' }}>
-                        <CardContent>
+                <Grid item xs="4">
+                  <Box sx={{ width: '100%' }}>
+                    <Typography variant="body1" color="gray">
+                      Loại báo cáo
+                    </Typography>
+                    <Card sx={{ width: '100%', height: "200px" }}>
+                      <CardContent>
+                        <Typography>
+                          Mã : {allReportDetail[0].reportType.reportTypeId}
+                        </Typography>
+
+                        <Typography>
+                          Tên loại báo cáo:{' '}
+                          {allReportDetail[0].reportType.reportTypeName}
+                        </Typography>
+                        <Typography>
+                          Chi tiết loại báo cáo:{' '}
+                          {allReportDetail[0].reportType.reportTypeDesc}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Box>
+                </Grid>
+                <Grid item xs="4" >
+                  <Box sx={{ width: '100%' }}>
+                    <Typography variant="body1" color="gray">
+                      Công việc chi tiết
+                    </Typography>
+                    <Card sx={{ width: '100%', height: "200px" }}>
+                      <CardContent>
+                        <Card sx={{ witdh: '90%', padding: '10px' }}>
                           <Typography>
                             <Typography>
                               Mã công việc chi tiết:{' '}
@@ -171,10 +168,10 @@ const ReportDetailPage = (props) => {
                             Tên công việc :{' '}
                             {allReportDetail[0].taskReportList[0].taskNote}
                           </Typography>
-                        </CardContent>
-                      </Card>
-                    </Box>
-                  </Grid>
+                        </Card>
+                      </CardContent>
+                    </Card>
+                  </Box>
                 </Grid>
               </Grid>
             ) : (
