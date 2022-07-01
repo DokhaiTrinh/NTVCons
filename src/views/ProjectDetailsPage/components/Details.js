@@ -4,6 +4,10 @@ import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import { Link, useParams } from 'react-router-dom';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -26,9 +30,41 @@ const Details = (props) => {
           sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
           variant="elevation"
         >
-          <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-            Thông tin chung
-          </Typography>
+          <Grid container spacing={0}
+            alignItems="center"
+            justify="center">
+            <Grid item xs={11}>
+              <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+                Thông tin chung
+              </Typography>
+            </Grid>
+            <Grid item container xs={1} >
+              <Grid item xs={12}>
+                <Box sx={{ width: "100%" }} display="flex"
+                  justifyContent="center"
+                  alignItems="center">
+                  <IconButton
+                    aria-label="edit report"
+                    component={Link}
+                    // to={`/editProjectDetails/${projectId}`}
+                    sx={{ height: '100%' }}
+                  >
+                    <Box sx={{ height: '30px' }}>
+                      <EditOutlinedIcon fontSize="large" />
+                    </Box>
+                  </IconButton>
+                </Box>
+              </Grid>
+              <Grid item xs={12} justify="start">
+                <Box display="flex"
+                  justifyContent="center"
+                  alignItems="center">
+
+                  <Typography variant="button">Chỉnh sửa</Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="6">

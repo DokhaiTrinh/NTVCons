@@ -73,54 +73,54 @@ const headCells = [
   {
     id: 'nguoiquantri',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Người quản trị',
   },
   {
     id: 'maduan',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Mã dự án',
   },
   {
     id: 'tenduan',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Tên dự án',
   },
   {
     id: 'nguoithamgia',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Người tham gia',
   },
   {
     id: 'tiendo',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Tiến độ',
   },
   {
     id: 'batdau',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Bắt đầu',
   },
   {
     id: 'ketthuc',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Kết thúc',
   },
   {
     id: 'xoa',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Xóa',
   },
   {
     id: 'chitiet',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Chi tiết',
   },
@@ -142,17 +142,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -355,36 +344,26 @@ export const ProjectTable = (props) => {
                     key={row.name}
                     // selected={isItemSelected}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        onClick={(event) => handleClick(event, row.admin)}
-                        color="primary"
-                        // checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
-                      padding="none"
+                      align="left"
                     >
                       {row.createdBy}
                     </TableCell>
-                    <TableCell align="right">{row.projectId}</TableCell>
-                    <TableCell align="right">{row.projectName}</TableCell>
-                    <TableCell align="right">{row.addressNumber}</TableCell>
-                    <TableCell align="right">{}</TableCell>
-                    {/* <TableCell align="right">{row.works}</TableCell> */}
-                    <TableCell align="right">
+                    <TableCell align="left">{row.projectId}</TableCell>
+                    <TableCell align="left">{row.projectName}</TableCell>
+                    <TableCell align="left">{row.addressNumber}</TableCell>
+                    <TableCell align="left">{}</TableCell>
+                    {/* <TableCell align="left">{row.works}</TableCell> */}
+                    <TableCell align="left">
                       {handleGetDate(row.actualStartDate)}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">
                       {handleGetDate(row.actualEndDate)}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">
                       <IconButton
                         aria-label="delete"
                         size="large"
@@ -393,7 +372,7 @@ export const ProjectTable = (props) => {
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">
                       <IconButton
                         component={Link}
                         to={`/projectDetails/${row.projectId}`}
