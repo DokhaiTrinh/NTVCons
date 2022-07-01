@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getReportById } from '../../../apis/Report/getReportByProjectId';
+
 
 const DialogReportProject = (props) => {
   const { updateReportDetail, setUpdateReportDetail } = props;
@@ -42,6 +44,7 @@ const DialogReportProject = (props) => {
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
       reportId: null,
+      // reportDetailId: reportDetailId,
     };
 
     setUpdateReportDetail((updateReportDetail) => [...updateReportDetail, updateDetailReport]);

@@ -17,11 +17,16 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import Button from '@mui/material/Button';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import { deleteTaskApi } from '../../../apis/Task/deleteTask';
+import Swal from 'sweetalert2';
 function createData(
   name,
   progress,
@@ -278,6 +283,7 @@ export default function ReportTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [{ loading }, dispatch] = useStateValue();
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -328,15 +334,44 @@ export default function ReportTable(props) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+  const handleDeleteTask = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteTask(id);
+      }
+    });
+  };
+  const DeleteTask = async (id) => {
+    try {
+      await deleteTaskApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Công việc của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{
-        width: "100%", display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "flex-end",
-        marginBottom: "30px"
-      }}>
-
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          marginBottom: '30px',
+        }}
+      >
         <Button
           sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
           component={Link}
@@ -400,18 +435,42 @@ export default function ReportTable(props) {
                       <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">{row.prioritized}</TableCell>
                       <TableCell align="left">
-                        <Route>
+                        <IconButton
+                          component={Link}
+                          to={`/updateTask/${row.requestId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Route>
                           <Link underline="hover" to="/workDetails">
                             {'Chi Tiết'}
                           </Link>
-                        </Route>
+                        </Route> */}
                       </TableCell>
                       <TableCell align="left">
-                        <Route>
-                          <Link underline="hover">
-                            {'Xóa'}
+                        <IconButton
+                          component={Link}
+                          to={`/updateTask/${row.requestId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Route>
+                          <Link underline="hover" to="/workDetails">
+                            {'Chi Tiết'}
                           </Link>
-                        </Route>
+                        </Route> */}
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          size="large"
+                          onClick={() => handleDeleteTask(row.requestId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        {/* <Route>
+                          <Link underline="hover">{'Xóa'}</Link>
+                        </Route> */}
                       </TableCell>
                     </TableRow>
                   );

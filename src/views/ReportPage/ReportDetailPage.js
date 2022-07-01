@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import { getReportById } from '../../apis/Report/getReportByProjectId';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
-
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -21,20 +22,20 @@ const handleGetDate = (date) => {
   return getDateReformat;
 };
 const ReportDetailPage = (props) => {
-  const [{ reportId, searchType, loading }, dispatch] = useStateValue();
+  const [{ loading }, dispatch] = useStateValue();
+  const { id } = useParams();
   const [allReportDetail, setAllReportDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllReportDetail = await getReportById(reportId, searchType);
-        setAllReportDetail(listAllReportDetail);
+        const listAllReportDetail = await getReportById(id, 'REPORT_BY_ID');
+        setAllReportDetail(listAllReportDetail.data);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
-      console.log(allReportDetail);
     })();
-  }, [searchType]);
-
+  }, []);
+  console.log(allReportDetail);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -46,58 +47,88 @@ const ReportDetailPage = (props) => {
             Thông tin chung
           </Typography>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
-          <Grid container rowSpacing={{ xs: 5 }}>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
-                Mã dự án
-              </Typography>
-              <Typography variant="body1">{}</Typography>
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
-                Tên dự án
-              </Typography>
-              <Typography variant="body1">{}</Typography>
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
-                Người quản trị
-              </Typography>
-              <Typography variant="body1">Đỗ Nam Trung</Typography>
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
-                Trạng thái
-              </Typography>
-              {/* <Box
-            sx={{
-              width: '50%',
-              borderRadius: '10px',
-              backgroundColor: 'pink',
-            }}
-          >
-            <Typography
-              variant="body1"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'gray',
-              }}
-            >
-              Đang thực hiện
-            </Typography>
-          </Box> */}
-            </Grid>
-            <Grid item xs="6">
-              <Typography variant="body1" color="gray">
-                Người tham gia
-              </Typography>
-              <Typography variant="body1" paragraph>
-                {}
-              </Typography>
-            </Grid>
-          </Grid>
+          {allReportDetail ? (
+            allReportDetail.length > 0 ? (
+              <Grid container rowSpacing={{ xs: 5 }}>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Mã dự án
+                  </Typography>
+                  <Typography variant="body1">
+                    {allReportDetail[0].projectId}
+                  </Typography>
+                </Grid>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Mã báo cáo
+                  </Typography>
+                  <Typography variant="body1">
+                    {allReportDetail[0].reportId}
+                  </Typography>
+                </Grid>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Tên báo báo cáo
+                  </Typography>
+                  <Typography variant="body1">
+                    {allReportDetail[0].reportName}
+                  </Typography>
+                </Grid>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Ngày báo cáo
+                  </Typography>
+                  <Typography variant="body1">
+                    {handleGetDate(allReportDetail[0].reportDate)}
+                  </Typography>
+                </Grid>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Mô tả báo cáo
+                  </Typography>
+                  <Typography variant="body1">
+                    {allReportDetail[0].reportDesc}
+                  </Typography>
+                </Grid>
+                <Grid item xs="6">
+                  <Typography variant="body1" color="gray">
+                    Người báo cáo
+                  </Typography>
+                  <Typography variant="body1" paragraph>
+                    {allReportDetail[0].reporterId}
+                  </Typography>
+                </Grid>
+                <Grid item container columns={12} spacing={2}>
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Thông tin báo cáo chi tiết:{' '}
+                            {allReportDetail[0].reportDetailList[2].itemDesc}
+                          </Typography>
+                          <Typography>
+                            Số lượng:
+                            {allReportDetail[0].reportDetailList[2].itemAmount}
+                          </Typography>
+                          <Typography>
+                            Giá tiền:{' '}
+                            {allReportDetail[0].reportDetailList[2].itemPrice}{' '}
+                          </Typography>
+                          <Typography>
+                            Đơn vị:{' '}
+                            {allReportDetail[0].reportDetailList[2].itemUnit}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : (
+              <div>Không có dữ liệu để hiển thị!!</div>
+            )
+          ) : null}
         </Paper>
       </Box>
     </div>

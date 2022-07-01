@@ -9,7 +9,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { TextField } from '@mui/material';
 const DialogEditProject = (props) => {
   const { locationDetail, setLocationDetail } = props;
-
   const validateSchema = yup
     .object({
       addressNumber: yup
