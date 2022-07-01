@@ -485,7 +485,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       <IconButton
                         component={Link}
-                        to={`/updateRequestDetails/${row.requestId}`}
+                        to={`/updateTask/${row.taskId}`}
                       >
                         <UpdateIcon />
                       </IconButton>
