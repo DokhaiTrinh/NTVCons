@@ -18,13 +18,12 @@ import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
 import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
-import UpdateTaskProject from '../views/TaskPage/UpdateTaskProject';
-//import UpdateReportProject from '../views/ReportPage/UpdateReportProject';
 import ReportDetailPage from '../views/ReportPage/indexReportDetail';
 import UpdateReportProject from '../views/ReportPage/UpdateReportProject';
 import RequestDetailPage from '../views/RequestPage/RequestDetailPage';
 import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
-
+import UpdateTaskPage from '../views/TaskPage/UpdateTaskProject';
+import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
 
 export const HOME_ROUTES = [
   {
@@ -56,6 +55,12 @@ export const HOME_ROUTES = [
     name: 'Request Details Page',
     exact: true,
     component: RequestDetailPage,
+  },
+  {
+    path: '/taskDetails/:id',
+    name: 'Task Details Page',
+    exact: true,
+    component: TaskDetailPage,
   },
   {
     path: '/createProject',
@@ -136,6 +141,12 @@ export const HOME_ROUTES = [
     component: UpdateRequestPage,
   },
   {
+    path: '/updateTask/:id',
+    name: 'Update Task  Page',
+    exact: true,
+    component: UpdateTaskPage,
+  },
+  {
     path: '/createRole',
     name: 'Create Role Page',
     exact: true,
@@ -169,7 +180,7 @@ export const HOME_ROUTES = [
     path: '/updateTask',
     name: 'Update Task Page',
     exact: true,
-    component: UpdateTaskProject,
+    component: UpdateTaskPage,
   },
 ];
 

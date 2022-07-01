@@ -37,6 +37,8 @@ export const GET_ALL_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/getAll';
 export const GET_REPORT_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
+export const GET_REPORT_BY_PROJECT_ID1 =
+  'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
 export const CREATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/createReport';
 export const UPDATE_REPORT =
@@ -73,6 +75,8 @@ export const GET_ALL_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/getAll';
 export const GET_REQUEST_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/Request/v1/getByProjectId';
+export const GET_REQUEST_ID =
+  'http://niemtinvang.herokuapp.com/Request/v1/getByRequestId';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';

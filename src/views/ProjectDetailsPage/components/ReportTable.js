@@ -83,7 +83,7 @@ const headCells = [
     id: 'tenconviec',
     numeric: false,
     disablePadding: false,
-    label: 'Tên công việc',
+    label: 'Tên báo cáo',
   },
   {
     id: 'ngay',
@@ -358,7 +358,7 @@ export default function ReportTable(props) {
                 return (
                   <TableRow>
                     <TableCell>{row.reportId}</TableCell>
-                    <TableCell align="left">{row.reportDesc}</TableCell>
+                    <TableCell align="left">{row.reportName}</TableCell>
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
                     </TableCell>

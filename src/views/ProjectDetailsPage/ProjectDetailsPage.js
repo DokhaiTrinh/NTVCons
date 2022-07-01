@@ -20,7 +20,8 @@ import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
-
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -68,7 +69,6 @@ const ProjectDetailsPage = (props) => {
   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [allReportDetails, setAllReportDetails] = React.useState([]);
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
-
   const handleChange1 = (event) => {
     setAge(event.target.value);
   };
