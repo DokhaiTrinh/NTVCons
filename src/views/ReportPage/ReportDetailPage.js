@@ -101,6 +101,9 @@ const ReportDetailPage = (props) => {
                 <Grid item container columns={12} spacing={2}>
                   <Grid item xs={4}>
                     <Box sx={{ width: '100%' }}>
+                      <Typography variant="body1" color="gray">
+                        Báo cáo chi tiết
+                      </Typography>
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
                           <Typography>
@@ -118,6 +121,55 @@ const ReportDetailPage = (props) => {
                           <Typography>
                             Đơn vị:{' '}
                             {allReportDetail[0].reportDetailList[2].itemUnit}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid item container columns={12} spacing={2}>
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Typography variant="body1" color="gray">
+                        Loại báo cáo
+                      </Typography>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Mã : {allReportDetail[0].reportType.reportTypeId}
+                          </Typography>
+
+                          <Typography>
+                            Tên loại báo cáo:{' '}
+                            {allReportDetail[0].reportType.reportTypeName}
+                          </Typography>
+                          <Typography>
+                            Chi tiết loại báo cáo:{' '}
+                            {allReportDetail[0].reportType.reportTypeDesc}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid item container columns={12} spacing={2}>
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Typography variant="body1" color="gray">
+                        Công việc chi tiết
+                      </Typography>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            <Typography>
+                              Mã công việc chi tiết:{' '}
+                              {
+                                allReportDetail[0].taskReportList[0]
+                                  .taskReportId
+                              }
+                            </Typography>
+                            Tên công việc :{' '}
+                            {allReportDetail[0].taskReportList[0].taskNote}
                           </Typography>
                         </CardContent>
                       </Card>
