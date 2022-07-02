@@ -212,7 +212,7 @@ const DialogEditProject = (props) => {
                   Mã địa chỉ
                 </Typography>
                 <TextFieldComponent
-                  register={register}
+                  register={register}              
                   name="locationId"
                   errors={errors.locationId}
                   variant="outlined"
