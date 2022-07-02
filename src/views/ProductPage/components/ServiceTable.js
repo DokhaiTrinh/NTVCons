@@ -23,6 +23,7 @@ import {Link} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import photo from "../../../assets/images/toa-nha-van-phong.jpeg";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
 
 function createData(id, image, name, category, scale, location) {
   return {
@@ -73,7 +74,7 @@ const headCells = [
   {
     id: 'ma',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Mã',
   },
   {
@@ -106,6 +107,18 @@ const headCells = [
     disablePadding: false,
     label: 'Vị trí',
   },
+  {
+    id: 'capnhat',
+    numeric: false,
+    disablePadding: false,
+    label: 'Cập nhật',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -118,17 +131,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -198,7 +200,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -210,7 +212,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -304,27 +306,16 @@ export function ProductTable() {
                     <TableRow
                       hover
                       // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
+                      // role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                      onClick={(event) => handleClick(event, row.id)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                       >
                         {row.id}
                       </TableCell>
@@ -340,9 +331,19 @@ export function ProductTable() {
                       <TableCell align="left">{row.location}</TableCell>
                       <TableCell align="left">
                       <IconButton aria-label="edit role" component={Link} to={'/editService'}>
-                            <EditOutlinedIcon></EditOutlinedIcon>
+                            <UpdateIcon/>
                           </IconButton>
                       </TableCell>
+                      <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        size="large"
+                        color="warning" 
+                        // onClick={() => ()}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                     </TableRow>
                   );
                 })}

@@ -331,7 +331,7 @@ const UpdateReportProject = (props) => {
                             }
                           >
                             <Box sx={{ width: '100%' }}>
-                              <Card sx={{ width: '100%' }}>
+                              <Card sx={{ width: '100%', minHeight: '250px' }}>
                                 <CardContent>
                                   <Typography>
                                     Mã báo cáo chi tiết:{' '}
@@ -407,7 +407,7 @@ const UpdateReportProject = (props) => {
                             }
                           >
                             <Box sx={{ width: '100%' }}>
-                              <Card sx={{ width: '100%' }}>
+                              <Card sx={{ width: '100%', minHeight: '200px' }}>
                                 <CardContent>
                                   <Typography>
                                     Công việc thuộc mã công việc: :{' '}

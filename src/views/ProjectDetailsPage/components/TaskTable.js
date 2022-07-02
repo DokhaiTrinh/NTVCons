@@ -76,31 +76,31 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: 'macongviec',
-    character: true,
+    numeric: false,
     disablePadding: false,
     label: 'Mã công việc',
   },
   {
     id: 'tenconviec',
-    character: true,
+    numeric: false,
     disablePadding: false,
     label: 'Tên công việc',
   },
   {
     id: 'chitiet',
-    character: true,
+    numeric: false,
     disablePadding: false,
     label: 'Chi tiết công việc',
   },
   {
     id: 'batdau',
-    character: true,
+    numeric: false,
     disablePadding: false,
     label: 'Bắt đầu',
   },
   {
     id: 'ketthuc',
-    character: true,
+    numeric: false,
     disablePadding: false,
     label: 'Kết thúc',
   },
@@ -112,13 +112,13 @@ const headCells = [
   // },
   {
     id: 'update',
-    character: false,
+    numeric: false,
     disablePadding: false,
     label: 'Cập nhật',
   },
   {
     id: 'delete',
-    character: false,
+    numeric: false,
     disablePadding: false,
     label: 'Xóa',
   },
@@ -154,7 +154,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.character ? 'left' : 'center'}
+            align={headCell.character ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -436,9 +436,10 @@ export default function ReportTable(props) {
                         </Link>
                       </Route>
                     </TableCell>  */}
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <IconButton
-                        edge="start"
+                        // edge="start"
+                        size="large"
                         component={Link}
                         to={`/updateTask/${row.taskId}`}
                       >
@@ -448,11 +449,12 @@ export default function ReportTable(props) {
                         <Link underline="hover">{'Cập nhật'}</Link>
                       </Route> */}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <IconButton
                         aria-label="delete"
                         edge="start"
                         color="warning"
+                        size="large"
                         onClick={() => handleDeleteTask(row.taskId)}
                       >
                         <DeleteIcon />

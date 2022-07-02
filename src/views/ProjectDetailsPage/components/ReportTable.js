@@ -85,19 +85,19 @@ const headCells = [
   },
   {
     id: 'Chitiet',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Chi tiết',
   },
   {
     id: 'Capnhat',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Cập nhật',
   },
   {
     id: 'xoa',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Xóa',
   },
@@ -349,29 +349,32 @@ export default function ReportTable(props) {
                       {handleGetDate(row.reportDate)}
                     </TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <IconButton
                         component={Link}
-                        edge="start"
+                        // edge="start"
+                        size="large"
                         to={`/reportDetails/${row.reportId}`}
                       >
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <IconButton
                         component={Link}
-                        edge="start"
+                        // edge="start"
+                        size="large"
                         to={`/updateReportDetails/${row.reportId}`}
                       >
                         <UpdateIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <IconButton
                         aria-label="delete"
                         color="warning"
                         edge="start"
+                        size="large"
                         onClick={() => handleDeleteReport(row.reportId)}
                       >
                         <DeleteIcon />

@@ -294,7 +294,7 @@ const EditProejectDetailsPage = (props) => {
                       <Typography variant="body2">Bắt đầu dự kiến</Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
+                          renderInput={(props) => <TextField {...props} fullWidth />}
                           value={valuePlanStartDate}
                           onChange={(newValue) => {
                             setValuePlanStartDate(newValue);
@@ -306,7 +306,7 @@ const EditProejectDetailsPage = (props) => {
                       <Typography variant="body2">Kết thúc dự kiến</Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
+                          renderInput={(props) => <TextField {...props} fullWidth />}
                           value={valuePlanEndDate}
                           onChange={(newValue) => {
                             setValuePlanEndDate(newValue);
@@ -327,7 +327,7 @@ const EditProejectDetailsPage = (props) => {
                       </Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
+                          renderInput={(props) => <TextField {...props} fullWidth />}
                           value={valueActualStartDate}
                           onChange={(newValue) => {
                             setValueActualStartDate(newValue);
@@ -341,7 +341,7 @@ const EditProejectDetailsPage = (props) => {
                       </Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
+                          renderInput={(props) => <TextField {...props} fullWidth />}
                           value={valueActualEndDate}
                           onChange={(newValue) => {
                             setValueActualEndDate(newValue);
@@ -360,11 +360,11 @@ const EditProejectDetailsPage = (props) => {
                       }}
                     ></Box>
                   </Grid>
-                  <Grid item container columns={12} spacing={2}>
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
+                  <Box sx={{ width: '100%' }}>
+                    <Card sx={{ width: '100%' }}>
+                      <CardContent>
+                        <Grid item container spacing={2}>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('addressNumber')}
                               name="addressNumber"
@@ -375,7 +375,10 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.addressNumber != null}
                               helperText={errors.addressNumber?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('street')}
                               name="street"
@@ -386,7 +389,10 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.street != null}
                               helperText={errors.street?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('district')}
                               name="district"
@@ -397,7 +403,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.district != null}
                               helperText={errors.district?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('city')}
                               name="city"
@@ -408,7 +418,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.city != null}
                               helperText={errors.city?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('ward')}
                               name="ward"
@@ -419,7 +433,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.ward != null}
                               helperText={errors.ward?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('province')}
                               name="province"
@@ -430,7 +448,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.province != null}
                               helperText={errors.province?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('country')}
                               name="country"
@@ -441,7 +463,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.country != null}
                               helperText={errors.country?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('area')}
                               name="area"
@@ -452,7 +478,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.area != null}
                               helperText={errors.area?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('coordinate')}
                               name="coordinate"
@@ -463,7 +493,11 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.coordinate != null}
                               helperText={errors.coordinate?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
+                          </Grid>
+                          <Grid item xs={4}>
                             <TextField
                               {...register('locationId')}
                               name="locationId"
@@ -475,12 +509,15 @@ const EditProejectDetailsPage = (props) => {
                               error={errors.locationId != null}
                               helperText={errors.locationId?.message}
                               sx={{ width: '100%' }}
+                              disabled="true"
+
                             />
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  </Grid>
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </Box>
+
                   <Grid item container sx={12}>
                     <Box
                       sx={{
@@ -619,7 +656,7 @@ const EditProejectDetailsPage = (props) => {
                           width: '200px',
                           alignSelf: 'center',
                         }}
-                        // onClick={uploadImage}
+                      // onClick={uploadImage}
                       >
                         Cập nhật dự án
                       </Button>

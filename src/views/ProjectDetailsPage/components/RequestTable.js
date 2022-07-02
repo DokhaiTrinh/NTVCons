@@ -211,7 +211,7 @@ const EnhancedTableToolbar = (props) => {
           Yêu cầu
         </Typography>
       )}
-
+{/* 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -224,7 +224,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -391,6 +391,7 @@ export default function RequestTable(props) {
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     <TableCell align="left">
                       <IconButton
+                        size="large"
                         component={Link}
                         to={`/requestDetails/${row.requestId}`}
                       >
@@ -407,6 +408,7 @@ export default function RequestTable(props) {
                     </TableCell>
                     <TableCell align="left">
                       <IconButton
+                        size="large"
                         component={Link}
                         to={`/updateRequestDetails/${row.requestId}`}
                       >
@@ -419,7 +421,9 @@ export default function RequestTable(props) {
                     <TableCell align="left">
                       <IconButton
                         aria-label="delete"
+                        edge="start"
                         size="large"
+                        color="warning" 
                         onClick={() => handleDeleteRequest(row.requestId)}
                       >
                         <DeleteIcon />

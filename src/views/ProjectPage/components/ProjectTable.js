@@ -113,16 +113,16 @@ const headCells = [
     label: 'Kết thúc',
   },
   {
-    id: 'xoa',
-    numeric: false,
-    disablePadding: false,
-    label: 'Xóa',
-  },
-  {
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
     label: 'Chi tiết',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
@@ -214,7 +214,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -226,7 +226,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -288,7 +288,7 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
@@ -342,7 +342,7 @@ export const ProjectTable = (props) => {
                     // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
-                    // selected={isItemSelected}
+                  // selected={isItemSelected}
                   >
                     <TableCell
                       component="th"
@@ -355,7 +355,7 @@ export const ProjectTable = (props) => {
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
                     <TableCell align="left">{row.addressNumber}</TableCell>
-                    <TableCell align="left">{}</TableCell>
+                    <TableCell align="left">{ }</TableCell>
                     {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">
                       {handleGetDate(row.actualStartDate)}
@@ -365,19 +365,23 @@ export const ProjectTable = (props) => {
                     </TableCell>
                     <TableCell align="left">
                       <IconButton
-                        aria-label="delete"
+                        edge="end"
                         size="large"
-                        onClick={() => handleDeleteProject(row.projectId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
                         component={Link}
                         to={`/projectDetails/${row.projectId}`}
                       >
                         <InfoIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        color="warning"
+                        edge="start"
+                        size="large"
+                        onClick={() => handleDeleteProject(row.projectId)}
+                      >
+                        <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
