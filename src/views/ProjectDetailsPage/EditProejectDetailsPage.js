@@ -538,10 +538,10 @@ const EditProejectDetailsPage = (props) => {
                                 Điều phối: {locationDetail.coordinate}
                               </Typography>
                               <Typography>
-                                Người tạo: {locationDetail.createdBy}
+                                Người tạo: {locationDetail.updatedBy}
                               </Typography>
                               <Typography>
-                                Người tạo: {locationDetail.locationId}
+                                Mã địa chỉ: {locationDetail.locationId}
                               </Typography>
                             </CardContent>
                           </Card>

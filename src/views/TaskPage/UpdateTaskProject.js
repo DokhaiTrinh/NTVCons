@@ -27,6 +27,7 @@ import { getTaskByIdApi } from '../../apis/Task/getTaskByProjectId';
 const UpdateTaskProject = (props) => {
   const { id } = useParams();
   console.log(id);
+  var idN = parseInt(id);
   //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
@@ -38,11 +39,7 @@ const UpdateTaskProject = (props) => {
     new Date()
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
+  const [projectId, setProjectId] = React.useState();
   const handleGetDate = (date) => {
     const getDate = date.substring(0, 10);
     const getDateCom = getDate.split('-');
@@ -55,41 +52,37 @@ const UpdateTaskProject = (props) => {
     );
     return getDateReformat;
   };
-  //   React.useEffect(() => {
-  //     (async () => {
-  //       try {
-  //         const listAllProjectDetails = await getProjectByIdApi(
-  //           0,
-  //           10,
-  //           id,
-  //           'createdAt',
-  //           true
-  //         );
-  //         setAllProjectDetails(listAllProjectDetails.data);
-  //       } catch (error) {
-  //         console.log('Không thể lấy danh sách công việc');
-  //       }
-  //     })();
-  //   }, []);
   const [loading, setLoading] = useState('');
   const [allTaskDetails, setAllTaskDetails] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
         const listAllTaskDetail = await getTaskByIdApi(id, 'TASK_BY_ID');
         setAllTaskDetails(listAllTaskDetail.data);
+        setProjectId(listAllTaskDetail.data[0].projectId);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo công việc');
       }
     })();
   }, []);
-  console.log(allTaskDetails);
+
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
     const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+    console.log(
+      actualEndDate,
+      actualStartDate,
+      planEndDate,
+      planStartDate,
+      projectId,
+      data.taskDesc,
+      idN,
+      data.taskName
+    );
     Swal.fire({
       title: 'Cập nhật công việc ?',
       target: document.getElementById('form-modal12'),
@@ -107,8 +100,9 @@ const UpdateTaskProject = (props) => {
           actualStartDate,
           planEndDate,
           planStartDate,
-          id,
+          projectId,
           data.taskDesc,
+          idN,
           data.taskName
         );
         console.log(data);
@@ -120,21 +114,27 @@ const UpdateTaskProject = (props) => {
     actualStartDate,
     planEndDate,
     planStartDate,
-    taskId,
-    taskDesc,
     projectId,
+    taskDesc,
+    taskId,
     taskName
   ) => {
     try {
       setLoading(true);
+      console.log(
+        typeof taskId,
+        typeof taskDesc,
+        typeof projectId,
+        typeof taskName
+      );
       await updateTaskApi({
         actualEndDate,
         actualStartDate,
         planEndDate,
         planStartDate,
-        taskId,
-        taskDesc,
         projectId,
+        taskDesc,
+        taskId,
         taskName,
       });
       setLoading(false);
@@ -144,6 +144,7 @@ const UpdateTaskProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
+      window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -156,7 +157,14 @@ const UpdateTaskProject = (props) => {
     }
     console.log(planStartDate);
   };
-  const valideSchema = yup.object({}).required();
+  const valideSchema = yup
+    .object({
+      taskName: yup.string().required('Không được để trống tên công việc !!'),
+      taskDesc: yup
+        .string()
+        .required('Không được để trống thông tin công việc!!'),
+    })
+    .required();
   const {
     register,
     handleSubmit,
