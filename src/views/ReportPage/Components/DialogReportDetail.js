@@ -10,7 +10,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 const DialogReportProject = (props) => {
   const { reportDetail, setReportDetail } = props;
   const [loading, setLoading] = useState('');
-
   const valideSchema = yup
     .object({
       itemAmount: yup

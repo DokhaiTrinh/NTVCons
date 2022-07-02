@@ -25,7 +25,7 @@ import { useParams } from 'react-router-dom';
 
 const CreateTaskProject = (props) => {
   const { id } = useParams();
-  console.log(id);
+
   //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
@@ -87,7 +87,7 @@ const CreateTaskProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace(`projectDetails/${id}`);
+      window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
