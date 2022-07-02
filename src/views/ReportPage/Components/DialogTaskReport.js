@@ -13,7 +13,6 @@ const DialogTaskReport = (props) => {
 
   const valideSchema = yup
     .object({
-      taskId: yup.number().required(),
       taskNote: yup.string().required(),
       taskProgress: yup.string().required(),
     })
@@ -73,7 +72,7 @@ const DialogTaskReport = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                   Công việc
+                   Công việc thuộc mã công việc:
                 </Typography>
                 <TextFieldComponent
                   register={register}

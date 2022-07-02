@@ -7,26 +7,30 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getReportById } from '../../../apis/Report/getReportByProjectId';
+import { useParams } from 'react-router-dom';
 
-
-const DialogReportProject = (props) => {
-  const { updateReportDetail, setUpdateReportDetail } = props;
+const DialogUpdateReportDetail = (props) => {
+  const {
+    updateReportDetail,
+    setUpdateReportDetail,
+    actionUpdateReport,
+    itemDetailReportUpdate,
+  } = props;
   const [loading, setLoading] = useState('');
-
   const valideSchema = yup
     .object({
       itemAmount: yup
         .number()
-        .typeError('amount is invalide')
+        .typeError('Phải nhập số lượng!!')
         .min(1, 'Số lượng phải lớn hơn 0!')
         .required(),
       itemDesc: yup.string().required(),
       itemPrice: yup
         .number()
-        .typeError('Price is invalide')
+        .typeError('Phải nhập giá!!')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lườngf'),
+      itemUnit: yup.string().required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -46,10 +50,15 @@ const DialogReportProject = (props) => {
       reportId: null,
       // reportDetailId: reportDetailId,
     };
+    if (actionUpdateReport === 'CreateNewReport') {
+      setUpdateReportDetail((updateReportDetail) => [
+        ...updateReportDetail,
+        updateDetailReport,
+      ]);
+    } else {
+    }
 
-    setUpdateReportDetail((updateReportDetail) => [...updateReportDetail, updateDetailReport]);
-
-    props.handleCloseReportDetailDialog();
+    props.handleCloseUpdateReportDetailDialog();
   };
 
   return (
@@ -91,6 +100,9 @@ const DialogReportProject = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="itemDesc"
+                  defaultValue={
+                    itemDetailReportUpdate ? itemDetailReportUpdate.itemDesc : null
+                  }
                   errors={errors.itemDesc}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -103,6 +115,9 @@ const DialogReportProject = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="itemAmount"
+                  defaultValue={
+                    itemDetailReportUpdate ? itemDetailReportUpdate.itemAmount : null
+                  }
                   errors={errors.itemAmount}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -116,6 +131,9 @@ const DialogReportProject = (props) => {
                   register={register}
                   name="itemPrice"
                   label="Giá tiền (VNĐ)"
+                  defaultValue={
+                    itemDetailReportUpdate ? itemDetailReportUpdate.itemPrice : null
+                  }
                   errors={errors.itemPrice}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -129,6 +147,9 @@ const DialogReportProject = (props) => {
                   register={register}
                   name="itemUnit"
                   label="Đơn vị"
+                  defaultValue={
+                    itemDetailReportUpdate ? itemDetailReportUpdate.itemUnit : null
+                  }
                   errors={errors.itemUnit}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -143,6 +164,36 @@ const DialogReportProject = (props) => {
                     display: 'flex',
                   }}
                 >
+                  {actionUpdateReport ? (
+                    actionUpdateReport === 'UpdateReport' ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Cập nhật
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Tạo mới
+                      </Button>
+                    )
+                  ) : null}
+
                   <Button
                     type="submit"
                     variant="contained"
@@ -153,7 +204,7 @@ const DialogReportProject = (props) => {
                       alignSelf: 'center',
                     }}
                   >
-                    Lưu
+                    Hủy
                   </Button>
                 </Box>
               </Grid>
@@ -165,4 +216,4 @@ const DialogReportProject = (props) => {
   );
 };
 
-export default DialogReportProject;
+export default DialogUpdateReportDetail;

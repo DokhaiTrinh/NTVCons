@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 
 const TextFieldComponent = (props) => {
-  const { register, name, label, errors, isPassword,maxRows,multiline } = props;
+  const { register, name, label, errors, isPassword,maxRows,multiline,defaultValue } = props;
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -18,6 +18,7 @@ const TextFieldComponent = (props) => {
       variant="outlined"
       margin="normal"
       fullWidth
+      defaultValue={defaultValue}
       label={label}
       autoComplete={name}
       autoFocus

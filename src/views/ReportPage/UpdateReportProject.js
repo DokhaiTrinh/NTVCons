@@ -27,8 +27,6 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import DialogUpdateReportDetail from './Components/DialogUpdateReportDetail';
 import DialogUpdateTaskReport from './Components/DialogUpdateTaskReport';
-import DialogNewReportDetail from './Components/DialogNewReportDetail';
-import DialogNewTaskDetail from './Components/DialogNewTaskReport';
 import { getReportById } from '../../apis/Report/getReportByProjectId';
 
 import Card from '@mui/material/Card';
@@ -45,9 +43,13 @@ const MenuProps = {
 };
 const UpdateReportProject = (props) => {
   const { id } = useParams();
-  console.log(id);
   const idN = parseFloat(id);
+  const [projectId] = useState();
 
+  const [actionUpdateReport, setActionUpdateReport] = useState();
+  const [actionUpdateTask, setActionUpdateTask] = useState();
+  const [itemDetailReportUpdate, setitemDetailReportUpdate] = useState();
+  const [itemDetailTaskUpdate, setitemDetailTaskUpdate] = useState();
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [allReportType, setAllReportType] = React.useState([]);
@@ -56,15 +58,11 @@ const UpdateReportProject = (props) => {
     React.useState(false);
   const [openUpdateTaskReportDialog, setOpenUpdateTaskReportDialog] =
     React.useState(false);
-  const [openNewReportDialog, setOpenNewReportDialog] = React.useState(false);
-  const [openNewTaskDialog, setOpenNewTaskDialog] = React.useState(false);
   const [updateReportDetail, setUpdateReportDetail] = React.useState([]);
-  const [updateTaskReportDetail, setUpdateTaskReportDetail] = React.useState(
-    []
-  );
+  const [updateTaskDetail, setUpdateTaskDetail] = React.useState([]);
+  const [allReportDetail, setAllReportDetail] = React.useState([]);
   const [newReportDetail, setNewReportDetail] = React.useState([]);
   const [newTaskReport, setNewTaskReport] = React.useState([]);
-  const [allReportDetail, setAllReportDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -83,6 +81,8 @@ const UpdateReportProject = (props) => {
       try {
         const listAllReportDetail = await getReportById(id, 'REPORT_BY_ID');
         setAllReportDetail(listAllReportDetail.data);
+        setUpdateReportDetail(listAllReportDetail.data[0].reportDetailList);
+        setUpdateTaskDetail(listAllReportDetail.data[0].taskReportList);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
@@ -94,15 +94,15 @@ const UpdateReportProject = (props) => {
     handleUpdateReport(
       newReportDetail,
       newTaskReport,
-      idN,
+      projectId,
       reportDate,
       data.reportDesc,
-      data.reportId,
+      idN,
       data.reportName,
       reportTypeSelected,
       data.reporerId,
       updateReportDetail,
-      updateTaskReportDetail
+      updateTaskDetail
     );
     if (updateReportDetail.length > 0) {
       for (let urp of updateReportDetail) {
@@ -193,29 +193,21 @@ const UpdateReportProject = (props) => {
   const handleChange = (event) => {
     setReportTypeSelected(event.target.value);
   };
-  const handleOpenUpdateReportDetailDialog = () => {
+  const handleOpenUpdateReportDetailDialog = (actionGetUpdate, itemReport) => {
+    setActionUpdateReport(actionGetUpdate);
+    setitemDetailReportUpdate(itemReport);
     setOpenUpdateReportDetailDialog(true);
   };
   const handleCloseUpdateReportDetailDialog = () => {
     setOpenUpdateReportDetailDialog(false);
   };
-  const handleOpenUpdateTaskReportDetailDialog = () => {
+  const handleOpenUpdateTaskReportDetailDialog = (actionGetTask, itemTask) => {
+    setActionUpdateTask(actionGetTask);
+    setitemDetailTaskUpdate(itemTask);
     setOpenUpdateTaskReportDialog(true);
   };
   const handleCloseUpdateTaskReportDetailDialog = () => {
     setOpenUpdateTaskReportDialog(false);
-  };
-  const handleOpenNewReportDetailDialog = () => {
-    setOpenNewReportDialog(true);
-  };
-  const handleCloseNewReportDetailDialog = () => {
-    setOpenNewReportDialog(false);
-  };
-  const handleOpenNewTaskDetailDialog = () => {
-    setOpenNewTaskDialog(true);
-  };
-  const handleCloseNewTaskDetailDialog = () => {
-    setOpenNewTaskDialog(false);
   };
   return (
     <div>
@@ -234,309 +226,290 @@ const UpdateReportProject = (props) => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
-          }}
-        >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin báo cáo
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tên báo cáo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="reportName"
-                  errors={errors.reportName}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+        {allReportDetail ? (
+          allReportDetail.length > 0 ? (
+            allReportDetail.map((reportDetail, index) => (
+              <Box
+                key={index}
+                sx={{
+                  paddingLeft: '10px',
+                  paddingTop: '10px',
+                  width: '40%',
+                  marginBottom: '30px',
+                }}
+              >
+                <Typography variant="body1" color="#DD8501" fontWeight="bold">
                   Thông tin báo cáo
                 </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="reportDesc"
-                  errors={errors.reportDesc}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item container xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Ngày báo cáo
-                </Typography>
-                <Grid item xs={12}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField {...props} fullWidth />
+                <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+                <Box sx={{ width: '100%', height: '20px' }}></Box>
+                <form onSubmit={handleSubmit(submitForm)}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Tên báo cáo
+                      </Typography>
+                      <TextFieldComponent
+                        register={register}
+                        name="reportName"
+                        defaultValue={reportDetail.reportName}
+                        errors={errors.reportName}
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Thông tin báo cáo
+                      </Typography>
+                      <TextFieldComponent
+                        register={register}
+                        name="reportDesc"
+                        defaultValue={reportDetail.reportDesc}
+                        errors={errors.reportDesc}
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+                    <Grid item container xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Ngày báo cáo
+                      </Typography>
+                      <Grid item xs={12}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DateTimePicker
+                            renderInput={(props) => (
+                              <TextField {...props} fullWidth />
+                            )}
+                            value={valueReportDate}
+                            onChange={(newValue) => {
+                              setValueReportDate(newValue);
+                            }}
+                          />
+                        </LocalizationProvider>
+                      </Grid>
+                    </Grid>
+                    <Grid item container sx={12}>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'left',
+                          alignItems: 'center',
+                          display: 'flex',
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: '',
+                            borderRadius: 50,
+                            width: '200px',
+                            alignSelf: 'center',
+                          }}
+                          onClick={() =>
+                            handleOpenUpdateReportDetailDialog(
+                              'CreateNewReport'
+                            )
+                          }
+                        >
+                          Chi tiết báo cáo
+                        </Button>
+                      </Box>
+                    </Grid>
+                    <Grid item container columns={12} spacing={2}>
+                      {updateReportDetail.length > 0 ? (
+                        updateReportDetail.map((reportDetailItem, index) => (
+                          <Grid
+                            key={index}
+                            item
+                            xs={4}
+                            onClick={() =>
+                              handleOpenUpdateReportDetailDialog(
+                                'UpdateReport',
+                                reportDetailItem
+                              )
+                            }
+                          >
+                            <Box sx={{ width: '100%' }}>
+                              <Card sx={{ width: '100%' }}>
+                                <CardContent>
+                                  <Typography>
+                                    Mã báo cáo chi tiết:{' '}
+                                    {reportDetailItem.reportDetailId}
+                                  </Typography>
+                                  <Typography>
+                                    Thông tin báo cáo chi tiết:{' '}
+                                    {reportDetailItem.itemDesc}
+                                  </Typography>
+                                  <Typography>
+                                    Số lượng: {reportDetailItem.itemAmount}
+                                  </Typography>
+                                  <Typography>
+                                    Giá tiền: {reportDetailItem.itemPrice}
+                                  </Typography>
+                                  <Typography>
+                                    Đơn vị: {reportDetailItem.itemUnit}
+                                  </Typography>
+                                </CardContent>
+                              </Card>
+                            </Box>
+                          </Grid>
+                        ))
+                      ) : (
+                        <Grid
+                          item
+                          xs={4}
+                          onClick={() => handleOpenUpdateReportDetailDialog()}
+                        >
+                          Không có chi tiết báo cáo!!!
+                        </Grid>
                       )}
-                      value={valueReportDate}
-                      onChange={(newValue) => {
-                        setValueReportDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-              </Grid>
-
-              <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenUpdateReportDetailDialog()}
-                  >
-                    Chi tiết báo cáo
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {updateReportDetail.length ? (
-                  updateReportDetail.map((report, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>Thông tin báo cáo chi tiết:</Typography>
-                            <Typography>Số lượng:</Typography>
-                            <Typography>Giá tiền:</Typography>
-                            <Typography>Đơn vị:</Typography>
-                          </CardContent>
-                        </Card>
+                    </Grid>
+                    <Grid item container sx={12}>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'left',
+                          alignItems: 'center',
+                          display: 'flex',
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: '',
+                            borderRadius: 50,
+                            width: '200px',
+                            alignSelf: 'center',
+                          }}
+                          onClick={() =>
+                            handleOpenUpdateTaskReportDetailDialog(
+                              'CreateNewTask'
+                            )
+                          }
+                        >
+                          Chi tiết công việc
+                        </Button>
                       </Box>
                     </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenNewTaskDetailDialog()}
-                  >
-                    Chi tiết công việc
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {updateTaskReportDetail.length ? (
-                  updateTaskReportDetail.map((report, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>Thông tin báo cáo chi tiết:</Typography>
-                            <Typography>Số lượng:</Typography>
-                            <Typography>Giá tiền:</Typography>
-                            <Typography>Đơn vị: </Typography>
-                          </CardContent>
-                        </Card>
+                    <Grid item container columns={12} spacing={2}>
+                      {updateTaskDetail.length ? (
+                        updateTaskDetail.map((taskDetailItem, index) => (
+                          <Grid
+                            key={index}
+                            item
+                            xs={4}
+                            onClick={() =>
+                              handleOpenUpdateTaskReportDetailDialog(
+                                'UpdateTask',
+                                taskDetailItem
+                              )
+                            }
+                          >
+                            <Box sx={{ width: '100%' }}>
+                              <Card sx={{ width: '100%' }}>
+                                <CardContent>
+                                  <Typography>
+                                    Công việc thuộc mã công việc: :{' '}
+                                    {taskDetailItem.taskReportId}
+                                  </Typography>
+                                  <Typography>
+                                    Thông tin công việc:{' '}
+                                    {taskDetailItem.taskNote}
+                                  </Typography>
+                                  <Typography>
+                                    Tiến độ: {taskDetailItem.taskProgress}
+                                  </Typography>
+                                </CardContent>
+                              </Card>
+                            </Box>
+                          </Grid>
+                        ))
+                      ) : (
+                        <Grid
+                          item
+                          xs={4}
+                          onClick={() =>
+                            handleOpenUpdateTaskReportDetailDialog()
+                          }
+                        >
+                          Không có chi tiết báo cáo!!!
+                        </Grid>
+                      )}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Loại báo cáo
+                      </Typography>
+                      <FormControl sx={{ width: '100%' }}>
+                        <Select
+                          onChange={handleChange}
+                          MenuProps={MenuProps}
+                          value={reportTypeSelected}
+                        >
+                          {allReportType.length > 0 ? (
+                            allReportType.map((reportType, index) => (
+                              <MenuItem
+                                value={reportType.reportTypeId}
+                                key={index}
+                              >
+                                {reportType.reportTypeName}
+                              </MenuItem>
+                            ))
+                          ) : (
+                            <MenuItem>
+                              Không có dữ liệu kiểu báo cáo! Vui lòng xem lại!
+                            </MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" color="#DD8501">
+                        Người báo cáo
+                      </Typography>
+                      <TextFieldComponent
+                        register={register}
+                        name="reporterId"
+                        defaultValue={reportDetail.reporterId}
+                        errors={errors.reporterId}
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          display: 'flex',
+                        }}
+                      >
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          style={{
+                            backgroundColor: '#DD8501',
+                            borderRadius: 50,
+                            width: '200px',
+                            alignSelf: 'center',
+                          }}
+                        >
+                          Cập nhật
+                        </Button>
                       </Box>
                     </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của công việc!</div>
                   </Grid>
-                )}
-              </Grid>
-              <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenNewReportDetailDialog()}
-                  >
-                    Báo cáo mới
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {newReportDetail.length ? (
-                  newReportDetail.map((report, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>Thông tin báo cáo chi tiết:</Typography>
-                            <Typography>Số lượng:</Typography>
-                            <Typography>Giá tiền:</Typography>
-                            <Typography>Đơn vị: </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo mới chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenUpdateTaskReportDetailDialog()}
-                  >
-                    Công việc mới
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {updateTaskReportDetail.length ? (
-                  updateTaskReportDetail.map((task, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: {task.taskId}
-                            </Typography>
-                            <Typography>Số lượng:{task.taskNote}</Typography>
-                            <Typography>
-                              Giá tiền: {task.taskProgress}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu mới của công việc!</div>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Loại báo cáo
-                </Typography>
-                <FormControl sx={{ width: '100%' }}>
-                  <Select
-                    onChange={handleChange}
-                    MenuProps={MenuProps}
-                    value={reportTypeSelected}
-                  >
-                    {allReportType.length > 0 ? (
-                      allReportType.map((reportType, index) => (
-                        <MenuItem value={reportType.reportTypeId} key={index}>
-                          {reportType.reportTypeName}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>
-                        Không có dữ liệu kiểu báo cáo! Vui lòng xem lại!
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người báo cáo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="reporterId"
-                  errors={errors.reportDesc}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Lưu
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
-        </Box>
+                </form>
+              </Box>
+            ))
+          ) : (
+            <div>Không có dữ liệu!!</div>
+          )
+        ) : (
+          <div>Loading ... </div>
+        )}
       </Box>
       <Dialog
         open={openUpdateReportDetailDialog}
@@ -548,36 +521,23 @@ const UpdateReportProject = (props) => {
           }
           setUpdateReportDetail={setUpdateReportDetail}
           updateReportDetail={updateReportDetail}
+          actionUpdateReport={actionUpdateReport}
+          itemDetailReportUpdate={itemDetailReportUpdate}
         ></DialogUpdateReportDetail>
       </Dialog>
       <Dialog
         open={openUpdateTaskReportDialog}
-        onClose={handleCloseUpdateReportDetailDialog}
+        onClose={handleCloseUpdateTaskReportDetailDialog}
       >
         <DialogUpdateTaskReport
           handleCloseUpdateTaskReportDetailDialog={
             handleCloseUpdateTaskReportDetailDialog
           }
-          setUpdateTaskReportDetail={setUpdateTaskReportDetail}
-          updateTaskReportDetail={updateTaskReportDetail}
+          setUpdateTaskDetail={setUpdateTaskDetail}
+          updateTaskDetail={updateTaskDetail}
+          actionUpdateTask={actionUpdateTask}
+          itemDetailTaskUpdate={itemDetailTaskUpdate}
         ></DialogUpdateTaskReport>
-      </Dialog>
-      <Dialog
-        open={openNewReportDialog}
-        onClose={handleCloseNewReportDetailDialog}
-      >
-        <DialogNewReportDetail
-          handleCloseNewReportDetailDialog={handleCloseNewReportDetailDialog}
-          setNewReportDetail={setNewReportDetail}
-          newReportDetail={newReportDetail}
-        ></DialogNewReportDetail>
-      </Dialog>
-      <Dialog open={openNewTaskDialog} onClose={handleCloseNewTaskDetailDialog}>
-        <DialogNewTaskDetail
-          handleCloseNewTaskDetailDialog={handleCloseNewTaskDetailDialog}
-          setNewTaskReport={setNewTaskReport}
-          newTaskReport={newTaskReport}
-        ></DialogNewTaskDetail>
       </Dialog>
     </div>
   );
