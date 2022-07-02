@@ -9,38 +9,47 @@ import CardContent from '@mui/material/CardContent';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import { getRequestIdApi } from '../../apis/Request/getRequestByProjectId';
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
+
 function RequestDetailPage() {
+  const handleGetDate = (date) => {
+    const getDate = date.substring(0, 10);
+    const getDateCom = getDate.split('-');
+    const getDateReformat = ''.concat(
+      getDateCom[2],
+      '/',
+      getDateCom[1],
+      '/',
+      getDateCom[0]
+    );
+    return getDateReformat;
+  };
   const { id } = useParams();
   console.log(id);
   const [allRequestId, setAllRequestId] = React.useState([]);
+  const [requestDetail, setRequestDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
         const listAllRequestDetail = await getRequestIdApi(id);
         setAllRequestId(listAllRequestDetail.data);
+        setRequestDetail(listAllRequestDetail.data.requestDetailList);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
     })();
   }, []);
-  console.log(allRequestId);
+  console.log(requestDetail);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '90%', mp: 2, borderRadius: '30px', padding: '20px', margin: "5%" }}
+          sx={{
+            width: '90%',
+            mp: 2,
+            borderRadius: '30px',
+            padding: '20px',
+            margin: '5%',
+          }}
           variant="elevation"
         >
           <Typography variant="h6" sx={{ marginBottom: '20px' }}>
@@ -103,43 +112,38 @@ function RequestDetailPage() {
                   Ngày yêu cầu
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  {(allRequestId.requestDate)}
+                  {allRequestId.requestDate}
                 </Typography>
               </Grid>
-              {allRequestId.requestDetailList ? (
-                <Grid item container xs="4">
-                    <Typography variant="body1" color="gray">
-                      Chi tiết yêu cầu
-                    </Typography>
-                    <Box sx={{ width: '100%' }}>
+              <Grid item container xs="4">
+                <Typography variant="body1" color="gray">
+                  Chi tiết yêu cầu
+                </Typography>
+                {requestDetail.length > 0 ? (
+                  requestDetail.map((req, index) => (
+                    <Box sx={{ width: '100%' }} key={index}>
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
                           <Typography>
-                            Mã yêu cầu chi tiết:{' '}
-                            {allRequestId.requestDetailList[0].requestDetailId}
+                            Mã yêu cầu chi tiết: {req.requestDetailId}
                           </Typography>
                           <Typography>
-                            Thông tin yêu cầu chi tiết:{' '}
-                            {allRequestId.requestDetailList[0].itemDesc}
+                            Thông tin yêu cầu chi tiết: {req.itemDesc}
                           </Typography>
                           <Typography>
                             Số lượng:
-                            {allRequestId.requestDetailList[0].itemAmount}
+                            {req.itemAmount}
                           </Typography>
-                          <Typography>
-                            Giá tiền:{' '}
-                            {allRequestId.requestDetailList[0].itemPrice}{' '}
-                          </Typography>
-                          <Typography>
-                            Đơn vị: {allRequestId.requestDetailList[0].itemUnit}
-                          </Typography>
+                          <Typography>Giá tiền: {req.itemPrice} </Typography>
+                          <Typography>Đơn vị: {req.itemUnit}</Typography>
                         </CardContent>
                       </Card>
                     </Box>
-                </Grid>
-              ) : (
-                <div>Không có chi tiết</div>
-              )}
+                  ))
+                ) : (
+                  <div>Không có chi tiết</div>
+                )}
+              </Grid>
             </Grid>
           ) : (
             <div>Không có dữ liệu của yêu cầu!!</div>

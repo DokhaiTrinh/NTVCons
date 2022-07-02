@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
