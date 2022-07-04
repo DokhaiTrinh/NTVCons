@@ -119,30 +119,30 @@ function RequestDetailPage() {
                 <Typography variant="body1" color="gray">
                   Chi tiết yêu cầu
                 </Typography>
-                {requestDetail.length > 0 ? (
-                  requestDetail.map((req, index) => (
-                    <Box sx={{ width: '100%' }} key={index}>
-                      <Card sx={{ width: '100%' }}>
-                        <CardContent>
-                          <Typography>
-                            Mã yêu cầu chi tiết: {req.requestDetailId}
-                          </Typography>
-                          <Typography>
-                            Thông tin yêu cầu chi tiết: {req.itemDesc}
-                          </Typography>
-                          <Typography>
-                            Số lượng:
-                            {req.itemAmount}
-                          </Typography>
-                          <Typography>Giá tiền: {req.itemPrice} </Typography>
-                          <Typography>Đơn vị: {req.itemUnit}</Typography>
-                        </CardContent>
-                      </Card>
-                    </Box>
-                  ))
-                ) : (
-                  <div>Không có chi tiết</div>
-                )}
+                <Card sx={{ width: '100%' }}>
+                  <CardContent>
+                    {requestDetail.length > 0 ? (
+                      requestDetail.map((req, index) => (
+                          <Card sx={{ width: '100%', padding: '10px' }}>
+                            <Typography>
+                              Mã yêu cầu chi tiết: {req.requestDetailId}
+                            </Typography>
+                            <Typography>
+                              Thông tin yêu cầu chi tiết: {req.itemDesc}
+                            </Typography>
+                            <Typography>
+                              Số lượng:
+                              {req.itemAmount}
+                            </Typography>
+                            <Typography>Giá tiền: {req.itemPrice} </Typography>
+                            <Typography>Đơn vị: {req.itemUnit}</Typography>
+                          </Card>
+                      ))
+                    ) : (
+                      <div>Không có chi tiết</div>
+                    )}
+                  </CardContent>
+                </Card>
               </Grid>
             </Grid>
           ) : (

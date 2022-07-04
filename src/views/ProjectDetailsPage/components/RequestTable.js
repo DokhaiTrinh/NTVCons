@@ -87,10 +87,10 @@ const headCells = [
     label: 'Mã yêu cầu',
   },
   {
-    id: 'tenconviec',
+    id: 'tenyeucau',
     numeric: false,
     disablePadding: false,
-    label: 'Tên công việc',
+    label: 'Tên yêu cầu',
   },
   {
     id: 'ngay',
@@ -380,7 +380,7 @@ export default function RequestTable(props) {
                     >
                       {row.requestId}
                     </TableCell>
-                    <TableCell align="left">{row.projectName}</TableCell>
+                    <TableCell align="left">{row.requestDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">
