@@ -19,9 +19,11 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import UpdateIcon from '@mui/icons-material/Update';
+import InfoIcon from '@mui/icons-material/Info';
 
 function createData(code, name, department, position, office, role, join, dob) {
   return {
@@ -29,7 +31,7 @@ function createData(code, name, department, position, office, role, join, dob) {
     name,
     department,
     position,
-    office, 
+    office,
     role,
     join,
     dob
@@ -79,50 +81,68 @@ const headCells = [
   {
     id: 'manv',
     numeric: false,
-    // disablePadding: true,
+    disablePadding: false,
     label: 'Mã NV',
   },
   {
     id: 'hovaten',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Họ Và Tên',
   },
   {
     id: 'phongban',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Phòng ban',
   },
   {
     id: 'vitri',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Vị trí',
   },
   {
     id: 'chucvu',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Chức vụ',
   },
   {
     id: 'vaitro',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Vai trò',
   },
   {
     id: 'ngayvao',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Ngày vào',
   },
   {
     id: 'ngaysinh',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Ngày sinh',
+  },
+  {
+    id: 'chitiet',
+    numeric: false,
+    disablePadding: false,
+    label: 'Chi tiết',
+  },
+  {
+    id: 'capnhat',
+    numeric: false,
+    disablePadding: false,
+    label: 'Cập nhật',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
@@ -136,17 +156,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -215,7 +224,7 @@ const EnhancedTableToolbar = (props) => {
           Nhân viên
         </Typography>
       )}
-
+      {/* 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -228,7 +237,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -322,27 +331,16 @@ export function PersonnelTable() {
                     <TableRow
                       hover
                       // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
+                      // role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.code}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                      onClick={(event) => handleClick(event, row.code)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                       >
                         {row.code}
                       </TableCell>
@@ -350,21 +348,26 @@ export function PersonnelTable() {
                       <TableCell align="left">{row.department}</TableCell>
                       <TableCell align="left">{row.position}</TableCell>
                       <TableCell align="left">{row.office}</TableCell>
-                      <TableCell align="left">
-                        {row.role}
-                          <IconButton aria-label="edit role" >
-                            <EditOutlinedIcon></EditOutlinedIcon>
-                          </IconButton>
-                      </TableCell>
+                      <TableCell align="left">{row.role}</TableCell>
                       <TableCell align="left">{row.join}</TableCell>
                       <TableCell align="left">{row.dob}</TableCell>
                       <TableCell align="left">
-                        <Route>
-
-                        <Link underline="hover" to="/personnelProfile">
-                          {'Chi Tiết'}
-                        </Link>
-                        </Route>
+                        <IconButton
+                        // component={Link}
+                        // to={`/projectDetails/${row.projectId}`}
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton aria-label="edit role" >
+                          <UpdateIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton aria-label="delete employee" color="warning">
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   );

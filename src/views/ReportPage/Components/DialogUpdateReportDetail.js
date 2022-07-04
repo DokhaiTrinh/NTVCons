@@ -82,7 +82,7 @@ const DialogUpdateReportDetail = (props) => {
           sx={{
             paddingLeft: '10px',
             paddingTop: '10px',
-            width: '40%',
+            width: '90%',
             marginBottom: '30px',
           }}
         >
@@ -159,7 +159,7 @@ const DialogUpdateReportDetail = (props) => {
                 <Box
                   sx={{
                     width: '100%',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
                     display: 'flex',
                   }}
