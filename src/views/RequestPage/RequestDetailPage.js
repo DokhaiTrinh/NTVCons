@@ -119,11 +119,11 @@ function RequestDetailPage() {
                 <Typography variant="body1" color="gray">
                   Chi tiết yêu cầu
                 </Typography>
-                <Card sx={{ width: '100%' }}>
+                <Card sx={{ width: '100%'}}>
                   <CardContent>
                     {requestDetail.length > 0 ? (
                       requestDetail.map((req, index) => (
-                          <Card sx={{ width: '100%', padding: '10px' }}>
+                          <Card sx={{ width: '100%', padding: '10px', marginBottom: '10px' }}>
                             <Typography>
                               Mã yêu cầu chi tiết: {req.requestDetailId}
                             </Typography>
