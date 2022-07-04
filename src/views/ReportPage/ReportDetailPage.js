@@ -118,18 +118,17 @@ const ReportDetailPage = (props) => {
                       {reportDetail.reportType.reportTypeName}
                     </Typography>
                   </Grid>
-                  <Grid item xs="12">
+                  <Grid item xs="4">
                     <Typography variant="body1" color="gray">
                       Báo cáo chi tiết
                     </Typography>
-                    {allReportList.length > 0 ? (
-                      allReportList.map((reportDetail, index) => (
-                        <Card
-                          sx={{ width: '100%', height: '200px' }}
-                          key={index}
-                        >
-                          <CardContent>
-                            <Card sx={{ witdh: '90%', padding: '10px' }}>
+                    <Card
+                      sx={{ width: '100%' }}
+                    >
+                      <CardContent>
+                        {allReportList.length > 0 ? (
+                          allReportList.map((reportDetail, index) => (
+                            <Card sx={{ witdh: '100%', marginBottom: '10px', padding: '10px' }}>
                               <Typography>
                                 Thông tin báo cáo chi tiết:{' '}
                                 {reportDetail.itemDesc}
@@ -145,23 +144,23 @@ const ReportDetailPage = (props) => {
                                 Đơn vị: {reportDetail.itemUnit}
                               </Typography>
                             </Card>
-                          </CardContent>
-                        </Card>
-                      ))
-                    ) : (
-                      <div>No data!</div>
-                    )}
+                          ))
+                        ) : (
+                          <div>Không có dữ liệu!!</div>
+                        )}
+                      </CardContent>
+                    </Card>
                   </Grid>
                   <Grid item xs="4">
                     <Box sx={{ width: '100%' }}>
                       <Typography variant="body1" color="gray">
                         Công việc chi tiết
                       </Typography>
-                      {taskReportList.length > 0 ? (
-                        taskReportList.map((taskReport, index) => (
-                          <Card sx={{ width: '100%', height: '200px' }}>
-                            <CardContent>
-                              <Card sx={{ witdh: '90%', padding: '10px' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          {taskReportList.length > 0 ? (
+                            taskReportList.map((taskReport, index) => (
+                              <Card sx={{ witdh: '100%', padding: '10px', marginBottom: '10px' }}>
                                 <Typography>
                                   <Typography>
                                     Mã công việc chi tiết:{' '}
@@ -170,12 +169,12 @@ const ReportDetailPage = (props) => {
                                   Tên công việc : {taskReport.taskNote}
                                 </Typography>
                               </Card>
-                            </CardContent>
-                          </Card>
-                        ))
-                      ) : (
-                        <div>No data!</div>
-                      )}
+                            ))
+                          ) : (
+                            <div>No data!</div>
+                          )}
+                        </CardContent>
+                      </Card>
                     </Box>
                   </Grid>
                 </Grid>

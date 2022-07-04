@@ -65,7 +65,7 @@ const Details = (props) => {
           </Grid>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Mã dự án
               </Typography>
@@ -73,7 +73,7 @@ const Details = (props) => {
                 {allProjectDetails.projectId}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Tên dự án
               </Typography>
@@ -81,7 +81,7 @@ const Details = (props) => {
                 {allProjectDetails.projectName}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Người quản trị
               </Typography>
@@ -89,7 +89,7 @@ const Details = (props) => {
                 {allProjectDetails.createdBy}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
@@ -97,7 +97,7 @@ const Details = (props) => {
                 {allProjectDetails.userId}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Trạng thái
               </Typography>
@@ -121,7 +121,7 @@ const Details = (props) => {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Người tham gia
               </Typography>
@@ -129,7 +129,7 @@ const Details = (props) => {
                 {allProjectDetails.userId}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến
               </Typography>
@@ -137,7 +137,7 @@ const Details = (props) => {
                 {handleGetDate(allProjectDetails.actualStartDate)}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian kết thúc dự kiến
               </Typography>
@@ -145,7 +145,7 @@ const Details = (props) => {
                 {handleGetDate(allProjectDetails.actualEndDate)}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Địa chỉ
               </Typography>
@@ -154,7 +154,7 @@ const Details = (props) => {
                 {allProjectDetails.district} {allProjectDetails.city}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thành phố
               </Typography>
@@ -162,7 +162,7 @@ const Details = (props) => {
                 {allProjectDetails.country}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu thực tế
               </Typography>
@@ -170,7 +170,7 @@ const Details = (props) => {
                 {handleGetDate(allProjectDetails.planStartDate)}
               </Typography>
             </Grid>
-            <Grid item xs="6">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian kết thúc thực tế
               </Typography>
