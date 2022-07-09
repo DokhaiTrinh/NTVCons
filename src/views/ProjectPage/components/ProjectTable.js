@@ -288,7 +288,7 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
@@ -342,7 +342,7 @@ export const ProjectTable = (props) => {
                     // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
-                  // selected={isItemSelected}
+                    // selected={isItemSelected}
                   >
                     <TableCell
                       component="th"
@@ -354,8 +354,8 @@ export const ProjectTable = (props) => {
                     </TableCell>
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.addressNumber}</TableCell>
-                    <TableCell align="left">{ }</TableCell>
+                    <TableCell align="left">{}</TableCell>
+                    <TableCell align="left">{}</TableCell>
                     {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">
                       {handleGetDate(row.actualStartDate)}

@@ -25,7 +25,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Dialog from '@mui/material/Dialog';
-import DialogNewUpdateRequest from './Components/DialogNewUpdateRequest';
 import DialogUpdateRequestDetail from './Components/DialogUpdateRequestDetail';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -52,13 +51,12 @@ const UpdateRequest = () => {
   const [loading, setLoading] = useState('');
   const [openUpdateRequestDetailDialog, setOpenUpdateRequestDetailDialog] =
     useState(false);
-  const [openNewRequestDetailDialog, setOpenNewRequestDetailDialog] =
-    useState(false);
   const [requestDetail, setRequestDetail] = React.useState([]);
-  const [newRequestDetail, setNewRequestDetail] = React.useState([]);
   const [allRequestType, setAllRequestType] = React.useState([]);
   const [requestTypeSelected, setRequestTypeSelected] = React.useState();
-  const [allRequestId, setAllRequestId] = React.useState([]);
+  const [allRequestDetail, setAllRequestDetail] = React.useState([]);
+  const [projectId, setProjectId] = React.useState();
+
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
     handleUpdateRequest(
@@ -66,7 +64,6 @@ const UpdateRequest = () => {
       requestDate,
       data.requestDesc,
       requestDetail,
-      newRequestDetail,
       requestTypeSelected,
       data.requesterId
     );
@@ -77,7 +74,6 @@ const UpdateRequest = () => {
     requestDate,
     requestDesc,
     updateRequestDetailModels,
-    createRequestDetailModels,
     requestTypeId,
     requesterId
   ) => {
@@ -88,7 +84,6 @@ const UpdateRequest = () => {
         requestDate,
         requestDesc,
         updateRequestDetailModels,
-        createRequestDetailModels,
         requestTypeId,
         requesterId,
       });
@@ -134,12 +129,6 @@ const UpdateRequest = () => {
   const handleCloseUpdateRequestDetailDialog = () => {
     setOpenUpdateRequestDetailDialog(false);
   };
-  const handleOpenNewRequestDetailDialog = () => {
-    setOpenNewRequestDetailDialog(true);
-  };
-  const handleCloseNewRequestDetailDialog = () => {
-    setOpenNewRequestDetailDialog(false);
-  };
   React.useEffect(() => {
     (async () => {
       try {
@@ -157,13 +146,14 @@ const UpdateRequest = () => {
     (async () => {
       try {
         const listAllRequestDetail = await getRequestIdApi(id);
-        setAllRequestId(listAllRequestDetail.data);
+        setAllRequestDetail(listAllRequestDetail.data);
+        setRequestDetail(listAllRequestDetail.data.requestDetailList);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
     })();
   }, []);
-  console.log(allRequestId);
+  console.log(allRequestDetail);
   return (
     <div>
       <Typography
@@ -181,215 +171,181 @@ const UpdateRequest = () => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
-          }}
-        >
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Cập nhật thông tin yêu cầu
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="requestDesc"
-                  errors={errors.requestDesc}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Ngày yêu cầu
-                </Typography>
+        {allRequestDetail ? (
+          <Box
+            sx={{
+              paddingLeft: '10px',
+              paddingTop: '10px',
+              width: '40%',
+              marginBottom: '30px',
+            }}
+          >
+            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+            <Box sx={{ width: '100%', height: '20px' }}></Box>
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Grid container spacing={2}>
+                <Grid item xs="4">
+                  <Typography variant="body2" color="#DD8501">
+                    Mã dự án
+                  </Typography>
+                  <Typography variant="body1">
+                    {allRequestDetail.projectId}
+                  </Typography>
+                </Grid>
                 <Grid item xs={12}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField {...props} fullWidth />
-                      )}
-                      value={valueRequestDate}
-                      onChange={(newValue) => {
-                        setValueRequestDate(newValue);
+                  <Typography variant="body2" color="#DD8501">
+                    Cập nhật thông tin yêu cầu
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="requestDesc"
+                    defaultValue={allRequestDetail.requestDesc}
+                    errors={errors.requestDesc}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Ngày yêu cầu
+                  </Typography>
+                  <Grid item xs={12}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => (
+                          <TextField {...props} fullWidth />
+                        )}
+                        value={valueRequestDate}
+                        onChange={(newValue) => {
+                          setValueRequestDate(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                </Grid>
+
+                <Grid item sx={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'left',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '',
+                        borderRadius: 50,
+                        width: '200px',
+                        alignSelf: 'center',
                       }}
-                    />
-                  </LocalizationProvider>
+                      onClick={() => handleOpenUpdateRequestDetailDialog()}
+                    >
+                      Chi tiết yêu cầu
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid item container columns={12} spacing={2}>
+                  {requestDetail.length ? (
+                    requestDetail.map((request, index) => (
+                      <Grid item xs={4}>
+                        <Box sx={{ width: '100%' }}>
+                          <Card sx={{ width: '100%' }}>
+                            <CardContent>
+                              <Typography>
+                                Thông tin báo cáo chi tiết: {request.itemDesc}
+                              </Typography>
+                              <Typography>
+                                Số lượng:{request.itemAmount}
+                              </Typography>
+                              <Typography>
+                                Giá tiền: {request.itemPrice}{' '}
+                              </Typography>
+                              <Typography>
+                                Đơn vị: {request.itemUnit}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Box>
+                      </Grid>
+                    ))
+                  ) : (
+                    <Grid item sx={12}>
+                      <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    </Grid>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Loại yêu cầu
+                  </Typography>
+                  <FormControl sx={{ width: 580 }}>
+                    <Select
+                      onChange={handleChange}
+                      MenuProps={MenuProps}
+                      value={requestTypeSelected}
+                    >
+                      {allRequestType.length > 0 ? (
+                        allRequestType.map((requestType, index) => (
+                          <MenuItem
+                            value={requestType.requestTypeId}
+                            key={index}
+                          >
+                            {requestType.requestTypeName}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem>
+                          Không có dữ liệu kiểu báo cáo! Vui lòng xem lại!
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Người yêu cầu
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="requesterId"
+                    defaultValue={allRequestDetail.requesterId}
+                    errors={errors.requesterId}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#DD8501',
+                        borderRadius: 50,
+                        width: '200px',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      Lưu
+                    </Button>
+                  </Box>
                 </Grid>
               </Grid>
-
-              <Grid item sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenUpdateRequestDetailDialog()}
-                  >
-                    Chi tiết yêu cầu
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {requestDetail.length ? (
-                  requestDetail.map((request, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: {request.itemDesc}
-                            </Typography>
-                            <Typography>
-                              Số lượng:{request.itemAmount}
-                            </Typography>
-                            <Typography>
-                              Giá tiền: {request.itemPrice}{' '}
-                            </Typography>
-                            <Typography>Đơn vị: {request.itemUnit}</Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: '',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    onClick={() => handleOpenNewRequestDetailDialog()}
-                  >
-                    Chi tiết yêu cầu mới
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {newRequestDetail.length ? (
-                  newRequestDetail.map((newRequest, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: {newRequest.itemDesc}
-                            </Typography>
-                            <Typography>
-                              Số lượng:{newRequest.itemAmount}
-                            </Typography>
-                            <Typography>
-                              Giá tiền: {newRequest.itemPrice}{' '}
-                            </Typography>
-                            <Typography>
-                              Đơn vị: {newRequest.itemUnit}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Loại yêu cầu
-                </Typography>
-                <FormControl sx={{ width: 580 }}>
-                  <Select
-                    onChange={handleChange}
-                    MenuProps={MenuProps}
-                    value={requestTypeSelected}
-                  >
-                    {allRequestType.length > 0 ? (
-                      allRequestType.map((requestType, index) => (
-                        <MenuItem value={requestType.requestTypeId} key={index}>
-                          {requestType.requestTypeName}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>
-                        Không có dữ liệu kiểu báo cáo! Vui lòng xem lại!
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người yêu cầu
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="requesterId"
-                  errors={errors.requesterId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Lưu
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
-        </Box>
+            </form>
+          </Box>
+        ) : (
+          <div>Không có dữ liệu của yêu cầu!!</div>
+        )}
       </Box>
       <Dialog
         open={openUpdateRequestDetailDialog}
@@ -402,16 +358,6 @@ const UpdateRequest = () => {
           setRequestDetail={setRequestDetail}
           requestDetail={requestDetail}
         ></DialogUpdateRequestDetail>
-      </Dialog>
-      <Dialog
-        open={openNewRequestDetailDialog}
-        onClose={handleCloseNewRequestDetailDialog}
-      >
-        <DialogNewUpdateRequest
-          handleCloseNewRequestDetailDialog={handleCloseNewRequestDetailDialog}
-          setNewRequestDetail={setNewRequestDetail}
-          newRequestDetail={newRequestDetail}
-        ></DialogNewUpdateRequest>
       </Dialog>
     </div>
   );
