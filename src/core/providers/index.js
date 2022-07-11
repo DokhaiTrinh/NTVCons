@@ -1,0 +1,1 @@
+export {AuthContext} from 'core/providers/auth_provider';
