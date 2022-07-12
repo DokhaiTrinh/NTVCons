@@ -1,7 +1,9 @@
-import signInSlice from "modules/authentication/redux/sign_in_slice";
+import loginSlice from 'modules/authentication/slices/login';
+import menuSlice from 'core/redux/slices/menu';
 
 const rootReducer = {
-  signIn: signInSlice,
-}
+  signIn: loginSlice,
+  menu: menuSlice,
+};
 
-export {rootReducer};
+export { rootReducer };

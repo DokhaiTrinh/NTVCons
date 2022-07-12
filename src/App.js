@@ -6,9 +6,10 @@ import './App.css';
 // import HomeLayoutRoute from './common/Layouts/HomeLayout/HomeLayout';
 // import LoginLayoutRoute from './common/Layouts/LoginLayout/LoginLayout';
 import React from 'react';
-import AppRouter from './core/routers';
+import AppRouter from './core/routes';
 import { BrowserRouter } from 'react-router-dom';
-
+import ThemeCustomization from 'template/themes';
+import ScrollTop from 'template/components/ScrollTop';
 
 // const renderHomePageRoutes = () => {
 //   let xhtml = null;
@@ -42,9 +43,13 @@ import { BrowserRouter } from 'react-router-dom';
 // };
 
 const App = () => {
-  return <BrowserRouter>
-    <AppRouter />
-  </BrowserRouter>;
+  return (
+    <ThemeCustomization>
+      <ScrollTop>
+        <AppRouter />
+      </ScrollTop>
+    </ThemeCustomization>
+  );
 };
 
 export default App;
