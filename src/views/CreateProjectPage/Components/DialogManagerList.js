@@ -1,4 +1,11 @@
-import { Divider, Typography, Box, Grid, Button } from '@mui/material';
+import {
+  Divider,
+  Typography,
+  Box,
+  Grid,
+  Button,
+  TextField,
+} from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
 import TextFieldComponent from '../../../Components/TextField/textfield';
@@ -6,38 +13,40 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import moment from 'moment';
 
-const DialogTaskReport = (props) => {
-  const { taskReportDetail, setTaskReportDetail } = props;
-  const [loading, setLoading] = useState('');
+const DialogManagerList = (props) => {
+  const { managerListDetail, setManagerListDetail } = props;
+  const [valueReportDate, setValueReportDate] = React.useState(new Date());
 
-  const valideSchema = yup
-    .object({
-      taskNote: yup.string().required(),
-      taskProgress: yup.string().required(),
-    })
-    .required();
+  const validateSchema = yup.object({
+    createdBy: yup.number().required(),
+    managerId: yup.number().required(),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(valideSchema),
+    resolver: yupResolver(validateSchema),
   });
-
   const submitForm = (data) => {
-    const detailTaskReport = {
-      taskId: data.taskId,
-      taskNote: data.taskNote,
-      taskProgress: data.taskProgress,
-      reportId: null,
+    const assignDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
+    const detailManagerList = {
+      assignDate,
+      createdBy: data.createdBy,
+      managerId: data.managerId,
+      projectId: 0,
     };
-    // Đây thằng này là cách tạo ra 1 mảng gồm nhìu objects nè lm giống z
-    setTaskReportDetail((taskReportDetail) => [...taskReportDetail, detailTaskReport]);
-
-    props.handleCloseReportDetailDialog();
+    setManagerListDetail((managerListDetail) => [
+      ...managerListDetail,
+      detailManagerList,
+    ]);
+    props.handleCloseManagerListDialog();
   };
-
   return (
     <div>
       <Typography
@@ -45,7 +54,7 @@ const DialogTaskReport = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        CÔNG VIỆC CHI TIẾT
+        DANH SÁCH KỸ SƯ
       </Typography>
       <Divider></Divider>
       <Box
@@ -64,7 +73,7 @@ const DialogTaskReport = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin công việc chi tiết
+            Thông tin kỹ sư
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -72,41 +81,47 @@ const DialogTaskReport = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                   Công việc thuộc mã công việc:
+                  Tên kỹ sư
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskId"
-                  errors={errors.taskId}
+                  name="managerId"
+                  errors={errors.managerId}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
+              </Grid>
+              <Grid item container xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Ngày tạo
+                </Typography>
+                <Grid item xs={12}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => (
+                        <TextField {...props} fullWidth />
+                      )}
+                      value={valueReportDate}
+                      onChange={(newValue) => {
+                        setValueReportDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thông tin công việc
+                  Người tạo
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskNote"
-                  errors={errors.taskNote}
+                  name="createdBy"
+                  errors={errors.createdBy}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                 Tiến độ
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="taskProgress"
-                  label="Tiến độ"
-                  errors={errors.taskProgress}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -138,4 +153,4 @@ const DialogTaskReport = (props) => {
   );
 };
 
-export default DialogTaskReport;
+export default DialogManagerList;

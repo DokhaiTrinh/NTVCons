@@ -7,37 +7,41 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const DialogTaskReport = (props) => {
-  const { taskReportDetail, setTaskReportDetail } = props;
-  const [loading, setLoading] = useState('');
+const DialogBlueprint = (props) => {
+  const { bluePrintDetail, setBluePrintDetail } = props;
 
-  const valideSchema = yup
-    .object({
-      taskNote: yup.string().required(),
-      taskProgress: yup.string().required(),
-    })
-    .required();
+  const validateSchema = yup.object({
+    blueprintName: yup.string().min(0, 'Phải có tên của bản vẽ!!').required(),
+    designerName: yup
+      .string()
+      .min(0, 'Phải nhập tên người thiết kế!!')
+      .required(),
+    estimatedCost: yup
+      .number()
+      .min(0, 'Phải nhập giá tiền!')
+      .typeError('Số tiền được tính theo VNĐ')
+      .required(),
+    createdBy: yup.number().required(),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(valideSchema),
+    resolver: yupResolver(validateSchema),
   });
 
   const submitForm = (data) => {
-    const detailTaskReport = {
-      taskId: data.taskId,
-      taskNote: data.taskNote,
-      taskProgress: data.taskProgress,
-      reportId: null,
+    const detailBlueprint = {
+      blueprintName: data.blueprintName,
+      createdBy: data.createdBy,
+      designerName: data.designerName,
+      estimatedCost: data.estimatedCost,
+      projectId: 0,
     };
-    // Đây thằng này là cách tạo ra 1 mảng gồm nhìu objects nè lm giống z
-    setTaskReportDetail((taskReportDetail) => [...taskReportDetail, detailTaskReport]);
-
-    props.handleCloseReportDetailDialog();
+    setBluePrintDetail(detailBlueprint);
+    props.handleCloseBluePrintDialog();
   };
-
   return (
     <div>
       <Typography
@@ -45,7 +49,7 @@ const DialogTaskReport = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        CÔNG VIỆC CHI TIẾT
+        BẢN VẼ
       </Typography>
       <Divider></Divider>
       <Box
@@ -64,7 +68,7 @@ const DialogTaskReport = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin công việc chi tiết
+            Thông tin bản vẽ
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -72,41 +76,53 @@ const DialogTaskReport = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                   Công việc thuộc mã công việc:
+                  Tên bản vẽ
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskId"
-                  errors={errors.taskId}
+                  name="blueprintName"
+                  errors={errors.blueprintName}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Thông tin công việc
+                  Nhà thiết kế
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskNote"
-                  errors={errors.taskNote}
+                  name="designerName"
+                  errors={errors.designerName}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                 Tiến độ
+                  Giá bản vẽ
                 </Typography>
                 <TextFieldComponent
                   register={register}
-                  name="taskProgress"
-                  label="Tiến độ"
-                  errors={errors.taskProgress}
+                  name="estimatedCost"
+                  errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Người tạo
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="createdBy"
+                  errors={errors.createdBy}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -137,5 +153,4 @@ const DialogTaskReport = (props) => {
     </div>
   );
 };
-
-export default DialogTaskReport;
+export default DialogBlueprint;

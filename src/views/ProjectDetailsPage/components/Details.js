@@ -23,7 +23,7 @@ const handleGetDate = (date) => {
 const Details = (props) => {
   const { allProjectDetails } = props;
   const { id } = useParams();
-  return (
+    return (
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper

@@ -81,7 +81,7 @@ const headCells = [
     id: 'theloai',
     numeric: false,
     disablePadding: false,
-    label: 'Thể loại',
+    label: 'Loại báo cáo',
   },
   {
     id: 'Chitiet',
@@ -348,7 +348,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
                     </TableCell>
-                    <TableCell align="left">{row.reportTypeId}</TableCell>
+                    <TableCell align="left">{row.reportType.reportTypeName}</TableCell>
                     <TableCell align="left">
                       <IconButton
                         component={Link}

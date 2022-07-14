@@ -1,14 +1,16 @@
 //Api link của project
 export const GET_ALL_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1/getAll';
+  'http://niemtinvang.herokuapp.com/project/v1.1/getAll';
 export const CREATE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1.1/createProject';
+  'http://niemtinvang.herokuapp.com/project/v1.1/createProject';
 export const UPDATE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1.1/updateProject';
+  'http://niemtinvang.herokuapp.com/project/v1.1/updateProject';
 export const DELETE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1/deleteProject';
+  'http://niemtinvang.herokuapp.com/project/v1/deleteProject';
 export const GET_ALL_BY_ID =
-  'http://niemtinvang.herokuapp.com/Project/v1/getAllById';
+  'http://niemtinvang.herokuapp.com/project/v1/getAllById';
+export const GET_BY_PARAM =
+  'http://niemtinvang.herokuapp.com/project/v1/getByParam';
 export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
 
@@ -38,7 +40,7 @@ export const GET_ALL_REPORT =
 export const GET_REPORT_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
 export const GET_REPORT_BY_PROJECT_ID1 =
-  'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
+  'http://niemtinvang.herokuapp.com/report/v1/getByParam';
 export const CREATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/createReport';
 export const UPDATE_REPORT =
@@ -74,7 +76,7 @@ export const DELETE_REQUEST =
 export const GET_ALL_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/getAll';
 export const GET_REQUEST_BY_PROJECT_ID =
-  'http://niemtinvang.herokuapp.com/Request/v1/getByProjectId';
+  'http://niemtinvang.herokuapp.com/request/v1/getAllByParam';
 export const GET_REQUEST_ID =
   'http://niemtinvang.herokuapp.com/Request/v1/getByRequestId';
 //API link của REQUEST DETAIL

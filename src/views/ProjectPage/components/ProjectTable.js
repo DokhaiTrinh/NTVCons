@@ -358,10 +358,10 @@ export const ProjectTable = (props) => {
                     <TableCell align="left">{}</TableCell>
                     {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">
-                      {handleGetDate(row.actualStartDate)}
+                      {(row.actualStartDate)}
                     </TableCell>
                     <TableCell align="left">
-                      {handleGetDate(row.actualEndDate)}
+                      {(row.actualEndDate)}
                     </TableCell>
                     <TableCell align="left">
                       <IconButton

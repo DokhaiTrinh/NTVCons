@@ -96,11 +96,10 @@ const ProjectPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
 
   const [allProject, setAllProject] = React.useState([]);
-  console.log(allProject);
   React.useEffect(() => {
     (async () => {
       try {
@@ -108,15 +107,15 @@ const ProjectPage = (props) => {
           pageNo,
           pageSize,
           sortBy,
-          sortType,
+          sortTypeAsc,
         });
         setAllProject(listAllProject.data);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType, loading]);
-
+  }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
+  console.log(allProject);
   return (
     <div>
       <Grid container justify="center">

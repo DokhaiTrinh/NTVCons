@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const DialogLocation = (props) => {
   const { locationDetail, setLocationDetail } = props;
+
   const validateSchema = yup
     .object({
       addressNumber: yup
@@ -38,8 +39,9 @@ const DialogLocation = (props) => {
   });
 
   const submitForm = (data) => {
-    console.log(data.addressNumber);
     const detailLocation = {
+      createOption: 'CREATE_NEW_LOCATION',
+      existingLocationId: 0,
       addressNumber: data.addressNumber,
       area: data.area,
       city: data.city,

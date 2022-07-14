@@ -24,7 +24,10 @@ import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import DialogLocation from './Components/DialogLocation';
+import DialogBluePrint from './Components/DialogBluePrint';
+import DialogManagerList from './Components/DialogManagerList';
 import { getProjectByIdApi } from '../../apis/Project/updateProject';
+
 const CreateProjectPage = (props) => {
   const [valueActualStartDate, setValueActualStartDate] = React.useState(
     new Date()
@@ -37,7 +40,14 @@ const CreateProjectPage = (props) => {
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [locationDetail, setLocationDetail] = React.useState();
+  const [bluePrintDetail, setBluePrintDetail] = React.useState();
+
+  // Dữ liệu list manager này phải là array. Để thêm dữ liệu zô array ở thằng report có mẫu á.
+  const [managerListDetail, setManagerListDetail] = React.useState([]);
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
+  const [openBluePrintDialog, setOpenBluePrintDialog] = useState(false);
+  const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
+
   const [loading, setLoading] = useState('');
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
@@ -53,6 +63,8 @@ const CreateProjectPage = (props) => {
       planEndDate,
       planStartDate,
       locationDetail,
+      bluePrintDetail,
+      managerListDetail,
       data.createdBy,
       data.actualCost,
       data.estimatedCost,
@@ -65,6 +77,8 @@ const CreateProjectPage = (props) => {
     planEndDate,
     planStartDate,
     location,
+    blueprint,
+    projectManagerList,
     createdBy,
     actualCost,
     estimatedCost,
@@ -78,6 +92,8 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         location,
+        blueprint,
+        projectManagerList,
         createdBy,
         actualCost,
         estimatedCost,
@@ -89,6 +105,8 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         location,
+        blueprint,
+        projectManagerList,
         createdBy,
         actualCost,
         estimatedCost,
@@ -163,6 +181,19 @@ const CreateProjectPage = (props) => {
   const handleCloseLocationDialog = () => {
     setOpenLocationDialog(false);
   };
+  const handleOpenBluePrintDialog = () => {
+    setOpenBluePrintDialog(true);
+  };
+  const handleCloseBluePrintDialog = () => {
+    setOpenBluePrintDialog(false);
+  };
+  const handleOpenManagerListDialog = () => {
+    setOpenManagerListDialog(true);
+  };
+  const handleCloseManagerListDialog = () => {
+    setOpenManagerListDialog(false);
+  };
+
   return (
     <div>
       <Typography
@@ -298,6 +329,57 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
+                    onClick={() => handleOpenBluePrintDialog()}
+                  >
+                    Chi tiết bản vẽ
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {bluePrintDetail ? (
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Tên bản vẽ: {bluePrintDetail.blueprintName}
+                          </Typography>
+                          <Typography>
+                            Nhà thiết kế: {bluePrintDetail.designerName}
+                          </Typography>
+                          <Typography>
+                            Giá bản vẽ: {bluePrintDetail.estimatedCost}{' '}
+                          </Typography>
+                          <Typography>
+                            Người tạo: {bluePrintDetail.createdBy}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của bản vẽ chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
                     onClick={() => handleOpenLocationDialog()}
                   >
                     Chi tiết địa điểm
@@ -374,6 +456,56 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenManagerListDialog()}
+                  >
+                    Chi tiết kỹ sư
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {managerListDetail ? (
+                  managerListDetail.map((manager, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Kỹ sư: {manager.managerId}
+                            </Typography>
+                            <Typography>
+                              Ngày tạo: {manager.assignDate}
+                            </Typography>
+                            <Typography>
+                              Người tạo: {manager.createdBy}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Chọn file
@@ -428,6 +560,23 @@ const CreateProjectPage = (props) => {
           setLocationDetail={setLocationDetail}
           locationDetail={locationDetail}
         ></DialogLocation>
+      </Dialog>
+      <Dialog open={openBluePrintDialog} onClose={handleCloseBluePrintDialog}>
+        <DialogBluePrint
+          handleCloseBluePrintDialog={handleCloseBluePrintDialog}
+          setBluePrintDetail={setBluePrintDetail}
+          bluePrintDetail={bluePrintDetail}
+        ></DialogBluePrint>
+      </Dialog>
+      <Dialog
+        open={openManagerListDialog}
+        onClose={handleCloseManagerListDialog}
+      >
+        <DialogManagerList
+          handleCloseManagerListDialog={handleCloseManagerListDialog}
+          setManagerListDetail={setManagerListDetail}
+          managerListDetail={managerListDetail}
+        ></DialogManagerList>
       </Dialog>
     </div>
   );

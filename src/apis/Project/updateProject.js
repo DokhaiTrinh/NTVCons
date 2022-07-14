@@ -5,14 +5,9 @@ export const updateProjectApi = (data) => {
   console.log(data);
   return axiosService.put(`${API_LINK.UPDATE_PROJECT}`, data);
 };
-export const getProjectByIdApi = (
-  pageNo,
-  pageSize,
-  projectId,
-  sortBy,
-  sortType
-) => {
+export const getProjectByParam = (projectId, searchType) => {
+  console.log(projectId, searchType);
   return axiosService.get(
-    `${API_LINK.GET_ALL_BY_ID}?pageNo=${pageNo}&pageSize=${pageSize}&projectId=${projectId}&sortBy=${sortBy}&sortType=${sortType}`
+    `${API_LINK.GET_BY_PARAM}?searchParam=${projectId}&searchType=${searchType}`
   );
 };

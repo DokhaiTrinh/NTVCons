@@ -26,7 +26,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
-
+import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
+import { useParams } from 'react-router-dom';
 function createData(
   name,
   progress,
@@ -211,7 +212,7 @@ const EnhancedTableToolbar = (props) => {
           Yêu cầu
         </Typography>
       )}
-{/* 
+      {/* 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -250,9 +251,29 @@ export default function RequestTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId, allRequestDetails } = props;
-  console.log(allRequestDetails);
+  const { id } = useParams();
+  const { projectId } = props;
+  const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [{ loading }, dispatch] = useStateValue();
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllRequestDetail = await getRequestByProjectIdApi(
+          0,
+          15,
+          id,
+          'BY_PROJECT_ID',
+          'createdAt',
+          false
+        );
+        setAllRequestDetails(listAllRequestDetail.data);
+      } catch (error) {
+        console.log('Không thể lấy dữ liệu của yêu cầu!');
+      }
+    })();
+  }, []);
+  console.log(allRequestDetails);
   const handleDeleteRequest = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -383,9 +404,7 @@ export default function RequestTable(props) {
                     <TableCell align="left">{row.requestDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">
-                      {handleGetDate(row.requestDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.requestDate}</TableCell>
                     <TableCell align="left">{row.reportTypeId}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
@@ -423,7 +442,7 @@ export default function RequestTable(props) {
                         aria-label="delete"
                         edge="start"
                         size="large"
-                        color="warning" 
+                        color="warning"
                         onClick={() => handleDeleteRequest(row.requestId)}
                       >
                         <DeleteIcon />

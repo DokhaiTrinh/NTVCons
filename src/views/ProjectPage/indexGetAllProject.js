@@ -8,7 +8,7 @@ const ProjectPageContainer = () => {
     pageNo: 0,
     pageSize: 10,
     sortBy: 'createdAt',
-    sortType: false,
+    sortTypeAsc: false,
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -32,10 +32,10 @@ const ProjectPageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-        case 'CHANGE_SORTTYPE':
+      case 'CHANGE_SORTTYPEASC':
         return {
           ...state,
-          sortType: action.newSortType,
+          sortTypeAsc: action.newSortTypeAsc,
         };
       default:
         break;

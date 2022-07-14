@@ -259,8 +259,12 @@ export default function ReportTable(props) {
     (async () => {
       try {
         const listAllTaskDetail = await getTaskByProjectIdApi(
+          0,
+          15,
           id,
-          'TASK_BY_PROJECT_ID'
+          'BY_PROJECT_ID',
+          'createdAt',
+          false
         );
         setAllTaskDetails(listAllTaskDetail.data);
       } catch (error) {
@@ -317,7 +321,9 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length)
+      : 0;
 
   const handleDeleteTask = (id) => {
     Swal.fire({
@@ -413,9 +419,7 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.taskDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">
-                      {(row.actualStartDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.actualStartDate}</TableCell>
                     <TableCell align="left">{row.actualEndDate}</TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}

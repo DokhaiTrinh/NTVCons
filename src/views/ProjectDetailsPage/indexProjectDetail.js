@@ -7,11 +7,11 @@ const ProjectDetailPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
-    pageSize: 150,
+    pageSize: 15,
     projectId: id,
     sortBy: 'createdAt',
-    sortType: true,
-    searchType: 'REPORT_BY_PROJECT_ID',
+    sortTypeAsc: true,
+    searchType: 'BY_PROJECT_ID',
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -35,10 +35,10 @@ const ProjectDetailPageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-      case 'CHANGE_SORTTYPE':
+      case 'CHANGE_SORTTYPEASC':
         return {
           ...state,
-          sortType: action.newSortType,
+          sortTypeAsc: action.newSortTypeAsc,
         };
       case 'CHANGE_SEARCHTYPE':
         return {

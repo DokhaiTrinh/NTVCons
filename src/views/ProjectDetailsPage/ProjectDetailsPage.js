@@ -19,9 +19,10 @@ import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
-
+import { getProjectByParam } from '../../apis/Project/getProjectById';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { useParams } from 'react-router-dom';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -56,65 +57,64 @@ function a11yProps(index) {
 }
 const ProjectDetailsPage = (props) => {
   const { row } = props;
-
   const [value, setValue] = React.useState(0);
   const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const [
-    { pageNo, pageSize, projectId, sortBy, sortType, searchType, loading },
+    { projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType },
     dispatch,
   ] = useStateValue();
-  const [allProjectDetails, setAllProjectDetails] = React.useState([]);
+  const [allProjectDetails, setAllProjectDetails] = React.useState();
   const [allReportDetails, setAllReportDetails] = React.useState([]);
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
-
   const handleChange1 = (event) => {
     setAge(event.target.value);
   };
 
-  React.useEffect(
-    () => {
-      (async () => {
-        try {
-          const listAllProjectDetails = await getProjectByIdApi({
-            pageNo,
-            pageSize,
-            projectId,
-            sortBy,
-            sortType,
-            searchType,
-          });
-          const listAllRequestDetails = await getRequestByProjectIdApi({
-            pageNo,
-            pageSize,
-            projectId,
-            sortBy,
-            sortType,
-          });
-          setAllProjectDetails(listAllProjectDetails.data);
-          setAllRequestDetails(listAllRequestDetails.data);
-        } catch (error) {
-          console.log('Không thể lấy danh sách dự án');
-        }
-      })();
-      (async () => {
-        try {
-          const listAllReportDetails = await getReportByProjectIdApi({
-            projectId,
-            searchType,
-          });
-          setAllReportDetails(listAllReportDetails.data);
-        } catch (error) {
-          console.log('Không thể lấy danh sách báo cáo');
-        }
-      })();
-
-    },
-    [pageNo, pageSize, projectId, sortBy, sortType],
-    [projectId, searchType],
-  );
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllProjectDetails = await getProjectByParam(
+          projectId,
+          'BY_ID'
+        );
+        setAllProjectDetails(listAllProjectDetails.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+    // (async () => {
+    //   try {
+    //     const listAllRequestDetails = await getRequestByProjectIdApi({
+    //       pageNo,
+    //       pageSize,
+    //       projectId,
+    //       sortBy,
+    //       sortTypeAsc,
+    //     });
+    //     setAllRequestDetails(listAllRequestDetails.data);
+    //   } catch (error) {
+    //     console.log('Không thể lấy danh sách yêu cầu');
+    //   }
+    // })
+    (async () => {
+      try {
+        const listAllReportDetails = await getReportByProjectIdApi({
+          pageNo,
+          pageSize,
+          projectId,
+          searchType,
+          sortBy,
+          sortTypeAsc,
+        });
+        setAllReportDetails(listAllReportDetails.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách báo cáo');
+      }
+    })();
+  }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType]);
 
   return (
     <div>
@@ -143,7 +143,7 @@ const ProjectDetailsPage = (props) => {
               sx={{ height: '100%' }}
             >
               <Typography variant="body1">
-                Dự án - Xây dựng tòa nhà văn phòng ABC
+                {/* Dự án - Xây dựng tòa nhà văn phòng ABC */}
               </Typography>
             </Box>
           </Grid>
@@ -184,12 +184,10 @@ const ProjectDetailsPage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           {allProjectDetails ? (
-            allProjectDetails.length > 0 ? (
-              <Details allProjectDetails={allProjectDetails[0]} />
-            ) : (
-              <div>Không có dữ liệu để hiển thị</div>
-            )
-          ) : null}
+            <Details allProjectDetails={allProjectDetails} />
+          ) : (
+            <div>Không có dữ liệu!!</div>
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ReportTable
