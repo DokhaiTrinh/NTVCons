@@ -26,15 +26,12 @@ import CardContent from '@mui/material/CardContent';
 import DialogLocation from './Components/DialogLocation';
 import DialogBluePrint from './Components/DialogBluePrint';
 import DialogManagerList from './Components/DialogManagerList';
+import DialogWorkerList from './Components/DialogWorkerList';
 import { getProjectByIdApi } from '../../apis/Project/updateProject';
+import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
+import { getAllManagerApi } from '../../apis/ProjectManager/getAllManager';
 
 const CreateProjectPage = (props) => {
-  const [valueActualStartDate, setValueActualStartDate] = React.useState(
-    new Date()
-  );
-  const [valueActualEndDate, setValueActualEndDate] = React.useState(
-    new Date()
-  );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
   );
@@ -48,69 +45,102 @@ const CreateProjectPage = (props) => {
   const [openBluePrintDialog, setOpenBluePrintDialog] = useState(false);
   const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
 
+  const [workerListDetail, setWorkerListDetail] = React.useState([]);
+  const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
+  const [allManager, setAllManager] = React.useState([]);
+  const [allWorker, setAllWorker] = React.useState([]);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllManager = await getAllManagerApi(
+          0,
+          1000,
+          'createdAt',
+          true
+        );
+        setAllManager(listAllManager.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách kỹ sư');
+      }
+      try {
+        const listAllWorker = await getAllWorkerApi1(
+          0,
+          1000,
+          'createdAt',
+          true
+        );
+        setAllWorker(listAllWorker.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách công nhân');
+      }
+    })();
+  }, []);
   const submitForm = (data) => {
-    const actualStartDate =
-      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
-    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+
+    let listManagerChoice = [];
+    let listWorkerChoice = [];
+    for (let index = 0; index < managerListDetail.length; index++) {
+      const element = managerListDetail[index];
+      let objectManager = {
+        managerId: element,
+      };
+      listManagerChoice.push(objectManager);
+    }
+    for (let index = 0; index < workerListDetail.length; index++) {
+      const element = workerListDetail[index];
+      let objectWorker = {
+        workerId: element,
+      };
+      listWorkerChoice.push(objectWorker);
+    }
     handleCreateProject(
-      actualEndDate,
-      actualStartDate,
       planEndDate,
       planStartDate,
       locationDetail,
       bluePrintDetail,
-      managerListDetail,
-      data.createdBy,
-      data.actualCost,
+      listManagerChoice,
       data.estimatedCost,
-      data.projectName
+      data.projectName,
+      listWorkerChoice
     );
   };
   const handleCreateProject = async (
-    actualEndDate,
-    actualStartDate,
     planEndDate,
     planStartDate,
     location,
     blueprint,
     projectManagerList,
-    createdBy,
-    actualCost,
     estimatedCost,
-    projectName
+    projectName,
+    projectWorkerList
   ) => {
     try {
       setLoading(true);
       console.log(
-        actualEndDate,
-        actualStartDate,
         planEndDate,
         planStartDate,
         location,
         blueprint,
         projectManagerList,
-        createdBy,
-        actualCost,
-        estimatedCost,
-        projectName
-      );
-      await createProjectApi({
-        actualEndDate,
-        actualStartDate,
-        planEndDate,
-        planStartDate,
-        location,
-        blueprint,
-        projectManagerList,
-        createdBy,
-        actualCost,
         estimatedCost,
         projectName,
+        projectWorkerList
+      );
+      await createProjectApi({
+        planEndDate,
+        planStartDate,
+        location,
+        blueprint,
+        projectManagerList,
+        estimatedCost,
+        projectName,
+        projectWorkerList,
       });
       setLoading(false);
       await Swal.fire({
@@ -132,11 +162,6 @@ const CreateProjectPage = (props) => {
   };
   const valideSchema = yup
     .object({
-      actualCost: yup
-        .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ')
-        .required(),
       estimatedCost: yup
         .number()
         .min(1, 'Số lượng phải lớn hơn 0')
@@ -146,7 +171,6 @@ const CreateProjectPage = (props) => {
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
         .required('Dự án '),
-      createdBy: yup.number().required(),
     })
     .required();
   const {
@@ -193,7 +217,32 @@ const CreateProjectPage = (props) => {
   const handleCloseManagerListDialog = () => {
     setOpenManagerListDialog(false);
   };
+  const handleOpenWorkerDialog = () => {
+    setOpenWorkerListDialog(true);
+  };
+  const handleCloseWorkerDialog = () => {
+    setOpenWorkerListDialog(false);
+  };
 
+  const handleGetManagerName = (managerID) => {
+    if (allManager.length > 0) {
+      for (const manager of allManager) {
+        if (manager.projectManagerId === managerID) {
+          return manager.manager.username;
+        }
+      }
+    }
+    return '';
+  };
+  const handleGetWorkerName = (workerId) => {
+    if (allWorker.length > 0) {
+      for (const worker of allWorker) {
+        if (worker.workerId === workerId) {
+          return worker.fullName;
+        }
+      }
+    }
+  };
   return (
     <div>
       <Typography
@@ -238,6 +287,50 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenManagerListDialog()}
+                  >
+                    Kỹ sư phụ trách
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {managerListDetail ? (
+                  managerListDetail.map((managerID, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Kỹ sư: {handleGetManagerName(managerID)}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Chi phí ước tính
@@ -276,37 +369,6 @@ const CreateProjectPage = (props) => {
                       value={valuePlanEndDate}
                       onChange={(newValue) => {
                         setValuePlanEndDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-              </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Thời gian chính thức
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Bắt đầu chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualStartDate}
-                      onChange={(newValue) => {
-                        setValueActualStartDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Kết thúc chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualEndDate}
-                      onChange={(newValue) => {
-                        setValueActualEndDate(newValue);
                       }}
                     />
                   </LocalizationProvider>
@@ -382,7 +444,7 @@ const CreateProjectPage = (props) => {
                     }}
                     onClick={() => handleOpenLocationDialog()}
                   >
-                    Chi tiết địa điểm
+                    Địa điểm thi công
                   </Button>
                 </Box>
               </Grid>
@@ -432,30 +494,6 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người quản lý
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="createdBy"
-                  errors={errors.createdBy}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Giá chính thức
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="actualCost"
-                  errors={errors.actualCost}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
               <Grid item container sx={12}>
                 <Box
                   sx={{
@@ -473,27 +511,21 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    onClick={() => handleOpenManagerListDialog()}
+                    onClick={() => handleOpenWorkerDialog()}
                   >
-                    Chi tiết kỹ sư
+                    Danh sách công nhân
                   </Button>
                 </Box>
               </Grid>
               <Grid item container columns={12} spacing={2}>
-                {managerListDetail ? (
-                  managerListDetail.map((manager, index) => (
+                {workerListDetail ? (
+                  workerListDetail.map((workerId, index) => (
                     <Grid item xs={4}>
                       <Box sx={{ width: '100%' }}>
                         <Card sx={{ width: '100%' }}>
                           <CardContent>
                             <Typography>
-                              Kỹ sư: {manager.managerId}
-                            </Typography>
-                            <Typography>
-                              Ngày tạo: {manager.assignDate}
-                            </Typography>
-                            <Typography>
-                              Người tạo: {manager.createdBy}
+                              Kỹ sư: {handleGetWorkerName(workerId)}
                             </Typography>
                           </CardContent>
                         </Card>
@@ -506,6 +538,31 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid>
+              {/* <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Người quản lý
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="createdBy"
+                  errors={errors.createdBy}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid> */}
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Giá chính thức
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="actualCost"
+                  errors={errors.actualCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+
               {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Chọn file
@@ -574,9 +631,18 @@ const CreateProjectPage = (props) => {
       >
         <DialogManagerList
           handleCloseManagerListDialog={handleCloseManagerListDialog}
+          allManager={allManager}
           setManagerListDetail={setManagerListDetail}
           managerListDetail={managerListDetail}
         ></DialogManagerList>
+      </Dialog>
+      <Dialog open={openWorkerListDialog} onClose={handleCloseWorkerDialog}>
+        <DialogWorkerList
+          handleCloseWorkerDialog={handleCloseWorkerDialog}
+          allWorker={allWorker}
+          setWorkerListDetail={setWorkerListDetail}
+          workerListDetail={workerListDetail}
+        ></DialogWorkerList>
       </Dialog>
     </div>
   );

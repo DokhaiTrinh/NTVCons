@@ -2,7 +2,7 @@ import CreateProjectPage from '../views/CreateProjectPage/CreateProjectPage';
 import RoleManagePage from '../views/RoleManagePage/index';
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
-import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
+import PersonnelPage from '../views/PersonnelPage/indexGetAllUser';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
@@ -15,6 +15,7 @@ import EditServicePage from '../views/ProductPage/EditServicePage';
 import CreateServicePage from '../views/ProductPage/CreateServicePage';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
+import CreateWorkerPage from '../views/PersonnelPage/CreateWorker';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
 import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
@@ -175,6 +176,12 @@ export const HOME_ROUTES = [
     name: 'Create Personnel Page',
     exact: true,
     component: CreatePersonnelPage,
+  },
+  {
+    path: '/createWorker',
+    name: 'Create Worker Page',
+    exact: true,
+    component: CreateWorkerPage,
   },
   {
     path: '/updateTask',

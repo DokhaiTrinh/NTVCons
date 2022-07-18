@@ -24,21 +24,20 @@ function RequestDetailPage() {
     return getDateReformat;
   };
   const { id } = useParams();
-  console.log(id);
-  const [allRequestId, setAllRequestId] = React.useState([]);
+  const [allRequestList, setAllRequestList] = React.useState([]);
   const [requestDetail, setRequestDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllRequestDetail = await getRequestIdApi(id);
-        setAllRequestId(listAllRequestDetail.data);
+        const listAllRequestDetail = await getRequestIdApi(id, 'BY_ID');
+        setAllRequestList(listAllRequestDetail.data);
         setRequestDetail(listAllRequestDetail.data.requestDetailList);
       } catch (error) {
-        console.log('Không thể lấy dữ liệu của báo cáo');
+        console.log('Không thể lấy dữ liệu của yêu cầu!');
       }
     })();
   }, []);
-  console.log(requestDetail);
+  console.log(allRequestList);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -56,22 +55,22 @@ function RequestDetailPage() {
             Thông tin chung
           </Typography>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
-          {allRequestId ? (
+          {allRequestList ? (
             <Grid container spacing={2}>
               <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Mã dự án
                 </Typography>
                 <Typography variant="body1">
-                  {allRequestId.projectId}
+                  {allRequestList.projectId}
                 </Typography>
               </Grid>
               <Grid item xs="4">
                 <Typography variant="body1" color="gray">
-                  Tên dự án
+                  Tên yêu cầu
                 </Typography>
                 <Typography variant="body1">
-                  {allRequestId.projectName}
+                  {allRequestList.projectName}
                 </Typography>
               </Grid>
               <Grid item xs="4">
@@ -79,7 +78,7 @@ function RequestDetailPage() {
                   Mã yêu cầu
                 </Typography>
                 <Typography variant="body1">
-                  {allRequestId.requestId}
+                  {allRequestList.requestId}
                 </Typography>
               </Grid>
               <Grid item xs="4">
@@ -87,8 +86,8 @@ function RequestDetailPage() {
                   Thông tin yêu cầu
                 </Typography>
                 <Typography variant="body1">
-                  {/* {handleGetDate(allRequestId.reportDate)} */}
-                  {allRequestId.requestDesc}
+                  {/* {handleGetDate(allRequestList.reportDate)} */}
+                  {allRequestList.requestDesc}
                 </Typography>
               </Grid>
               <Grid item xs="4">
@@ -96,7 +95,11 @@ function RequestDetailPage() {
                   Kiểu yêu cầu
                 </Typography>
                 <Typography variant="body1">
-                  {allRequestId.requestTypeName}
+                  {allRequestList.requestType ? (
+                    allRequestList.requestType.requestTypeName
+                  ) : (
+                    <div>Chưa có dữ liệu !!</div>
+                  )}
                 </Typography>
               </Grid>
               <Grid item xs="4">
@@ -104,7 +107,7 @@ function RequestDetailPage() {
                   Người yêu cầu
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  {allRequestId.requesterName}
+                  {allRequestList.requesterName}
                 </Typography>
               </Grid>
               <Grid item xs="4">
@@ -112,34 +115,40 @@ function RequestDetailPage() {
                   Ngày yêu cầu
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  {allRequestId.requestDate}
+                  {allRequestList.requestDate}
                 </Typography>
               </Grid>
               <Grid item container xs="4">
                 <Typography variant="body1" color="gray">
                   Chi tiết yêu cầu
                 </Typography>
-                <Card sx={{ width: '100%'}}>
+                <Card sx={{ width: '100%' }}>
                   <CardContent>
-                    {requestDetail.length > 0 ? (
+                    {requestDetail ? (
                       requestDetail.map((req, index) => (
-                          <Card sx={{ width: '100%', padding: '10px', marginBottom: '10px' }}>
-                            <Typography>
-                              Mã yêu cầu chi tiết: {req.requestDetailId}
-                            </Typography>
-                            <Typography>
-                              Thông tin yêu cầu chi tiết: {req.itemDesc}
-                            </Typography>
-                            <Typography>
-                              Số lượng:
-                              {req.itemAmount}
-                            </Typography>
-                            <Typography>Giá tiền: {req.itemPrice} </Typography>
-                            <Typography>Đơn vị: {req.itemUnit}</Typography>
-                          </Card>
+                        <Card
+                          sx={{
+                            width: '100%',
+                            padding: '10px',
+                            marginBottom: '10px',
+                          }}
+                        >
+                          {/* <Typography>
+                            Mã yêu cầu chi tiết: {req.requestDetailId}
+                          </Typography> */}
+                          <Typography>
+                            Thông tin yêu cầu chi tiết: {req.itemDesc}
+                          </Typography>
+                          <Typography>
+                            Số lượng:
+                            {req.itemAmount}
+                          </Typography>
+                          <Typography>Giá tiền: {req.itemPrice} VNĐ</Typography>
+                          <Typography>Đơn vị: {req.itemUnit}</Typography>
+                        </Card>
                       ))
                     ) : (
-                      <div>Không có chi tiết</div>
+                      <div>Không có dữ liệu!!</div>
                     )}
                   </CardContent>
                 </Card>

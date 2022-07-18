@@ -13,62 +13,46 @@ import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import { createUserApi } from './../../apis/User/createUser';
+import { createWorkerApi } from './../../apis/Worker/createWorker';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import { Add } from '@mui/icons-material';
-import { getAllRoleApi1 } from '../../apis/Role/GetAllRole';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const CreatePersonnelPage = (props) => {
-  const [dob, setDob] = React.useState(new Date());
-  const [joinDate, setJoinDate] = React.useState(new Date());
+import Dialog from '@mui/material/Dialog';
+import { DialogAddress } from './components/DialogAddress';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const [allRole, setAllRole] = React.useState([]);
-  const [roleSelected, setRoleSelected] = React.useState();
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const listAllRole = await getAllRoleApi1(0, 15, 'createdAt', true);
-        setAllRole(listAllRole.data);
-      } catch (error) {
-        console.log('Không thể lấy danh sách role');
-      }
-    })();
-  }, []);
-  console.log(allRole);
+  const [locationDetail, setLocationDetail] = React.useState();
+  const [openLocationDialog, setOpenLocationDialog] = useState(false);
 
+  const citizensExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const socialSecurityCodeExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const validateSchema = yup
     .object({
-      username: yup
+      fullName: yup
         .string()
         .min(5, 'Tên đăng nhập phải lớn hoặc hoặc bàng 6 kí tự')
         .required('Tên đăng nhập không được để trống'),
-      phone: yup
+      citizenId: yup
         .string()
-        .required('Số điện thoại không được để trống!')
-        .matches(phoneRegExp, 'Số điện thoại không xác thực !')
-        .min(10, 'Phải đúng 10 số')
-        .max(10, 'Không được quá 10 số'),
-      email: yup.string().email('Email không chính xác'),
+        .required('Căn cước công dân không được để trống!')
+        .matches(citizensExp, 'Số căn cước công dân không xác thực !')
+        .min(12, 'Phải đúng 12 số')
+        .max(12, 'Không được quá 12 số'),
+      socialSecurityCode: yup
+        .string()
+        .matches(socialSecurityCodeExp, 'Số bảo hiểm công dân không xác thực !')
+        .min(12, 'Phải đúng 12 số')
+        .max(12, 'Không được quá 12 số'),
     })
     .required();
 
@@ -81,16 +65,31 @@ const CreatePersonnelPage = (props) => {
   });
 
   const submitForm = (data) => {
-    handleCreateUser(data.email, data.phone, roleSelected, data.username);
+    handleCreateWorker(
+      locationDetail,
+      data.citizenId,
+      data.fullName,
+      data.socialSecurityCode
+    );
   };
-  const handleCreateUser = async (email, phone, roleId, username) => {
+  const handleCreateWorker = async (
+    address,
+    citizenId,
+    fullName,
+    socialSecurityCode
+  ) => {
     try {
       setLoading(true);
-      await createUserApi({ email, phone, roleId, username });
+      await createWorkerApi({
+        address,
+        citizenId,
+        fullName,
+        socialSecurityCode,
+      });
       setLoading(false);
       await Swal.fire({
         icon: 'success',
-        text: 'Tạo nhân viên thành công',
+        text: 'Tạo công nhân thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -105,10 +104,12 @@ const CreatePersonnelPage = (props) => {
       setLoading(false);
     }
   };
-  const handleChange = (event) => {
-    setRoleSelected(event.target.value);
+  const handleOpenLocationDialog = () => {
+    setOpenLocationDialog(true);
   };
-
+  const handleCloseLocationDialog = () => {
+    setOpenLocationDialog(false);
+  };
   return (
     <div>
       <Typography
@@ -116,7 +117,7 @@ const CreatePersonnelPage = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        Tạo mới hồ sơ nhân viên
+        Tạo mới hồ sơ công nhân
       </Typography>
       <Divider></Divider>
       <Box
@@ -135,8 +136,8 @@ const CreatePersonnelPage = (props) => {
           }}
         >
           {/* <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Ảnh đại diện
-          </Typography> */}
+        Ảnh đại diện
+      </Typography> */}
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Box sx={{ width: '100%', height: '20px' }}>
@@ -177,62 +178,107 @@ const CreatePersonnelPage = (props) => {
                   </Typography>
                   <TextFieldComponent
                     register={register}
-                    name="username"
+                    name="fullName"
                     // label="Tên vai trò"
-                    errors={errors.username}
+                    errors={errors.fullName}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Điện thoại
+                    Căn cước công dân
                   </Typography>
                   <TextFieldComponent
                     register={register}
-                    name="phone"
+                    name="citizenId"
                     // label="Tên vai trò"
-                    errors={errors.phone}
+                    errors={errors.citizenId}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Email
+                    Số bảo hiểm
                   </Typography>
                   <TextFieldComponent
                     register={register}
-                    name="email"
+                    name="socialSecurityCode"
                     // label="Tên vai trò"
-                    errors={errors.email}
+                    errors={errors.socialSecurityCode}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Chức vụ
-                  </Typography>
-                  <FormControl sx={{ width: '100%' }}>
-                    <Select
-                      onChange={handleChange}
-                      MenuProps={MenuProps}
-                      value={roleSelected}
+                <Grid item container sx={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'left',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: '',
+                        borderRadius: 50,
+                        width: '200px',
+                        alignSelf: 'center',
+                      }}
+                      onClick={() => handleOpenLocationDialog()}
                     >
-                      {allRole.length > 0 ? (
-                        allRole.map((roleType, index) => (
-                          <MenuItem value={roleType.roleId} key={index}>
-                            {roleType.roleName}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem>
-                          Không có dữ liệu của danh sách công việc!
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
+                      Địa điểm thi công
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid item container columns={12} spacing={2}>
+                  {locationDetail ? (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Số nhà: {locationDetail.addressNumber}
+                            </Typography>
+                            <Typography>
+                              Tên đường:{locationDetail.street}
+                            </Typography>
+                            <Typography>
+                              Quận: {locationDetail.district}{' '}
+                            </Typography>
+                            <Typography>
+                              Thành phố: {locationDetail.city}
+                            </Typography>
+                            <Typography>
+                              Khu vực: {locationDetail.ward}
+                            </Typography>
+                            <Typography>
+                              Địa bàn tỉnh: {locationDetail.province}
+                            </Typography>
+                            <Typography>
+                              Quốc gia: {locationDetail.country}
+                            </Typography>
+                            <Typography>
+                              Diện tích: {locationDetail.area}
+                            </Typography>
+                            <Typography>
+                              Điều phối: {locationDetail.coordinate}
+                            </Typography>
+                            <Typography>
+                              Người tạo: {locationDetail.createdBy}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ) : (
+                    <Grid item sx={12}>
+                      <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
               <Grid item xs={12}>
@@ -262,8 +308,16 @@ const CreatePersonnelPage = (props) => {
           </form>
         </Box>
       </Box>
+      <Dialog open={openLocationDialog} onClose={handleCloseLocationDialog}>
+        <DialogAddress
+          handleCloseLocationDialog={handleCloseLocationDialog}
+          setLocationDetail={setLocationDetail}
+          locationDetail={locationDetail}
+        ></DialogAddress>
+      </Dialog>
+      ;
     </div>
   );
 };
 
-export default CreatePersonnelPage;
+export default CreateWorker;

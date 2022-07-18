@@ -19,6 +19,9 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { Link } from 'react-router-dom';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
 
 function createData(id, name, date) {
   return {
@@ -83,6 +86,18 @@ const headCells = [
     numeric: false,
     // disablePadding: false,
     label: 'Ngày được thêm vào',
+  },
+  {
+    id: 'capnhat',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Cập nhật',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    // disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
@@ -206,13 +221,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const RoleTable = () => {
+export const RoleTable = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const { allRole } = props;
+  console.log(allRole);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -278,50 +294,37 @@ const RoleTable = () => {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.id)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+              {allRole.map((row, index) => {
+                return (
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell align="left">{row.roleId}</TableCell>
+                    <TableCell align="left">{row.roleName}</TableCell>
+                    <TableCell align="left">{row.updatedAt}</TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        component={Link}
+                        // edge="start"
+                        size="large"
+                        to={`/updateReportDetails/${row.reportId}`}
                       >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.date}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                        <UpdateIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        color="warning"
+                        edge="start"
+                        size="large"
+                        // onClick={() => handleDeleteReport(row.reportId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

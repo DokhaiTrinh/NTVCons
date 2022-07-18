@@ -17,12 +17,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
+export const DialogWorkerList = (props) => {
+  const { allWorker, workerListDetail, setWorkerListDetail } = props;
 
-const DialogManagerList = (props) => {
-  const { managerListDetail, setManagerListDetail, allManager } = props;
-
-  const [checked, setChecked] = React.useState(managerListDetail);
-
+  const [checked, setChecked] = React.useState(workerListDetail);
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -35,21 +33,10 @@ const DialogManagerList = (props) => {
 
     setChecked(newChecked);
   };
-  const handleSaveListManager = () => {
-    setManagerListDetail(checked);
-    props.handleCloseManagerListDialog();
+  const handleSaveListWorker = () => {
+    setWorkerListDetail(checked);
+    props.handleCloseWorkerDialog();
   };
-
-  // const handleCheckExisted = (managerID) => {
-  //   for (let index = 0; index < managerListDetail.length; index++) {
-  //     const element = managerListDetail[index];
-  //     if (element === managerID) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // };
-
   return (
     <div>
       <Typography
@@ -77,7 +64,7 @@ const DialogManagerList = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin kỹ sư
+            Thông tin công nhân
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -91,25 +78,21 @@ const DialogManagerList = (props) => {
                 bgcolor: 'background.paper',
               }}
             ></List>
-            {allManager ? (
-              allManager.length > 0 ? (
-                allManager.map((manager) => (
+            {allWorker ? (
+              allWorker.length > 0 ? (
+                allWorker.map((worker) => (
                   <ListItem
-                    key={manager.projectManagerId}
+                    key={worker.workerId}
                     secondaryAction={
-                      managerListDetail.length > 0 ? (
+                      workerListDetail.length > 0 ? (
                         <Checkbox
-                          onChange={handleToggle(manager.projectManagerId)}
-                          checked={
-                            checked.indexOf(manager.projectManagerId) !== -1
-                          }
+                          onChange={handleToggle(worker.workerId)}
+                          checked={checked.indexOf(worker.workerId) !== -1}
                         />
                       ) : (
                         <Checkbox
-                          onChange={handleToggle(manager.projectManagerId)}
-                          checked={
-                            checked.indexOf(manager.projectManagerId) !== -1
-                          }
+                          onChange={handleToggle(worker.workerId)}
+                          checked={checked.indexOf(worker.workerId) !== -1}
                         />
                       )
                     }
@@ -118,11 +101,11 @@ const DialogManagerList = (props) => {
                     <ListItemButton>
                       <ListItemAvatar>
                         {/* <Avatar
-                    alt={`Avatar n°${value + 1}`}
-                    src={`/static/images/avatar/${value + 1}.jpg`}
-                  /> */}
+                alt={`Avatar n°${value + 1}`}
+                src={`/static/images/avatar/${value + 1}.jpg`}
+              /> */}
                       </ListItemAvatar>
-                      <ListItemText primary={`${manager.manager.username}`} />
+                      <ListItemText primary={`${worker.fullName}`} />
                     </ListItemButton>
                   </ListItem>
                 ))
@@ -150,7 +133,7 @@ const DialogManagerList = (props) => {
                     width: '200px',
                     alignSelf: 'center',
                   }}
-                  onClick={handleSaveListManager}
+                  onClick={handleSaveListWorker}
                 >
                   Lưu
                 </Button>
@@ -163,4 +146,4 @@ const DialogManagerList = (props) => {
   );
 };
 
-export default DialogManagerList;
+export default DialogWorkerList;

@@ -13,17 +13,16 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import { Route } from 'react-router';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import UpdateIcon from '@mui/icons-material/Update';
 import InfoIcon from '@mui/icons-material/Info';
+import { deleteUserkApi } from './../../../apis/User/deleteUser';
+import Swal from 'sweetalert2';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
 
 function createData(code, name, department, position, office, role, join, dob) {
   return {
@@ -34,17 +33,71 @@ function createData(code, name, department, position, office, role, join, dob) {
     office,
     role,
     join,
-    dob
+    dob,
   };
 }
 
 const rows = [
-  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('2', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('3', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('4', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('5', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('6', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
+  createData(
+    '1',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
+  createData(
+    '2',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
+  createData(
+    '3',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
+  createData(
+    '4',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
+  createData(
+    '5',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
+  createData(
+    '6',
+    'Trương Quốc Vinh',
+    'Kiểm thử phần mềm',
+    'IT',
+    'Trưởng phòng kỹ thuật',
+    'employee',
+    '01/01/2022',
+    '31/12/1990'
+  ),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -91,28 +144,10 @@ const headCells = [
     label: 'Họ Và Tên',
   },
   {
-    id: 'phongban',
-    numeric: false,
-    disablePadding: false,
-    label: 'Phòng ban',
-  },
-  {
-    id: 'vitri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Vị trí',
-  },
-  {
     id: 'chucvu',
     numeric: false,
     disablePadding: false,
     label: 'Chức vụ',
-  },
-  {
-    id: 'vaitro',
-    numeric: false,
-    disablePadding: false,
-    label: 'Vai trò',
   },
   {
     id: 'ngayvao',
@@ -121,16 +156,16 @@ const headCells = [
     label: 'Ngày vào',
   },
   {
-    id: 'ngaysinh',
+    id: 'sodienthoai',
     numeric: false,
     disablePadding: false,
-    label: 'Ngày sinh',
+    label: 'Số điện thoại',
   },
   {
-    id: 'chitiet',
+    id: 'email',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: 'Email',
   },
   {
     id: 'capnhat',
@@ -147,8 +182,14 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -201,7 +242,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -246,13 +290,42 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function PersonnelTable() {
+export const PersonnelTable = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { allUser } = props;
+  const [{ loading }, dispatch] = useStateValue();
+  console.log(allUser);
 
+  const handleDeleteUser = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id);
+      }
+    });
+  };
+  const deleteUser = async (id) => {
+    try {
+      await deleteUserkApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Nhân viên của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -281,7 +354,7 @@ export function PersonnelTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -308,10 +381,7 @@ export function PersonnelTable() {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -321,63 +391,39 @@ export function PersonnelTable() {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.code);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      // role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.code}
-                      selected={isItemSelected}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
+              {allUser.map((row, index) => {
+                return (
+                  <TableRow>
+                    <TableCell>{row.userId}</TableCell>
+                    <TableCell align="left">{row.username}</TableCell>
+                    <TableCell align="left">{row.role.roleName}</TableCell>
+                    <TableCell align="left">{row.role.updatedAt}</TableCell>
+                    <TableCell align="left">{row.phone}</TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        component={Link}
+                        // edge="start"
+                        size="large"
+                        to={`/updateReportDetails/${row.reportId}`}
                       >
-                        {row.code}
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.department}</TableCell>
-                      <TableCell align="left">{row.position}</TableCell>
-                      <TableCell align="left">{row.office}</TableCell>
-                      <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="left">{row.join}</TableCell>
-                      <TableCell align="left">{row.dob}</TableCell>
-                      <TableCell align="left">
-                        <IconButton
-                        // component={Link}
-                        // to={`/projectDetails/${row.projectId}`}
-                        >
-                          <InfoIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell align="left">
-                        <IconButton aria-label="edit role" >
-                          <UpdateIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell align="left">
-                        <IconButton aria-label="delete employee" color="warning">
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                        <UpdateIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        color="warning"
+                        edge="start"
+                        size="large"
+                        onClick={() => handleDeleteUser(row.userId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -393,4 +439,4 @@ export function PersonnelTable() {
       </Paper>
     </Box>
   );
-}
+};

@@ -13,6 +13,6 @@ export const getRequestByProjectIdApi = (
     `${API_LINK.GET_REQUEST_BY_PROJECT_ID}?pageNo=${pageNo}&pageSize=${pageSize}&searchParam=${projectId}&searchType=${searchType}&sortBy=${soryBy}&sortTypeAsc=${sortTypeAsc}`
   );
 };
-export const getRequestIdApi = (requestId) => {
-  return axiosService.get(`${API_LINK.GET_REQUEST_ID}?requestId=${requestId}`);
+export const getRequestIdApi = (requestId, searchType) => {
+  return axiosService.get(`${API_LINK.GET_REQUEST_ID}?searchParam=${requestId}&searchType=${searchType}`);
 };

@@ -21,7 +21,6 @@ const DialogBlueprint = (props) => {
       .min(0, 'Phải nhập giá tiền!')
       .typeError('Số tiền được tính theo VNĐ')
       .required(),
-    createdBy: yup.number().required(),
   });
   const {
     register,
@@ -34,7 +33,6 @@ const DialogBlueprint = (props) => {
   const submitForm = (data) => {
     const detailBlueprint = {
       blueprintName: data.blueprintName,
-      createdBy: data.createdBy,
       designerName: data.designerName,
       estimatedCost: data.estimatedCost,
       projectId: 0,
@@ -110,19 +108,6 @@ const DialogBlueprint = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người tạo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="createdBy"
-                  errors={errors.createdBy}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <Box
                   sx={{

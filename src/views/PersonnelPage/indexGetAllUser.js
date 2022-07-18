@@ -1,14 +1,14 @@
 import React from 'react';
 import { StateProvider } from '../../common/StateProvider/StateProvider';
-import RoleManagePage from './RoleManagePage';
+import PersonnelPage from './PersonnelPage';
 
-const RolePageContainer = () => {
+const UserPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
     pageSize: 15,
-    sortBy: 'roleId',
-    sortTypeAsc: true,
+    sortBy: 'createdAt',
+    sortTypeAsc: false,
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -43,8 +43,8 @@ const RolePageContainer = () => {
   };
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <RoleManagePage />
+      <PersonnelPage />
     </StateProvider>
   );
 };
-export default RolePageContainer;
+export default UserPageContainer;

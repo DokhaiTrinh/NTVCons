@@ -68,7 +68,7 @@ export const DELETE_REPORT_TYPES =
 
 //API link của REQUEST
 export const CREATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/Request/v1/createRequest';
+  'http://niemtinvang.herokuapp.com/request/v1.1/createRequest';
 export const UPDATE_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/updateRequest';
 export const DELETE_REQUEST =
@@ -78,7 +78,7 @@ export const GET_ALL_REQUEST =
 export const GET_REQUEST_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/request/v1/getAllByParam';
 export const GET_REQUEST_ID =
-  'http://niemtinvang.herokuapp.com/Request/v1/getByRequestId';
+  'http://niemtinvang.herokuapp.com/request/v1/getByParam';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';
@@ -90,3 +90,23 @@ export const UPDATE_REQUEST_TYPE = '';
 export const DELETE_REQUEST_TYPE = '';
 export const GET_ALL_REQUEST_TYPE =
   'http://niemtinvang.herokuapp.com/requestType/v1/getAll';
+
+//API link của WORKER
+
+export const CREATE_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/createWorker';
+export const GET_ALL_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/getAll';
+export const DELETE_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/deleteWorker';
+
+//API LINK CỦA USER
+export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
+export const CREATE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/createUser';
+export const DELETE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/deleteUser';
+//API LINK CỦA MANAGER
+
+export const GET_ALL_MANAGER =
+  'http://niemtinvang.herokuapp.com/projectManager/v1/getAll';

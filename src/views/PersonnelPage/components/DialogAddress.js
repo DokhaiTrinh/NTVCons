@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const DialogLocation = (props) => {
+export const DialogAddress = (props) => {
   const { locationDetail, setLocationDetail } = props;
 
   const validateSchema = yup
@@ -222,4 +222,5 @@ const DialogLocation = (props) => {
     </div>
   );
 };
-export default DialogLocation;
+
+export default DialogAddress;

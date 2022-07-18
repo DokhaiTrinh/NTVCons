@@ -44,38 +44,32 @@ const CreateTaskProject = (props) => {
   // }/${current.getFullYear()}`;
   const [loading, setLoading] = useState('');
   const submitForm = (data) => {
-    const actualStartDate =
-      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
-    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
     handleCreateTask(
-      actualEndDate,
-      actualStartDate,
       planEndDate,
       planStartDate,
       id,
+      data.taskAssignment, 
       data.taskDesc,
       data.taskName
     );
   };
   const handleCreateTask = async (
-    actualEndDate,
-    actualStartDate,
     planEndDate,
     planStartDate,
     projectId,
+    taskAssignment, 
     taskDesc,
     taskName
   ) => {
     try {
       setLoading(true);
       await createTaskApi({
-        actualEndDate,
-        actualStartDate,
         planEndDate,
         planStartDate,
         projectId,
+        taskAssignment, 
         taskDesc,
         taskName,
       });

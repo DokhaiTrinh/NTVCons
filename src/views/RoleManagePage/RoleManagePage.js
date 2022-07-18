@@ -87,7 +87,7 @@ const RoleManagePage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
 
   const [allRole, setAllRole] = React.useState([]);
@@ -99,14 +99,14 @@ const RoleManagePage = (props) => {
           pageNo,
           pageSize,
           sortBy,
-          sortType,
+          sortTypeAsc,
         });
         setAllRole(listAllRole.data);
       } catch (error) {
         console.log('Không thể lấy danh sách role');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType]);
+  }, [pageNo, pageSize, sortBy, sortTypeAsc]);
   console.log(allRole);
 
   return (
@@ -179,9 +179,10 @@ const RoleManagePage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
+            <RoleTable allRole={allRole}></RoleTable>
             {/* {allRole ? (
               allRole.length > 0 ? (
-                // <RoleTable allRole={allRole}></RoleTable>
+                <RoleTable allRole={allRole}></RoleTable>
              
               ) : (
                 <div>Không có dữ liệu để hiển thị</div>

@@ -306,7 +306,9 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length)
+      : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -348,7 +350,9 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
                     </TableCell>
-                    <TableCell align="left">{row.reportType.reportTypeName}</TableCell>
+                    <TableCell align="left">
+                      {row.reportType.reportTypeName}
+                    </TableCell>
                     <TableCell align="left">
                       <IconButton
                         component={Link}

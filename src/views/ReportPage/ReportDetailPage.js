@@ -126,7 +126,7 @@ const ReportDetailPage = (props) => {
                 </Typography>
                 <Card sx={{ width: '100%' }}>
                   <CardContent>
-                    {allReportList.length > 0 ? (
+                    {allReportList ? (
                       allReportList.map((reportDetail, index) => (
                         <Card
                           sx={{
@@ -143,7 +143,7 @@ const ReportDetailPage = (props) => {
                             {reportDetail.itemAmount}
                           </Typography>
                           <Typography>
-                            Giá tiền: {reportDetail.itemPrice}{' '}
+                            Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
                           </Typography>
                           <Typography>
                             Đơn vị: {reportDetail.itemUnit}

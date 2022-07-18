@@ -23,7 +23,7 @@ const handleGetDate = (date) => {
 const Details = (props) => {
   const { allProjectDetails } = props;
   const { id } = useParams();
-    return (
+  return (
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
@@ -94,7 +94,7 @@ const Details = (props) => {
                 Kỹ sư quản lý
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.userId}
+                {allProjectDetails.createdBy}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -134,7 +134,7 @@ const Details = (props) => {
                 Thời gian bắt đầu dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualStartDate)}
+                {allProjectDetails.actualStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -142,7 +142,7 @@ const Details = (props) => {
                 Thời gian kết thúc dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualEndDate)}
+                {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -150,8 +150,10 @@ const Details = (props) => {
                 Địa chỉ
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.addressNumber} {allProjectDetails.street}{' '}
-                {allProjectDetails.district} {allProjectDetails.city}
+                {allProjectDetails.location.addressNumber},{' '}
+                {allProjectDetails.location.street}, P{' '}
+                {allProjectDetails.location.ward}, 
+                Q {allProjectDetails.location.district},{' '}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -159,7 +161,7 @@ const Details = (props) => {
                 Thành phố
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.country}
+                {allProjectDetails.location.country}
               </Typography>
             </Grid>
             <Grid item xs="4">
