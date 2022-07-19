@@ -17,31 +17,25 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import Dialog from '@mui/material/Dialog';
 import { createTaskApi } from '../../apis/Task/createTask';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 
+import { DialogTaskAssgin } from './Component/DialogTaskAssgin';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 const CreateTaskProject = (props) => {
   const { id } = useParams();
+  const [userListDetail, setUserListDetail] = React.useState();
+  const [openUserListDialog, setOpenUserListDialog] = useState(false);
 
-  //   const [allProjectDetails, setAllProjectDetails] = React.useState([]);
-  const [valueActualStartDate, setValueActualStartDate] = React.useState(
-    new Date()
-  );
-  const [valueActualEndDate, setValueActualEndDate] = React.useState(
-    new Date()
-  );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
   const [loading, setLoading] = useState('');
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
@@ -50,7 +44,7 @@ const CreateTaskProject = (props) => {
       planEndDate,
       planStartDate,
       id,
-      data.taskAssignment, 
+      userListDetail,
       data.taskDesc,
       data.taskName
     );
@@ -59,7 +53,7 @@ const CreateTaskProject = (props) => {
     planEndDate,
     planStartDate,
     projectId,
-    taskAssignment, 
+    taskAssignment,
     taskDesc,
     taskName
   ) => {
@@ -69,7 +63,7 @@ const CreateTaskProject = (props) => {
         planEndDate,
         planStartDate,
         projectId,
-        taskAssignment, 
+        taskAssignment,
         taskDesc,
         taskName,
       });
@@ -101,7 +95,12 @@ const CreateTaskProject = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
+  const handleOpenUserDialog = () => {
+    setOpenUserListDialog(true);
+  };
+  const handleCloseUserDialog = () => {
+    setOpenUserListDialog(false);
+  };
   // const handleChangeDate = (date) => {
   //   console.log(date);
   //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -214,38 +213,48 @@ const CreateTaskProject = (props) => {
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Thời gian chính thức
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Bắt đầu chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualStartDate}
-                      onChange={(newValue) => {
-                        setValueActualStartDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Kết thúc chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualEndDate}
-                      onChange={(newValue) => {
-                        setValueActualEndDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenUserDialog()}
+                  >
+                    Phân công nhiệm vụ
+                  </Button>
+                </Box>
               </Grid>
-
+              <Grid item container columns={12} spacing={2}>
+                {userListDetail ? (
+                  userListDetail.map((userId, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>Kỹ sư: {userId.username}</Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -274,6 +283,13 @@ const CreateTaskProject = (props) => {
           </form>
         </Box>
       </Box>
+      <Dialog open={openUserListDialog} onClose={handleCloseUserDialog}>
+        <DialogTaskAssgin
+          handleCloseUserDialog={handleCloseUserDialog}
+          setUserListDetail={setUserListDetail}
+          userListDetail={userListDetail}
+        ></DialogTaskAssgin>
+      </Dialog>
     </div>
   );
 };
