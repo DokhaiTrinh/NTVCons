@@ -44,7 +44,7 @@ const MenuProps = {
 const UpdateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  const [projectId] = useState();
+  const [projectId, setProjectId] = useState();
 
   const [actionUpdateReport, setActionUpdateReport] = useState();
   const [actionUpdateTask, setActionUpdateTask] = useState();
@@ -61,8 +61,6 @@ const UpdateReportProject = (props) => {
   const [updateReportDetail, setUpdateReportDetail] = React.useState([]);
   const [updateTaskDetail, setUpdateTaskDetail] = React.useState([]);
   const [allReportDetail, setAllReportDetail] = React.useState();
-  const [newReportDetail, setNewReportDetail] = React.useState([]);
-  const [newTaskReport, setNewTaskReport] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -83,65 +81,71 @@ const UpdateReportProject = (props) => {
         setAllReportDetail(listAllReportDetail.data);
         setUpdateReportDetail(listAllReportDetail.data.reportDetailList);
         setUpdateTaskDetail(listAllReportDetail.data.taskReportList);
+        setProjectId(listAllReportDetail.data.projectId);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
     })();
   }, []);
-  console.log(allReportDetail);
+  console.log(updateReportDetail);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleUpdateReport(
-      newReportDetail,
-      newTaskReport,
       projectId,
       reportDate,
       data.reportDesc,
       idN,
       data.reportName,
       reportTypeSelected,
-      data.reporerId,
+      data.reporterId,
       updateReportDetail,
       updateTaskDetail
     );
-    if (updateReportDetail.length > 0) {
-      for (let urp of updateReportDetail) {
-        handleUpdateReportDetails(
-          urp.itemAmount,
-          urp.itemDesc,
-          urp.itemPrice,
-          urp.itemUnit
-        );
-      }
-    }
+    // if (updateReportDetail.length > 0) {
+    //   for (let urp of updateReportDetail) {
+    //     handleUpdateReportDetails(
+    //       urp.itemAmount,
+    //       urp.itemDesc,
+    //       urp.itemPrice,
+    //       urp.itemUnit
+    //     );
+    //   }
+    // }
   };
   const handleUpdateReport = async (
-    newReportDetailList,
-    newTaskReportList,
     projectId,
     reportDate,
     reportDesc,
     reportId,
     reportName,
     reportTypeId,
-    reporerId,
-    updateReportDetailList,
-    updateTaskReportList
+    reporterId,
+    reportDetailList,
+    taskReportList
   ) => {
     try {
       setLoading(true);
+      console.log(
+        typeof projectId,
+        typeof reportDate,
+        typeof reportDesc,
+        typeof reportId,
+        typeof reportName,
+        typeof reportTypeId,
+        typeof reporterId,
+        typeof reportDetailList,
+        typeof taskReportList
+      );
       await updateReportApi({
-        newReportDetailList,
-        newTaskReportList,
         projectId,
         reportDate,
         reportDesc,
         reportId,
         reportName,
         reportTypeId,
-        reporerId,
-        updateReportDetailList,
-        updateTaskReportList,
+        reporterId,
+        reportDetailList,
+        taskReportList,
       });
       setLoading(false);
       await Swal.fire({
@@ -160,16 +164,16 @@ const UpdateReportProject = (props) => {
       setLoading(false);
     }
   };
-  const handleUpdateReportDetails = async (
-    itemAmount,
-    itemDesc,
-    itemPrice,
-    itemUnit
-  ) => {
-    try {
-      await updateReportDetailApi({});
-    } catch (error) {}
-  };
+  // const handleUpdateReportDetails = async (
+  //   itemAmount,
+  //   itemDesc,
+  //   itemPrice,
+  //   itemUnit
+  // ) => {
+  //   try {
+  //     await updateReportDetailApi({});
+  //   } catch (error) {}
+  // };
   const valideSchema = yup
     .object({
       reportDesc: yup
@@ -403,7 +407,7 @@ const UpdateReportProject = (props) => {
                           <Card sx={{ width: '100%', minHeight: '200px' }}>
                             <CardContent>
                               <Typography>
-                                Công việc thuộc mã công việc: :{' '}
+                                Mã công việc:
                                 {taskDetailItem.taskReportId}
                               </Typography>
                               <Typography>

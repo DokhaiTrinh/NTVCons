@@ -30,19 +30,31 @@ const DialogUpdateTaskReport = (props) => {
     resolver: yupResolver(valideSchema),
   });
   const submitForm = (data) => {
-    const updateDetailTask = {
+    const createDetailTask = {
       taskId: data.taskId,
       taskNote: data.taskNote,
       taskProgress: data.taskProgress,
       reportId: null,
     };
     if (actionUpdateTask === 'CreateNewTask') {
+      setUpdateTaskDetail((updateTaskDetail) => [
+        ...updateTaskDetail,
+        createDetailTask,
+      ]);
+    } else {
+      let updateListTask = [...updateTaskDetail];
+      updateListTask = updateListTask.map((t) =>
+        t.taskReportId === itemDetailTaskUpdate.taskReportId
+          ? (t = {
+              ...t,
+              taskId: data.taskId,
+              taskNote: data.taskNote,
+              taskProgress: data.taskProgress,
+            })
+          : t
+      );
+      setUpdateTaskDetail(updateListTask);
     }
-    setUpdateTaskDetail((updateTaskDetail) => [
-      ...updateTaskDetail,
-      updateDetailTask,
-    ]);
-
     props.handleCloseUpdateTaskReportDetailDialog();
   };
 
@@ -80,7 +92,7 @@ const DialogUpdateTaskReport = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Công việc thuộc mã công việc: 
+                  Công việc thuộc mã công việc:
                 </Typography>
                 <TextFieldComponent
                   register={register}
@@ -117,7 +129,9 @@ const DialogUpdateTaskReport = (props) => {
                   name="taskProgress"
                   label="Tiến độ"
                   defaultValue={
-                    itemDetailTaskUpdate ? itemDetailTaskUpdate.taskProgress : null
+                    itemDetailTaskUpdate
+                      ? itemDetailTaskUpdate.taskProgress
+                      : null
                   }
                   errors={errors.taskProgress}
                   variant="outlined"

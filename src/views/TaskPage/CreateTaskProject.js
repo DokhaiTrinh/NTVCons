@@ -19,11 +19,11 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import Dialog from '@mui/material/Dialog';
 import { createTaskApi } from '../../apis/Task/createTask';
+import { getUserByIdApi } from '../../apis/User/getAllUser';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
-
 import { DialogTaskAssgin } from './Component/DialogTaskAssgin';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -31,12 +31,29 @@ const CreateTaskProject = (props) => {
   const { id } = useParams();
   const [userListDetail, setUserListDetail] = React.useState();
   const [openUserListDialog, setOpenUserListDialog] = useState(false);
-
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
   );
+  const [userById, setUserById] = React.useState();
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        if (userListDetail) {
+          const listUserById = await getUserByIdApi(
+            userListDetail.assigneeId.toString(),
+            'BY_ID'
+          );
+          setUserById(listUserById.data);
+        }
+      } catch (error) {
+        console.log('Không thể lấy danh sách kỹ sư');
+      }
+    })();
+  }, [userListDetail]);
+  console.log(userById);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
@@ -85,7 +102,7 @@ const CreateTaskProject = (props) => {
       });
       setLoading(false);
     }
-    console.log(planStartDate);
+    console.log(userListDetail);
   };
   const valideSchema = yup.object({}).required();
   const {
@@ -237,18 +254,16 @@ const CreateTaskProject = (props) => {
                 </Box>
               </Grid>
               <Grid item container columns={12} spacing={2}>
-                {userListDetail ? (
-                  userListDetail.map((userId, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>Kỹ sư: {userId.username}</Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
+                {userListDetail && userById ? (
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>Kỹ sư: {userById.username}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
                 ) : (
                   <Grid item sx={12}>
                     <div>Không có dữ liệu của báo cáo chi tiết!</div>

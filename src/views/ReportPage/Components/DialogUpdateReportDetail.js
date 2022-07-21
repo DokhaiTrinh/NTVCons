@@ -40,27 +40,39 @@ const DialogUpdateReportDetail = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
   const submitForm = (data) => {
-    const updateDetailReport = {
+    const createDetailReport = {
       itemAmount: data.itemAmount,
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
       reportId: null,
-      // reportDetailId: reportDetailId,
     };
     if (actionUpdateReport === 'CreateNewReport') {
       setUpdateReportDetail((updateReportDetail) => [
         ...updateReportDetail,
-        updateDetailReport,
+        createDetailReport,
       ]);
     } else {
+      let updateListReport = [...updateReportDetail];
+      updateListReport = updateListReport.map((u) =>
+        u.reportDetailId === itemDetailReportUpdate.reportDetailId
+          ? (u = {
+              ...u,
+              itemAmount: data.itemAmount,
+              itemDesc: data.itemDesc,
+              itemPrice: data.itemPrice,
+              itemUnit: data.itemUnit,
+            })
+          : u
+      );
+      setUpdateReportDetail(updateListReport);
     }
 
     props.handleCloseUpdateReportDetailDialog();
   };
-
+  console.log(updateReportDetail);
+  console.log(itemDetailReportUpdate);
   return (
     <div>
       <Typography

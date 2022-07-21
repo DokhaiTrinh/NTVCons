@@ -59,7 +59,7 @@ export const DialogTaskAssgin = (props) => {
     resolver: yupResolver(valideSchema),
   });
 
-  const submitForm = (data) => {
+  const handleSumbmit = () => {
     const detailTaskAssgin = {
       assigneeId: assigneeIdSelected,
       assignerId: assignerIdSelected,
@@ -104,7 +104,7 @@ export const DialogTaskAssgin = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
-          <form onSubmit={handleSubmit(submitForm)}>
+          <div >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
@@ -172,13 +172,14 @@ export const DialogTaskAssgin = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
+                    onClick={handleSumbmit}
                   >
                     Lưu
                   </Button>
                 </Box>
               </Grid>
             </Grid>
-          </form>
+          </div>
         </Box>
       </Box>
     </div>

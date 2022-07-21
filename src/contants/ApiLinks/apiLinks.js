@@ -32,6 +32,8 @@ export const UPDATE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/updateTask';
 export const GET_TASK_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/task/v1/getAllByParam';
+export const GET_TASK_BY_ID =
+  'http://niemtinvang.herokuapp.com/task/v1/getByParam';
 export const DELETE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/deleteTask';
 //Api link của RERPORT
@@ -102,6 +104,7 @@ export const DELETE_WORKER =
 
 //API LINK CỦA USER
 export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
+export const GET_BY_ID = 'http://niemtinvang.herokuapp.com/user/v1/getByParam';
 export const CREATE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/createUser';
 export const DELETE_USER =

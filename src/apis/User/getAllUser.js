@@ -11,3 +11,8 @@ export const getAllUserApi1 = (pageNo, pageSize, sortBy, sortTypeAsc) => {
     `${API_LINK.GET_ALL_USER}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortTypeAsc=${sortTypeAsc}`
   );
 };
+export const getUserByIdApi = (userId, searchType) => {
+  return axiosService.get(
+    `${API_LINK.GET_BY_ID}?searchParam=${userId}&searchType=${searchType}`
+  );
+};
