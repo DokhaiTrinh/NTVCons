@@ -101,7 +101,9 @@ const DialogUpdateReportDetail = (props) => {
                   register={register}
                   name="itemDesc"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemDesc : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemDesc
+                      : null
                   }
                   errors={errors.itemDesc}
                   variant="outlined"
@@ -116,7 +118,9 @@ const DialogUpdateReportDetail = (props) => {
                   register={register}
                   name="itemAmount"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemAmount : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemAmount
+                      : null
                   }
                   errors={errors.itemAmount}
                   variant="outlined"
@@ -132,7 +136,9 @@ const DialogUpdateReportDetail = (props) => {
                   name="itemPrice"
                   label="Giá tiền (VNĐ)"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemPrice : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemPrice
+                      : null
                   }
                   errors={errors.itemPrice}
                   variant="outlined"
@@ -148,7 +154,9 @@ const DialogUpdateReportDetail = (props) => {
                   name="itemUnit"
                   label="Đơn vị"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemUnit : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemUnit
+                      : null
                   }
                   errors={errors.itemUnit}
                   variant="outlined"

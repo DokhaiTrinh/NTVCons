@@ -95,12 +95,6 @@ const headCells = [
     label: 'Người tham gia',
   },
   {
-    id: 'tiendo',
-    numeric: false,
-    disablePadding: false,
-    label: 'Tiến độ',
-  },
-  {
     id: 'batdau',
     numeric: false,
     disablePadding: false,
@@ -354,15 +348,10 @@ export const ProjectTable = (props) => {
                     </TableCell>
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{}</TableCell>
-                    <TableCell align="left">{}</TableCell>
+                    <TableCell align="left">{row.manager}</TableCell>
                     {/* <TableCell align="left">{row.works}</TableCell> */}
-                    <TableCell align="left">
-                      {(row.planStartDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {(row.planEndDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.planStartDate}</TableCell>
+                    <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
                       <IconButton
                         edge="end"

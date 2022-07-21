@@ -157,6 +157,8 @@ const CreateProjectPage = (props) => {
         showConfirmButton: false,
       });
       setLoading(false);
+      await window.location.replace('/project');
+
     }
     console.log(planStartDate);
   };
@@ -318,7 +320,7 @@ const CreateProjectPage = (props) => {
                         <Card sx={{ width: '100%' }}>
                           <CardContent>
                             <Typography>
-                              Kỹ sư: {handleGetManagerName(managerID)}
+                              Kỹ sư phụ trách: {handleGetManagerName(managerID)}
                             </Typography>
                           </CardContent>
                         </Card>
@@ -412,9 +414,6 @@ const CreateProjectPage = (props) => {
                           <Typography>
                             Giá bản vẽ: {bluePrintDetail.estimatedCost}{' '}
                           </Typography>
-                          <Typography>
-                            Người tạo: {bluePrintDetail.createdBy}
-                          </Typography>
                         </CardContent>
                       </Card>
                     </Box>
@@ -452,6 +451,16 @@ const CreateProjectPage = (props) => {
                 {locationDetail ? (
                   <Grid item xs={4}>
                     <Box sx={{ width: '100%' }}>
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                        onClick={() => handleOpenLocationDialog()}
+                      />
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
                           <Typography>
@@ -525,7 +534,7 @@ const CreateProjectPage = (props) => {
                         <Card sx={{ width: '100%' }}>
                           <CardContent>
                             <Typography>
-                              Kỹ sư: {handleGetWorkerName(workerId)}
+                              Công nhân: {handleGetWorkerName(workerId)}
                             </Typography>
                           </CardContent>
                         </Card>

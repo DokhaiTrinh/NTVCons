@@ -6,13 +6,13 @@ import PersonnelPage from '../views/PersonnelPage/indexGetAllUser';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
-import ProductPage from '../views/ProductPage/ProductPage';
+import ProductPage from '../views/ProductPage/indexPostPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
 import EditReportPage from '../views/ProjectDetailsPage/indexGetAllReport';
 import EditProjectDetailsPage from '../views/ProjectDetailsPage/EditProejectDetailsPage';
 import CreateRolePage from '../views/RoleManagePage/CreateRolePage';
 import EditServicePage from '../views/ProductPage/EditServicePage';
-import CreateServicePage from '../views/ProductPage/CreateServicePage';
+import CreateProductPage from '../views/ProductPage/CreateProductPage';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateWorkerPage from '../views/PersonnelPage/CreateWorker';
@@ -25,6 +25,7 @@ import RequestDetailPage from '../views/RequestPage/RequestDetailPage';
 import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
 import UpdateTaskPage from '../views/TaskPage/UpdateTaskProject';
 import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
+import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
 
 export const HOME_ROUTES = [
   {
@@ -160,10 +161,16 @@ export const HOME_ROUTES = [
     component: EditServicePage,
   },
   {
-    path: '/createService',
-    name: 'Create Service Page',
+    path: '/createProduct',
+    name: 'Create Product Page',
     exact: true,
-    component: CreateServicePage,
+    component: CreateProductPage,
+  },
+  {
+    path: '/updateProduct/:id',
+    name: 'Update Product Page',
+    exact: true,
+    component: UpdateProductPage,
   },
   {
     path: '/editPersonnelProfile',

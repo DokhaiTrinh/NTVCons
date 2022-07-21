@@ -19,11 +19,14 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import photo from "../../../assets/images/toa-nha-van-phong.jpeg";
+import photo from '../../../assets/images/toa-nha-van-phong.jpeg';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import UpdateIcon from '@mui/icons-material/Update';
+import { deletePostApi } from './../../../apis/Post/deletePost';
+import Swal from 'sweetalert2';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
 
 function createData(id, image, name, category, scale, location) {
   return {
@@ -31,13 +34,20 @@ function createData(id, image, name, category, scale, location) {
     image,
     name,
     category,
-    scale, 
-    location
+    scale,
+    location,
   };
 }
 
 const rows = [
-  createData('1', photo, 'Tòa nhà văn phòng', 'Thiết kế nhà đẹp', 'Trệt + 3 lầu', 'Dĩ An, Bình Dương'),
+  createData(
+    '1',
+    photo,
+    'Tòa nhà văn phòng',
+    'Thiết kế nhà đẹp',
+    'Trệt + 3 lầu',
+    'Dĩ An, Bình Dương'
+  ),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -122,8 +132,14 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -176,7 +192,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -221,13 +240,40 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProductTable() {
+export const ProductTable = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('id');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const { allProduct } = props;
+  const [{ loading }, dispatch] = useStateValue();
+  const handleDeletePost = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePost(id);
+      }
+    });
+  };
+  const deletePost = async (id) => {
+    try {
+      await deletePostApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Bài đăng của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -256,7 +302,7 @@ export function ProductTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -283,10 +329,7 @@ export function ProductTable() {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -296,62 +339,42 @@ export function ProductTable() {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
+              {allProduct.length > 0 ? (
+                allProduct.map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      // role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                      >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left">
-                      <Box sx={{ width: "100%"}}>
-                                    <Avatar sx={{ height: "150px", width: "150px" }} variant="square" src={row.image}>
-                                    </Avatar>
-                                </Box>
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.category}</TableCell>
+                    <TableRow>
+                      <TableCell>{row.postId}</TableCell>
+                      <TableCell align="left">{}</TableCell>
+                      <TableCell align="left">{row.postTitle}</TableCell>
+                      <TableCell align="left">{row.postCategoryName}</TableCell>
                       <TableCell align="left">{row.scale}</TableCell>
-                      <TableCell align="left">{row.location}</TableCell>
+                      <TableCell align="left">{row.address}</TableCell>
                       <TableCell align="left">
-                      <IconButton aria-label="edit role" component={Link} to={'/editService'}>
-                            <UpdateIcon/>
-                          </IconButton>
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateProduct/${row.postId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
                       </TableCell>
                       <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        size="large"
-                        color="warning" 
-                        // onClick={() => ()}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeletePost(row.postId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
+                })
+              ) : (
+                <div>Không có thông tin dữ liệu!</div>
               )}
             </TableBody>
           </Table>
@@ -368,4 +391,4 @@ export function ProductTable() {
       </Paper>
     </Box>
   );
-}
+};

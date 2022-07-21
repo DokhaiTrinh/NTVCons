@@ -7,8 +7,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TextField } from '@mui/material';
-const DialogEditProject = (props) => {
-  const { locationDetail, setLocationDetail } = props;
+const DialogEditLocation = (props) => {
+  const {
+    updateLocationDetail,
+    setUpdateLocationDetail,
+    actionUpdateLocation,
+    itemDetailLocationUpdate,
+  } = props;
   const validateSchema = yup
     .object({
       addressNumber: yup
@@ -39,7 +44,7 @@ const DialogEditProject = (props) => {
   });
 
   const submitForm = (data) => {
-    const detailLocation = {
+    const updateDetailLocation = {
       addressNumber: data.addressNumber,
       area: data.area,
       city: data.city,
@@ -52,8 +57,14 @@ const DialogEditProject = (props) => {
       ward: data.ward,
       locationId: data.locationId,
     };
-    setLocationDetail(detailLocation);
-    props.handleCloseLocationDialog();
+    if (actionUpdateLocation === 'CreateNewLocation') {
+      setUpdateLocationDetail((updateLocationDetail) => [
+        ...updateLocationDetail,
+        updateDetailLocation,
+      ]);
+    } else {
+    }
+    props.handleCloseUpdateLocationDialog();
   };
   return (
     <div>
@@ -95,6 +106,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="addressNumber"
                   errors={errors.addressNumber}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.addressNumber
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -107,6 +123,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="street"
                   errors={errors.street}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.street
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -119,6 +140,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="district"
                   errors={errors.district}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.district
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -131,6 +157,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="city"
                   errors={errors.city}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.city
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -143,6 +174,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="ward"
                   errors={errors.ward}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.ward
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -155,6 +191,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="province"
                   errors={errors.province}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.province
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -167,6 +208,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="country"
                   errors={errors.country}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.country
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -179,6 +225,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="area"
                   errors={errors.area}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.area
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -191,18 +242,11 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="coordinate"
                   errors={errors.coordinate}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người tạo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="updatedBy"
-                  errors={errors.updatedBy}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.coordinate
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -212,9 +256,14 @@ const DialogEditProject = (props) => {
                   Mã địa chỉ
                 </Typography>
                 <TextFieldComponent
-                  register={register}              
+                  register={register}
                   name="locationId"
                   errors={errors.locationId}
+                  defaultValue={
+                    itemDetailLocationUpdate
+                      ? itemDetailLocationUpdate.locationId
+                      : null
+                  }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -250,4 +299,4 @@ const DialogEditProject = (props) => {
     </div>
   );
 };
-export default DialogEditProject;
+export default DialogEditLocation;

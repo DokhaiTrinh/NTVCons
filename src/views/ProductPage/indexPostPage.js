@@ -1,8 +1,8 @@
 import React from 'react';
 import { StateProvider } from '../../common/StateProvider/StateProvider';
-import ProjectPage from './ProjectPage';
+import ProductPage from './ProductPage';
 
-const ProjectPageContainer = () => {
+const ProductPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
@@ -43,8 +43,8 @@ const ProjectPageContainer = () => {
   };
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <ProjectPage />
+      <ProductPage />
     </StateProvider>
   );
 };
-export default ProjectPageContainer;
+export default ProductPageContainer;

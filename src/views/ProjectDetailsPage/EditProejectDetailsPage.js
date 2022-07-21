@@ -23,7 +23,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import DiaglogEditProject from './components/DialogEditProject';
+import DialogEditLocation from './components/DialogEditLocation';
 import { useParams } from 'react-router-dom';
 import { getProjectByParam } from '../../apis/Project/updateProject';
 const EditProejectDetailsPage = (props) => {
@@ -36,10 +36,14 @@ const EditProejectDetailsPage = (props) => {
   );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState();
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState();
-  const [locationDetail, setLocationDetail] = React.useState();
+  const [updateLocationDetail, setUpdateLocationDetail] = React.useState([]);
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
   const [loading, setLoading] = useState('');
   const [allProjectDetails, setAllProjectDetails] = React.useState();
+  const [projectId, setProjectId] = React.useState();
+  const [actionUpdateLocation, setActionUpdateLocation] = React.useState();
+  const [itemDetailLocationUpdate, setItemDetailLocationUpdate] =
+    React.useState();
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   React.useEffect(() => {
@@ -51,12 +55,14 @@ const EditProejectDetailsPage = (props) => {
         setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
         setValuePlanStartDate(listAllProjectDetails.data.planStartDate);
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
+        setProjectId(listAllProjectDetails.data.projectId);
+        setUpdateLocationDetail(listAllProjectDetails.data.location);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
   }, []);
-  console.log(allProjectDetails);
+  console.log(updateLocationDetail);
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
@@ -78,7 +84,7 @@ const EditProejectDetailsPage = (props) => {
           actualStartDate,
           planEndDate,
           planStartDate,
-          locationDetail,
+          updateLocationDetail,
           data.updatedBy,
           data.actualCost,
           data.estimatedCost,
@@ -189,10 +195,12 @@ const EditProejectDetailsPage = (props) => {
   //   };
   //   postImage();
   // };
-  const handleOpenLocationDialog = () => {
+  const handleOpenUpdateLocationDialog = (actionGetUpdate, itemLocation) => {
+    setActionUpdateLocation(actionGetUpdate);
+    setItemDetailLocationUpdate(itemLocation);
     setOpenLocationDialog(true);
   };
-  const handleCloseLocationDialog = () => {
+  const handleCloseUpdateLocationDialog = () => {
     setOpenLocationDialog(false);
   };
   return (
@@ -230,20 +238,20 @@ const EditProejectDetailsPage = (props) => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Mã dự án XX
+                    Mã dự án
                   </Typography>
-                  {/* <TextField
+                  <TextField
                     {...register('projectId')}
                     inputProps={{ readOnly: true }}
                     name="projectId"
                     variant="outlined"
                     autoComplete="projectId"
                     autoFocus
-                    defaultValue={allProjectDetails[0].projectId}
+                    defaultValue={allProjectDetails.projectId}
                     error={errors.projectName != null}
                     helperText={errors.projectId?.message}
                     sx={{ width: '100%' }}
-                  /> */}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
@@ -355,146 +363,6 @@ const EditProejectDetailsPage = (props) => {
                     }}
                   ></Box>
                 </Grid>
-                <Box sx={{ width: '100%' }}>
-                  <Card sx={{ width: '100%' }}>
-                    <CardContent>
-                      <Grid item container spacing={2}>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('addressNumber')}
-                            name="addressNumber"
-                            variant="outlined"
-                            autoComplete="addressNumber"
-                            autoFocus
-                            defaultValue={allProjectDetails.addressNumber}
-                            error={errors.addressNumber != null}
-                            helperText={errors.addressNumber?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('street')}
-                            name="street"
-                            variant="outlined"
-                            autoComplete="street"
-                            autoFocus
-                            defaultValue={allProjectDetails.street}
-                            error={errors.street != null}
-                            helperText={errors.street?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('district')}
-                            name="district"
-                            variant="outlined"
-                            autoComplete="district"
-                            autoFocus
-                            defaultValue={allProjectDetails.district}
-                            error={errors.district != null}
-                            helperText={errors.district?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('city')}
-                            name="city"
-                            variant="outlined"
-                            autoComplete="city"
-                            autoFocus
-                            defaultValue={allProjectDetails.city}
-                            error={errors.city != null}
-                            helperText={errors.city?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('ward')}
-                            name="ward"
-                            variant="outlined"
-                            autoComplete="ward"
-                            autoFocus
-                            defaultValue={allProjectDetails.ward}
-                            error={errors.ward != null}
-                            helperText={errors.ward?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('province')}
-                            name="province"
-                            variant="outlined"
-                            autoComplete="province"
-                            autoFocus
-                            defaultValue={allProjectDetails.province}
-                            error={errors.province != null}
-                            helperText={errors.province?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('country')}
-                            name="country"
-                            variant="outlined"
-                            autoComplete="country"
-                            autoFocus
-                            defaultValue={allProjectDetails.country}
-                            error={errors.country != null}
-                            helperText={errors.country?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('area')}
-                            name="area"
-                            variant="outlined"
-                            autoComplete="area"
-                            autoFocus
-                            defaultValue={allProjectDetails.area}
-                            error={errors.area != null}
-                            helperText={errors.area?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('coordinate')}
-                            name="coordinate"
-                            variant="outlined"
-                            autoComplete="coordinate"
-                            autoFocus
-                            defaultValue={allProjectDetails.coordinate}
-                            error={errors.coordinate != null}
-                            helperText={errors.coordinate?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            {...register('locationId')}
-                            name="locationId"
-                            inputProps={{ readOnly: true }}
-                            variant="outlined"
-                            autoComplete="locationId"
-                            autoFocus
-                            defaultValue={allProjectDetails.locationId}
-                            error={errors.locationId != null}
-                            helperText={errors.locationId?.message}
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Box>
-
                 <Grid item container sx={12}>
                   <Box
                     sx={{
@@ -512,72 +380,75 @@ const EditProejectDetailsPage = (props) => {
                         width: '200px',
                         alignSelf: 'center',
                       }}
-                      onClick={() => handleOpenLocationDialog()}
+                      onClick={() =>
+                        handleOpenUpdateLocationDialog('CreateNewLocation')
+                      }
                     >
                       Chi tiết địa điểm
                     </Button>
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {locationDetail ? (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Số nhà: {locationDetail.addressNumber}
-                            </Typography>
-                            <Typography>
-                              Tên đường:{locationDetail.street}
-                            </Typography>
-                            <Typography>
-                              Quận: {locationDetail.district}{' '}
-                            </Typography>
-                            <Typography>
-                              Thành phố: {locationDetail.city}
-                            </Typography>
-                            <Typography>
-                              Khu vực: {locationDetail.ward}
-                            </Typography>
-                            <Typography>
-                              Địa bàn tỉnh: {locationDetail.province}
-                            </Typography>
-                            <Typography>
-                              Quốc gia: {locationDetail.country}
-                            </Typography>
-                            <Typography>
-                              Diện tích: {locationDetail.area}
-                            </Typography>
-                            <Typography>
-                              Điều phối: {locationDetail.coordinate}
-                            </Typography>
-                            <Typography>
-                              Người tạo: {locationDetail.updatedBy}
-                            </Typography>
-                            <Typography>
-                              Mã địa chỉ: {locationDetail.locationId}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
+                  {updateLocationDetail.length > 0 ? (
+                    updateLocationDetail.map((locationDetailItem, index) => (
+                      <Grid
+                        item
+                        xs={4}
+                        key={index}
+                        onClick={() =>
+                          handleOpenUpdateLocationDialog(
+                            'UpdateLocation',
+                            locationDetailItem
+                          )
+                        }
+                      >
+                        <Box sx={{ width: '100%' }}>
+                          <Card sx={{ width: '100%' }}>
+                            <CardContent>
+                              <Typography>
+                                Số nhà: {locationDetailItem.addressNumber}
+                              </Typography>
+                              <Typography>
+                                Tên đường:{locationDetailItem.street}
+                              </Typography>
+                              <Typography>
+                                Quận: {locationDetailItem.district}{' '}
+                              </Typography>
+                              <Typography>
+                                Thành phố: {locationDetailItem.city}
+                              </Typography>
+                              <Typography>
+                                Khu vực: {locationDetailItem.ward}
+                              </Typography>
+                              <Typography>
+                                Địa bàn tỉnh: {locationDetailItem.province}
+                              </Typography>
+                              <Typography>
+                                Quốc gia: {locationDetailItem.country}
+                              </Typography>
+                              <Typography>
+                                Diện tích: {locationDetailItem.area}
+                              </Typography>
+                              <Typography>
+                                Điều phối: {locationDetailItem.coordinate}
+                              </Typography>
+                              <Typography>
+                                Mã địa chỉ: {locationDetailItem.locationId}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Box>
+                      </Grid>
+                    ))
                   ) : (
-                    <Grid item sx={12}>
+                    <Grid
+                      item
+                      sx={12}
+                      onClick={() => handleOpenUpdateLocationDialog()}
+                    >
                       <div>Không có dữ liệu của báo cáo chi tiết!</div>
                     </Grid>
                   )}
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Người thay đổi
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="updatedBy"
-                    errors={errors.updatedBy}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
@@ -644,12 +515,17 @@ const EditProejectDetailsPage = (props) => {
           ) : null}
         </Box>
       </Box>
-      <Dialog open={openLocationDialog} onClose={handleCloseLocationDialog}>
-        <DiaglogEditProject
-          handleCloseLocationDialog={handleCloseLocationDialog}
-          setLocationDetail={setLocationDetail}
-          locationDetail={locationDetail}
-        ></DiaglogEditProject>
+      <Dialog
+        open={openLocationDialog}
+        onClose={handleCloseUpdateLocationDialog}
+      >
+        <DialogEditLocation
+          handleCloseUpdateLocationDialog={handleCloseUpdateLocationDialog}
+          setUpdateLocationDetail={setUpdateLocationDetail}
+          updateLocationDetail={updateLocationDetail}
+          actionUpdateLocation={actionUpdateLocation}
+          itemDetailLocationUpdate={itemDetailLocationUpdate}
+        ></DialogEditLocation>
       </Dialog>
     </div>
   );
