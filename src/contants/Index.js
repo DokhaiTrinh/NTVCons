@@ -26,6 +26,8 @@ import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
 import UpdateTaskPage from '../views/TaskPage/UpdateTaskProject';
 import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
 import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
+import CategoryPageManage from '../views/CategoryPage/indexCategoryPage';
+import CreateCategoryPage from '../views/CategoryPage/CreateCategoryPage';
 
 export const HOME_ROUTES = [
   {
@@ -89,6 +91,12 @@ export const HOME_ROUTES = [
     component: CreateRequestPage,
   },
   {
+    path: '/createCategory/',
+    name: 'Create Category Page',
+    exact: true,
+    component: CreateCategoryPage,
+  },
+  {
     path: '/personnel',
     name: 'Personnel Page',
     exact: true,
@@ -105,6 +113,12 @@ export const HOME_ROUTES = [
     name: 'Role Manage Page',
     exact: true,
     component: RoleManagePage,
+  },
+  {
+    path: '/categoryManage',
+    name: 'Category Manage Page',
+    exact: true,
+    component: CategoryPageManage,
   },
   {
     path: '/product',

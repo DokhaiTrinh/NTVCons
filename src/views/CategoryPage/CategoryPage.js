@@ -1,22 +1,19 @@
 import * as React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import { PersonnelTable } from './components/PersonnelTable';
-import { WorkerTable } from './components/WorkerTable';
-import { getAllUserApi } from './../../apis/User/getAllUser';
+import { CategoryTable } from './Components/CategoryTable';
+import { Link } from 'react-router-dom';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import { getAllWorkerApi } from './../../apis/Worker/getAllWorker';
+import { getAllCategoryApi } from '../../apis/CategoryPost/getAllCategory';
 
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -34,19 +31,19 @@ function TabPanel(props) {
       )}
     </div>
   );
-}
+};
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
-}
+};
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -84,7 +81,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const PersonnelPage = (props) => {
+export const CategoryPage = (props) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -92,34 +89,26 @@ const PersonnelPage = (props) => {
   };
   const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
-  const [allUser, setAllUser] = React.useState([]);
-  const [allWorker, setAllWorker] = React.useState([]);
+
+  const [allCategory, setAllCategory] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllUser = await getAllUserApi({
+        const listAllCategory = await getAllCategoryApi({
           pageNo,
           pageSize,
           sortBy,
           sortTypeAsc,
         });
-        setAllUser(listAllUser.data);
+        setAllCategory(listAllCategory.data);
       } catch (error) {
-        console.log('Không thể lấy danh sách người dùng');
-      }
-      try {
-        const listAllWorker = await getAllWorkerApi({
-          pageNo,
-          pageSize,
-          sortBy,
-          sortTypeAsc,
-        });
-        setAllWorker(listAllWorker.data);
-      } catch (error) {
-        console.log('Không thể lấy danh sách công nhân');
+        console.log('Không thể lấy danh sách role');
       }
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
+  console.log(allCategory);
+
   return (
     <div>
       <Grid container justify="center">
@@ -135,7 +124,7 @@ const PersonnelPage = (props) => {
                 aria-label="add"
                 sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
                 component={Link}
-                to={'/createPersonnel'}
+                to={'/createCategory'}
               >
                 <Add sx={{ color: 'white' }}></Add>
               </IconButton>
@@ -148,7 +137,7 @@ const PersonnelPage = (props) => {
               alignItems="center"
               sx={{ height: '100%' }}
             >
-              <Typography variant="body1">Danh sách nhân sự</Typography>
+              <Typography variant="body1">Tạo thể loại</Typography>
             </Box>
           </Grid>
         </Grid>
@@ -177,47 +166,28 @@ const PersonnelPage = (props) => {
         </Grid>
       </Grid>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', height: '70px' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
             value={value}
             onChange={handleChange}
             aria-label=""
-            sx={{ height: '100%' }}
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Danh sách công nhân" {...a11yProps(1)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <Box>
-              <Grid container>
-                <Grid item xs={12}>
-                  <IconButton
-                    aria-label="role manage"
-                    component={Link}
-                    to={'/roleManage'}
-                    sx={{ height: '100%' }}
-                  >
-                    <Box sx={{ height: '30px' }}>
-                      <SupervisedUserCircleOutlinedIcon fontSize="large" />
-                    </Box>
-                  </IconButton>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="button">Vai trò</Typography>
-                </Grid>
-              </Grid>
-            </Box>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            <PersonnelTable allUser={allUser}></PersonnelTable>
-          </Box>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Box width="100%">
-            <WorkerTable allWorker={allWorker}></WorkerTable>
+            <CategoryTable allCategory={allCategory}></CategoryTable>
+            {/* {allRole ? (
+              allRole.length > 0 ? (
+                <RoleTable allRole={allRole}></RoleTable>
+             
+              ) : (
+                <div>Không có dữ liệu để hiển thị</div>
+              )
+            ) : null} */}
           </Box>
         </TabPanel>
       </Box>
@@ -225,4 +195,4 @@ const PersonnelPage = (props) => {
   );
 };
 
-export default PersonnelPage;
+export default CategoryPage;

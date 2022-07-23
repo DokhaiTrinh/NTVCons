@@ -1,8 +1,8 @@
 import React from 'react';
 import { StateProvider } from '../../common/StateProvider/StateProvider';
-import RoleManagePage from './RoleManagePage';
+import CategoryManagePage from './CategoryPage';
 
-const RolePageContainer = () => {
+const CategoryPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
@@ -32,7 +32,7 @@ const RolePageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-        case 'CHANGE_SORTTYPEASC':
+      case 'CHANGE_SORTTYPEASC':
         return {
           ...state,
           sortTypeAsc: action.newSortTypeAsc,
@@ -43,8 +43,8 @@ const RolePageContainer = () => {
   };
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <RoleManagePage />
+      <CategoryManagePage />
     </StateProvider>
   );
 };
-export default RolePageContainer;
+export default CategoryPageContainer;
