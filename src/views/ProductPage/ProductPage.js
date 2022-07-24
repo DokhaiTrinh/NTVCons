@@ -1,7 +1,9 @@
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import CategoryIcon from '@mui/icons-material/Category';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
@@ -113,6 +115,16 @@ const ProductPage = (props) => {
       } catch (error) {
         console.log('Không thể lấy danh sách sản phẩm');
       }
+      try {
+      } catch (error) {
+        const listAllCategory = await getAllPostApi({
+          pageNo,
+          pageSize,
+          sortBy,
+          sortTypeAsc,
+        });
+        setAllProduct(listAllCategory.data);
+      }
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
   console.log(allProduct);
@@ -205,10 +217,23 @@ const ProductPage = (props) => {
             <Box sx={{ flex: 1 }}></Box>
             <IconButton aria-label="addCategory">
               <Box>
-                <Add></Add>
-                <div>
-                  <Typography variant="button">Thêm loại</Typography>
-                </div>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <IconButton
+                      aria-label="category manage"
+                      component={Link}
+                      to={'/categoryManage'}
+                      sx={{ height: '100%' }}
+                    >
+                      <Box sx={{ height: '30px' }}>
+                        <CategoryIcon fontSize="large" />
+                      </Box>
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="button">Thể loại</Typography>
+                  </Grid>
+                </Grid>
               </Box>
             </IconButton>
           </Tabs>

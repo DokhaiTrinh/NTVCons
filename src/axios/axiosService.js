@@ -14,7 +14,7 @@ class AxiosService {
   }
   handleError(error) {
     if (error.response.status == 401) {
-      swal.fire({
+      Swal.fire({
         icon: 'error',
         text: 'Thời gian đăng nhập hết hạn, vui lòng đăng nhập để được sử dụng lại',
         timer: 5000,
