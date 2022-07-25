@@ -27,6 +27,8 @@ import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+
 function createData(admin, code, name, workers, process, works, start, end) {
   return {
     admin,
@@ -136,27 +138,31 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell,index) =>
+          userInfor.authorID !== '54' && index === 7 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -362,17 +368,19 @@ export const ProjectTable = (props) => {
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteProject(row.projectId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeleteProject(row.projectId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

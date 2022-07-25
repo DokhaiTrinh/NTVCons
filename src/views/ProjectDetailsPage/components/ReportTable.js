@@ -339,7 +339,6 @@ export default function ReportTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={allReportDetails.length}
             />
             <TableBody>
               {allReportDetails.map((row, index) => {

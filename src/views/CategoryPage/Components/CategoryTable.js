@@ -322,38 +322,44 @@ export const CategoryTable = (props) => {
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead />
             <TableBody>
-              {allCategory.map((row, index) => {
-                return (
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell align="left">{row.postCategoryId}</TableCell>
-                    <TableCell align="left">{row.postCategoryName}</TableCell>
-                    <TableCell align="left">{row.postCategoryDesc}</TableCell>
-                    <TableCell align="left">{row.createdAt}</TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateCategory/${row.postCategoryId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteCategory(row.postCategoryId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {allCategory ? (
+                allCategory.map((row, index) => {
+                  return (
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell align="left">{row.postCategoryId}</TableCell>
+                      <TableCell align="left">{row.postCategoryName}</TableCell>
+                      <TableCell align="left">{row.postCategoryDesc}</TableCell>
+                      <TableCell align="left">{row.createdAt}</TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateCategory/${row.postCategoryId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() =>
+                            handleDeleteCategory(row.postCategoryId)
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <div>Không có thông tin dữ liệu!</div>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
