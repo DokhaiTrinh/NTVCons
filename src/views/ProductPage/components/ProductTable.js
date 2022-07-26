@@ -339,7 +339,7 @@ export const ProductTable = (props) => {
               rowCount={rows.length}
             />
             <TableBody>
-              {allProduct.length > 0 ? (
+              {allProduct ? (
                 allProduct.map((row, index) => {
                   return (
                     <TableRow>

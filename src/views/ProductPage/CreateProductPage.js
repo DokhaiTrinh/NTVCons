@@ -269,7 +269,7 @@ const CreateProductPage = (props) => {
                     MenuProps={MenuProps}
                     value={categorySelected}
                   >
-                    {allCategory.length > 0 ? (
+                    {allCategory ? (
                       allCategory.map((cateType, index) => (
                         <MenuItem value={cateType.postCategoryId} key={index}>
                           {cateType.postCategoryName}
