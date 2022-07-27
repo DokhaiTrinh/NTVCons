@@ -316,7 +316,7 @@ const UpdateReportProject = (props) => {
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {updateReportDetail.length > 0 ? (
+                  {updateReportDetail ? (
                     updateReportDetail.map((reportDetailItem, index) => (
                       <Grid
                         key={index}
@@ -390,7 +390,7 @@ const UpdateReportProject = (props) => {
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {updateTaskDetail.length ? (
+                  {updateTaskDetail ? (
                     updateTaskDetail.map((taskDetailItem, index) => (
                       <Grid
                         key={index}

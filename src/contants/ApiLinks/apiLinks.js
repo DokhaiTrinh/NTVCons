@@ -123,13 +123,17 @@ export const UPDATE_CATEGORY =
   'http://niemtinvang.herokuapp.com/postCategory/v1/updatePostCategory';
 export const DELETE_CATEGORY =
   'http://niemtinvang.herokuapp.com/postCategory/v1/deletePostCategory';
+export const GET_CATEGORY_BY_ID =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/getByParam';
 //API LINK CỦA POST
 
 export const CREATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/createPost';
 export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
-export const UPDATE_POST = '';
+export const UPDATE_POST =
+  'http://niemtinvang.herokuapp.com/post/v1/updatePost';
 export const DELETE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/deletePost';
-
+export const GET_POST_BY_ID =
+  'http://niemtinvang.herokuapp.com/post/v1/getByParam';
 export const CHECK_LOGIN = 'http://niemtinvang.herokuapp.com/login';

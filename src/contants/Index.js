@@ -28,7 +28,7 @@ import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
 import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
 import CategoryPageManage from '../views/CategoryPage/indexCategoryPage';
 import CreateCategoryPage from '../views/CategoryPage/CreateCategoryPage';
-
+import UpdateCategoryPage from '../views/CategoryPage/UpdateCategoryPage';
 export const HOME_ROUTES = [
   {
     path: '/home',
@@ -119,6 +119,12 @@ export const HOME_ROUTES = [
     name: 'Category Manage Page',
     exact: true,
     component: CategoryPageManage,
+  },
+  {
+    path: '/updateCategory/:id',
+    name: 'Update Manage Page',
+    exact: true,
+    component: UpdateCategoryPage,
   },
   {
     path: '/product',

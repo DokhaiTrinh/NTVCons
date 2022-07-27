@@ -15,3 +15,10 @@ export const getAllCategoryApi1 = (pageNo, pageSize, sortBy, sortTypeAsc) => {
     userInfor.token
   );
 };
+export const getCategoryByIdApi = (categoryId, searchType) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.get(
+    `${API_LINK.GET_CATEGORY_BY_ID}?searchParam=${categoryId}&searchType=${searchType}`,
+    userInfor.token
+  );
+};

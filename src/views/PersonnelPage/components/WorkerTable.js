@@ -322,37 +322,43 @@ export const WorkerTable = (props) => {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {allWorker.map((row, index) => {
-                return (
-                  <TableRow>
-                    <TableCell>{row.workerId}</TableCell>
-                    <TableCell align="left">{row.fullName}</TableCell>
-                    <TableCell align="left">{row.citizenId}</TableCell>
-                    <TableCell align="left">{row.socialSecurityCode}</TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateWorker/${row.workerId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteWorker(row.workerId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {allWorker ? (
+                allWorker.map((row, index) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{row.workerId}</TableCell>
+                      <TableCell align="left">{row.fullName}</TableCell>
+                      <TableCell align="left">{row.citizenId}</TableCell>
+                      <TableCell align="left">
+                        {row.socialSecurityCode}
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateWorker/${row.workerId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeleteWorker(row.workerId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <div>Không có thông tin dữ liệu!</div>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

@@ -30,6 +30,7 @@ import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -363,13 +364,15 @@ export default function ReportTable(props) {
           marginBottom: '30px',
         }}
       >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={`/createTask/${projectId}`}
-        >
-          <Typography color="white">Tạo công việc</Typography>
-        </Button>
+        {userInfor.authorID !== '54' ? null : (
+          <Button
+            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+            component={Link}
+            to={`/createTask/${projectId}`}
+          >
+            <Typography color="white">Tạo công việc</Typography>
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />

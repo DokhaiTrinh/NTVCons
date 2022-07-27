@@ -27,7 +27,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(id, image, name, category, scale, location) {
   return {
     id,
@@ -106,6 +106,12 @@ const headCells = [
     label: 'Thể loại',
   },
   {
+    id: 'chudautu',
+    numeric: false,
+    disablePadding: false,
+    label: 'Chủ đầu tư',
+  },
+  {
     id: 'quymo',
     numeric: false,
     disablePadding: false,
@@ -132,14 +138,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -147,27 +146,31 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          userInfor.authorID !== '54' && index === 8 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -347,6 +350,7 @@ export const ProductTable = (props) => {
                       <TableCell align="left">{}</TableCell>
                       <TableCell align="left">{row.postTitle}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>
+                      <TableCell align="left">{row.ownerName}</TableCell>
                       <TableCell align="left">{row.scale}</TableCell>
                       <TableCell align="left">{row.address}</TableCell>
                       <TableCell align="left">
@@ -359,17 +363,19 @@ export const ProductTable = (props) => {
                           <UpdateIcon />
                         </IconButton>
                       </TableCell>
-                      <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          edge="start"
-                          size="large"
-                          onClick={() => handleDeletePost(row.postId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
+                      {userInfor.authorID === '54' ? (
+                        <TableCell align="left">
+                          <IconButton
+                            aria-label="delete"
+                            color="warning"
+                            edge="start"
+                            size="large"
+                            onClick={() => handleDeletePost(row.postId)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   );
                 })

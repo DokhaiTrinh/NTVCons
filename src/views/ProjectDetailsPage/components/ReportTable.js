@@ -27,7 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -119,27 +119,31 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'center' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          userInfor.authorID !== '44' && index === 5 && index === 6 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'center' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -321,13 +325,15 @@ export default function ReportTable(props) {
           marginBottom: '30px',
         }}
       >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={`/createReport/${projectId}`}
-        >
-          <Typography color="white">Tạo báo cáo</Typography>
-        </Button>
+        {userInfor.authorID !== '44' ? null : (
+          <Button
+            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+            component={Link}
+            to={`/createReport/${projectId}`}
+          >
+            <Typography color="white">Tạo báo cáo</Typography>
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />

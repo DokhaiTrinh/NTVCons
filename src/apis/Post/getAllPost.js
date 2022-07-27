@@ -8,3 +8,10 @@ export const getAllPostApi = (data) => {
     userInfor.token
   );
 };
+export const getPostByIdApi = (postId, searchType) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.get(
+    `${API_LINK.GET_POST_BY_ID}?searchParam=${postId}&searchType=${searchType}`,
+    userInfor.token
+  );
+};

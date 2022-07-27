@@ -107,18 +107,6 @@ const EditProejectDetailsPage = (props) => {
   ) => {
     try {
       setLoading(true);
-      console.log(
-        typeof projectId,
-        typeof actualEndDate,
-        typeof actualStartDate,
-        typeof planEndDate,
-        typeof planStartDate,
-        typeof location,
-        typeof updatedBy,
-        typeof actualCost,
-        typeof estimatedCost,
-        typeof projectName
-      );
       await updateProjectApi({
         projectId,
         actualEndDate,
