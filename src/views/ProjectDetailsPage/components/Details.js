@@ -23,6 +23,7 @@ const handleGetDate = (date) => {
 const Details = (props) => {
   const { allProjectDetails } = props;
   const { id } = useParams();
+  console.log(allProjectDetails);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -36,7 +37,8 @@ const Details = (props) => {
                 Thông tin chung
               </Typography>
             </Grid>
-            {userInfor.authorID !== '54' && userInfor.authorID !== '44' ? null : (
+            {userInfor.authorID !== '54' &&
+            userInfor.authorID !== '44' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box

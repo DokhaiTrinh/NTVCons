@@ -158,7 +158,6 @@ const CreateProjectPage = (props) => {
       });
       setLoading(false);
       await window.location.replace('/project');
-
     }
     console.log(planStartDate);
   };
@@ -451,7 +450,7 @@ const CreateProjectPage = (props) => {
                 {locationDetail ? (
                   <Grid item xs={4}>
                     <Box sx={{ width: '100%' }}>
-                      <Button
+                      {/* <Button
                         variant="contained"
                         style={{
                           backgroundColor: '',
@@ -459,8 +458,8 @@ const CreateProjectPage = (props) => {
                           width: '200px',
                           alignSelf: 'center',
                         }}
-                        onClick={() => handleOpenLocationDialog()}
-                      />
+                        // onClick={() => handleOpenLocationDialog()}
+                      /> */}
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
                           <Typography>

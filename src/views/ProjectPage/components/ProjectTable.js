@@ -138,7 +138,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell,index) =>
+        {headCells.map((headCell, index) =>
           userInfor.authorID !== '54' && index === 7 ? null : (
             <TableCell
               key={headCell.id}

@@ -40,7 +40,7 @@ export const CreateWorker = (props) => {
     .object({
       fullName: yup
         .string()
-        .min(5, 'Tên đăng nhập phải lớn hoặc hoặc bàng 6 kí tự')
+        .min(5, 'Tên công nhân phải lớn hoặc hoặc bàng 6 kí tự')
         .required('Tên đăng nhập không được để trống'),
       citizenId: yup
         .string()
@@ -230,7 +230,7 @@ export const CreateWorker = (props) => {
                       }}
                       onClick={() => handleOpenLocationDialog()}
                     >
-                      Địa điểm thi công
+                      Địa chỉ
                     </Button>
                   </Box>
                 </Grid>
@@ -247,28 +247,25 @@ export const CreateWorker = (props) => {
                               Tên đường:{locationDetail.street}
                             </Typography>
                             <Typography>
+                              Phường: {locationDetail.ward}
+                            </Typography>
+                            <Typography>
                               Quận: {locationDetail.district}{' '}
                             </Typography>
                             <Typography>
                               Thành phố: {locationDetail.city}
                             </Typography>
-                            <Typography>
-                              Khu vực: {locationDetail.ward}
-                            </Typography>
-                            <Typography>
+                            {/* <Typography>
                               Địa bàn tỉnh: {locationDetail.province}
-                            </Typography>
+                            </Typography> */}
                             <Typography>
                               Quốc gia: {locationDetail.country}
                             </Typography>
-                            <Typography>
+                            {/* <Typography>
                               Diện tích: {locationDetail.area}
-                            </Typography>
+                            </Typography> */}
                             <Typography>
                               Điều phối: {locationDetail.coordinate}
-                            </Typography>
-                            <Typography>
-                              Người tạo: {locationDetail.createdBy}
                             </Typography>
                           </CardContent>
                         </Card>
@@ -276,7 +273,7 @@ export const CreateWorker = (props) => {
                     </Grid>
                   ) : (
                     <Grid item sx={12}>
-                      <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                      <div>Không có dữ liệu!</div>
                     </Grid>
                   )}
                 </Grid>

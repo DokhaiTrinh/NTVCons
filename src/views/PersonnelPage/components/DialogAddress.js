@@ -40,12 +40,12 @@ export const DialogAddress = (props) => {
   const submitForm = (data) => {
     const detailLocation = {
       addressNumber: data.addressNumber,
-      area: data.area,
+      // area: data.area,
       city: data.city,
       coordinate: data.coordinate,
       country: data.country,
       district: data.district,
-      province: data.province,
+      // province: data.province,
       street: data.street,
       ward: data.ward,
     };
@@ -110,6 +110,18 @@ export const DialogAddress = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
+                  Phường
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="ward"
+                  errors={errors.ward}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
                   Quận
                 </Typography>
                 <TextFieldComponent
@@ -132,19 +144,7 @@ export const DialogAddress = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Khu vực
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="ward"
-                  errors={errors.ward}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Địa bàn tỉnh
                 </Typography>
@@ -155,7 +155,7 @@ export const DialogAddress = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Quốc gia
@@ -168,7 +168,7 @@ export const DialogAddress = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Diện tích
                 </Typography>
@@ -179,7 +179,7 @@ export const DialogAddress = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Điều phối

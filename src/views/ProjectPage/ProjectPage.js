@@ -119,8 +119,8 @@ const ProjectPage = (props) => {
   return (
     <div>
       <Grid container justify="center">
-        <Grid container md="8">
-          {userInfor.authorID !== '54' || userInfor.authorID !== '24' ? null : (
+        {userInfor.authorID !== '54' && userInfor.authorID !== '24' ? null : (
+          <Grid container md="8">
             <Grid item>
               <Box
                 display="flex"
@@ -138,18 +138,18 @@ const ProjectPage = (props) => {
                 </IconButton>
               </Box>
             </Grid>
-          )}
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            >
-              <Typography variant="body1">Danh sách dự án</Typography>
-            </Box>
+            <Grid item>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ height: '100%' }}
+              >
+                <Typography variant="body1">Tạo dự án mới</Typography>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
         <Grid item md="4">
           <Box
             display="flex"
