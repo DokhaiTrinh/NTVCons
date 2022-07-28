@@ -20,7 +20,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { deleteCategoryApi } from './../../../apis/CategoryPost/deleteCategory';
 import Swal from 'sweetalert2';
