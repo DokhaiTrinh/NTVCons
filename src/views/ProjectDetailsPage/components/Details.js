@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Link, useParams } from 'react-router-dom';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -36,32 +36,38 @@ const Details = (props) => {
                 Thông tin chung
               </Typography>
             </Grid>
-            <Grid item container xs={1}>
-              <Grid item xs={12}>
-                <Box
-                  sx={{ width: '100%' }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <IconButton
-                    aria-label="edit report"
-                    component={Link}
-                    to={`/editProjectDetails/${id}`}
-                    sx={{ height: '100%' }}
+            {userInfor.authorID !== '54' && userInfor.authorID !== '44' ? null : (
+              <Grid item container xs={1}>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{ width: '100%' }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                   >
-                    <Box sx={{ height: '30px' }}>
-                      <EditOutlinedIcon fontSize="large" />
-                    </Box>
-                  </IconButton>
-                </Box>
+                    <IconButton
+                      aria-label="edit report"
+                      component={Link}
+                      to={`/editProjectDetails/${id}`}
+                      sx={{ height: '100%' }}
+                    >
+                      <Box sx={{ height: '30px' }}>
+                        <EditOutlinedIcon fontSize="large" />
+                      </Box>
+                    </IconButton>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} justify="start">
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Typography variant="button">Chỉnh sửa</Typography>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={12} justify="start">
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  <Typography variant="button">Chỉnh sửa</Typography>
-                </Box>
-              </Grid>
-            </Grid>
+            )}
           </Grid>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
@@ -152,8 +158,8 @@ const Details = (props) => {
               <Typography variant="body1">
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
-                {allProjectDetails.location.ward}, 
-                Q {allProjectDetails.location.district},{' '}
+                {allProjectDetails.location.ward}, Q{' '}
+                {allProjectDetails.location.district},{' '}
               </Typography>
             </Grid>
             <Grid item xs="4">

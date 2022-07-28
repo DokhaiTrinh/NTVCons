@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 //Get all project
 import { getAllProjectApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -120,23 +120,25 @@ const ProjectPage = (props) => {
     <div>
       <Grid container justify="center">
         <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                component={Link}
-                to={'/createProject'}
+          {userInfor.authorID !== '54' || userInfor.authorID !== '24' ? null : (
+            <Grid item>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ margin: '20px' }}
               >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-            </Box>
-          </Grid>
+                <IconButton
+                  aria-label="add"
+                  sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+                  component={Link}
+                  to={'/createProject'}
+                >
+                  <Add sx={{ color: 'white' }}></Add>
+                </IconButton>
+              </Box>
+            </Grid>
+          )}
           <Grid item>
             <Box
               display="flex"

@@ -163,7 +163,7 @@ const ReportDetailPage = (props) => {
                   </Typography>
                   <Card sx={{ width: '100%' }}>
                     <CardContent>
-                      {taskReportList.length > 0 ? (
+                      {taskReportList ? (
                         taskReportList.map((taskReport, index) => (
                           <Card
                             sx={{

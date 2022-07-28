@@ -14,17 +14,16 @@ import { Add } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import TextFieldComponent from '../../Components/TextField/textfield';
-import Dialog from '@mui/material/Dialog';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createPostApi } from '../../apis/Post/createPost';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { getAllCategoryApi1 } from '../../apis/CategoryPost/getAllCategory';
+import { getPostByIdApi } from '../../apis/Post/getAllPost';
+import { updatePostApi } from '../../apis/Post/updatePost';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -42,6 +41,8 @@ const UpdateProductPage = (props) => {
   const [categorySelected, setCategorySelected] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const { id } = useParams();
+  const [postById, setPostById] = React.useState();
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -55,9 +56,14 @@ const UpdateProductPage = (props) => {
       } catch (error) {
         console.log('Không thể lấy danh sách');
       }
+      try {
+        const listPostById = await getPostByIdApi(id, 'BY_POST_ID');
+        setPostById(listPostById.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách');
+      }
     })();
   }, []);
-  console.log(allCategory);
   const validateSchema = yup
     .object({
       address: yup
@@ -93,17 +99,27 @@ const UpdateProductPage = (props) => {
   });
 
   const submitForm = (data) => {
-    handleCreatePost(
-      id,
-      data.address,
-      data.authorName,
-      data.ownerName,
-      categorySelected,
-      data.postTitle,
-      data.scale
-    );
+    Swal.fire({
+      title: 'Bạn có chắc là muốn cập nhật?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Cập nhật',
+      denyButtonText: `Không cập nhật`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleUpdatePost(
+          id,
+          data.address,
+          data.authorName,
+          data.ownerName,
+          categorySelected,
+          data.postTitle,
+          data.scale
+        );
+      }
+    });
   };
-  const handleCreatePost = async (
+  const handleUpdatePost = async (
     postId,
     address,
     authorName,
@@ -114,7 +130,7 @@ const UpdateProductPage = (props) => {
   ) => {
     try {
       setLoading(true);
-      await createPostApi({
+      await updatePostApi({
         postId,
         address,
         authorName,
@@ -126,7 +142,7 @@ const UpdateProductPage = (props) => {
       setLoading(false);
       await Swal.fire({
         icon: 'success',
-        text: 'Tạo bài đăng thành công',
+        text: 'Cập nhật đăng thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -134,7 +150,7 @@ const UpdateProductPage = (props) => {
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Cập nhật thất bại',
         timer: 2000,
         showConfirmButton: false,
       });
@@ -174,157 +190,170 @@ const UpdateProductPage = (props) => {
             Thông tin dịch vụ
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Box sx={{ width: '100%', height: '20px' }}></Box>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Hình ảnh
-                </Typography>
-                <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
-                  {itemData.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{ width: 164, height: 164 }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <IconButton
-                    aria-label="add"
-                    sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                    component={Link}
-                    to={'/createProject'}
-                  >
-                    <Add sx={{ color: 'white' }}></Add>
-                  </IconButton>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tên dự án
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="postTitle"
-                  // label="Tên vai trò"
-                  errors={errors.postTitle}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Chủ đầu tư
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="ownerName"
-                  // label="Tên vai trò"
-                  errors={errors.ownerName}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Vị trí
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="address"
-                  // label="Tên vai trò"
-                  errors={errors.address}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Quy mô
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="scale"
-                  // label="Tên vai trò"
-                  errors={errors.scale}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thể loại
-                </Typography>
-                <FormControl sx={{ width: '100%' }}>
-                  <Select
-                    onChange={handleChange}
-                    MenuProps={MenuProps}
-                    value={categorySelected}
-                  >
-                    {allCategory.length > 0 ? (
-                      allCategory.map((cateType, index) => (
-                        <MenuItem value={cateType.postCategoryId} key={index}>
-                          {cateType.postCategoryName}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>
-                        Không có dữ liệu của danh sách công việc!
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
+          {postById ? (
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Box sx={{ width: '100%', height: '20px' }}></Box>
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Tác giả
+                    Hình ảnh
+                  </Typography>
+                  <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
+                    {itemData.map((item) => (
+                      <ImageListItem key={item.img}>
+                        <img
+                          src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                          srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          alt={item.title}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{ width: 164, height: 164 }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <IconButton
+                      aria-label="add"
+                      sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+                      component={Link}
+                      to={'/createProject'}
+                    >
+                      <Add sx={{ color: 'white' }}></Add>
+                    </IconButton>
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Tên dự án
+                  </Typography>
+                  <TextField
+                    {...register('postTitle')}
+                    inputProps={{ readOnly: true }}
+                    name="postTitle"
+                    variant="outlined"
+                    autoComplete="postTitle"
+                    autoFocus
+                    defaultValue={postById.postTitle}
+                    error={errors.postTitle != null}
+                    helperText={errors.postTitle?.message}
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Chủ đầu tư
                   </Typography>
                   <TextFieldComponent
                     register={register}
-                    name="authorName"
+                    name="ownerName"
                     // label="Tên vai trò"
-                    errors={errors.authorName}
+                    errors={errors.ownerName}
+                    defaultValue={postById.ownerName}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Vị trí
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="address"
+                    // label="Tên vai trò"
+                    errors={errors.address}
+                    defaultValue={postById.address}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Quy mô
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="scale"
+                    // label="Tên vai trò"
+                    errors={errors.scale}
+                    defaultValue={postById.scale}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Thể loại
+                  </Typography>
+                  <FormControl sx={{ width: '100%' }}>
+                    <Select
+                      onChange={handleChange}
+                      MenuProps={MenuProps}
+                      value={categorySelected}
+                      defaultValue={postById.categorySelected}
+                    >
+                      {allCategory.length > 0 ? (
+                        allCategory.map((cateType, index) => (
+                          <MenuItem value={cateType.postCategoryId} key={index}>
+                            {cateType.postCategoryName}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem>
+                          Không có dữ liệu của danh sách công việc!
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Tác giả
+                    </Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="authorName"
+                      // label="Tên vai trò"
+                      errors={errors.authorName}
+                      defaultValue={postById.authorName}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
                     }}
                   >
-                    Lưu
-                  </Button>
-                </Box>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#DD8501',
+                        borderRadius: 50,
+                        width: '200px',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      Lưu
+                    </Button>
+                  </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
+            </form>
+          ) : (
+            <div>Không có dữ liệu</div>
+          )}
         </Box>
       </Box>
     </div>

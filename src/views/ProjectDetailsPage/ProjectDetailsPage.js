@@ -69,9 +69,9 @@ const ProjectDetailsPage = (props) => {
   const [allProjectDetails, setAllProjectDetails] = React.useState();
   const [allReportDetails, setAllReportDetails] = React.useState([]);
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
-  const handleChange1 = (event) => {
-    setAge(event.target.value);
-  };
+  // const handleChange1 = (event) => {
+  //   setAge(event.target.value);
+  // };
 
   React.useEffect(() => {
     (async () => {
@@ -85,20 +85,6 @@ const ProjectDetailsPage = (props) => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-    // (async () => {
-    //   try {
-    //     const listAllRequestDetails = await getRequestByProjectIdApi({
-    //       pageNo,
-    //       pageSize,
-    //       projectId,
-    //       sortBy,
-    //       sortTypeAsc,
-    //     });
-    //     setAllRequestDetails(listAllRequestDetails.data);
-    //   } catch (error) {
-    //     console.log('Không thể lấy danh sách yêu cầu');
-    //   }
-    // })
     (async () => {
       try {
         const listAllReportDetails = await getReportByProjectIdApi({
@@ -141,30 +127,11 @@ const ProjectDetailsPage = (props) => {
               justifyContent="center"
               alignItems="center"
               sx={{ height: '100%' }}
-            >
-              <Typography variant="body1">
-                {/* Dự án - Xây dựng tòa nhà văn phòng ABC */}
-              </Typography>
-            </Box>
+            ></Box>
           </Grid>
         </Grid>
       </Grid>
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange1}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+      <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs

@@ -28,6 +28,8 @@ import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
 import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
 import { useParams } from 'react-router-dom';
+
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(
   name,
   progress,
@@ -273,7 +275,6 @@ export default function RequestTable(props) {
       }
     })();
   }, []);
-  console.log(allRequestDetails);
   const handleDeleteRequest = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -350,13 +351,15 @@ export default function RequestTable(props) {
           marginBottom: '30px',
         }}
       >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={`/createRequest/${projectId}`}
-        >
-          <Typography color="white">Tạo yêu cầu</Typography>
-        </Button>
+        {userInfor.authorID !== '44' ? null : (
+          <Button
+            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+            component={Link}
+            to={`/createRequest/${projectId}`}
+          >
+            <Typography color="white">Tạo yêu cầu</Typography>
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />

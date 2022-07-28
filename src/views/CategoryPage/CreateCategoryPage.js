@@ -17,6 +17,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import { createCategoryApi } from '../../apis/CategoryPost/createCategory';
 import TextFieldComponent from '../../Components/TextField/textfield';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const CreateCategortPage = (props) => {
   //   const [date, setDate] = React.useState(new Date());
   //   const idN = parseInt(id);
