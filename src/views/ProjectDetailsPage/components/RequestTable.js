@@ -108,19 +108,26 @@ const headCells = [
     label: 'Thể loại',
   },
   {
-    id: '',
+    id: 'nguoiyeucau',
+    numeric: false,
+    disablePadding: false,
+    label: 'Người yêu cầu',
+  },
+  {
+    id: 'chitiet',
     numeric: false,
     disablePadding: false,
     label: 'Chi tiết',
   },
+
   {
-    id: '',
+    id: 'capnhat',
     numeric: false,
     disablePadding: false,
     label: 'Cập nhật',
   },
   {
-    id: '',
+    id: 'xoa',
     numeric: false,
     disablePadding: false,
     label: 'Xóa',
@@ -144,7 +151,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '44' && index === 5) || index === 6 ? null : (
+          (userInfor.authorID !== '44' && index === 6) || index === 7 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
@@ -279,6 +286,7 @@ export default function RequestTable(props) {
       }
     })();
   }, []);
+  console.log(allRequestDetails);
   const handleDeleteRequest = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -380,25 +388,7 @@ export default function RequestTable(props) {
                 // const isItemSelected = isSelected(row.admin);
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow
-                    hover
-                    // onClick={(event) => handleClick(event, row.admin)}
-                    role="checkbox"
-                    // aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    // selected={isItemSelected}
-                  >
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        onClick={(event) => handleClick(event, row.projectId)}
-                        color="primary"
-                        // checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell> */}
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                     <TableCell
                       component="th"
                       id={labelId}
@@ -409,12 +399,11 @@ export default function RequestTable(props) {
                       {row.requestId}
                     </TableCell>
                     <TableCell align="left">{row.requestDesc}</TableCell>
-                    {/* <TableCell align="left">{row.}</TableCell> */}
-                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">{row.requestDate}</TableCell>
-                    <TableCell align="left">{row.reportTypeId}</TableCell>
-                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
-                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
+                    <TableCell align="left">
+                      {row.requestType.requestTypeName}
+                    </TableCell>
+                    <TableCell align="left">{row.requester.username}</TableCell>
                     <TableCell align="left">
                       <IconButton
                         size="large"

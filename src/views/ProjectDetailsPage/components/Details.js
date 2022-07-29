@@ -6,24 +6,17 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Link, useParams } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
+
 const Details = (props) => {
-  const { allProjectDetails } = props;
+  const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
+  console.log(managerList);
   console.log(allProjectDetails);
+  console.log(workerList);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -101,8 +94,24 @@ const Details = (props) => {
               <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.createdBy}
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {managerList ? (
+                    managerList.map((managerList, index) => (
+                      <Typography
+                        sx={{
+                          witdh: '100%',
+                          marginBottom: '10px',
+                          padding: '10px',
+                        }}
+                      >
+                        {managerList.manager.fullName}
+                      </Typography>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -113,7 +122,7 @@ const Details = (props) => {
                 sx={{
                   width: '50%',
                   borderRadius: '10px',
-                  backgroundColor: 'pink',
+                  backgroundColor: 'green',
                 }}
               >
                 <Typography
@@ -122,21 +131,38 @@ const Details = (props) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'gray',
+                    color: 'black',
                   }}
                 >
-                  Đang thực hiện
+                  {allProjectDetails.status}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Người tham gia
+                Danh sách công nhân
               </Typography>
-              <Typography variant="body1" paragraph>
-                {allProjectDetails.userId}
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {workerList ? (
+                    workerList.map((workerList, index) => (
+                      <Typography
+                        sx={{
+                          witdh: '100%',
+                          marginBottom: '10px',
+                          padding: '10px',
+                        }}
+                      >
+                        {managerList.projectWorkerId}
+                      </Typography>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
+
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến
@@ -161,7 +187,7 @@ const Details = (props) => {
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
                 {allProjectDetails.location.ward}, Q{' '}
-                {allProjectDetails.location.district},{' '}
+                {allProjectDetails.location.district}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -177,7 +203,7 @@ const Details = (props) => {
                 Thời gian bắt đầu thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planStartDate)}
+                {allProjectDetails.planStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -185,7 +211,7 @@ const Details = (props) => {
                 Thời gian kết thúc thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planEndDate)}
+                {allProjectDetails.planEndDate}
               </Typography>
             </Grid>
           </Grid>

@@ -153,7 +153,7 @@ function EnhancedTableHead(props) {
           />
         </TableCell> */}
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) || index === 6 ? null : (
+          userInfor.authorID !== '54' && index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.character ? 'right' : 'left'}
@@ -426,8 +426,12 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.taskDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">{row.actualStartDate}</TableCell>
-                    <TableCell align="left">{row.actualEndDate}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planStartDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planEndDate)}
+                    </TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     {/* <TableCell align="center">
