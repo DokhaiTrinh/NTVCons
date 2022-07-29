@@ -7,6 +7,7 @@ import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfile
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
 import ProductPage from '../views/ProductPage/indexPostPage';
+import ChatPage from '../views/ChatPage/ChatPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
 import EditReportPage from '../views/ProjectDetailsPage/indexGetAllReport';
 import EditProjectDetailsPage from '../views/ProjectDetailsPage/EditProejectDetailsPage';
@@ -35,6 +36,12 @@ export const HOME_ROUTES = [
     name: 'Home Page',
     exact: true,
     component: HomePage,
+  },
+  {
+    path: '/chat',
+    name: 'Chat Page',
+    exact: true,
+    component: ChatPage,
   },
   {
     path: '/project',
