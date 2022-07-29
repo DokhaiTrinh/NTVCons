@@ -24,7 +24,7 @@ function RequestDetailPage() {
     return getDateReformat;
   };
   const { id } = useParams();
-  const [allRequestList, setAllRequestList] = React.useState([]);
+  const [allRequestList, setAllRequestList] = React.useState();
   const [requestDetail, setRequestDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {

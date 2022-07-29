@@ -16,7 +16,7 @@ export const DialogAddress = (props) => {
         .string()
         .min(0, 'Địa chỉ phải là số lớn hơn 0!')
         .required(),
-      area: yup.string().required(),
+      // area: yup.string().required(),
       city: yup.string().required('Phải có tên thành phố'),
       coordinate: yup
         .string()
@@ -24,7 +24,7 @@ export const DialogAddress = (props) => {
         .typeError('Tên vùng đã bị trùng!!!'),
       country: yup.string().required('Phải có tên quốc gia!'),
       district: yup.string().required('Phải có tên đường!!!'),
-      province: yup.string(),
+      // province: yup.string(),
       street: yup.string().required('Phải có tên đường'),
       ward: yup.string().required('Phải có tên khu vực'),
     })
@@ -40,18 +40,19 @@ export const DialogAddress = (props) => {
   const submitForm = (data) => {
     const detailLocation = {
       addressNumber: data.addressNumber,
-      // area: data.area,
+      area: null,
       city: data.city,
       coordinate: data.coordinate,
       country: data.country,
       district: data.district,
-      // province: data.province,
-      street: data.street,
+      province: data.province,
+      street: null,
       ward: data.ward,
     };
     setLocationDetail(detailLocation);
     props.handleCloseLocationDialog();
   };
+  console.log(errors);
   return (
     <div>
       <Typography

@@ -115,12 +115,12 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
+  console.log(userInfor.authorID);
   return (
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          userInfor.authorID !== '44' && index === 5 && index === 6 ? null : (
+          userInfor.authorID !== '44' && index === 5 || index === 6 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'center' : 'left'}
@@ -348,9 +348,25 @@ export default function ReportTable(props) {
             />
             <TableBody>
               {allReportDetails.map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow>
-                    <TableCell>{row.reportId}</TableCell>
+                  <TableRow
+                    hover
+                    // onClick={(event) => handleClick(event, row.admin)}
+                    role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    // selected={isItemSelected}>
+                  >
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      align="left"
+                    >
+                      {row.reportId}
+                    </TableCell>
                     <TableCell align="left">{row.reportName}</TableCell>
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
@@ -368,27 +384,31 @@ export default function ReportTable(props) {
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateReportDetails/${row.reportId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteReport(row.reportId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateReportDetails/${row.reportId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      </TableCell>
+                    ) : null}
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeleteReport(row.reportId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

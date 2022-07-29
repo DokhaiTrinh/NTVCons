@@ -65,6 +65,7 @@ export const CreateWorker = (props) => {
   });
 
   const submitForm = (data) => {
+    console.log(data);
     handleCreateWorker(
       locationDetail,
       data.citizenId,
@@ -72,6 +73,7 @@ export const CreateWorker = (props) => {
       data.socialSecurityCode
     );
   };
+
   const handleCreateWorker = async (
     address,
     citizenId,

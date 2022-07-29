@@ -40,6 +40,7 @@ const DialogManagerList = (props) => {
     props.handleCloseManagerListDialog();
   };
 
+
   // const handleCheckExisted = (managerID) => {
   //   for (let index = 0; index < managerListDetail.length; index++) {
   //     const element = managerListDetail[index];
@@ -95,20 +96,20 @@ const DialogManagerList = (props) => {
               allManager.length > 0 ? (
                 allManager.map((manager) => (
                   <ListItem
-                    key={manager.projectManagerId}
+                    key={manager.userId}
                     secondaryAction={
                       managerListDetail.length > 0 ? (
                         <Checkbox
-                          onChange={handleToggle(manager.projectManagerId)}
+                          onChange={handleToggle(manager.userId)}
                           checked={
-                            checked.indexOf(manager.projectManagerId) !== -1
+                            checked.indexOf(manager.userId) !== -1
                           }
                         />
                       ) : (
                         <Checkbox
-                          onChange={handleToggle(manager.projectManagerId)}
+                          onChange={handleToggle(manager.userId)}
                           checked={
-                            checked.indexOf(manager.projectManagerId) !== -1
+                            checked.indexOf(manager.userId) !== -1
                           }
                         />
                       )
@@ -122,7 +123,7 @@ const DialogManagerList = (props) => {
                     src={`/static/images/avatar/${value + 1}.jpg`}
                   /> */}
                       </ListItemAvatar>
-                      <ListItemText primary={`${manager.manager.username}`} />
+                      <ListItemText primary={`${manager.username}`} />
                     </ListItemButton>
                   </ListItem>
                 ))

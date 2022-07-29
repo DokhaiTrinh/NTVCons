@@ -29,7 +29,7 @@ import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getProjectByIdApi } from '../../apis/Project/updateProject';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
-import { getAllManagerApi } from '../../apis/ProjectManager/getAllManager';
+import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -56,9 +56,11 @@ const CreateProjectPage = (props) => {
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllManager = await getAllManagerApi(
+        const listAllManager = await getAllManagerApi1(
           0,
           1000,
+          44,
+          'BY_ROLE_ID',
           'createdAt',
           true
         );
@@ -79,35 +81,32 @@ const CreateProjectPage = (props) => {
       }
     })();
   }, []);
+  console.log(allManager);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
 
-    let listManagerChoice = [];
-    let listWorkerChoice = [];
-    for (let index = 0; index < managerListDetail.length; index++) {
-      const element = managerListDetail[index];
-      let objectManager = {
-        managerId: element,
-      };
-      listManagerChoice.push(objectManager);
-    }
-    for (let index = 0; index < workerListDetail.length; index++) {
-      const element = workerListDetail[index];
-      let objectWorker = {
-        workerId: element,
-      };
-      listWorkerChoice.push(objectWorker);
-    }
+    // let listManagerChoice = [];
+    // let listWorkerChoice = [];
+    // for (let index = 0; index < managerListDetail.length; index++) {
+    //   const element = managerListDetail[index];
+    //   let objectManager = {
+    //     managerId: element,
+    //   };
+    //   listManagerChoice.push(objectManager);
+    // }
+
+    // console.log(managerListDetail);
+    //listWorkerChoice.push(element);
     handleCreateProject(
       planEndDate,
       planStartDate,
       locationDetail,
       bluePrintDetail,
-      listManagerChoice,
+      managerListDetail,
       data.estimatedCost,
       data.projectName,
-      listWorkerChoice
+      workerListDetail
     );
   };
   const handleCreateProject = async (
@@ -115,10 +114,10 @@ const CreateProjectPage = (props) => {
     planStartDate,
     location,
     blueprint,
-    projectManagerList,
+    managerIdList,
     estimatedCost,
     projectName,
-    projectWorkerList
+    workerIdList
   ) => {
     try {
       setLoading(true);
@@ -127,20 +126,20 @@ const CreateProjectPage = (props) => {
         planStartDate,
         location,
         blueprint,
-        projectManagerList,
+        managerIdList,
         estimatedCost,
         projectName,
-        projectWorkerList
+        workerIdList
       );
       await createProjectApi({
         planEndDate,
         planStartDate,
         location,
         blueprint,
-        projectManagerList,
+        managerIdList,
         estimatedCost,
         projectName,
-        projectWorkerList,
+        workerIdList,
       });
       setLoading(false);
       await Swal.fire({
@@ -157,7 +156,6 @@ const CreateProjectPage = (props) => {
         showConfirmButton: false,
       });
       setLoading(false);
-      await window.location.replace('/project');
     }
     console.log(planStartDate);
   };
@@ -228,8 +226,8 @@ const CreateProjectPage = (props) => {
   const handleGetManagerName = (managerID) => {
     if (allManager.length > 0) {
       for (const manager of allManager) {
-        if (manager.projectManagerId === managerID) {
-          return manager.manager.username;
+        if (manager.userId === managerID) {
+          return manager.username;
         }
       }
     }
@@ -558,7 +556,7 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid> */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Giá chính thức
                 </Typography>
@@ -569,7 +567,7 @@ const CreateProjectPage = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">

@@ -143,27 +143,31 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          (userInfor.authorID !== '44' && index === 5) || index === 6 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -428,32 +432,36 @@ export default function RequestTable(props) {
                         </Link>
                       </Route> */}
                     </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        size="large"
-                        component={Link}
-                        to={`/updateRequestDetails/${row.requestId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                      {/* <Route>
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          size="large"
+                          component={Link}
+                          to={`/updateRequestDetails/${row.requestId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Route>
                         <Link underline="hover">{'Cập nhật'}</Link>
                       </Route> */}
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        edge="start"
-                        size="large"
-                        color="warning"
-                        onClick={() => handleDeleteRequest(row.requestId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      {/* <Route>
+                      </TableCell>
+                    ) : null}
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          edge="start"
+                          size="large"
+                          color="warning"
+                          onClick={() => handleDeleteRequest(row.requestId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        {/* <Route>
                         <Link underline="hover">{'Xóa'}</Link>
                       </Route> */}
-                    </TableCell>
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

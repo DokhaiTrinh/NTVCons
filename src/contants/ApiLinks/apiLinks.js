@@ -113,7 +113,8 @@ export const DELETE_USER =
 
 export const GET_ALL_MANAGER =
   'http://niemtinvang.herokuapp.com/projectManager/v1/getAll';
-
+export const GET_MANAGER =
+  'http://niemtinvang.herokuapp.com/user/v1/getAllByParam';
 //API LINK CỦA CATEGORY
 export const GET_ALL_CATEGORY =
   'http://niemtinvang.herokuapp.com/postCategory/v1/getAll';
