@@ -24,75 +24,122 @@ import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import DialogLocation from './Components/DialogLocation';
+import DialogBluePrint from './Components/DialogBluePrint';
+import DialogManagerList from './Components/DialogManagerList';
+import DialogWorkerList from './Components/DialogWorkerList';
 import { getProjectByIdApi } from '../../apis/Project/updateProject';
+import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
+import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
+
 const CreateProjectPage = (props) => {
-  const [valueActualStartDate, setValueActualStartDate] = React.useState(
-    new Date()
-  );
-  const [valueActualEndDate, setValueActualEndDate] = React.useState(
-    new Date()
-  );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [locationDetail, setLocationDetail] = React.useState();
+  const [bluePrintDetail, setBluePrintDetail] = React.useState();
+
+  // Dữ liệu list manager này phải là array. Để thêm dữ liệu zô array ở thằng report có mẫu á.
+  const [managerListDetail, setManagerListDetail] = React.useState([]);
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
+  const [openBluePrintDialog, setOpenBluePrintDialog] = useState(false);
+  const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
+
+  const [workerListDetail, setWorkerListDetail] = React.useState([]);
+  const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
+  const [allManager, setAllManager] = React.useState([]);
+  const [allWorker, setAllWorker] = React.useState([]);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllManager = await getAllManagerApi1(
+          0,
+          1000,
+          44,
+          'BY_ROLE_ID',
+          'createdAt',
+          true
+        );
+        setAllManager(listAllManager.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách kỹ sư');
+      }
+      try {
+        const listAllWorker = await getAllWorkerApi1(
+          0,
+          1000,
+          'createdAt',
+          true
+        );
+        setAllWorker(listAllWorker.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách công nhân');
+      }
+    })();
+  }, []);
+  console.log(allManager);
   const submitForm = (data) => {
-    const actualStartDate =
-      moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
-    const actualEndDate = moment(valueActualEndDate).format('YYYY-MM-DD HH:mm');
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
+
+    // let listManagerChoice = [];
+    // let listWorkerChoice = [];
+    // for (let index = 0; index < managerListDetail.length; index++) {
+    //   const element = managerListDetail[index];
+    //   let objectManager = {
+    //     managerId: element,
+    //   };
+    //   listManagerChoice.push(objectManager);
+    // }
+
+    // console.log(managerListDetail);
+    //listWorkerChoice.push(element);
     handleCreateProject(
-      actualEndDate,
-      actualStartDate,
       planEndDate,
       planStartDate,
       locationDetail,
-      data.createdBy,
-      data.actualCost,
+      bluePrintDetail,
+      managerListDetail,
       data.estimatedCost,
-      data.projectName
+      data.projectName,
+      workerListDetail
     );
   };
   const handleCreateProject = async (
-    actualEndDate,
-    actualStartDate,
     planEndDate,
     planStartDate,
     location,
-    createdBy,
-    actualCost,
+    blueprint,
+    managerIdList,
     estimatedCost,
-    projectName
+    projectName,
+    workerIdList
   ) => {
     try {
       setLoading(true);
       console.log(
-        actualEndDate,
-        actualStartDate,
         planEndDate,
         planStartDate,
         location,
-        createdBy,
-        actualCost,
-        estimatedCost,
-        projectName
-      );
-      await createProjectApi({
-        actualEndDate,
-        actualStartDate,
-        planEndDate,
-        planStartDate,
-        location,
-        createdBy,
-        actualCost,
+        blueprint,
+        managerIdList,
         estimatedCost,
         projectName,
+        workerIdList
+      );
+      await createProjectApi({
+        planEndDate,
+        planStartDate,
+        location,
+        blueprint,
+        managerIdList,
+        estimatedCost,
+        projectName,
+        workerIdList,
       });
       setLoading(false);
       await Swal.fire({
@@ -101,6 +148,7 @@ const CreateProjectPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
+      await window.location.replace(`/project`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -114,11 +162,6 @@ const CreateProjectPage = (props) => {
   };
   const valideSchema = yup
     .object({
-      actualCost: yup
-        .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ')
-        .required(),
       estimatedCost: yup
         .number()
         .min(1, 'Số lượng phải lớn hơn 0')
@@ -128,7 +171,6 @@ const CreateProjectPage = (props) => {
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
         .required('Dự án '),
-      createdBy: yup.number().required(),
     })
     .required();
   const {
@@ -162,6 +204,44 @@ const CreateProjectPage = (props) => {
   };
   const handleCloseLocationDialog = () => {
     setOpenLocationDialog(false);
+  };
+  const handleOpenBluePrintDialog = () => {
+    setOpenBluePrintDialog(true);
+  };
+  const handleCloseBluePrintDialog = () => {
+    setOpenBluePrintDialog(false);
+  };
+  const handleOpenManagerListDialog = () => {
+    setOpenManagerListDialog(true);
+  };
+  const handleCloseManagerListDialog = () => {
+    setOpenManagerListDialog(false);
+  };
+  const handleOpenWorkerDialog = () => {
+    setOpenWorkerListDialog(true);
+  };
+  const handleCloseWorkerDialog = () => {
+    setOpenWorkerListDialog(false);
+  };
+
+  const handleGetManagerName = (managerID) => {
+    if (allManager.length > 0) {
+      for (const manager of allManager) {
+        if (manager.userId === managerID) {
+          return manager.username;
+        }
+      }
+    }
+    return '';
+  };
+  const handleGetWorkerName = (workerId) => {
+    if (allWorker.length > 0) {
+      for (const worker of allWorker) {
+        if (worker.workerId === workerId) {
+          return worker.fullName;
+        }
+      }
+    }
   };
   return (
     <div>
@@ -207,6 +287,50 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenManagerListDialog()}
+                  >
+                    Kỹ sư phụ trách
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {managerListDetail ? (
+                  managerListDetail.map((managerID, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Kỹ sư phụ trách: {handleGetManagerName(managerID)}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Chi phí ước tính
@@ -250,36 +374,53 @@ const CreateProjectPage = (props) => {
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              <Grid container item xs={12} spacing={1}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Thời gian chính thức
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Bắt đầu chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualStartDate}
-                      onChange={(newValue) => {
-                        setValueActualStartDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">Kết thúc chính thức</Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      value={valueActualEndDate}
-                      onChange={(newValue) => {
-                        setValueActualEndDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenBluePrintDialog()}
+                  >
+                    Chi tiết bản vẽ
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {bluePrintDetail ? (
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Tên bản vẽ: {bluePrintDetail.blueprintName}
+                          </Typography>
+                          <Typography>
+                            Nhà thiết kế: {bluePrintDetail.designerName}
+                          </Typography>
+                          <Typography>
+                            Giá bản vẽ: {bluePrintDetail.estimatedCost}{' '}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của bản vẽ chi tiết!</div>
+                  </Grid>
+                )}
               </Grid>
               <Grid item container sx={12}>
                 <Box
@@ -300,7 +441,7 @@ const CreateProjectPage = (props) => {
                     }}
                     onClick={() => handleOpenLocationDialog()}
                   >
-                    Chi tiết địa điểm
+                    Địa điểm thi công
                   </Button>
                 </Box>
               </Grid>
@@ -308,6 +449,16 @@ const CreateProjectPage = (props) => {
                 {locationDetail ? (
                   <Grid item xs={4}>
                     <Box sx={{ width: '100%' }}>
+                      {/* <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: '',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                        // onClick={() => handleOpenLocationDialog()}
+                      /> */}
                       <Card sx={{ width: '100%' }}>
                         <CardContent>
                           <Typography>
@@ -350,7 +501,51 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenWorkerDialog()}
+                  >
+                    Danh sách công nhân
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {workerListDetail ? (
+                  workerListDetail.map((workerId, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Công nhân: {handleGetWorkerName(workerId)}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Người quản lý
                 </Typography>
@@ -361,8 +556,8 @@ const CreateProjectPage = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
-              <Grid item xs={12}>
+              </Grid> */}
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Giá chính thức
                 </Typography>
@@ -373,7 +568,8 @@ const CreateProjectPage = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
+
               {/* <Grid item xs={12}>
               <Typography variant="body2" color="#DD8501">
                 Chọn file
@@ -428,6 +624,32 @@ const CreateProjectPage = (props) => {
           setLocationDetail={setLocationDetail}
           locationDetail={locationDetail}
         ></DialogLocation>
+      </Dialog>
+      <Dialog open={openBluePrintDialog} onClose={handleCloseBluePrintDialog}>
+        <DialogBluePrint
+          handleCloseBluePrintDialog={handleCloseBluePrintDialog}
+          setBluePrintDetail={setBluePrintDetail}
+          bluePrintDetail={bluePrintDetail}
+        ></DialogBluePrint>
+      </Dialog>
+      <Dialog
+        open={openManagerListDialog}
+        onClose={handleCloseManagerListDialog}
+      >
+        <DialogManagerList
+          handleCloseManagerListDialog={handleCloseManagerListDialog}
+          allManager={allManager}
+          setManagerListDetail={setManagerListDetail}
+          managerListDetail={managerListDetail}
+        ></DialogManagerList>
+      </Dialog>
+      <Dialog open={openWorkerListDialog} onClose={handleCloseWorkerDialog}>
+        <DialogWorkerList
+          handleCloseWorkerDialog={handleCloseWorkerDialog}
+          allWorker={allWorker}
+          setWorkerListDetail={setWorkerListDetail}
+          workerListDetail={workerListDetail}
+        ></DialogWorkerList>
       </Dialog>
     </div>
   );

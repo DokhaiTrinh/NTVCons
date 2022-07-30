@@ -30,7 +30,7 @@ const DialogRequestProject = (props) => {
         .typeError('Price is invalide')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lườngf'),
+      itemUnit: yup.string().required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -47,6 +47,7 @@ const DialogRequestProject = (props) => {
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
+      requestId: null,
     };
 
     setRequestDetail((requestDetail) => [...requestDetail, detailRequest]);
@@ -61,7 +62,7 @@ const DialogRequestProject = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        YÊU CẦU CHI TIẾT
+        CHI TIẾT YÊU CẦU
       </Typography>
       <Divider></Divider>
       <Box

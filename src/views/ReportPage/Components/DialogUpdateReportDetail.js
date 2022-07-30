@@ -40,27 +40,39 @@ const DialogUpdateReportDetail = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
   const submitForm = (data) => {
-    const updateDetailReport = {
+    const createDetailReport = {
       itemAmount: data.itemAmount,
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
       reportId: null,
-      // reportDetailId: reportDetailId,
     };
     if (actionUpdateReport === 'CreateNewReport') {
       setUpdateReportDetail((updateReportDetail) => [
         ...updateReportDetail,
-        updateDetailReport,
+        createDetailReport,
       ]);
     } else {
+      let updateListReport = [...updateReportDetail];
+      updateListReport = updateListReport.map((u) =>
+        u.reportDetailId === itemDetailReportUpdate.reportDetailId
+          ? (u = {
+              ...u,
+              itemAmount: data.itemAmount,
+              itemDesc: data.itemDesc,
+              itemPrice: data.itemPrice,
+              itemUnit: data.itemUnit,
+            })
+          : u
+      );
+      setUpdateReportDetail(updateListReport);
     }
 
     props.handleCloseUpdateReportDetailDialog();
   };
-
+  console.log(updateReportDetail);
+  console.log(itemDetailReportUpdate);
   return (
     <div>
       <Typography
@@ -101,7 +113,9 @@ const DialogUpdateReportDetail = (props) => {
                   register={register}
                   name="itemDesc"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemDesc : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemDesc
+                      : null
                   }
                   errors={errors.itemDesc}
                   variant="outlined"
@@ -116,7 +130,9 @@ const DialogUpdateReportDetail = (props) => {
                   register={register}
                   name="itemAmount"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemAmount : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemAmount
+                      : null
                   }
                   errors={errors.itemAmount}
                   variant="outlined"
@@ -132,7 +148,9 @@ const DialogUpdateReportDetail = (props) => {
                   name="itemPrice"
                   label="Giá tiền (VNĐ)"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemPrice : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemPrice
+                      : null
                   }
                   errors={errors.itemPrice}
                   variant="outlined"
@@ -148,7 +166,9 @@ const DialogUpdateReportDetail = (props) => {
                   name="itemUnit"
                   label="Đơn vị"
                   defaultValue={
-                    itemDetailReportUpdate ? itemDetailReportUpdate.itemUnit : null
+                    itemDetailReportUpdate
+                      ? itemDetailReportUpdate.itemUnit
+                      : null
                   }
                   errors={errors.itemUnit}
                   variant="outlined"

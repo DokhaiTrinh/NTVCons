@@ -1,14 +1,16 @@
 //Api link của project
 export const GET_ALL_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1/getAll';
+  'http://niemtinvang.herokuapp.com/project/v1.1/getAll';
 export const CREATE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1.1/createProject';
+  'http://niemtinvang.herokuapp.com/project/v1.1/createProject';
 export const UPDATE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1.1/updateProject';
+  'http://niemtinvang.herokuapp.com/project/v1.1/updateProject';
 export const DELETE_PROJECT =
-  'http://niemtinvang.herokuapp.com/Project/v1/deleteProject';
+  'http://niemtinvang.herokuapp.com/project/v1/deleteProject';
 export const GET_ALL_BY_ID =
-  'http://niemtinvang.herokuapp.com/Project/v1/getAllById';
+  'http://niemtinvang.herokuapp.com/project/v1/getAllById';
+export const GET_BY_PARAM =
+  'http://niemtinvang.herokuapp.com/project/v1/getByParam';
 export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
 
@@ -30,6 +32,8 @@ export const UPDATE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/updateTask';
 export const GET_TASK_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/task/v1/getAllByParam';
+export const GET_TASK_BY_ID =
+  'http://niemtinvang.herokuapp.com/task/v1/getByParam';
 export const DELETE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/deleteTask';
 //Api link của RERPORT
@@ -38,7 +42,7 @@ export const GET_ALL_REPORT =
 export const GET_REPORT_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
 export const GET_REPORT_BY_PROJECT_ID1 =
-  'http://niemtinvang.herokuapp.com/report/v1/getAllByParam';
+  'http://niemtinvang.herokuapp.com/report/v1/getByParam';
 export const CREATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/createReport';
 export const UPDATE_REPORT =
@@ -66,7 +70,7 @@ export const DELETE_REPORT_TYPES =
 
 //API link của REQUEST
 export const CREATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/Request/v1/createRequest';
+  'http://niemtinvang.herokuapp.com/request/v1.1/createRequest';
 export const UPDATE_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/updateRequest';
 export const DELETE_REQUEST =
@@ -74,9 +78,9 @@ export const DELETE_REQUEST =
 export const GET_ALL_REQUEST =
   'http://niemtinvang.herokuapp.com/Request/v1/getAll';
 export const GET_REQUEST_BY_PROJECT_ID =
-  'http://niemtinvang.herokuapp.com/Request/v1/getByProjectId';
+  'http://niemtinvang.herokuapp.com/request/v1/getAllByParam';
 export const GET_REQUEST_ID =
-  'http://niemtinvang.herokuapp.com/Request/v1/getByRequestId';
+  'http://niemtinvang.herokuapp.com/request/v1/getByParam';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';
@@ -88,3 +92,49 @@ export const UPDATE_REQUEST_TYPE = '';
 export const DELETE_REQUEST_TYPE = '';
 export const GET_ALL_REQUEST_TYPE =
   'http://niemtinvang.herokuapp.com/requestType/v1/getAll';
+
+//API link của WORKER
+
+export const CREATE_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/createWorker';
+export const GET_ALL_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/getAll';
+export const DELETE_WORKER =
+  'http://niemtinvang.herokuapp.com/worker/v1/deleteWorker';
+
+//API LINK CỦA USER
+export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
+export const GET_BY_ID = 'http://niemtinvang.herokuapp.com/user/v1/getByParam';
+export const CREATE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/createUser';
+export const DELETE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/deleteUser';
+//API LINK CỦA MANAGER
+
+export const GET_ALL_MANAGER =
+  'http://niemtinvang.herokuapp.com/projectManager/v1/getAll';
+export const GET_MANAGER =
+  'http://niemtinvang.herokuapp.com/user/v1/getAllByParam';
+//API LINK CỦA CATEGORY
+export const GET_ALL_CATEGORY =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/getAll';
+export const CREATE_CATEGORY =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/createPostCategory';
+export const UPDATE_CATEGORY =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/updatePostCategory';
+export const DELETE_CATEGORY =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/deletePostCategory';
+export const GET_CATEGORY_BY_ID =
+  'http://niemtinvang.herokuapp.com/postCategory/v1/getByParam';
+//API LINK CỦA POST
+
+export const CREATE_POST =
+  'http://niemtinvang.herokuapp.com/post/v1/createPost';
+export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
+export const UPDATE_POST =
+  'http://niemtinvang.herokuapp.com/post/v1/updatePost';
+export const DELETE_POST =
+  'http://niemtinvang.herokuapp.com/post/v1/deletePost';
+export const GET_POST_BY_ID =
+  'http://niemtinvang.herokuapp.com/post/v1/getByParam';
+export const CHECK_LOGIN = 'http://niemtinvang.herokuapp.com/login';

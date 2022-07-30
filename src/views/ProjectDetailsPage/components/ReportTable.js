@@ -27,7 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -81,7 +81,7 @@ const headCells = [
     id: 'theloai',
     numeric: false,
     disablePadding: false,
-    label: 'Thể loại',
+    label: 'Loại báo cáo',
   },
   {
     id: 'Chitiet',
@@ -115,31 +115,35 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
+  console.log(userInfor.authorID);
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'center' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          userInfor.authorID !== '44' && index === 5 || index === 6 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'center' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -306,7 +310,9 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length)
+      : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -319,13 +325,15 @@ export default function ReportTable(props) {
           marginBottom: '30px',
         }}
       >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={`/createReport/${projectId}`}
-        >
-          <Typography color="white">Tạo báo cáo</Typography>
-        </Button>
+        {userInfor.authorID !== '44' ? null : (
+          <Button
+            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+            component={Link}
+            to={`/createReport/${projectId}`}
+          >
+            <Typography color="white">Tạo báo cáo</Typography>
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -337,18 +345,35 @@ export default function ReportTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={allReportDetails.length}
             />
             <TableBody>
               {allReportDetails.map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow>
-                    <TableCell>{row.reportId}</TableCell>
+                  <TableRow
+                    hover
+                    // onClick={(event) => handleClick(event, row.admin)}
+                    role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    // selected={isItemSelected}>
+                  >
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      align="left"
+                    >
+                      {row.reportId}
+                    </TableCell>
                     <TableCell align="left">{row.reportName}</TableCell>
                     <TableCell align="left">
                       {handleGetDate(row.reportDate)}
                     </TableCell>
-                    <TableCell align="left">{row.reportTypeId}</TableCell>
+                    <TableCell align="left">
+                      {row.reportType.reportTypeName}
+                    </TableCell>
                     <TableCell align="left">
                       <IconButton
                         component={Link}
@@ -359,27 +384,31 @@ export default function ReportTable(props) {
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateReportDetails/${row.reportId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteReport(row.reportId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateReportDetails/${row.reportId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      </TableCell>
+                    ) : null}
+                    {userInfor.authorID === '44' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeleteReport(row.reportId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

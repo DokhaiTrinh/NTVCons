@@ -53,20 +53,20 @@ const UpdateTaskProject = (props) => {
     return getDateReformat;
   };
   const [loading, setLoading] = useState('');
-  const [allTaskDetails, setAllTaskDetails] = React.useState([]);
+  const [allTaskDetails, setAllTaskDetails] = React.useState();
 
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllTaskDetail = await getTaskByIdApi(id, 'TASK_BY_ID');
+        const listAllTaskDetail = await getTaskByIdApi(id, 'BY_ID');
         setAllTaskDetails(listAllTaskDetail.data);
-        setProjectId(listAllTaskDetail.data[0].projectId);
+        setProjectId(listAllTaskDetail.data.projectId);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo công việc');
       }
     })();
   }, []);
-
+  console.log(allTaskDetails);
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
@@ -81,7 +81,8 @@ const UpdateTaskProject = (props) => {
       projectId,
       data.taskDesc,
       idN,
-      data.taskName
+      data.taskName,
+      data.taskAssignment
     );
     Swal.fire({
       title: 'Cập nhật công việc ?',
@@ -103,7 +104,8 @@ const UpdateTaskProject = (props) => {
           projectId,
           data.taskDesc,
           idN,
-          data.taskName
+          data.taskName,
+          data.taskAssignment
         );
         console.log(data);
       }
@@ -117,7 +119,8 @@ const UpdateTaskProject = (props) => {
     projectId,
     taskDesc,
     taskId,
-    taskName
+    taskName,
+    taskAssignment
   ) => {
     try {
       setLoading(true);
@@ -136,6 +139,7 @@ const UpdateTaskProject = (props) => {
         taskDesc,
         taskId,
         taskName,
+        taskAssignment,
       });
       setLoading(false);
       await Swal.fire({
@@ -203,171 +207,131 @@ const UpdateTaskProject = (props) => {
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           {allTaskDetails ? (
-            allTaskDetails.length > 0 ? (
-              <form onSubmit={handleSubmit(submitForm)}>
-                <Grid container spacing={2}>
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Tên công việc
+                  </Typography>
+                  <TextField
+                    {...register('taskName')}
+                    name="taskName"
+                    variant="outlined"
+                    autoComplete="taskName"
+                    autoFocus
+                    defaultValue={allTaskDetails.taskName}
+                    error={errors.taskName != null}
+                    helperText={errors.taskName?.message}
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Thông tin công việc
+                  </Typography>
+                  <TextField
+                    {...register('taskDesc')}
+                    name="taskDesc"
+                    variant="outlined"
+                    autoComplete="taskDesc"
+                    autoFocus
+                    defaultValue={allTaskDetails.taskDesc}
+                    error={errors.taskDesc != null}
+                    helperText={errors.taskDesc?.message}
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="#DD8501">
-                      Mã dự án
+                      Thời gian
                     </Typography>
-                    <TextField
-                      {...register('projectId')}
-                      inputProps={{ readOnly: true }}
-                      name="projectId"
-                      variant="outlined"
-                      autoComplete="projectId"
-                      autoFocus
-                      defaultValue={allTaskDetails[0].projectId}
-                      error={errors.projectId != null}
-                      helperText={errors.projectId?.message}
-                      sx={{ width: '100%' }}
-                    />
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
-                      Mã công việc
-                    </Typography>
-                    <TextField
-                      {...register('taskId')}
-                      inputProps={{ readOnly: true }}
-                      name="taskId"
-                      variant="outlined"
-                      autoComplete="taskId"
-                      autoFocus
-                      defaultValue={allTaskDetails[0].taskId}
-                      error={errors.taskId != null}
-                      helperText={errors.taskId?.message}
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
-                      Tên công việc
-                    </Typography>
-                    <TextField
-                      {...register('taskName')}
-                      name="taskName"
-                      variant="outlined"
-                      autoComplete="taskName"
-                      autoFocus
-                      defaultValue={allTaskDetails[0].taskName}
-                      error={errors.taskName != null}
-                      helperText={errors.taskName?.message}
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
-                      Thông tin công việc
-                    </Typography>
-                    <TextField
-                      {...register('taskDesc')}
-                      name="taskDesc"
-                      variant="outlined"
-                      autoComplete="taskDesc"
-                      autoFocus
-                      defaultValue={allTaskDetails[0].taskDesc}
-                      error={errors.taskDesc != null}
-                      helperText={errors.taskDesc?.message}
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid container item xs={12} spacing={1}>
-                    <Grid item xs={12}>
-                      <Typography variant="body2" color="#DD8501">
-                        Thời gian
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2">Bắt đầu dự kiến</Typography>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
-                          value={valuePlanStartDate}
-                          onChange={(newValue) => {
-                            setValuePlanStartDate(newValue);
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2">Kết thúc dự kiến</Typography>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
-                          value={valuePlanEndDate}
-                          onChange={(newValue) => {
-                            setValuePlanEndDate(newValue);
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                  </Grid>
-                  <Grid container item xs={12} spacing={1}>
-                    <Grid item xs={12}>
-                      <Typography variant="body2" color="#DD8501">
-                        Thời gian chính thức
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2">
-                        Bắt đầu chính thức
-                      </Typography>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
-                          value={valueActualStartDate}
-                          onChange={(newValue) => {
-                            setValueActualStartDate(newValue);
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2">
-                        Kết thúc chính thức
-                      </Typography>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                          renderInput={(props) => <TextField {...props} />}
-                          value={valueActualEndDate}
-                          onChange={(newValue) => {
-                            setValueActualEndDate(newValue);
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        display: 'flex',
-                      }}
-                    >
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
+                  <Grid item xs={6}>
+                    <Typography variant="body2">Bắt đầu dự kiến</Typography>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={valuePlanStartDate}
+                        onChange={(newValue) => {
+                          setValuePlanStartDate(newValue);
                         }}
-                      >
-                        Lưu
-                      </Button>
-                    </Box>
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">Kết thúc dự kiến</Typography>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={valuePlanEndDate}
+                        onChange={(newValue) => {
+                          setValuePlanEndDate(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
                   </Grid>
                 </Grid>
-              </form>
-            ) : (
-              <div>Không có dữ liệu!!</div>
-            )
-          ) : null}
+                <Grid container item xs={12} spacing={1}>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="#DD8501">
+                      Thời gian chính thức
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">Bắt đầu chính thức</Typography>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={valueActualStartDate}
+                        onChange={(newValue) => {
+                          setValueActualStartDate(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">Kết thúc chính thức</Typography>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        value={valueActualEndDate}
+                        onChange={(newValue) => {
+                          setValueActualEndDate(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#DD8501',
+                        borderRadius: 50,
+                        width: '200px',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      Lưu
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </form>
+          ) : (
+            <div>Không có dữ liệu!!</div>
+          )}
         </Box>
       </Box>
     </div>

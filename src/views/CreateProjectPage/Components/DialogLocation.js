@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const DialogLocation = (props) => {
   const { locationDetail, setLocationDetail } = props;
+
   const validateSchema = yup
     .object({
       addressNumber: yup
@@ -22,7 +23,6 @@ const DialogLocation = (props) => {
         .required('Tên vùng phải khác biệt')
         .typeError('Tên vùng đã bị trùng!!!'),
       country: yup.string().required('Phải có tên quốc gia!'),
-      createdBy: yup.number().required(),
       district: yup.string().required('Phải có tên đường!!!'),
       province: yup.string(),
       street: yup.string().required('Phải có tên đường'),
@@ -38,14 +38,12 @@ const DialogLocation = (props) => {
   });
 
   const submitForm = (data) => {
-    console.log(data.addressNumber);
     const detailLocation = {
       addressNumber: data.addressNumber,
       area: data.area,
       city: data.city,
       coordinate: data.coordinate,
       country: data.country,
-      createdBy: data.createdBy,
       district: data.district,
       province: data.province,
       street: data.street,
@@ -194,19 +192,6 @@ const DialogLocation = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người tạo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="createdBy"
-                  errors={errors.createdBy}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <Box
                   sx={{

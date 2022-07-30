@@ -19,28 +19,28 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import photo from "../../../assets/images/toa-nha-van-phong.jpeg";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Link } from 'react-router-dom';
 import UpdateIcon from '@mui/icons-material/Update';
+import { deleteCategoryApi } from './../../../apis/CategoryPost/deleteCategory';
+import Swal from 'sweetalert2';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
 
-function createData(id, image, name, category, scale, location) {
+function createData(id, name, date) {
   return {
     id,
-    image,
     name,
-    category,
-    scale, 
-    location
+    date,
   };
 }
 
 const rows = [
-  createData('1', photo, 'Tòa nhà văn phòng', 'Thiết kế nhà đẹp', 'Trệt + 3 lầu', 'Dĩ An, Bình Dương'),
+  createData('1', 'Quản trị cấp cao', '06/06/2022'),
+  createData('2', 'Giám sát hiện trường', '06/06/2022'),
+  createData('3', 'Kho - vật tư', '06/06/2022'),
+  createData('4', 'QA - QC', '06/06/2022'),
 ];
 
-function descendingComparator(a, b, orderBy) {
+const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -48,7 +48,7 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}
+};
 
 function getComparator(order, orderBy) {
   return order === 'desc'
@@ -72,58 +72,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'ma',
+    id: 'vaitriid',
     numeric: false,
-    disablePadding: false,
-    label: 'Mã',
+    // disablePadding: true,
+    label: 'Số thứ tự',
   },
   {
-    id: 'hinhanh',
+    id: 'tenvaitro',
     numeric: false,
-    disablePadding: false,
-    label: 'Hình Ảnh',
+    // disablePadding: false,
+    label: 'Tên thể loại',
   },
   {
-    id: 'ten',
+    id: 'dienta',
     numeric: false,
-    disablePadding: false,
-    label: 'Tên dự án',
+    // disablePadding: false,
+    label: 'Ghi chú',
   },
   {
-    id: 'theloai',
+    id: 'ngaythem',
     numeric: false,
-    disablePadding: false,
-    label: 'Thể loại',
-  },
-  {
-    id: 'quymo',
-    numeric: false,
-    disablePadding: false,
-    label: 'Quy mô',
-  },
-  {
-    id: 'vitri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Vị trí',
+    // disablePadding: false,
+    label: 'Ngày được thêm vào',
   },
   {
     id: 'capnhat',
     numeric: false,
-    disablePadding: false,
+    // disablePadding: false,
     label: 'Cập nhật',
   },
   {
     id: 'xoa',
     numeric: false,
-    disablePadding: false,
+    // disablePadding: false,
     label: 'Xóa',
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+const EnhancedTableHead = (props) => {
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -131,6 +125,17 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all desserts',
+            }}
+          />
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -155,7 +160,7 @@ function EnhancedTableHead(props) {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -176,7 +181,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -196,11 +204,11 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Dự án
+          Vai trò
         </Typography>
       )}
 
-      {/* {numSelected > 0 ? (
+      {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -212,7 +220,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )} */}
+      )}
     </Toolbar>
   );
 };
@@ -221,13 +229,40 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProductTable() {
+export const CategoryTable = (props) => {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('id');
+  const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const { allCategory } = props;
+  const [{ loading }, dispatch] = useStateValue();
+  const handleDeleteCategory = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCategory(id);
+      }
+    });
+  };
+  const deleteCategory = async (id) => {
+    try {
+      await deleteCategoryApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Bài đăng của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -256,7 +291,7 @@ export function ProductTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -283,75 +318,46 @@ export function ProductTable() {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+            <EnhancedTableHead />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
+              {allCategory ? (
+                allCategory.map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      // role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                      >
-                        {row.id}
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell align="left">{row.postCategoryId}</TableCell>
+                      <TableCell align="left">{row.postCategoryName}</TableCell>
+                      <TableCell align="left">{row.postCategoryDesc}</TableCell>
+                      <TableCell align="left">{row.createdAt}</TableCell>
+                      <TableCell align="left">
+                        <IconButton
+                          component={Link}
+                          // edge="start"
+                          size="large"
+                          to={`/updateCategory/${row.postCategoryId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
                       </TableCell>
                       <TableCell align="left">
-                      <Box sx={{ width: "100%"}}>
-                                    <Avatar sx={{ height: "150px", width: "150px" }} variant="square" src={row.image}>
-                                    </Avatar>
-                                </Box>
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() =>
+                            handleDeleteCategory(row.postCategoryId)
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.category}</TableCell>
-                      <TableCell align="left">{row.scale}</TableCell>
-                      <TableCell align="left">{row.location}</TableCell>
-                      <TableCell align="left">
-                      <IconButton aria-label="edit role" component={Link} to={'/editService'}>
-                            <UpdateIcon/>
-                          </IconButton>
-                      </TableCell>
-                      <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        size="large"
-                        color="warning" 
-                        // onClick={() => ()}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
                     </TableRow>
                   );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
+                })
+              ) : (
+                <div>Không có thông tin dữ liệu!</div>
               )}
             </TableBody>
           </Table>
@@ -368,4 +374,4 @@ export function ProductTable() {
       </Paper>
     </Box>
   );
-}
+};

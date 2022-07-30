@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 //Get all project
 import { getAllProjectApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -96,11 +96,10 @@ const ProjectPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
 
   const [allProject, setAllProject] = React.useState([]);
-  console.log(allProject);
   React.useEffect(() => {
     (async () => {
       try {
@@ -108,47 +107,49 @@ const ProjectPage = (props) => {
           pageNo,
           pageSize,
           sortBy,
-          sortType,
+          sortTypeAsc,
         });
         setAllProject(listAllProject.data);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType, loading]);
-
+  }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
+  console.log(allProject);
   return (
     <div>
       <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                component={Link}
-                to={'/createProject'}
+        {userInfor.authorID !== '54' && userInfor.authorID !== '24' ? null : (
+          <Grid container md="8">
+            <Grid item>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ margin: '20px' }}
               >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-            </Box>
+                <IconButton
+                  aria-label="add"
+                  sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+                  component={Link}
+                  to={'/createProject'}
+                >
+                  <Add sx={{ color: 'white' }}></Add>
+                </IconButton>
+              </Box>
+            </Grid>
+            <Grid item>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ height: '100%' }}
+              >
+                <Typography variant="body1">Tạo dự án mới</Typography>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            >
-              <Typography variant="body1">Danh sách dự án</Typography>
-            </Box>
-          </Grid>
-        </Grid>
+        )}
         <Grid item md="4">
           <Box
             display="flex"

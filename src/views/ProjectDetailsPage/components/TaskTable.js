@@ -30,6 +30,7 @@ import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -151,27 +152,31 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell> */}
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.character ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          userInfor.authorID !== '54' && index === 5 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.character ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -259,8 +264,12 @@ export default function ReportTable(props) {
     (async () => {
       try {
         const listAllTaskDetail = await getTaskByProjectIdApi(
+          0,
+          15,
           id,
-          'TASK_BY_PROJECT_ID'
+          'BY_PROJECT_ID',
+          'createdAt',
+          false
         );
         setAllTaskDetails(listAllTaskDetail.data);
       } catch (error) {
@@ -317,7 +326,9 @@ export default function ReportTable(props) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length)
+      : 0;
 
   const handleDeleteTask = (id) => {
     Swal.fire({
@@ -357,13 +368,15 @@ export default function ReportTable(props) {
           marginBottom: '30px',
         }}
       >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={`/createTask/${projectId}`}
-        >
-          <Typography color="white">Tạo công việc</Typography>
-        </Button>
+        {userInfor.authorID !== '54' ? null : (
+          <Button
+            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+            component={Link}
+            to={`/createTask/${projectId}`}
+          >
+            <Typography color="white">Tạo công việc</Typography>
+          </Button>
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -414,9 +427,11 @@ export default function ReportTable(props) {
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">
-                      {(row.actualStartDate)}
+                      {handleGetDate(row.planStartDate)}
                     </TableCell>
-                    <TableCell align="left">{row.actualEndDate}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planEndDate)}
+                    </TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     {/* <TableCell align="center">
@@ -436,33 +451,37 @@ export default function ReportTable(props) {
                         </Link>
                       </Route>
                     </TableCell>  */}
-                    <TableCell align="left">
-                      <IconButton
-                        // edge="start"
-                        size="large"
-                        component={Link}
-                        to={`/updateTask/${row.taskId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                      {/* <Route>
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          // edge="start"
+                          size="large"
+                          component={Link}
+                          to={`/updateTask/${row.taskId}`}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Route>
                         <Link underline="hover">{'Cập nhật'}</Link>
                       </Route> */}
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        edge="start"
-                        color="warning"
-                        size="large"
-                        onClick={() => handleDeleteTask(row.taskId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      {/* <Route>
+                      </TableCell>
+                    ) : null}
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          edge="start"
+                          color="warning"
+                          size="large"
+                          onClick={() => handleDeleteTask(row.taskId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        {/* <Route>
                         <Link underline="hover">{'Xóa'}</Link>
                       </Route> */}
-                    </TableCell>
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

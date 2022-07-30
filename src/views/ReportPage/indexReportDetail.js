@@ -7,7 +7,7 @@ const ReportDetailPageContainer = () => {
   const initialState = {
     loading: false,
     searchParam: id,
-    searchType: 'REPORT_BY_ID',
+    searchType: 'BY_ID',
   };
   const reducer = (state, action) => {
     switch (action.type) {

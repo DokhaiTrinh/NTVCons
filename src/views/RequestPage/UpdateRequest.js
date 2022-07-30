@@ -54,7 +54,7 @@ const UpdateRequest = () => {
   const [requestDetail, setRequestDetail] = React.useState([]);
   const [allRequestType, setAllRequestType] = React.useState([]);
   const [requestTypeSelected, setRequestTypeSelected] = React.useState();
-  const [allRequestDetail, setAllRequestDetail] = React.useState([]);
+  const [allRequestDetail, setAllRequestDetail] = React.useState();
   const [projectId, setProjectId] = React.useState();
 
   const submitForm = (data) => {
@@ -145,7 +145,7 @@ const UpdateRequest = () => {
     })();
     (async () => {
       try {
-        const listAllRequestDetail = await getRequestIdApi(id);
+        const listAllRequestDetail = await getRequestIdApi(id, 'BY_ID');
         setAllRequestDetail(listAllRequestDetail.data);
         setRequestDetail(listAllRequestDetail.data.requestDetailList);
       } catch (error) {
@@ -248,7 +248,7 @@ const UpdateRequest = () => {
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {requestDetail.length ? (
+                  {requestDetail ? (
                     requestDetail.map((request, index) => (
                       <Grid item xs={4}>
                         <Box sx={{ width: '100%' }}>

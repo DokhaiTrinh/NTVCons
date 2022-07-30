@@ -1,5 +1,5 @@
 import axios from 'axios';
-import swal from 'sweetalert2-react';
+import Swal from 'sweetalert2';
 
 class AxiosService {
   constructor() {
@@ -12,34 +12,34 @@ class AxiosService {
   handleSuccess(response) {
     return response;
   }
-  handleError(error) {
-    if (error.response.status == 401) {
-      swal.fire({
-        icon: 'error',
-        text: 'Thời gian đăng nhập hết hạn, vui lòng đăng nhập để được sử dụng lại',
-        timer: 5000,
-      });
-      localStorage.clear();
-      window.location.href = '/';
-    }
-    return Promise.reject(error);
-  }
+  // handleError(error) {
+  //   if (error.response.status == 401) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       text: 'Thời gian đăng nhập hết hạn, vui lòng đăng nhập để được sử dụng lại',
+  //       timer: 5000,
+  //     });
+  //     localStorage.clear();
+  //     // window.location.href = '/';
+  //   }
+  //   return Promise.reject(error);
+  // }
   get(url, token) {
     return this.intance.get(url, {
-      headers: { Authorization: `Bearer &{token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   post(url, body, token) {
     return this.intance.post(url, body, {
-      headers: { Authorization: `Bearer &{token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   post2(url, body, token) {
     return this.intance.post(url, body, {
       headers: {
-        Authorization: `Bearer &{token}`,
+        Authorization: `Bearer ${token}`,
         'content-type': 'multipart/form-data',
       },
     });
@@ -52,7 +52,7 @@ class AxiosService {
     }
 
     return this.intance.post(url, formData, {
-      headers: { Authorization: `Bearer &{token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
   put(url, body, token) {

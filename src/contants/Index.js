@@ -2,19 +2,21 @@ import CreateProjectPage from '../views/CreateProjectPage/CreateProjectPage';
 import RoleManagePage from '../views/RoleManagePage/index';
 import HomePage from '../views/HomePage/HomePage';
 import LoginPage from '../views/LoginPage/LoginPage';
-import PersonnelPage from '../views/PersonnelPage/PersonnelPage';
+import PersonnelPage from '../views/PersonnelPage/indexGetAllUser';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
-import ProductPage from '../views/ProductPage/ProductPage';
+import ProductPage from '../views/ProductPage/indexPostPage';
+import ChatPage from '../views/ChatPage/ChatPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
 import EditReportPage from '../views/ProjectDetailsPage/indexGetAllReport';
 import EditProjectDetailsPage from '../views/ProjectDetailsPage/EditProejectDetailsPage';
 import CreateRolePage from '../views/RoleManagePage/CreateRolePage';
 import EditServicePage from '../views/ProductPage/EditServicePage';
-import CreateServicePage from '../views/ProductPage/CreateServicePage';
+import CreateProductPage from '../views/ProductPage/CreateProductPage';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
+import CreateWorkerPage from '../views/PersonnelPage/CreateWorker';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
 import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
@@ -24,13 +26,22 @@ import RequestDetailPage from '../views/RequestPage/RequestDetailPage';
 import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
 import UpdateTaskPage from '../views/TaskPage/UpdateTaskProject';
 import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
-
+import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
+import CategoryPageManage from '../views/CategoryPage/indexCategoryPage';
+import CreateCategoryPage from '../views/CategoryPage/CreateCategoryPage';
+import UpdateCategoryPage from '../views/CategoryPage/UpdateCategoryPage';
 export const HOME_ROUTES = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home Page',
     exact: true,
     component: HomePage,
+  },
+  {
+    path: '/chat',
+    name: 'Chat Page',
+    exact: true,
+    component: ChatPage,
   },
   {
     path: '/project',
@@ -87,6 +98,12 @@ export const HOME_ROUTES = [
     component: CreateRequestPage,
   },
   {
+    path: '/createCategory/',
+    name: 'Create Category Page',
+    exact: true,
+    component: CreateCategoryPage,
+  },
+  {
     path: '/personnel',
     name: 'Personnel Page',
     exact: true,
@@ -103,6 +120,18 @@ export const HOME_ROUTES = [
     name: 'Role Manage Page',
     exact: true,
     component: RoleManagePage,
+  },
+  {
+    path: '/categoryManage',
+    name: 'Category Manage Page',
+    exact: true,
+    component: CategoryPageManage,
+  },
+  {
+    path: '/updateCategory/:id',
+    name: 'Update Manage Page',
+    exact: true,
+    component: UpdateCategoryPage,
   },
   {
     path: '/product',
@@ -159,10 +188,16 @@ export const HOME_ROUTES = [
     component: EditServicePage,
   },
   {
-    path: '/createService',
-    name: 'Create Service Page',
+    path: '/createProduct',
+    name: 'Create Product Page',
     exact: true,
-    component: CreateServicePage,
+    component: CreateProductPage,
+  },
+  {
+    path: '/updateProduct/:id',
+    name: 'Update Product Page',
+    exact: true,
+    component: UpdateProductPage,
   },
   {
     path: '/editPersonnelProfile',
@@ -177,6 +212,12 @@ export const HOME_ROUTES = [
     component: CreatePersonnelPage,
   },
   {
+    path: '/createWorker',
+    name: 'Create Worker Page',
+    exact: true,
+    component: CreateWorkerPage,
+  },
+  {
     path: '/updateTask',
     name: 'Update Task Page',
     exact: true,
@@ -186,7 +227,7 @@ export const HOME_ROUTES = [
 
 export const LOGIN_ROUTES = [
   {
-    path: '/login',
+    path: '/',
     name: 'Login Page',
     exact: true,
     component: LoginPage,

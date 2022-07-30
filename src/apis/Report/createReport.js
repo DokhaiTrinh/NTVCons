@@ -1,6 +1,7 @@
-import axiosService from "../../axios/axiosService";
-import * as API_LINK from "./../../contants/ApiLinks/apiLinks";
+import axiosService from '../../axios/axiosService';
+import * as API_LINK from './../../contants/ApiLinks/apiLinks';
 
 export const createReportApi = (data) => {
-    return axiosService.post(`${API_LINK.CREATE_REPORT}`, data)
-}
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.post(`${API_LINK.CREATE_REPORT}`, data, userInfor.token);
+};

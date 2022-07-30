@@ -58,16 +58,17 @@ const CreateRequestProject = (props) => {
       requestDate,
       data.requestDesc,
       requestDetail,
+      data.requestName,
       requestTypeSelected,
       data.requesterId
     );
-    console.log(requestDetail);
   };
   const handleCreateRequest = async (
     projectId,
     requestDate,
     requestDesc,
-    modelList,
+    requestDetailList,
+    requestName,
     requestTypeId,
     requesterId
   ) => {
@@ -77,7 +78,8 @@ const CreateRequestProject = (props) => {
         typeof projectId,
         typeof requestDate,
         typeof requestDesc,
-        typeof modelList,
+        typeof requestDetailList,
+        typeof requestName,
         typeof requestTypeId,
         typeof requesterId
       );
@@ -85,7 +87,8 @@ const CreateRequestProject = (props) => {
         projectId,
         requestDate,
         requestDesc,
-        modelList,
+        requestDetailList,
+        requestName,
         requestTypeId,
         requesterId,
       });
@@ -96,7 +99,7 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetails/${id}`)
+      await window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -109,10 +112,17 @@ const CreateRequestProject = (props) => {
   };
   const valideSchema = yup
     .object({
+      requestName: yup
+        .string()
+        .min(0, 'Phải nhập tên yêu cầu!!')
+        .max(50, 'Tên yêu cầu không được quá 50 ký tự!')
+        .typeError('Tên yêu cầu không được trùng!')
+        .required(),
       requestDesc: yup
         .string()
         .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
+      requesterId: yup.number().required(),
     })
     .required();
   const {
@@ -179,6 +189,18 @@ const CreateRequestProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tên yêu cầu
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="requestName"
+                  errors={errors.requestName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Thông tin yêu cầu
@@ -198,7 +220,9 @@ const CreateRequestProject = (props) => {
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} fullWidth/>}
+                      renderInput={(props) => (
+                        <TextField {...props} fullWidth />
+                      )}
                       value={valueRequestDate}
                       onChange={(newValue) => {
                         setValueRequestDate(newValue);
@@ -216,7 +240,7 @@ const CreateRequestProject = (props) => {
                     alignItems: 'center',
                     display: 'flex',
                   }}
-                  >
+                >
                   <Button
                     variant="contained"
                     style={{
@@ -226,38 +250,39 @@ const CreateRequestProject = (props) => {
                       alignSelf: 'center',
                     }}
                     onClick={() => handleOpenRequestDetailDialog()}
-                    >
+                  >
                     Chi tiết yêu cầu
                   </Button>
                 </Box>
-                    </Grid>
-                <Grid item container columns={12} spacing={2}>
-                  {requestDetail.length ? (
-                    requestDetail.map((request, index) => (
-                      <Grid item xs={4}>
-                      <Box sx={{ width: "100%" }}>
-                      <Card sx={{ width: "100%" }}>
-                        <CardContent>
-                          <Typography>
-                            Thông tin báo cáo chi tiết: {request.itemDesc}
-                          </Typography>
-                          <Typography>Số lượng:{request.itemAmount}</Typography>
-                          <Typography>
-                            Giá tiền: {request.itemPrice}{' '}
-                          </Typography>
-                          <Typography>Đơn vị: {request.itemUnit}</Typography>
-                        </CardContent>
-                      </Card>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {requestDetail.length ? (
+                  requestDetail.map((request, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Thông tin báo cáo chi tiết: {request.itemDesc}
+                            </Typography>
+                            <Typography>
+                              Số lượng:{request.itemAmount}
+                            </Typography>
+                            <Typography>
+                              Giá tiền: {request.itemPrice}{' '}
+                            </Typography>
+                            <Typography>Đơn vị: {request.itemUnit}</Typography>
+                          </CardContent>
+                        </Card>
                       </Box>
-                      </Grid>
-                    ))
-                  ) : (
-                    <Grid item sx={12}>
-
-                      <div>Không có dữ liệu của báo cáo chi tiết!</div>
                     </Grid>
-                  )}
-                </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Loại yêu cầu

@@ -6,26 +6,25 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
-import { TextField } from '@mui/material';
-const DialogEditProject = (props) => {
+
+export const DialogAddress = (props) => {
   const { locationDetail, setLocationDetail } = props;
+
   const validateSchema = yup
     .object({
       addressNumber: yup
         .string()
         .min(0, 'Địa chỉ phải là số lớn hơn 0!')
         .required(),
-      area: yup.string().required(),
+      // area: yup.string().required(),
       city: yup.string().required('Phải có tên thành phố'),
       coordinate: yup
         .string()
         .required('Tên vùng phải khác biệt')
         .typeError('Tên vùng đã bị trùng!!!'),
       country: yup.string().required('Phải có tên quốc gia!'),
-      updatedBy: yup.number().required(),
-      locationId: yup.number().required(),
       district: yup.string().required('Phải có tên đường!!!'),
-      province: yup.string(),
+      // province: yup.string(),
       street: yup.string().required('Phải có tên đường'),
       ward: yup.string().required('Phải có tên khu vực'),
     })
@@ -41,20 +40,19 @@ const DialogEditProject = (props) => {
   const submitForm = (data) => {
     const detailLocation = {
       addressNumber: data.addressNumber,
-      area: data.area,
+      area: null,
       city: data.city,
       coordinate: data.coordinate,
       country: data.country,
-      updatedBy: data.updatedBy,
       district: data.district,
       province: data.province,
-      street: data.street,
+      street: null,
       ward: data.ward,
-      locationId: data.locationId,
     };
     setLocationDetail(detailLocation);
     props.handleCloseLocationDialog();
   };
+  console.log(errors);
   return (
     <div>
       <Typography
@@ -81,7 +79,7 @@ const DialogEditProject = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin địa chỉ mới
+            Thông tin địa chỉ
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
@@ -89,7 +87,7 @@ const DialogEditProject = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
-                  Số nhà mới
+                  Số nhà
                 </Typography>
                 <TextFieldComponent
                   register={register}
@@ -107,6 +105,18 @@ const DialogEditProject = (props) => {
                   register={register}
                   name="street"
                   errors={errors.street}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Phường
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="ward"
+                  errors={errors.ward}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -135,19 +145,7 @@ const DialogEditProject = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Khu vực
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="ward"
-                  errors={errors.ward}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Địa bàn tỉnh
                 </Typography>
@@ -158,7 +156,7 @@ const DialogEditProject = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Quốc gia
@@ -171,7 +169,7 @@ const DialogEditProject = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Diện tích
                 </Typography>
@@ -182,7 +180,7 @@ const DialogEditProject = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Điều phối
@@ -195,31 +193,6 @@ const DialogEditProject = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người tạo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="updatedBy"
-                  errors={errors.updatedBy}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Mã địa chỉ
-                </Typography>
-                <TextFieldComponent
-                  register={register}              
-                  name="locationId"
-                  errors={errors.locationId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -239,7 +212,7 @@ const DialogEditProject = (props) => {
                       alignSelf: 'center',
                     }}
                   >
-                    Cập nhật
+                    Lưu
                   </Button>
                 </Box>
               </Grid>
@@ -250,4 +223,5 @@ const DialogEditProject = (props) => {
     </div>
   );
 };
-export default DialogEditProject;
+
+export default DialogAddress;

@@ -6,23 +6,17 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Link, useParams } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
 const Details = (props) => {
-  const { allProjectDetails } = props;
+  const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
+  console.log(managerList);
+  console.log(allProjectDetails);
+  console.log(workerList);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -36,32 +30,39 @@ const Details = (props) => {
                 Thông tin chung
               </Typography>
             </Grid>
-            <Grid item container xs={1}>
-              <Grid item xs={12}>
-                <Box
-                  sx={{ width: '100%' }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <IconButton
-                    aria-label="edit report"
-                    component={Link}
-                    to={`/editProjectDetails/${id}`}
-                    sx={{ height: '100%' }}
+            {userInfor.authorID !== '54' &&
+            userInfor.authorID !== '44' ? null : (
+              <Grid item container xs={1}>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{ width: '100%' }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                   >
-                    <Box sx={{ height: '30px' }}>
-                      <EditOutlinedIcon fontSize="large" />
-                    </Box>
-                  </IconButton>
-                </Box>
+                    <IconButton
+                      aria-label="edit report"
+                      component={Link}
+                      to={`/editProjectDetails/${id}`}
+                      sx={{ height: '100%' }}
+                    >
+                      <Box sx={{ height: '30px' }}>
+                        <EditOutlinedIcon fontSize="large" />
+                      </Box>
+                    </IconButton>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} justify="start">
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Typography variant="button">Chỉnh sửa</Typography>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={12} justify="start">
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  <Typography variant="button">Chỉnh sửa</Typography>
-                </Box>
-              </Grid>
-            </Grid>
+            )}
           </Grid>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
@@ -93,8 +94,24 @@ const Details = (props) => {
               <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.userId}
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {managerList ? (
+                    managerList.map((managerList, index) => (
+                      <Typography
+                        sx={{
+                          witdh: '100%',
+                          marginBottom: '10px',
+                          padding: '10px',
+                        }}
+                      >
+                        {managerList.manager.fullName}
+                      </Typography>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -105,7 +122,7 @@ const Details = (props) => {
                 sx={{
                   width: '50%',
                   borderRadius: '10px',
-                  backgroundColor: 'pink',
+                  backgroundColor: 'green',
                 }}
               >
                 <Typography
@@ -114,27 +131,44 @@ const Details = (props) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'gray',
+                    color: 'black',
                   }}
                 >
-                  Đang thực hiện
+                  {allProjectDetails.status}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Người tham gia
+                Danh sách công nhân
               </Typography>
-              <Typography variant="body1" paragraph>
-                {allProjectDetails.userId}
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {workerList ? (
+                    workerList.map((workerList, index) => (
+                      <Typography
+                        sx={{
+                          witdh: '100%',
+                          marginBottom: '10px',
+                          padding: '10px',
+                        }}
+                      >
+                        {managerList.projectWorkerId}
+                      </Typography>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
+
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualStartDate)}
+                {allProjectDetails.actualStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -142,7 +176,7 @@ const Details = (props) => {
                 Thời gian kết thúc dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualEndDate)}
+                {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -150,8 +184,10 @@ const Details = (props) => {
                 Địa chỉ
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.addressNumber} {allProjectDetails.street}{' '}
-                {allProjectDetails.district} {allProjectDetails.city}
+                {allProjectDetails.location.addressNumber},{' '}
+                {allProjectDetails.location.street}, P{' '}
+                {allProjectDetails.location.ward}, Q{' '}
+                {allProjectDetails.location.district}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -159,7 +195,7 @@ const Details = (props) => {
                 Thành phố
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.country}
+                {allProjectDetails.location.country}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -167,7 +203,7 @@ const Details = (props) => {
                 Thời gian bắt đầu thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planStartDate)}
+                {allProjectDetails.planStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -175,7 +211,7 @@ const Details = (props) => {
                 Thời gian kết thúc thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planEndDate)}
+                {allProjectDetails.planEndDate}
               </Typography>
             </Grid>
           </Grid>

@@ -7,8 +7,8 @@ const RolePageContainer = () => {
     loading: false,
     pageNo: 0,
     pageSize: 15,
-    sortBy: 'roleId',
-    sortType: true,
+    sortBy: 'createdAt',
+    sortTypeAsc: true,
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -32,10 +32,10 @@ const RolePageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-        case 'CHANGE_SORTTYPE':
+        case 'CHANGE_SORTTYPEASC':
         return {
           ...state,
-          sortType: action.newSortType,
+          sortTypeAsc: action.newSortTypeAsc,
         };
       default:
         break;

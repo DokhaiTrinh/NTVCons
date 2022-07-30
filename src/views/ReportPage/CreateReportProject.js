@@ -67,18 +67,6 @@ const CreateReportProject = (props) => {
       data.reportName,
       taskReportDetail
     );
-    console.log(reportDetail);
-    if (reportDetail.length > 0) {
-      for (let rp of reportDetail) {
-        handleCreateReportDetails(
-          rp.itemAmount,
-          rp.itemDesc,
-          rp.itemPrice,
-          rp.itemUnit
-        );
-      }
-    }
-    console.log(data);
   };
   const handleCreateReport = async (
     projectId,
@@ -92,6 +80,16 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
+      console.log(
+        typeof projectId,
+        typeof reportDate,
+        typeof reportDesc,
+        typeof reportDetailList,
+        typeof reportTypeId,
+        typeof reporterId,
+        typeof reportName,
+        typeof taskReportList
+      );
       await createReportApi({
         projectId,
         reportDate,
@@ -120,37 +118,37 @@ const CreateReportProject = (props) => {
       setLoading(false);
     }
   };
-  const handleCreateReportDetails = async (
-    itemAmount,
-    itemDesc,
-    itemPrice,
-    itemUnit
-  ) => {
-    try {
-      setLoading(true);
-      await createReportDetailApi({
-        itemAmount,
-        itemDesc,
-        itemPrice,
-        itemUnit,
-      });
-      setLoading(false);
-      await Swal.fire({
-        icon: 'success',
-        text: 'Tạo báo cáo chi tiết thành công',
-        timer: 3000,
-        showConfirmButton: false,
-      });
-    } catch (error) {
-      await Swal.fire({
-        icon: 'error',
-        text: error.response.data,
-        timer: 3000,
-        showConfirmButton: false,
-      });
-      setLoading(false);
-    }
-  };
+  // const handleCreateReportDetails = async (
+  //   itemAmount,
+  //   itemDesc,
+  //   itemPrice,
+  //   itemUnit
+  // ) => {
+  //   try {
+  //     setLoading(true);
+  //     await createReportDetailApi({
+  //       itemAmount,
+  //       itemDesc,
+  //       itemPrice,
+  //       itemUnit,
+  //     });
+  //     setLoading(false);
+  //     await Swal.fire({
+  //       icon: 'success',
+  //       text: 'Tạo báo cáo chi tiết thành công',
+  //       timer: 3000,
+  //       showConfirmButton: false,
+  //     });
+  //   } catch (error) {
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       text: error.response.data,
+  //       timer: 3000,
+  //       showConfirmButton: false,
+  //     });
+  //     setLoading(false);
+  //   }
+  // };
   const valideSchema = yup
     .object({
       reportDesc: yup
@@ -174,7 +172,6 @@ const CreateReportProject = (props) => {
   const handleChange = (event) => {
     setReportTypeSelected(event.target.value);
   };
-
   const handleOpenReportDetailDialog = () => {
     setOpenReportDetailDialog(true);
   };
@@ -358,9 +355,7 @@ const CreateReportProject = (props) => {
                       <Box sx={{ width: '100%' }}>
                         <Card sx={{ width: '100%' }}>
                           <CardContent>
-                            <Typography>
-                              Thông tin báo cáo chi tiết: {task.taskId}
-                            </Typography>
+                            <Typography>{task.taskId}</Typography>
                             <Typography>Số lượng:{task.taskNote}</Typography>
                             <Typography>
                               Giá tiền: {task.taskProgress}
@@ -431,7 +426,7 @@ const CreateReportProject = (props) => {
                       alignSelf: 'center',
                     }}
                   >
-                    Lưu
+                    Tạo báo cáo
                   </Button>
                 </Box>
               </Grid>

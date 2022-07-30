@@ -1,7 +1,7 @@
-import axiosService from "../../axios/axiosService";
-import * as API_LINK from "./../../contants/ApiLinks/apiLinks";
+import axiosService from '../../axios/axiosService';
+import * as API_LINK from './../../contants/ApiLinks/apiLinks';
 
 export const createRoleApi = (data) => {
-    console.log(data);
-    return axiosService.post(`${API_LINK.CREATE_ROLE}`, data);
-}
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.post(`${API_LINK.CREATE_ROLE}`, data, userInfor.token);
+};

@@ -2,17 +2,13 @@ import axiosService from '../../axios/axiosService';
 import * as API_LINK from './../../contants/ApiLinks/apiLinks';
 
 export const updateProjectApi = (data) => {
-  console.log(data);
-  return axiosService.put(`${API_LINK.UPDATE_PROJECT}`, data);
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.put(`${API_LINK.UPDATE_PROJECT}`, data, userInfor.token);
 };
-export const getProjectByIdApi = (
-  pageNo,
-  pageSize,
-  projectId,
-  sortBy,
-  sortType
-) => {
+export const getProjectByParam = (projectId, searchType) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
   return axiosService.get(
-    `${API_LINK.GET_ALL_BY_ID}?pageNo=${pageNo}&pageSize=${pageSize}&projectId=${projectId}&sortBy=${sortBy}&sortType=${sortType}`
+    `${API_LINK.GET_BY_PARAM}?searchParam=${projectId}&searchType=${searchType}`,
+    userInfor.token
   );
 };

@@ -24,7 +24,8 @@ import {
   AssignmentInd,
   Home,
 } from '@material-ui/icons';
-
+import ChatIcon from '@mui/icons-material/Chat';
+import LogoutIcon from '@mui/icons-material/Logout';
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
     width: 250,
@@ -64,11 +65,22 @@ const listItems = [
     path: '/personnel',
     listText: 'Thành viên',
   },
+  {
+    listIcon: <ChatIcon />,
+    path: '/chat',
+    listText: 'Tin nhắn',
+  },
+  {
+    listIcon: <LogoutIcon />,
+    path: '/',
+    listText: 'Đăng xuất',
+  },
 ];
 
 export default function App() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
   const toggleSlider = () => {
     setOpen(!open);
@@ -87,16 +99,36 @@ export default function App() {
       />
       <Divider />
       <List>
-        {listItems.map((listItem, index) => (
-          <NavLink to={listItem.path} key={index}>
-            <ListItem className={classes.listItem} button key={index}>
-              <ListItemIcon className={classes.listItem}>
-                {listItem.listIcon}
-              </ListItemIcon>
-              <ListItemText primary={listItem.listText} />
-            </ListItem>
-          </NavLink>
-        ))}
+        {listItems.map((listItem, index) =>
+          userInfor.authorID === '54' ? (
+            <NavLink to={listItem.path} key={index}>
+              <ListItem className={classes.listItem} button key={index}>
+                <ListItemIcon className={classes.listItem}>
+                  {listItem.listIcon}
+                </ListItemIcon>
+                <ListItemText primary={listItem.listText} />
+              </ListItem>
+            </NavLink>
+          ) : index <= 1 || index === 4 ? (
+            <NavLink to={listItem.path} key={index}>
+              <ListItem className={classes.listItem} button key={index}>
+                <ListItemIcon className={classes.listItem}>
+                  {listItem.listIcon}
+                </ListItemIcon>
+                <ListItemText primary={listItem.listText} />
+              </ListItem>
+            </NavLink>
+          ) : index <= 1 || index === 2 ? (
+            <NavLink to={listItem.path} key={index}>
+              <ListItem className={classes.listItem} button key={index}>
+                <ListItemIcon className={classes.listItem}>
+                  {listItem.listIcon}
+                </ListItemIcon>
+                <ListItemText primary={listItem.listText} />
+              </ListItem>
+            </NavLink>
+          ) : null
+        )}
       </List>
     </Box>
   );
