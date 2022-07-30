@@ -24,7 +24,7 @@ import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import DialogLocation from './Components/DialogLocation';
-import DialogBluePrint from './Components/DialogBluePrint';
+import DialogBluePrint from './Components/DialogBlueprint';
 import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getProjectByIdApi } from '../../apis/Project/updateProject';
