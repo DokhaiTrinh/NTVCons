@@ -27,6 +27,21 @@ import { useParams } from 'react-router-dom';
 import { DialogTaskAssgin } from './Component/DialogTaskAssgin';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { getProjectByManagerApi } from '../../apis/ProjectManager/getAllManager';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 const CreateTaskProject = (props) => {
   const { id } = useParams();
   const [userListDetail, setUserListDetail] = React.useState();
@@ -37,23 +52,41 @@ const CreateTaskProject = (props) => {
   const [userById, setUserById] = React.useState();
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
-
+  const [projectByManager, setProjcetByManager] = React.useState();
+  const [managerTypeSelected, setManagerTypeSelected] = React.useState();
   React.useEffect(() => {
     (async () => {
       try {
-        if (userListDetail) {
-          const listUserById = await getUserByIdApi(
-            userListDetail.assigneeId.toString(),
-            'BY_ID'
-          );
-          setUserById(listUserById.data);
-        }
+        const listProjectByManager = await getProjectByManagerApi(
+          0,
+          15,
+          id,
+          'BY_PROJECT_ID',
+          'createdAt',
+          true
+        );
+        setProjcetByManager(listProjectByManager.data);
       } catch (error) {
-        console.log('Không thể lấy danh sách kỹ sư');
+        console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [userListDetail]);
-  console.log(userById);
+  }, []);
+  console.log(projectByManager);
+  // React.useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       if (userListDetail) {
+  //         const listUserById = await getUserByIdApi(
+  //           userListDetail.assigneeId.toString(),
+  //           'BY_ID'
+  //         );
+  //         setUserById(listUserById.data);
+  //       }
+  //     } catch (error) {
+  //       console.log('Không thể lấy danh sách kỹ sư');
+  //     }
+  //   })();
+  // }, [userListDetail]);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
@@ -61,7 +94,7 @@ const CreateTaskProject = (props) => {
       planEndDate,
       planStartDate,
       id,
-      userListDetail,
+      managerTypeSelected,
       data.taskDesc,
       data.taskName
     );
@@ -70,7 +103,7 @@ const CreateTaskProject = (props) => {
     planEndDate,
     planStartDate,
     projectId,
-    taskAssignment,
+    assigneeId,
     taskDesc,
     taskName
   ) => {
@@ -80,7 +113,7 @@ const CreateTaskProject = (props) => {
         planEndDate,
         planStartDate,
         projectId,
-        taskAssignment,
+        assigneeId,
         taskDesc,
         taskName,
       });
@@ -112,12 +145,15 @@ const CreateTaskProject = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  const handleOpenUserDialog = () => {
-    setOpenUserListDialog(true);
+  const handleChange = (event) => {
+    setManagerTypeSelected(event.target.value);
   };
-  const handleCloseUserDialog = () => {
-    setOpenUserListDialog(false);
-  };
+  // const handleOpenUserDialog = () => {
+  //   setOpenUserListDialog(true);
+  // };
+  // const handleCloseUserDialog = () => {
+  //   setOpenUserListDialog(false);
+  // };
   // const handleChangeDate = (date) => {
   //   console.log(date);
   //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -230,7 +266,32 @@ const CreateTaskProject = (props) => {
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              <Grid item container sx={12}>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Kỹ sư quản lý
+                </Typography>
+                <FormControl sx={{ width: '100%' }}>
+                  <Select
+                    onChange={handleChange}
+                    MenuProps={MenuProps}
+                    value={managerTypeSelected}
+                  >
+                    {projectByManager ? (
+                      projectByManager.map((managerType, index) => (
+                        <MenuItem
+                          value={managerType.manager.userId}
+                          key={index}
+                        >
+                          {managerType.manager.username}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem>Không có dữ liệu! Vui lòng xem lại!</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
+              {/* <Grid item container sx={12}>
                 <Box
                   sx={{
                     width: '100%',
@@ -269,7 +330,7 @@ const CreateTaskProject = (props) => {
                     <div>Không có dữ liệu của báo cáo chi tiết!</div>
                   </Grid>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -298,13 +359,13 @@ const CreateTaskProject = (props) => {
           </form>
         </Box>
       </Box>
-      <Dialog open={openUserListDialog} onClose={handleCloseUserDialog}>
+      {/* <Dialog open={openUserListDialog} onClose={handleCloseUserDialog}>
         <DialogTaskAssgin
           handleCloseUserDialog={handleCloseUserDialog}
           setUserListDetail={setUserListDetail}
           userListDetail={userListDetail}
         ></DialogTaskAssgin>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

@@ -195,7 +195,7 @@ const CreateReportProject = (props) => {
         );
         setAllReportType(listAllReportType.data);
       } catch (error) {
-        console.log('Không thể lấy danh sách dự án');
+        console.log('Không thể lấy danh sách báo cáo');
       }
     })();
   }, []);

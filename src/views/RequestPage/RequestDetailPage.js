@@ -57,20 +57,20 @@ function RequestDetailPage() {
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           {allRequestList ? (
             <Grid container spacing={2}>
-              <Grid item xs="4">
+              {/* <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Mã dự án
                 </Typography>
                 <Typography variant="body1">
                   {allRequestList.projectId}
                 </Typography>
-              </Grid>
+              </Grid> */}
               <Grid item xs="4">
                 <Typography variant="body1" color="gray">
                   Tên yêu cầu
                 </Typography>
                 <Typography variant="body1">
-                  {allRequestList.projectName}
+                  {allRequestList.requestName}
                 </Typography>
               </Grid>
               <Grid item xs="4">
