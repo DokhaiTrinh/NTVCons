@@ -117,6 +117,8 @@ export const GET_MANAGER =
   'http://niemtinvang.herokuapp.com/user/v1/getAllByParam';
 export const GET_PROJECT_BY_MANAGER =
   'http://niemtinvang.herokuapp.com/projectManager/v1/getAllByParam';
+export const GET_MANAGER_BY_PROJECT =
+  'http://niemtinvang.herokuapp.com/project/v1/getAllByParam';
 //API LINK CỦA CATEGORY
 export const GET_ALL_CATEGORY =
   'http://niemtinvang.herokuapp.com/postCategory/v1/getAll';

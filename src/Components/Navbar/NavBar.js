@@ -26,6 +26,7 @@ import {
 } from '@material-ui/icons';
 import ChatIcon from '@mui/icons-material/Chat';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
     width: 250,
@@ -54,6 +55,11 @@ const listItems = [
     listIcon: <AssignmentInd />,
     path: '/project',
     listText: 'Dự án',
+  },
+  {
+    listIcon: <AssignmentIndIcon />,
+    path: '/projectByManager',
+    listText: 'Dự án của tôi',
   },
   {
     listIcon: <Apps />,

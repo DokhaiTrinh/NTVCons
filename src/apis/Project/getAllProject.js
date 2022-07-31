@@ -8,3 +8,17 @@ export const getAllProjectApi = (data) => {
     userInfor.token
   );
 };
+export const getAllProjectByManageApi = (
+  pageNo,
+  pageSize,
+  userId,
+  searchType,
+  sortBy,
+  sortTypeAsc
+) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.get(
+    `${API_LINK.GET_MANAGER_BY_PROJECT}?pageNo=${pageNo}&pageSize=${pageSize}&searchParam=${userId}&searchType=${searchType}&sortBy=${sortBy}&sortTypeAsc=${sortTypeAsc}`,
+    userInfor.token
+  );
+};

@@ -6,6 +6,7 @@ import PersonnelPage from '../views/PersonnelPage/indexGetAllUser';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
+import ProjectByManagerPage from '../views/ProjectByManagerPage/ProjectByManagerPage';
 import ProductPage from '../views/ProductPage/indexPostPage';
 import ChatPage from '../views/ChatPage/ChatPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
@@ -48,6 +49,12 @@ export const HOME_ROUTES = [
     name: 'Project Page',
     exact: true,
     component: ProjectPage,
+  },
+  {
+    path: '/projectByManager',
+    name: 'Project Manager Page',
+    exact: true,
+    component: ProjectByManagerPage,
   },
   {
     path: '/projectDetails/:id',
