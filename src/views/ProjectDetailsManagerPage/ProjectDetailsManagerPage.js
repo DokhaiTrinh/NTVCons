@@ -70,6 +70,7 @@ const ProjectDetailsPage = (props) => {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
+  const [blueprint, setBlueprint] = React.useState();
   // const handleChange1 = (event) => {
   //   setAge(event.target.value);
   // };
@@ -84,6 +85,7 @@ const ProjectDetailsPage = (props) => {
         setAllProjectDetails(listAllProjectDetails.data);
         setManagerList(listAllProjectDetails.data.projectManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
+        setBlueprint(listAllProjectDetails.data.blueprint);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
@@ -157,6 +159,7 @@ const ProjectDetailsPage = (props) => {
               allProjectDetails={allProjectDetails}
               managerList={managerList}
               workerList={workerList}
+              blueprint={blueprint}
             />
           ) : (
             <div>Không có dữ liệu!!</div>

@@ -151,7 +151,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '44' && index === 6) || index === 7 ? null : (
+          (userInfor.authorID !== '54' && index === 6) || index === 7 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
@@ -363,7 +363,7 @@ export default function RequestTable(props) {
           marginBottom: '30px',
         }}
       >
-        {userInfor.authorID !== '44' ? null : (
+        {/* {userInfor.authorID !== '44' ? null : (
           <Button
             sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
             component={Link}
@@ -371,7 +371,7 @@ export default function RequestTable(props) {
           >
             <Typography color="white">Tạo yêu cầu</Typography>
           </Button>
-        )}
+        )} */}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -421,7 +421,7 @@ export default function RequestTable(props) {
                         </Link>
                       </Route> */}
                     </TableCell>
-                    {userInfor.authorID === '44' ? (
+                    {userInfor.authorID === '54' ? (
                       <TableCell align="left">
                         <IconButton
                           size="large"
@@ -435,7 +435,7 @@ export default function RequestTable(props) {
                       </Route> */}
                       </TableCell>
                     ) : null}
-                    {userInfor.authorID === '44' ? (
+                    {userInfor.authorID === '54' ? (
                       <TableCell align="left">
                         <IconButton
                           aria-label="delete"

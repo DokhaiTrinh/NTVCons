@@ -120,7 +120,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) || index === 6 ? null : (
+          userInfor.authorID !== '44' && index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'center' : 'left'}
@@ -325,15 +325,15 @@ export default function ReportTable(props) {
           marginBottom: '30px',
         }}
       >
-        {/* {userInfor.authorID !== '44' ? null : (
+        {userInfor.authorID !== '44' ? null : (
           <Button
             sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
             component={Link}
-            to={`/createReport/${projectId}`}
+            to={`/createReportManager/${projectId}`}
           >
             <Typography color="white">Tạo báo cáo</Typography>
           </Button>
-        )} */}
+        )}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -379,18 +379,18 @@ export default function ReportTable(props) {
                         component={Link}
                         // edge="start"
                         size="large"
-                        to={`/reportDetails/${row.reportId}`}
+                        to={`/reportDetailsManager/${row.reportId}`}
                       >
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    {/* {userInfor.authorID === '44' ? (
+                    {userInfor.authorID === '44' ? (
                       <TableCell align="left">
                         <IconButton
                           component={Link}
                           // edge="start"
                           size="large"
-                          to={`/updateReportDetails/${row.reportId}`}
+                          to={`/updateReportDetailsManager/${row.reportId}`}
                         >
                           <UpdateIcon />
                         </IconButton>
@@ -408,7 +408,7 @@ export default function ReportTable(props) {
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
-                    ) : null} */}
+                    ) : null}
                   </TableRow>
                 );
               })}

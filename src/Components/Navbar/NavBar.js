@@ -115,7 +115,7 @@ export default function App() {
                 <ListItemText primary={listItem.listText} />
               </ListItem>
             </NavLink>
-          ) : index <= 1 || index === 4 ? (
+          ) : userInfor.authorID === '44' && (index <= 2 || index >= 5) ? (
             <NavLink to={listItem.path} key={index}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>
@@ -124,7 +124,8 @@ export default function App() {
                 <ListItemText primary={listItem.listText} />
               </ListItem>
             </NavLink>
-          ) : index <= 1 || index === 2 ? (
+          ) : userInfor.authorID === '24' &&
+            (index <= 1 || index >= 5 || index === 3) ? (
             <NavLink to={listItem.path} key={index}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>
@@ -138,7 +139,6 @@ export default function App() {
       </List>
     </Box>
   );
-
   return (
     <>
       <CssBaseline />

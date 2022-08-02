@@ -13,21 +13,34 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Swal from 'sweetalert2';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
+import Swal from 'sweetalert2';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
-import UpdateIcon from '@mui/icons-material/Update';
+import { deleteProjectApi } from '../../../apis/Project/deleteProject';
+import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
-import { deleteReportApi } from '../../../apis/Report/deleteReport';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+
+function createData(admin, code, name, workers, process, works, start, end) {
+  return {
+    admin,
+    code,
+    name,
+    workers,
+    process,
+    works,
+    start,
+    end,
+  };
+}
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -60,40 +73,46 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'id',
+    id: 'nguoiquantri',
     numeric: false,
     disablePadding: false,
-    label: 'Mã báo cáo',
+    label: 'Người quản trị',
   },
   {
-    id: 'tenconviec',
+    id: 'maduan',
     numeric: false,
     disablePadding: false,
-    label: 'Tên báo cáo',
+    label: 'Mã dự án',
   },
   {
-    id: 'ngay',
+    id: 'tenduan',
     numeric: false,
     disablePadding: false,
-    label: 'Ngày',
+    label: 'Tên dự án',
   },
   {
-    id: 'theloai',
+    id: 'nguoithamgia',
     numeric: false,
     disablePadding: false,
-    label: 'Loại báo cáo',
+    label: 'Người tham gia',
   },
   {
-    id: 'Chitiet',
+    id: 'batdau',
+    numeric: false,
+    disablePadding: false,
+    label: 'Bắt đầu',
+  },
+  {
+    id: 'ketthuc',
+    numeric: false,
+    disablePadding: false,
+    label: 'Kết thúc',
+  },
+  {
+    id: 'chitiet',
     numeric: false,
     disablePadding: false,
     label: 'Chi tiết',
-  },
-  {
-    id: 'Capnhat',
-    numeric: false,
-    disablePadding: false,
-    label: 'Cập nhật',
   },
   {
     id: 'xoa',
@@ -115,15 +134,15 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-  console.log(userInfor.authorID);
+
   return (
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) || index === 6 ? null : (
+          userInfor.authorID !== '54' && index === 7 ? null : (
             <TableCell
               key={headCell.id}
-              align={headCell.numeric ? 'center' : 'left'}
+              align={headCell.numeric ? 'right' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
@@ -191,7 +210,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Báo cáo
+          Dự án
         </Typography>
       )}
 
@@ -215,6 +234,7 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
+
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
   const getDateCom = getDate.split('-');
@@ -227,16 +247,22 @@ const handleGetDate = (date) => {
   );
   return getDateReformat;
 };
-export default function ReportTable(props) {
+
+export const ProjectTable = (props) => {
+  const { managerProject } = props;
+
+  const [{ loading }, dispatch] = useStateValue();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
+  const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId, allReportDetails } = props;
-  console.log(allReportDetails);
-  const [{ loading }, dispatch] = useStateValue();
-  const handleDeleteReport = (id) => {
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+  const handleDeleteProject = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
       text: 'Bạn không thể thu hổi lại khi ấn nút!',
@@ -247,13 +273,14 @@ export default function ReportTable(props) {
       confirmButtonText: 'Có, hãy xóa nó!',
     }).then((result) => {
       if (result.isConfirmed) {
-        DeleteReport(id);
+        DeleteProject(id);
       }
     });
   };
-  const DeleteReport = async (id) => {
+
+  const DeleteProject = async (id) => {
     try {
-      await deleteReportApi(id);
+      await deleteProjectApi(id);
       await Swal.fire(
         'Xóa thành công!',
         'Dự án của bạn đã được xóa thành công.',
@@ -262,27 +289,12 @@ export default function ReportTable(props) {
       dispatch({ type: 'LOADING', newLoading: !loading });
     } catch (error) {}
   };
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = allReportDetails.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, admin) => {
+    const selectedIndex = selected.indexOf(admin);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, admin);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -301,40 +313,12 @@ export default function ReportTable(props) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (admin) => selected.indexOf(admin) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length)
-      : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-        {/* {userInfor.authorID !== '44' ? null : (
-          <Button
-            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-            component={Link}
-            to={`/createReport/${projectId}`}
-          >
-            <Typography color="white">Tạo báo cáo</Typography>
-          </Button>
-        )} */}
-      </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
@@ -343,12 +327,12 @@ export default function ReportTable(props) {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {allReportDetails.map((row, index) => {
+              {managerProject.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
+
                 return (
                   <TableRow
                     hover
@@ -357,7 +341,7 @@ export default function ReportTable(props) {
                     // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
-                    // selected={isItemSelected}>
+                    // selected={isItemSelected}
                   >
                     <TableCell
                       component="th"
@@ -365,45 +349,32 @@ export default function ReportTable(props) {
                       scope="row"
                       align="left"
                     >
-                      {row.reportId}
+                      {row.createdBy}
                     </TableCell>
-                    <TableCell align="left">{row.reportName}</TableCell>
-                    <TableCell align="left">
-                      {handleGetDate(row.reportDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.reportType.reportTypeName}
-                    </TableCell>
+                    <TableCell align="left">{row.projectId}</TableCell>
+                    <TableCell align="left">{row.projectName}</TableCell>
+                    <TableCell align="left">{row.manager}</TableCell>
+                    {/* <TableCell align="left">{row.works}</TableCell> */}
+                    <TableCell align="left">{row.planStartDate}</TableCell>
+                    <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
                       <IconButton
-                        component={Link}
-                        // edge="start"
+                        edge="end"
                         size="large"
-                        to={`/reportDetails/${row.reportId}`}
+                        component={Link}
+                        to={`/projectDetailsManager/${row.projectId}`}
                       >
                         <InfoIcon />
                       </IconButton>
                     </TableCell>
-                    {/* {userInfor.authorID === '44' ? (
-                      <TableCell align="left">
-                        <IconButton
-                          component={Link}
-                          // edge="start"
-                          size="large"
-                          to={`/updateReportDetails/${row.reportId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                      </TableCell>
-                    ) : null}
-                    {userInfor.authorID === '44' ? (
+                    {/* {userInfor.authorID === '54' ? (
                       <TableCell align="left">
                         <IconButton
                           aria-label="delete"
                           color="warning"
                           edge="start"
                           size="large"
-                          onClick={() => handleDeleteReport(row.reportId)}
+                          onClick={() => handleDeleteProject(row.projectId)}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -415,16 +386,7 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={allReportDetails.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
     </Box>
   );
-}
+};

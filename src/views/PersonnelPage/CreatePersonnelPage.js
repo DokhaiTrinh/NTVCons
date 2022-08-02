@@ -68,6 +68,14 @@ const CreatePersonnelPage = (props) => {
         .matches(phoneRegExp, 'Số điện thoại không xác thực !')
         .min(10, 'Phải đúng 10 số')
         .max(10, 'Không được quá 10 số'),
+      password: yup
+        .string()
+        .min(6, 'Mật khẩu phải lớn hơn 6 kí tự')
+        .required('Mật khẩu không được để trống'),
+      fullName: yup
+        .string()
+        .min(6, 'Tên người dùng phải lớn hơn 6 kí tự')
+        .required('Tên người dùng không được để trống'),
       email: yup.string().email('Email không chính xác'),
     })
     .required();
@@ -81,12 +89,33 @@ const CreatePersonnelPage = (props) => {
   });
 
   const submitForm = (data) => {
-    handleCreateUser(data.email, data.phone, roleSelected, data.username);
+    handleCreateUser(
+      data.email,
+      data.phone,
+      roleSelected,
+      data.username,
+      data.password,
+      data.fullName
+    );
   };
-  const handleCreateUser = async (email, phone, roleId, username) => {
+  const handleCreateUser = async (
+    email,
+    phone,
+    roleId,
+    username,
+    password,
+    fullName
+  ) => {
     try {
       setLoading(true);
-      await createUserApi({ email, phone, roleId, username });
+      await createUserApi({
+        email,
+        phone,
+        roleId,
+        username,
+        password,
+        fullName,
+      });
       setLoading(false);
       await Swal.fire({
         icon: 'success',
@@ -173,13 +202,36 @@ const CreatePersonnelPage = (props) => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Họ và tên
+                    Tên đăng nhập
                   </Typography>
                   <TextFieldComponent
                     register={register}
                     name="username"
-                    // label="Tên vai trò"
                     errors={errors.username}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Mật khẩu
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="password"
+                    errors={errors.password}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Họ và tên
+                  </Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="fullName"
+                    errors={errors.fullName}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
