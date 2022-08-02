@@ -24,6 +24,7 @@ import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import DialogEditLocation from './components/DialogEditLocation';
+import DialogEditBlueprint from './components/DialogEditBlueprint';
 import { useParams } from 'react-router-dom';
 import { getProjectByParam } from '../../apis/Project/updateProject';
 const EditProejectDetailsPage = (props) => {
@@ -35,13 +36,18 @@ const EditProejectDetailsPage = (props) => {
   );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState();
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState();
-  const [updateLocationDetail, setUpdateLocationDetail] = React.useState([]);
+  const [updateLocationDetail, setUpdateLocationDetail] = React.useState();
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
   const [loading, setLoading] = useState('');
   const [allProjectDetails, setAllProjectDetails] = React.useState();
   const [projectId, setProjectId] = React.useState();
   const [actionUpdateLocation, setActionUpdateLocation] = React.useState();
   const [itemDetailLocationUpdate, setItemDetailLocationUpdate] =
+    React.useState();
+  const [updateBlueprintDetail, setUpdateBlueprintDetail] = React.useState();
+  const [openBlueprintDialog, setOpenBlueprintDialog] = React.useState(false);
+  const [actionUpdateBlueprint, setActionUpdateBlueprint] = React.useState();
+  const [itemDetailBlueprintUpdate, setItemDetailBlueprintUpdate] =
     React.useState();
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
@@ -84,7 +90,6 @@ const EditProejectDetailsPage = (props) => {
           planEndDate,
           planStartDate,
           updateLocationDetail,
-          data.updatedBy,
           data.actualCost,
           data.estimatedCost,
           data.projectName
@@ -99,7 +104,6 @@ const EditProejectDetailsPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    updatedBy,
     actualCost,
     estimatedCost,
     projectName
@@ -113,7 +117,6 @@ const EditProejectDetailsPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        updatedBy,
         actualCost,
         estimatedCost,
         projectName,
@@ -153,7 +156,6 @@ const EditProejectDetailsPage = (props) => {
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
         .required(),
-      updatedBy: yup.number().required(),
     })
     .required();
   const {
@@ -223,23 +225,6 @@ const EditProejectDetailsPage = (props) => {
           {allProjectDetails ? (
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Mã dự án
-                  </Typography>
-                  <TextField
-                    {...register('projectId')}
-                    inputProps={{ readOnly: true }}
-                    name="projectId"
-                    variant="outlined"
-                    autoComplete="projectId"
-                    autoFocus
-                    defaultValue={allProjectDetails.projectId}
-                    error={errors.projectName != null}
-                    helperText={errors.projectId?.message}
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
                     Tên dự án
@@ -376,57 +361,54 @@ const EditProejectDetailsPage = (props) => {
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {updateLocationDetail.length > 0 ? (
-                    updateLocationDetail.map((locationDetailItem, index) => (
-                      <Grid
-                        item
-                        xs={4}
-                        key={index}
-                        onClick={() =>
-                          handleOpenUpdateLocationDialog(
-                            'UpdateLocation',
-                            locationDetailItem
-                          )
-                        }
-                      >
-                        <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%' }}>
-                            <CardContent>
-                              <Typography>
-                                Số nhà: {locationDetailItem.addressNumber}
-                              </Typography>
-                              <Typography>
-                                Tên đường:{locationDetailItem.street}
-                              </Typography>
-                              <Typography>
-                                Quận: {locationDetailItem.district}{' '}
-                              </Typography>
-                              <Typography>
-                                Thành phố: {locationDetailItem.city}
-                              </Typography>
-                              <Typography>
-                                Khu vực: {locationDetailItem.ward}
-                              </Typography>
-                              <Typography>
-                                Địa bàn tỉnh: {locationDetailItem.province}
-                              </Typography>
-                              <Typography>
-                                Quốc gia: {locationDetailItem.country}
-                              </Typography>
-                              <Typography>
-                                Diện tích: {locationDetailItem.area}
-                              </Typography>
-                              <Typography>
-                                Điều phối: {locationDetailItem.coordinate}
-                              </Typography>
-                              <Typography>
-                                Mã địa chỉ: {locationDetailItem.locationId}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
-                      </Grid>
-                    ))
+                  {updateLocationDetail ? (
+                    <Grid
+                      item
+                      xs={6}
+                      onClick={() =>
+                        handleOpenUpdateLocationDialog(
+                          'UpdateLocation',
+                          updateLocationDetail
+                        )
+                      }
+                    >
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Số nhà: {updateLocationDetail.addressNumber}
+                            </Typography>
+                            <Typography>
+                              Tên đường: {updateLocationDetail.street}
+                            </Typography>
+                            <Typography>
+                              Quận: {updateLocationDetail.district}{' '}
+                            </Typography>
+                            <Typography>
+                              Thành phố: {updateLocationDetail.city}
+                            </Typography>
+                            <Typography>
+                              Khu vực: {updateLocationDetail.ward}
+                            </Typography>
+                            <Typography>
+                              Địa bàn tỉnh: {updateLocationDetail.province}
+                            </Typography>
+                            <Typography>
+                              Quốc gia: {updateLocationDetail.country}
+                            </Typography>
+                            <Typography>
+                              Diện tích: {updateLocationDetail.area}
+                            </Typography>
+                            <Typography>
+                              Điều phối: {updateLocationDetail.coordinate}
+                            </Typography>
+                            <Typography>
+                              Mã địa chỉ: {updateLocationDetail.locationId}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
                   ) : (
                     <Grid
                       item

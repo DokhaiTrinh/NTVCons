@@ -5,13 +5,15 @@ import LoginPage from '../views/LoginPage/LoginPage';
 import PersonnelPage from '../views/PersonnelPage/indexGetAllUser';
 import PersonnelProfilePage from '../views/PersonnelProfilePage/PersonnelProfilePage';
 import ProjectDetailsPage from '../views/ProjectDetailsPage/indexProjectDetail';
+import ProjectDetailsManagerPage from '../views/ProjectDetailsManagerPage/indexProjectDetail';
 import ProjectPage from '../views/ProjectPage/indexGetAllProject';
-import ProjectByManagerPage from '../views/ProjectByManagerPage/ProjectByManagerPage';
+import ProjectByManagerPage from '../views/ProjectByManagerPage/index';
 import ProductPage from '../views/ProductPage/indexPostPage';
 import ChatPage from '../views/ChatPage/ChatPage';
 import WorkDetailsPage from '../views/WorkDetailsPage/WorkDetailsPage';
 import EditReportPage from '../views/ProjectDetailsPage/indexGetAllReport';
 import EditProjectDetailsPage from '../views/ProjectDetailsPage/EditProejectDetailsPage';
+import EditProjectDetailsManagerPage from '../views/ProjectDetailsManagerPage/EditProejectDetailsPage';
 import CreateRolePage from '../views/RoleManagePage/CreateRolePage';
 import EditServicePage from '../views/ProductPage/EditServicePage';
 import CreateProductPage from '../views/ProductPage/CreateProductPage';
@@ -20,11 +22,17 @@ import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateWorkerPage from '../views/PersonnelPage/CreateWorker';
 import CreateTaskPage from '../views/TaskPage/CreateTaskProject';
 import CreateReportPage from '../views/ReportPage/CreateReportProject';
+import CreateReportManagerPage from '../views/ReportPageManager/CreateReportManagerProject';
 import CreateRequestPage from '../views/RequestPage/CreateRequestProject';
+import CreateRequestManagerPage from '../views/RequestManagerPage/CreateRequestManagerProject';
 import ReportDetailPage from '../views/ReportPage/indexReportDetail';
+import ReportDetailManagerPage from '../views/ReportPageManager/indexReportDetail';
 import UpdateReportProject from '../views/ReportPage/UpdateReportProject';
+import UpdateReportManagerProject from '../views/ReportPageManager/UpdateReportManagerProject';
 import RequestDetailPage from '../views/RequestPage/RequestDetailPage';
+import RequestDetailManagerPage from '../views/RequestManagerPage/RequestDetailPage';
 import UpdateRequestPage from '../views/RequestPage/UpdateRequest';
+import UpdateRequestManagerPage from '../views/RequestManagerPage/UpdateManagerRequest';
 import UpdateTaskPage from '../views/TaskPage/UpdateTaskProject';
 import TaskDetailPage from '../views/TaskPage/TaskDetailPage';
 import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
@@ -63,16 +71,34 @@ export const HOME_ROUTES = [
     component: ProjectDetailsPage,
   },
   {
+    path: '/projectDetailsManager/:id',
+    name: 'Project Details Manager Page',
+    exact: true,
+    component: ProjectDetailsManagerPage,
+  },
+  {
     path: '/reportDetails/:id',
     name: 'Report Details Page',
     exact: true,
     component: ReportDetailPage,
   },
   {
+    path: '/reportDetailsManager/:id',
+    name: 'Report Details Manager Page',
+    exact: true,
+    component: ReportDetailManagerPage,
+  },
+  {
     path: '/requestDetails/:id',
     name: 'Request Details Page',
     exact: true,
     component: RequestDetailPage,
+  },
+  {
+    path: '/requestDetailsManager/:id',
+    name: 'Request Details Manager Page',
+    exact: true,
+    component: RequestDetailManagerPage,
   },
   {
     path: '/taskDetails/:id',
@@ -99,10 +125,22 @@ export const HOME_ROUTES = [
     component: CreateReportPage,
   },
   {
-    path: '/createRequest/:id',
-    name: 'Create Request Page',
+    path: '/createReportManager/:id',
+    name: 'Create Report Manager Page',
+    exact: true,
+    component: CreateReportManagerPage,
+  },
+  {
+    path: '/createRequestManager/:id',
+    name: 'Create Request Manager Page',
     exact: true,
     component: CreateRequestPage,
+  },
+  {
+    path: '/createRequestManager/:id',
+    name: 'Create Request Manager Page',
+    exact: true,
+    component: CreateRequestManagerPage,
   },
   {
     path: '/createCategory/',
@@ -165,16 +203,34 @@ export const HOME_ROUTES = [
     component: EditProjectDetailsPage,
   },
   {
+    path: '/editProjectDetailsManager/:id',
+    name: 'Edit Project Details Page',
+    exact: true,
+    component: EditProjectDetailsManagerPage,
+  },
+  {
     path: '/updateReportDetails/:id',
     name: 'Update Report Details Page',
     exact: true,
     component: UpdateReportProject,
   },
   {
+    path: '/updateReportDetailsManager/:id',
+    name: 'Update Report Details Manager Page',
+    exact: true,
+    component: UpdateReportManagerProject,
+  },
+  {
     path: '/updateRequestDetails/:id',
     name: 'Update Request Details Page',
     exact: true,
     component: UpdateRequestPage,
+  },
+  {
+    path: '/updateRequestDetailsManager/:id',
+    name: 'Update Request Details Manager Page',
+    exact: true,
+    component: UpdateRequestManagerPage,
   },
   {
     path: '/updateTask/:id',

@@ -1,19 +1,14 @@
 import React from 'react';
 import { StateProvider } from '../../common/StateProvider/StateProvider';
-import ProjectByManagerPage from './ProjectByManagerPage';
-const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+import ReportPage from './ProjectDetailsPage';
 
-const ProjectPageContainer = () => {
-  var idN = userInfor.id;
-  console.log(idN);
+const ReportPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
-    pageSize: 15,
-    searchParam: idN,
-    searchType: 'BY_MANAGER_ID',
+    pageSize: 10,
     sortBy: 'createdAt',
-    sortTypeAsc: false,
+    sortType: true,
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -37,10 +32,10 @@ const ProjectPageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-      case 'CHANGE_SORTTYPEASC':
+      case 'CHANGE_SORTTYPE':
         return {
           ...state,
-          sortTypeAsc: action.newSortTypeAsc,
+          sortType: action.newSortType,
         };
       default:
         break;
@@ -48,8 +43,8 @@ const ProjectPageContainer = () => {
   };
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <ProjectByManagerPage />
+      <ReportPage />
     </StateProvider>
   );
 };
-export default ProjectPageContainer;
+export default ReportPageContainer;

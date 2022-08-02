@@ -1,13 +1,13 @@
 import React from 'react';
 import { StateProvider } from '../../common/StateProvider/StateProvider';
-import ProjectDetailsPage from './ProjectDetailsPage';
+import ReportDetailsPage from './ReportDetailPage';
 import { useParams } from 'react-router-dom';
-const ProjectDetailPageContainer = () => {
+const ReportDetailPageContainer = () => {
   const { id } = useParams();
   const initialState = {
     loading: false,
     searchParam: id,
-    searchType: 'REPORT_BY_PROJECT_ID',  
+    searchType: 'BY_ID',
   };
   const reducer = (state, action) => {
     switch (action.type) {
@@ -32,8 +32,8 @@ const ProjectDetailPageContainer = () => {
   };
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <ProjectDetailsPage />
+      <ReportDetailsPage />
     </StateProvider>
   );
 };
-export default ProjectDetailPageContainer;
+export default ReportDetailPageContainer;

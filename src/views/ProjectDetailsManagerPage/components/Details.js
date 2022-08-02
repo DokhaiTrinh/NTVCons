@@ -12,11 +12,23 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
-  const { allProjectDetails, managerList, workerList } = props;
+  const handleGetDate = (date) => {
+    const getDate = date.substring(0, 10);
+    const getDateCom = getDate.split('-');
+    const getDateReformat = ''.concat(
+      getDateCom[2],
+      '/',
+      getDateCom[1],
+      '/',
+      getDateCom[0]
+    );
+    return getDateReformat;
+  };
+  const { allProjectDetails, managerList, workerList, blueprint } = props;
   const { id } = useParams();
-  console.log(managerList);
-  console.log(allProjectDetails);
   console.log(workerList);
+  console.log(allProjectDetails);
+  console.log(blueprint);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -30,7 +42,8 @@ const Details = (props) => {
                 Thông tin chung
               </Typography>
             </Grid>
-            {userInfor.authorID !== '54' ? null : (
+            {userInfor.authorID !== '54' &&
+            userInfor.authorID !== '44' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box
@@ -42,7 +55,7 @@ const Details = (props) => {
                     <IconButton
                       aria-label="edit report"
                       component={Link}
-                      to={`/editProjectDetails/${id}`}
+                      to={`/editProjectDetailsManager/${id}`}
                       sx={{ height: '100%' }}
                     >
                       <Box sx={{ height: '30px' }}>
@@ -139,35 +152,10 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Danh sách công nhân
-              </Typography>
-              <Typography sx={{ width: '100%' }}>
-                <Typography>
-                  {workerList ? (
-                    workerList.map((workerList, index) => (
-                      <Typography
-                        sx={{
-                          witdh: '100%',
-                          marginBottom: '10px',
-                          padding: '10px',
-                        }}
-                      >
-                        {managerList.projectWorkerId}
-                      </Typography>
-                    ))
-                  ) : (
-                    <div>Không có dữ liệu!!</div>
-                  )}
-                </Typography>
-              </Typography>
-            </Grid>
-
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.actualStartDate}
+                {handleGetDate(allProjectDetails.actualStartDate)}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -175,8 +163,14 @@ const Details = (props) => {
                 Thời gian kết thúc dự kiến
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.actualEndDate}
+                {handleGetDate(allProjectDetails.actualEndDate)}
               </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Bảng vẽ
+              </Typography>
+              <Typography variant="body1"></Typography>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
@@ -202,7 +196,7 @@ const Details = (props) => {
                 Thời gian bắt đầu thực tế
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.planStartDate}
+                {handleGetDate(allProjectDetails.planStartDate)}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -210,7 +204,36 @@ const Details = (props) => {
                 Thời gian kết thúc thực tế
               </Typography>
               <Typography variant="body1">
-                {allProjectDetails.planEndDate}
+                {handleGetDate(allProjectDetails.planEndDate)}
+              </Typography>
+            </Grid>
+            <Grid item xs="12">
+              <Typography variant="body1" color="gray">
+                Danh sách công nhân
+              </Typography>
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {workerList ? (
+                    workerList.map((workerList, index) => (
+                      <Grid item xs={4}>
+                        <Box sx={{ width: '100%' }}>
+                          <Card sx={{ width: '100%' }}>
+                            <CardContent>
+                              <Typography>
+                                Tên: {workerList.worker.fullName}
+                              </Typography>
+                              <Typography>
+                                CCCD: {workerList.worker.citizenId}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Box>
+                      </Grid>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
           </Grid>

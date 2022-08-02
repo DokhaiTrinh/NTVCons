@@ -27,7 +27,6 @@ import DialogLocation from './Components/DialogLocation';
 import DialogBluePrint from './Components/DialogBlueprint';
 import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
-import { getProjectByIdApi } from '../../apis/Project/updateProject';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 
@@ -48,8 +47,8 @@ const CreateProjectPage = (props) => {
   const [workerListDetail, setWorkerListDetail] = React.useState([]);
   const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
+  const [imageSelected, setImageSelected] = useState('');
+  const [imageData, setImageData] = useState('');
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
 
@@ -81,7 +80,6 @@ const CreateProjectPage = (props) => {
       }
     })();
   }, []);
-  console.log(allManager);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
@@ -180,25 +178,27 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  // const uploadImage = () => {
-  //   const formData = new FormData();
-  //   formData.append('file', imageSelected);
-  //   formData.append('upload_preset', 'u78fm100');
-
-  //   const postImage = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-  //         formData
-  //       );
-  //       console.log(response);
-  //       setImageData(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   postImage();
-  // };
+  const uploadImage = (e) => {
+    
+    const formData = new FormData();
+    console.log(bluePrintDetail);
+    formData.append('file', imageSelected);
+    formData.append('upload_preset', 'u78fm100');
+    const postImage = async () => {
+      try {
+        const response = await axios.post(
+          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+          formData
+        );
+        console.log(response);
+        setImageData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postImage();
+    e.preventDefault();
+  };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -570,26 +570,26 @@ const CreateProjectPage = (props) => {
                 />
               </Grid> */}
 
-              {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Chọn file
-              </Typography>
-              <input
-                type="file"
-                name="file"
-                onChange={(event) => {
-                  setImageSelected(event.target.files[0]);
-                }}
-              />
-            </Grid> */}
-              {/* <Grid>
-              {imageData && (
-                <Image
-                  cloudName="niem-tin-vang"
-                  publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Chọn file
+                </Typography>
+                <input
+                  type="file"
+                  name="file"
+                  onChange={(event) => {
+                    setImageSelected(event.target.files[0]);
+                  }}
                 />
-              )}
-            </Grid> */}
+              </Grid>
+              <Grid>
+                {imageData && (
+                  <Image
+                    cloudName="niem-tin-vang"
+                    publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
+                  />
+                )}
+              </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -608,7 +608,7 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    // onClick={uploadImage}
+                    onClick={(event)=>uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

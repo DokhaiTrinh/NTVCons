@@ -144,3 +144,7 @@ export const GET_POST_BY_ID =
 
   
 export const CHECK_LOGIN = 'http://niemtinvang.herokuapp.com/login';
+
+//API LINK CỦA BLUEPRINT
+export const CREATE_BLUEPRINT =
+  'http://niemtinvang.herokuapp.com/blueprint/v1/createBlueprint/withFile';

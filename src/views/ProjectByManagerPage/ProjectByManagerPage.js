@@ -14,6 +14,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { ProjectTable } from './Components/ProjectTable';
 //Get all s
 import { getAllProjectByManageApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
@@ -95,8 +96,8 @@ const ProjectByManagerPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  // const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
-  //   useStateValue();
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
+    useStateValue();
 
   const [managerProject, setManagerProject] = React.useState([]);
   React.useEffect(() => {
@@ -115,8 +116,7 @@ const ProjectByManagerPage = (props) => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-    //   }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
-  }, []);
+  }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
   console.log(managerProject);
   return (
     <div>
@@ -140,7 +140,7 @@ const ProjectByManagerPage = (props) => {
                 </IconButton>
               </Box>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Box
                 display="flex"
                 justifyContent="center"
@@ -149,7 +149,7 @@ const ProjectByManagerPage = (props) => {
               >
                 <Typography variant="body1">Tạo dự án mới</Typography>
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
         )}
         <Grid item md="4">
@@ -218,11 +218,11 @@ const ProjectByManagerPage = (props) => {
             </IconButton>
           </Tabs>
         </Box>
-        {/* <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0}>
           <Box width="100%">
-            {allProject ? (
-              allProject.length > 0 ? (
-                <ProjectTable allProject={allProject}></ProjectTable>
+            {managerProject ? (
+              managerProject.length > 0 ? (
+                <ProjectTable managerProject={managerProject}></ProjectTable>
               ) : (
                 <div>Không có dữ liệu để hiển thị</div>
               )
@@ -231,7 +231,7 @@ const ProjectByManagerPage = (props) => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ProjectTable></ProjectTable>
-        </TabPanel> */}
+        </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three
         </TabPanel>
