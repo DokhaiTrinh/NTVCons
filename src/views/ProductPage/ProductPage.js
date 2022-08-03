@@ -20,7 +20,6 @@ import { useHistory } from 'react-router-dom';
 import { getAllPostApi } from './../../apis/Post/getAllPost';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -133,7 +132,7 @@ const ProductPage = (props) => {
       }
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
-  console.log(allProduct);
+  console.log(totalPage);
   return (
     <div>
       <Grid container justify="center">
@@ -251,7 +250,10 @@ const ProductPage = (props) => {
         <TabPanel value={value} index={0}>
           {allProduct ? (
             <Box width="100%">
-              <ProductTable allProduct={allProduct}></ProductTable>
+              <ProductTable
+                allProduct={allProduct}
+                totalPage={totalPage}
+              ></ProductTable>
             </Box>
           ) : (
             <div>Không có dữ liệu</div>

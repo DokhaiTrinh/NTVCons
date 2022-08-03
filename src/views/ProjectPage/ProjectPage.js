@@ -227,7 +227,10 @@ const ProjectPage = (props) => {
           <Box width="100%">
             {allProject ? (
               allProject.length > 0 ? (
-                <ProjectTable allProject={allProject}></ProjectTable>
+                <ProjectTable
+                  allProject={allProject}
+                  totalPage={totalPage}
+                ></ProjectTable>
               ) : (
                 <div>Không có dữ liệu để hiển thị</div>
               )
@@ -250,13 +253,7 @@ const ProjectPage = (props) => {
           Item Six
         </TabPanel>
       </Box>
-      <Pagination
-        count={totalPage + 1}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChangePage}
-        default={1}
-      />
+     
     </div>
   );
 };

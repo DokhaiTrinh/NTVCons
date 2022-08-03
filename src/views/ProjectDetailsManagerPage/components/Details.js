@@ -26,9 +26,6 @@ const Details = (props) => {
   };
   const { allProjectDetails, managerList, workerList, blueprint } = props;
   const { id } = useParams();
-  console.log(workerList);
-  console.log(allProjectDetails);
-  console.log(blueprint);
   return (
     <div>
       <Box sx={{ width: '100%' }}>

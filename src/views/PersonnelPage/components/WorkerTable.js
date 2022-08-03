@@ -28,6 +28,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { deleteWorkerApi } from './../../../apis/Worker/deleteWorker';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import Pagination from '@mui/material/Pagination';
 function createData(code, name, department, position, office, role, join, dob) {
   return {
     code,
@@ -224,10 +225,12 @@ export const WorkerTable = (props) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { allWorker } = props;
-  const [{ loading }, dispatch] = useStateValue();
-  console.log(allWorker);
-
+  const { allWorker, totalPage } = props;
+  const [{ pageNo, loading }, dispatch] = useStateValue();
+  // const [totalPage, setTotalPage] = React.useState(allUser.totalPage);
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   const handleDeleteWorker = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -278,10 +281,6 @@ export const WorkerTable = (props) => {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -362,13 +361,12 @@ export const WorkerTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
         />
       </Paper>
     </Box>

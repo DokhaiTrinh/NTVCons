@@ -71,6 +71,7 @@ const ProjectDetailsPage = (props) => {
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
   const [blueprint, setBlueprint] = React.useState();
+  const [projectName, setProjectName] = React.useState();
   // const handleChange1 = (event) => {
   //   setAge(event.target.value);
   // };
@@ -106,6 +107,7 @@ const ProjectDetailsPage = (props) => {
       }
     })();
   }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType]);
+  console.log(projectName);
   return (
     <div>
       <Grid container justify="center">
@@ -122,6 +124,7 @@ const ProjectDetailsPage = (props) => {
                 sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
               >
                 <Add sx={{ color: 'white' }}></Add>
+                {allProjectDetails.projectName} asdsadsadsad
               </IconButton>
             </Box>
           </Grid>

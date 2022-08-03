@@ -70,10 +70,6 @@ const ProjectDetailsPage = (props) => {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
-  // const handleChange1 = (event) => {
-  //   setAge(event.target.value);
-  // };
-
   React.useEffect(() => {
     (async () => {
       try {
@@ -121,6 +117,15 @@ const ProjectDetailsPage = (props) => {
               >
                 <Add sx={{ color: 'white' }}></Add>
               </IconButton>
+              <Typography
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                variant="button"
+                sx={{ margin: '20px' }}
+              >
+                {allProjectDetails.projectName}
+              </Typography>
             </Box>
           </Grid>
           <Grid item>

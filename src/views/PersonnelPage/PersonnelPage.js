@@ -94,6 +94,7 @@ const PersonnelPage = (props) => {
     useStateValue();
   const [allUser, setAllUser] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
+  const [totalPage, setToltalPage] = React.useState();
   React.useEffect(() => {
     (async () => {
       try {
@@ -104,6 +105,7 @@ const PersonnelPage = (props) => {
           sortTypeAsc,
         });
         setAllUser(listAllUser.data);
+        setToltalPage(listAllUser.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
@@ -115,6 +117,7 @@ const PersonnelPage = (props) => {
           sortTypeAsc,
         });
         setAllWorker(listAllWorker.data);
+        setToltalPage(listAllWorker.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách công nhân');
       }
@@ -211,14 +214,28 @@ const PersonnelPage = (props) => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <Box width="100%">
-            <PersonnelTable allUser={allUser}></PersonnelTable>
-          </Box>
+          {allUser ? (
+            <Box width="100%">
+              <PersonnelTable
+                allUser={allUser}
+                totalPage={totalPage}
+              ></PersonnelTable>
+            </Box>
+          ) : (
+            <div>Không có dữ liệu!!</div>
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Box width="100%">
-            <WorkerTable allWorker={allWorker}></WorkerTable>
-          </Box>
+          {allWorker ? (
+            <Box width="100%">
+              <WorkerTable
+                allWorker={allWorker}
+                totalPage={totalPage}
+              ></WorkerTable>
+            </Box>
+          ) : (
+            <div>Không có dữ liệu!</div>
+          )}
         </TabPanel>
       </Box>
     </div>

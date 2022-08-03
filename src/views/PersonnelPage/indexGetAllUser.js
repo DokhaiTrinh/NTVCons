@@ -6,7 +6,7 @@ const UserPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
-    pageSize: 15,
+    pageSize: 10,
     sortBy: 'createdAt',
     sortTypeAsc: false,
   };
@@ -32,7 +32,7 @@ const UserPageContainer = () => {
           ...state,
           sortBy: action.newSortBy,
         };
-        case 'CHANGE_SORTTYPEASC':
+      case 'CHANGE_SORTTYPEASC':
         return {
           ...state,
           sortTypeAsc: action.newSortTypeAsc,

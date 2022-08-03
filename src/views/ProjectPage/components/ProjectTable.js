@@ -26,7 +26,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
-
+import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 function createData(admin, code, name, workers, process, works, start, end) {
@@ -249,7 +249,7 @@ const handleGetDate = (date) => {
 };
 
 export const ProjectTable = (props) => {
-  const { allProject } = props;
+  const { allProject, totalPage } = props;
 
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
@@ -257,7 +257,9 @@ export const ProjectTable = (props) => {
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -308,10 +310,6 @@ export const ProjectTable = (props) => {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const isSelected = (admin) => selected.indexOf(admin) !== -1;
@@ -387,6 +385,13 @@ export const ProjectTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
+        />
       </Paper>
     </Box>
   );
