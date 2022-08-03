@@ -222,6 +222,7 @@ const CreatePersonnelPage = (props) => {
                     errors={errors.password}
                     variant="outlined"
                     sx={{ width: '100%' }}
+                    isPassword={true}
                   />
                 </Grid>
                 <Grid item xs={12}>

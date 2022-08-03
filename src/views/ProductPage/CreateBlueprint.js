@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Divider,
   Typography,
@@ -6,22 +7,19 @@ import {
   Grid,
   Button,
 } from '@mui/material';
-import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createBlueprintApi } from '../../apis/Blueprint/createBlueprint';
 import * as yup from 'yup';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { createPostApi } from '../../apis/Post/createPost';
+import { getAllProjectApi1 } from '../../apis/Project/getAllProject';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 import Select from '@mui/material/Select';
-import { getAllCategoryApi1 } from './../../apis/CategoryPost/getAllCategory';
+import { useStateValue } from '../../common/StateProvider/StateProvider';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -32,51 +30,37 @@ const MenuProps = {
     },
   },
 };
-
-const itemData = [];
-const CreateProductPage = (props) => {
-  const [allCategory, setAllCategory] = React.useState([]);
-  const [categorySelected, setCategorySelected] = React.useState();
+const CreateBlueprint = (props) => {
+  const [blueprint, setBlueprint] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [allProject, setAllProject] = React.useState([]);
+  const [projectSelected, setProjectSelected] = React.useState();
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
+  //   const [{ loading }, dispatch] = useStateValue();
   React.useEffect(() => {
     (async () => {
       try {
-        const listAllCategory = await getAllCategoryApi1(
+        const listAllProject = await getAllProjectApi1(
           0,
           15,
           'createdAt',
           true
         );
-        setAllCategory(listAllCategory.data);
+        setAllProject(listAllProject.data);
       } catch (error) {
         console.log('Không thể lấy danh sách');
       }
     })();
   }, []);
-
   const validateSchema = yup
     .object({
-      address: yup
+      designerName: yup
         .string()
-        .min(5, 'Địa chỉ phải lớn hoặc hoặc bằng 6 kí tự')
-        .required('Địa chỉ không được để trống'),
-      authorName: yup
-        .string()
-        .min(5, 'Tên tác giả phải lớn hoặc hoặc bằng 6 kí tự')
-        .required('Tên tác giả không được để trống'),
-      ownerName: yup
-        .string()
-        .min(5, 'Tên chủ đầu tư phải lớn hoặc hoặc bằng 6 kí tự')
-        .required('Tên chủ đầu tư không được để trống'),
-      postTitle: yup
-        .string()
-        .min(5, 'Tên bài đăng phải lớn hoặc hoặc bằng 6 kí tự')
-        .required('Tên bài đăng tư không được để trống')
-        .typeError('Tên bài đăng đã trùng!!'),
-      scale: yup
-        .string()
-        .min(5, 'Tên quy mô phải lớn hoặc hoặc bằng 6 kí tự')
-        .required('Tên quy mô không được để trống'),
+        .min(5, 'Tên người thiết kế')
+        .required('Phải có tên người thiết kế!'),
+      blueprintName: yup.string().required('Phải có tên bản vẽ'),
+      estimatedCost: yup.number().required('Phải có giá tiền'),
     })
     .required();
 
@@ -89,37 +73,35 @@ const CreateProductPage = (props) => {
   });
 
   const submitForm = (data) => {
-    handleCreatePost(
-      data.address,
-      data.authorName,
-      data.ownerName,
-      categorySelected,
-      data.postTitle,
-      data.scale
+    console.log(filesImage);
+    handleCreateBlueprint(
+      projectSelected,
+      data.designerName,
+      data.blueprintName,
+      data.estimatedCost,
+      filesImage
     );
   };
-  const handleCreatePost = async (
-    address,
-    authorName,
-    ownerName,
-    postCategoryId,
-    postTitle,
-    scale
+  const handleCreateBlueprint = async (
+    projectId,
+    desginerName,
+    blueprintName,
+    estimatedCost,
+    file
   ) => {
     try {
       setLoading(true);
-      await createPostApi({
-        address,
-        authorName,
-        ownerName,
-        postCategoryId,
-        postTitle,
-        scale,
+      await createBlueprintApi({
+        projectId,
+        desginerName,
+        blueprintName,
+        estimatedCost,
+        file,
       });
       setLoading(false);
       await Swal.fire({
         icon: 'success',
-        text: 'Tạo bài đăng thành công',
+        text: 'Tạo bản vẽ thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -127,17 +109,69 @@ const CreateProductPage = (props) => {
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Tạo bản vẽ không thành công',
         timer: 2000,
         showConfirmButton: false,
       });
-      setLoading(false);
+      //   setLoading(false);
     }
   };
   const handleChange = (event) => {
-    setCategorySelected(event.target.value);
+    setProjectSelected(event.target.value);
   };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -145,7 +179,7 @@ const CreateProductPage = (props) => {
         color="#DD8501"
         sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
-        TẠO MỚI DỊCH VỤ
+        TẠO MỚI BẢN VẼ
       </Typography>
       <Divider></Divider>
       <Box
@@ -164,7 +198,7 @@ const CreateProductPage = (props) => {
           }}
         >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin dịch vụ
+            Thông tin bản vẽ
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
@@ -174,7 +208,7 @@ const CreateProductPage = (props) => {
                 <Typography variant="body2" color="#DD8501">
                   Hình ảnh
                 </Typography>
-                <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
+                {/* <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
                   {itemData.map((item) => (
                     <ImageListItem key={item.img}>
                       <img
@@ -185,91 +219,49 @@ const CreateProductPage = (props) => {
                       />
                     </ImageListItem>
                   ))}
-                </ImageList>
+                </ImageList> */}
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tên bản vẽ
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="blueprintName"
+                  // label="Tên vai trò"
+                  errors={errors.blueprintName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
               <Grid item xs={12}>
-                <Box
-                  sx={{ width: 164, height: 164 }}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <IconButton
-                    aria-label="add"
-                    sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                    component={Link}
-                    to={'/createProject'}
-                  >
-                    <Add sx={{ color: 'white' }}></Add>
-                  </IconButton>
-                </Box>
+                <Typography variant="body2" color="#DD8501">
+                  Người thiết kế
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="designerName"
+                  // label="Tên vai trò"
+                  errors={errors.designerName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên dự án
                 </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="postTitle"
-                  // label="Tên vai trò"
-                  errors={errors.postTitle}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Chủ đầu tư
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="ownerName"
-                  // label="Tên vai trò"
-                  errors={errors.ownerName}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Vị trí
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="address"
-                  // label="Tên vai trò"
-                  errors={errors.address}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Quy mô
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="scale"
-                  // label="Tên vai trò"
-                  errors={errors.scale}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thể loại
-                </Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
-                    value={categorySelected}
+                    value={projectSelected}
                   >
-                    {allCategory ? (
-                      allCategory.map((cateType, index) => (
-                        <MenuItem value={cateType.postCategoryId} key={index}>
-                          {cateType.postCategoryName}
+                    {allProject ? (
+                      allProject.map((projectType, index) => (
+                        <MenuItem value={projectType.projectId} key={index}>
+                          {projectType.projectName}
                         </MenuItem>
                       ))
                     ) : (
@@ -281,17 +273,30 @@ const CreateProductPage = (props) => {
                 </FormControl>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="#DD8501">
-                    Tác giả
+                    Giá bản vẽ
                   </Typography>
                   <TextFieldComponent
                     register={register}
-                    name="authorName"
+                    name="estimatedCost"
                     // label="Tên vai trò"
-                    errors={errors.authorName}
+                    errors={errors.estimatedCost}
                     variant="outlined"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>
                 <Box
@@ -323,5 +328,4 @@ const CreateProductPage = (props) => {
     </div>
   );
 };
-
-export default CreateProductPage;
+export default CreateBlueprint;

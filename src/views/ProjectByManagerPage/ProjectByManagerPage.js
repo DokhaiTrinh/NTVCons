@@ -18,6 +18,7 @@ import { ProjectTable } from './Components/ProjectTable';
 //Get all s
 import { getAllProjectByManageApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import { toHaveFormValues } from '@testing-library/jest-dom/dist/matchers';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -96,27 +97,29 @@ const ProjectByManagerPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
-    useStateValue();
-
+  const [
+    { pageNo, pageSize, searchParam, searchType, sortBy, sortTypeAsc, loading },
+    dispatch,
+  ] = useStateValue();
+  console.log(searchParam);
   const [managerProject, setManagerProject] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
-        const listManagerProject = await getAllProjectByManageApi(
-          0,
-          200,
-          144,
-          'BY_MANAGER_ID',
-          'createdAt',
-          false
-        );
+        const listManagerProject = await getAllProjectByManageApi({
+          pageNo,
+          pageSize,
+          searchParam,
+          searchType,
+          sortBy,
+          sortTypeAsc,
+        });
         setManagerProject(listManagerProject.data);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
+  }, [pageNo, pageSize, searchParam, searchType, sortBy, sortTypeAsc, loading]);
   console.log(managerProject);
   return (
     <div>

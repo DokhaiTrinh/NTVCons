@@ -142,7 +142,6 @@ export const DELETE_POST =
 export const GET_POST_BY_ID =
   'http://niemtinvang.herokuapp.com/post/v1/getByParam';
 
-  
 export const CHECK_LOGIN = 'http://niemtinvang.herokuapp.com/login';
 
 //API LINK CỦA BLUEPRINT

@@ -45,14 +45,26 @@ class AxiosService {
     });
   }
   post3(url, body, token) {
-    const formData = new formData();
-
-    for (let index = 0; index < body.length; index++) {
-      formData.append('file', body[index]);
+    const formData = new FormData();
+    const blueprintDTO = {
+      projectId: body.projectId,
+      designerName: body.desginerName,
+      blueprintName: body.blueprintName,
+      estimatedCost: body.estimatedCost,
+    };
+    const json = JSON.stringify(blueprintDTO);
+    formData.append(
+      'blueprintDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('blueprintDoc', body.file[index]);
     }
-
     return this.intance.post(url, formData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
     });
   }
   put(url, body, token) {

@@ -28,6 +28,7 @@ import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
 import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
 import { useParams } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(
@@ -268,25 +269,30 @@ export default function RequestTable(props) {
   const { projectId } = props;
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [{ loading }, dispatch] = useStateValue();
-
+  const [totalPage, setTotalPage] = React.useState();
+  const [pageNum, setPageNum] = React.useState(0);
+  const handleChangePage = (event, value) => {
+    setPageNum(value - 1);
+  };
   React.useEffect(() => {
     (async () => {
       try {
         const listAllRequestDetail = await getRequestByProjectIdApi(
-          0,
-          15,
+          pageNum,
+          10,
           id,
           'BY_PROJECT_ID',
           'createdAt',
           false
         );
         setAllRequestDetails(listAllRequestDetail.data);
+        setTotalPage(listAllRequestDetail.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của yêu cầu!');
       }
     })();
-  }, []);
-  console.log(allRequestDetails);
+  }, [pageNum]);
+  console.log(totalPage);
   const handleDeleteRequest = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -337,10 +343,6 @@ export default function RequestTable(props) {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -457,13 +459,12 @@ export default function RequestTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
         />
       </Paper>
     </Box>

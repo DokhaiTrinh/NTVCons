@@ -163,10 +163,14 @@ const ProjectDetailsPage = (props) => {
           )}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ReportTable
-            projectId={projectId}
-            allReportDetails={allReportDetails}
-          ></ReportTable>
+          {allReportDetails ? (
+            <ReportTable
+              projectId={projectId}
+              allReportDetails={allReportDetails}
+            ></ReportTable>
+          ) : (
+            <div>Không có dữ liệu!</div>
+          )}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <TaskTable projectId={projectId}></TaskTable>

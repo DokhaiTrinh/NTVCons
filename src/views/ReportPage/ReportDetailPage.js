@@ -28,6 +28,7 @@ const ReportDetailPage = (props) => {
   const [allReportDetail, setAllReportDetail] = React.useState([]);
   const [allReportList, setAllReportList] = React.useState([]);
   const [taskReportList, setTaskReportList] = React.useState([]);
+  
   React.useEffect(() => {
     (async () => {
       try {

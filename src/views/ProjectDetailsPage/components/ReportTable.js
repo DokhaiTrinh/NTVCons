@@ -27,6 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
+import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -235,7 +236,11 @@ export default function ReportTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { projectId, allReportDetails } = props;
   console.log(allReportDetails);
-  const [{ loading }, dispatch] = useStateValue();
+  const [{ pageNo, loading }, dispatch] = useStateValue();
+  const [totalPage, setTotalPage] = React.useState(allReportDetails[0].totalPage);
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   const handleDeleteReport = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -295,10 +300,6 @@ export default function ReportTable(props) {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -415,14 +416,12 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={allReportDetails.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
         />
       </Paper>
     </Box>

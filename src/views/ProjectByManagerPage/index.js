@@ -32,6 +32,16 @@ const ProjectPageContainer = () => {
           ...state,
           pageSize: action.newPageSize,
         };
+      case 'CHANGE_SEARCHPARAM':
+        return {
+          ...state,
+          searchParam: action.searchParam,
+        };
+      case 'CHANGE_SEARCHTYPE':
+        return {
+          ...state,
+          searchType: action.searchType,
+        };
       case 'CHANGE_SORTBY':
         return {
           ...state,

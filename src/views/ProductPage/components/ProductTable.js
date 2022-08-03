@@ -27,6 +27,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(id, image, name, category, scale, location) {
   return {
@@ -250,7 +251,11 @@ export const ProductTable = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allProduct } = props;
-  const [{ loading }, dispatch] = useStateValue();
+  const [{ pageNo, loading }, dispatch] = useStateValue();
+  const [totalPage, setTotalPage] = React.useState(allProduct.totalPage);
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   const handleDeletePost = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -310,10 +315,6 @@ export const ProductTable = (props) => {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -385,14 +386,12 @@ export const ProductTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
         />
       </Paper>
     </Box>

@@ -17,6 +17,7 @@ import EditProjectDetailsManagerPage from '../views/ProjectDetailsManagerPage/Ed
 import CreateRolePage from '../views/RoleManagePage/CreateRolePage';
 import EditServicePage from '../views/ProductPage/EditServicePage';
 import CreateProductPage from '../views/ProductPage/CreateProductPage';
+import CreateBlueprintPage from '../views/ProductPage/CreateBlueprint';
 import EditPersonnleProfile from '../views/PersonnelProfilePage/EditPersonnelProfile';
 import CreatePersonnelPage from '../views/PersonnelPage/CreatePersonnelPage';
 import CreateWorkerPage from '../views/PersonnelPage/CreateWorker';
@@ -255,6 +256,12 @@ export const HOME_ROUTES = [
     name: 'Create Product Page',
     exact: true,
     component: CreateProductPage,
+  },
+  {
+    path: '/createBlueprint',
+    name: 'Create Blueprint Page',
+    exact: true,
+    component: CreateBlueprintPage,
   },
   {
     path: '/updateProduct/:id',

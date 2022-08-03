@@ -20,6 +20,7 @@ import { useHistory } from 'react-router-dom';
 import { getAllPostApi } from './../../apis/Post/getAllPost';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -102,6 +103,10 @@ const ProductPage = (props) => {
   const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
   const [allProduct, setAllProduct] = React.useState([]);
+  const [totalPage, setTotalPage] = React.useState();
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   React.useEffect(() => {
     (async () => {
       try {
@@ -112,6 +117,7 @@ const ProductPage = (props) => {
           sortTypeAsc,
         });
         setAllProduct(listAllProduct.data);
+        setTotalPage(listAllProduct.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách sản phẩm');
       }
@@ -157,7 +163,11 @@ const ProductPage = (props) => {
                       >
                         Tạo mới dịch vụ
                       </MenuItem>
-                      <MenuItem onClick={popupState.close}>
+                      <MenuItem
+                        onClick={() => {
+                          history.push('/createBlueprint');
+                        }}
+                      >
                         Tạo mới sản phẩm
                       </MenuItem>
                     </Menu>
@@ -239,9 +249,13 @@ const ProductPage = (props) => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <Box width="100%">
-            <ProductTable allProduct={allProduct}></ProductTable>
-          </Box>
+          {allProduct ? (
+            <Box width="100%">
+              <ProductTable allProduct={allProduct}></ProductTable>
+            </Box>
+          ) : (
+            <div>Không có dữ liệu</div>
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}></TabPanel>
         <TabPanel value={value} index={2}>

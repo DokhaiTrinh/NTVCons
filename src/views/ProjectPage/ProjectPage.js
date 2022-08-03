@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 //Get all project
 import { getAllProjectApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import Pagination from '@mui/material/Pagination';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -100,6 +102,11 @@ const ProjectPage = (props) => {
     useStateValue();
 
   const [allProject, setAllProject] = React.useState([]);
+  const [totalPage, setTotalPage] = React.useState();
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -110,12 +117,12 @@ const ProjectPage = (props) => {
           sortTypeAsc,
         });
         setAllProject(listAllProject.data);
+        setTotalPage(listAllProject.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
-  console.log(allProject);
   return (
     <div>
       <Grid container justify="center">
@@ -243,6 +250,13 @@ const ProjectPage = (props) => {
           Item Six
         </TabPanel>
       </Box>
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </div>
   );
 };
