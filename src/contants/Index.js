@@ -39,6 +39,9 @@ import UpdateProductPage from '../views/ProductPage/UpdateProductPage';
 import CategoryPageManage from '../views/CategoryPage/indexCategoryPage';
 import CreateCategoryPage from '../views/CategoryPage/CreateCategoryPage';
 import UpdateCategoryPage from '../views/CategoryPage/UpdateCategoryPage';
+import OTPByEmail from '../views/ForgotPassword/OTPByEmail';
+import OTPByPhone from '../views/ForgotPassword/OTPByPhone';
+import ResetPasswordPage from '../views/ForgotPassword/ResetPassword';
 export const HOME_ROUTES = [
   {
     path: '/home',
@@ -286,6 +289,7 @@ export const HOME_ROUTES = [
     exact: true,
     component: UpdateTaskPage,
   },
+  
 ];
 
 export const LOGIN_ROUTES = [
@@ -294,5 +298,23 @@ export const LOGIN_ROUTES = [
     name: 'Login Page',
     exact: true,
     component: LoginPage,
+  },
+  {
+    path: '/OTPByEmail',
+    name: 'OTP By Email Page',
+    exact: true,
+    component: OTPByEmail,
+  },
+  {
+    path: '/OTPByPhone',
+    name: 'OTP By Phone Page',
+    exact: true,
+    component: OTPByPhone,
+  },
+  {
+    path: '/resetPassword',
+    name: 'Reset Password Page',
+    exact: true,
+    component: ResetPasswordPage,
   },
 ];

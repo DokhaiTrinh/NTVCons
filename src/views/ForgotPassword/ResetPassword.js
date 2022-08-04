@@ -16,7 +16,7 @@ import { loginApi } from '../../apis/authentication/login';
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 
-const LoginPage = (props) => {
+const ResetPasswordPage = (props) => {
   const history = useHistory();
   const handleClickShowPassword = () => {
     setValues({
@@ -141,92 +141,31 @@ const LoginPage = (props) => {
             <Grid container>
               <Grid>
                 <Typography variant="h5" color="#DD8501">
-                  Đăng
-                </Typography>
-              </Grid>
-              &nbsp;
-              <Grid>
-                <Typography variant="h5" color="#DD8501">
-                  nhập
+                  Đặt lại mật khẩu
                 </Typography>
               </Grid>
             </Grid>
             <form onSubmit={handleSubmit(submitForm)}>
               <TextField
-                {...register('username')}
-                // error={submitted && !username}
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                label="Tên đăng nhập*"
+                label="Mật khẩu mới*"
                 autoComplete="username"
                 autoFocus
-                name="username"
-                // value={username}
-                error={errors.username != null}
-                // onChange={handleChange}
-                helperText={errors.username?.message}
+                name="newpass"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
               />
               <TextField
-                {...register('password')}
-                error={errors.password != null}
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                name="password"
-                label="Mật khẩu*"
+                name="confirm"
+                label="Xác nhận mật khẩu mới*"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                // value={password}
-                // onChange={handleChange}
-                // InputProps={{
-                //   // <-- This is where the toggle button is added.
-                //   endAdornment: (
-                //     <InputAdornment position="end">
-                //       <IconButton
-                //         aria-label="toggle password visibility"
-                //         onClick={handleClickShowPassword}
-                //         onMouseDown={handleMouseDownPassword}
-                //       >
-                //         {showPassword ? <Visibility /> : <VisibilityOff />}
-                //       </IconButton>
-                //     </InputAdornment>
-                //   ),
-                // }}
-                // helperText={errors.password?.message}
               />
-              {/* <Grid container>
-                <FormControl
-                  fullWidth
-                  sx={{ width: 'wrap-parent' }}
-                  variant="outlined"
-                >
-                  <InputLabel></InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {values.showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                  />
-                </FormControl>
-              </Grid> */}
               <Grid>
                 <Button
                   type="submit"
@@ -245,27 +184,9 @@ const LoginPage = (props) => {
                       xử lí...
                     </>
                   ) : (
-                    ' Đăng nhập'
+                    ' Hoàn tất'
                   )}
                 </Button>
-                <Grid container>
-                  <Grid item md={4}>
-                    <Box style={{ textAlign: 'left' }} >
-                      <Link color="#DD8501" variant="body1" onClick={() => {
-                          history.push('/OTPByEmail');
-                        }}>
-                        Quên mật khẩu
-                      </Link>
-                    </Box>
-                  </Grid>
-                  {/* <Grid item md={12}>
-                    <Box style={{ textAlign: 'right' }}>
-                      <Typography color="#DD8501" variant="body1">
-                        Sign up for account
-                      </Typography>
-                    </Box>
-                  </Grid> */}
-                </Grid>
               </Grid>
             </form>
           </Box>
@@ -274,4 +195,4 @@ const LoginPage = (props) => {
     </div>
   );
 };
-export default LoginPage;
+export default ResetPasswordPage;
