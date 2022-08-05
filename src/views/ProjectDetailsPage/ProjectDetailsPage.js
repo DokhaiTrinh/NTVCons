@@ -70,6 +70,7 @@ const ProjectDetailsPage = (props) => {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
+  const [totalPage, setTotalPage] = React.useState();
   React.useEffect(() => {
     (async () => {
       try {
@@ -95,6 +96,7 @@ const ProjectDetailsPage = (props) => {
           sortTypeAsc,
         });
         setAllReportDetails(listAllReportDetails.data);
+        setTotalPage(listAllReportDetails.data.totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách báo cáo');
       }
@@ -124,7 +126,7 @@ const ProjectDetailsPage = (props) => {
                 variant="button"
                 sx={{ margin: '20px' }}
               >
-                {allProjectDetails.projectName}
+                {/* {allProjectDetails.projectName} */}
               </Typography>
             </Box>
           </Grid>
@@ -172,6 +174,7 @@ const ProjectDetailsPage = (props) => {
             <ReportTable
               projectId={projectId}
               allReportDetails={allReportDetails}
+              totalPage={totalPage}
             ></ReportTable>
           ) : (
             <div>Không có dữ liệu!</div>

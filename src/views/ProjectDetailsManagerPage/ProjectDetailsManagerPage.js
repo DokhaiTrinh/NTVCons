@@ -124,7 +124,7 @@ const ProjectDetailsPage = (props) => {
                 sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
               >
                 <Add sx={{ color: 'white' }}></Add>
-                {allProjectDetails.projectName} asdsadsadsad
+                {/* //{allProjectDetails.projectName} asdsadsadsad */}
               </IconButton>
             </Box>
           </Grid>

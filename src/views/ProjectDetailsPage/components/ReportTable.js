@@ -234,11 +234,9 @@ export default function ReportTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId, allReportDetails } = props;
+  const { projectId, allReportDetails, totalPage } = props;
   const [{ pageNo, loading }, dispatch] = useStateValue();
-  const [totalPage, setTotalPage] = React.useState(
-    allReportDetails[0].totalPage
-  );
+
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
