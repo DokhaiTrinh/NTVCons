@@ -73,6 +73,42 @@ class AxiosService {
     });
   }
 
+  post4(url, body, token) {
+    const formData = new FormData();
+    const projectDTO = {
+      projectName: body.projectName,
+      location: body.location,
+      blueprint: body.blueprint,
+      managerIdList: body.managerIdList,
+      workerIdList: body.workerIdList,
+      planStartDate: body.planStartDate,
+      planEndDate: body.planEndDate,
+      estimatedCost: body.estimatedCost,
+    };
+    const json = JSON.stringify(projectDTO);
+    formData.append(
+      'projectDTO ',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('projectDocList', body.file[index]);
+    }
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('blueprintDoc', body.file[index]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  put(url, body, token) {
+    return this.intance.put(url, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   put2(url, body, token) {
     const formData = new FormData();
 

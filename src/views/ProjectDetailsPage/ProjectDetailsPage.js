@@ -124,7 +124,7 @@ const ProjectDetailsPage = (props) => {
                 variant="button"
                 sx={{ margin: '20px' }}
               >
-                {allProjectDetails.projectName}
+                {/* {allProjectDetails.projectName} */}
               </Typography>
             </Box>
           </Grid>

@@ -178,27 +178,26 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  const uploadImage = (e) => {
-    
-    const formData = new FormData();
-    console.log(bluePrintDetail);
-    formData.append('file', imageSelected);
-    formData.append('upload_preset', 'u78fm100');
-    const postImage = async () => {
-      try {
-        const response = await axios.post(
-          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-          formData
-        );
-        console.log(response);
-        setImageData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    postImage();
-    e.preventDefault();
-  };
+  // const uploadImage = (e) => {
+  //   const formData = new FormData();
+  //   console.log(bluePrintDetail);
+  //   formData.append('file', imageSelected);
+  //   formData.append('upload_preset', 'u78fm100');
+  //   const postImage = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+  //         formData
+  //       );
+  //       console.log(response);
+  //       setImageData(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   postImage();
+  //   e.preventDefault();
+  // };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -570,7 +569,7 @@ const CreateProjectPage = (props) => {
                 />
               </Grid> */}
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Chọn file
                 </Typography>
@@ -589,7 +588,7 @@ const CreateProjectPage = (props) => {
                     publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
                   />
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -608,7 +607,7 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    onClick={(event)=>uploadImage(event)}
+                    //onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

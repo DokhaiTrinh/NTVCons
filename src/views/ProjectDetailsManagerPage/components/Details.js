@@ -152,7 +152,7 @@ const Details = (props) => {
                 Thời gian bắt đầu dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualStartDate)}
+                {allProjectDetails.actualStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -160,7 +160,7 @@ const Details = (props) => {
                 Thời gian kết thúc dự kiến
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.actualEndDate)}
+                {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">

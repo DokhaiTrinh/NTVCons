@@ -13,7 +13,8 @@ export const GET_BY_PARAM =
   'http://niemtinvang.herokuapp.com/project/v1/getByParam';
 export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
-
+export const CREATE_PROJECT_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/project/v1/createProject/withFile';
 //Api link của role
 export const GET_ALL_ROLE = 'http://niemtinvang.herokuapp.com/role/v1/getAll';
 export const CREATE_ROLE =
