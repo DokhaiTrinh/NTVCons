@@ -29,7 +29,7 @@ import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
-
+import { Wrapper, Status } from '@googlemaps/react-wrapper';
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
@@ -51,7 +51,18 @@ const CreateProjectPage = (props) => {
   const [imageData, setImageData] = useState('');
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
+  const ref = React.useRef(null);
+  const [map, setMap] = React.useState();
 
+  React.useEffect(() => {
+    if (ref.current && !map) {
+      setMap(new window.google.maps.Map(ref.current, {}));
+    }
+  }, [ref, map]);
+
+  <Wrapper apiKey={'YOUR_API_KEY'} render={render}>
+    <YourComponent />
+  </Wrapper>;
   React.useEffect(() => {
     (async () => {
       try {
@@ -178,26 +189,26 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  // const uploadImage = (e) => {
-  //   const formData = new FormData();
-  //   console.log(bluePrintDetail);
-  //   formData.append('file', imageSelected);
-  //   formData.append('upload_preset', 'u78fm100');
-  //   const postImage = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-  //         formData
-  //       );
-  //       console.log(response);
-  //       setImageData(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   postImage();
-  //   e.preventDefault();
-  // };
+  const uploadImage = (e) => {
+    const formData = new FormData();
+    console.log(bluePrintDetail);
+    formData.append('file', imageSelected);
+    formData.append('upload_preset', 'u78fm100');
+    const postImage = async () => {
+      try {
+        const response = await axios.post(
+          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+          formData
+        );
+        console.log(response);
+        setImageData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postImage();
+    e.preventDefault();
+  };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -573,7 +584,7 @@ const CreateProjectPage = (props) => {
                 <Typography variant="body2" color="#DD8501">
                   Chọn file
                 </Typography>
-                <input
+                <inputF
                   type="file"
                   name="file"
                   onChange={(event) => {
@@ -607,7 +618,7 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    //onClick={(event) => uploadImage(event)}
+                    onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>
