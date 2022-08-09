@@ -63,6 +63,31 @@ const CreateReportProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
+    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        null,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        null,
+        filesImage
+      );
+    } else {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        reportDetail,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        taskReportDetail,
+        filesImage
+      );
+    }
     handleCreateReport(
       idN,
       reportDate,
