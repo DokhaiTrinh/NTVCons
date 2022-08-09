@@ -56,15 +56,27 @@ const CreateRequestProject = (props) => {
   const [requestTypeSelected, setRequestTypeSelected] = React.useState();
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
-    handleCreateRequest(
-      idN,
-      requestDate,
-      data.requestDesc,
-      requestDetail,
-      data.requestName,
-      requestTypeSelected,
-      idUser
-    );
+    if (requestDetail === 0) {
+      handleCreateRequest(
+        idN,
+        requestDate,
+        data.requestDesc,
+        null,
+        data.requestName,
+        requestTypeSelected,
+        idUser
+      );
+    } else {
+      handleCreateRequest(
+        idN,
+        requestDate,
+        data.requestDesc,
+        requestDetail,
+        data.requestName,
+        requestTypeSelected,
+        idUser
+      );
+    }
   };
   const handleCreateRequest = async (
     projectId,
@@ -285,7 +297,7 @@ const CreateRequestProject = (props) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} spacing={2}>
                 <Typography variant="body2" color="#DD8501">
                   Loại yêu cầu
                 </Typography>
