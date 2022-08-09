@@ -121,18 +121,18 @@ const headCells = [
     label: 'Chi tiết',
   },
 
-  {
-    id: 'capnhat',
-    numeric: false,
-    disablePadding: false,
-    label: 'Cập nhật',
-  },
-  {
-    id: 'xoa',
-    numeric: false,
-    disablePadding: false,
-    label: 'Xóa',
-  },
+  // {
+  //   id: 'capnhat',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Cập nhật',
+  // },
+  // {
+  //   id: 'xoa',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Xóa',
+  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -292,7 +292,7 @@ export default function RequestTable(props) {
       }
     })();
   }, [pageNum]);
-  console.log(totalPage);
+  console.log(allRequestDetails);
   const handleDeleteRequest = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -308,6 +308,7 @@ export default function RequestTable(props) {
       }
     });
   };
+  console.log(allRequestDetails);
   const DeleteRequest = async (id) => {
     try {
       await deleteRequestApi(id);
@@ -423,36 +424,6 @@ export default function RequestTable(props) {
                         </Link>
                       </Route> */}
                     </TableCell>
-                    {userInfor.authorID === '54' ? (
-                      <TableCell align="left">
-                        <IconButton
-                          size="large"
-                          component={Link}
-                          to={`/updateRequestDetails/${row.requestId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Cập nhật'}</Link>
-                      </Route> */}
-                      </TableCell>
-                    ) : null}
-                    {userInfor.authorID === '54' ? (
-                      <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          edge="start"
-                          size="large"
-                          color="warning"
-                          onClick={() => handleDeleteRequest(row.requestId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Xóa'}</Link>
-                      </Route> */}
-                      </TableCell>
-                    ) : null}
                   </TableRow>
                 );
               })}

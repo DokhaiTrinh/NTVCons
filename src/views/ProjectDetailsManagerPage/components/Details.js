@@ -93,23 +93,15 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Người quản trị
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.createdBy}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
-              <Typography sx={{ width: '100%' }}>
+              <Typography sx={{ widsh: '100%' }}>
                 <Typography>
                   {managerList ? (
                     managerList.map((managerList, index) => (
                       <Typography
                         sx={{
-                          witdh: '100%',
+                          // witdh: '100%',
                           marginBottom: '10px',
                           padding: '10px',
                         }}
@@ -149,22 +141,6 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Thời gian bắt đầu dự kiến
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.actualStartDate}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Thời gian kết thúc dự kiến
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.actualEndDate}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Bảng vẽ
               </Typography>
               <Typography variant="body1"></Typography>
@@ -186,6 +162,22 @@ const Details = (props) => {
               </Typography>
               <Typography variant="body1">
                 {allProjectDetails.location.country}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Thời gian bắt đầu dự kiến
+              </Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualStartDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Thời gian kết thúc dự kiến
+              </Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">

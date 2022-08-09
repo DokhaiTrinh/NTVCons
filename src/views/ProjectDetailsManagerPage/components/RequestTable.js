@@ -426,7 +426,7 @@ export default function RequestTable(props) {
                         <IconButton
                           size="large"
                           component={Link}
-                          to={`/updateRequestDetails/${row.requestId}`}
+                          to={`/updateRequestDetailsManager/${row.requestId}`}
                         >
                           <UpdateIcon />
                         </IconButton>

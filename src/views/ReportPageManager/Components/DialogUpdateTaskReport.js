@@ -5,16 +5,32 @@ import TextFieldComponent from '../../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 const DialogUpdateTaskReport = (props) => {
   const {
     updateTaskDetail,
     setUpdateTaskDetail,
     actionUpdateTask,
     itemDetailTaskUpdate,
+    id,
   } = props;
-
+  const [allTask, setAllTask] = React.useState([]);
+  const [taskIdSelected, setTaskIdSelected] = React.useState();
   const valideSchema = yup
     .object({
       taskId: yup.number().required(),
@@ -57,7 +73,26 @@ const DialogUpdateTaskReport = (props) => {
     }
     props.handleCloseUpdateTaskReportDetailDialog();
   };
-
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllTask = await getTaskByProjectIdApi(
+          0,
+          15,
+          id,
+          'BY_PROJECT_ID',
+          'createdAt',
+          false
+        );
+        setAllTask(listAllTask.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách dự án');
+      }
+    })();
+  }, []);
+  const handleChange = (event) => {
+    setTaskIdSelected(event.target.value);
+  };
   return (
     <div>
       <Typography
@@ -90,21 +125,25 @@ const DialogUpdateTaskReport = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Công việc thuộc mã công việc:
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="taskId"
-                  defaultValue={
-                    itemDetailTaskUpdate ? itemDetailTaskUpdate.taskId : null
-                  }
-                  errors={errors.taskId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
+              <FormControl sx={{ width: '100%' }}>
+                <Select
+                  onChange={handleChange}
+                  MenuProps={MenuProps}
+                  value={taskIdSelected}
+                >
+                  {allTask.length > 0 ? (
+                    allTask.map((taskType, index) => (
+                      <MenuItem value={taskType.taskId} key={index}>
+                        {taskType.taskName}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem>
+                      Không có dữ liệu của danh sách công việc!
+                    </MenuItem>
+                  )}
+                </Select>
+              </FormControl>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Thông tin công việc

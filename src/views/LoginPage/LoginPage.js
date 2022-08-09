@@ -91,7 +91,7 @@ const LoginPage = (props) => {
           showConfirmButton: false,
           timer: 1500,
         });
-        window.location.replace('home');
+        window.location.replace('project');
       }
     } catch (error) {
       Swal.fire({
@@ -250,10 +250,14 @@ const LoginPage = (props) => {
                 </Button>
                 <Grid container>
                   <Grid item md={4}>
-                    <Box style={{ textAlign: 'left' }} >
-                      <Link color="#DD8501" variant="body1" onClick={() => {
+                    <Box style={{ textAlign: 'left' }}>
+                      <Link
+                        color="#DD8501"
+                        variant="body1"
+                        onClick={() => {
                           history.push('/OTPByEmail');
-                        }}>
+                        }}
+                      >
                         Quên mật khẩu
                       </Link>
                     </Box>

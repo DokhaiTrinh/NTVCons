@@ -15,112 +15,67 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { loginApi } from '../../apis/authentication/login';
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
-
+import { resetPasswordApi } from './../../apis/Resset/resetPassword';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ResetPasswordPage = (props) => {
-  const history = useHistory();
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
-  const [loading, setLoading] = useState(false);
+  // const email = userInfor.email;
   const [showPassword, setShowPassword] = useState(false);
-  // const handleClickShowPassword = () => setShowPassword(!showPassword);
-  // const handleMouseDownPassword = () => setShowPassword(!showPassword);
-  const validationSchema = yup
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const handleClickShowPasswordConfirm = () =>
+    setShowPasswordConfirm(!showPasswordConfirm);
+  const handleMouseDownPasswordConfirm = () =>
+    setShowPasswordConfirm(!showPasswordConfirm);
+  const validateSchema = yup
     .object({
-      username: yup
-        .string()
-        .min(3, 'Tên đăng nhập phải lớn hơn hoặc bằng 6 kí tự')
-        .required('Tên đăng nhập không được để trống!'),
+      email: yup.string().email().required('Mật khẩu không được để trống'),
       password: yup
         .string()
-        .min(3, 'Mật khẩu phải lớn hơn hoặc bằng 6 kí tự')
-        .required('Mật khẩu không được để trống!'),
+        .min(6, 'Mật khẩu phải lớn hơn 6 kí tự')
+        .required('Mật khẩu không được để trống'),
+      cpassword: yup
+        .string()
+        .oneOf(
+          [yup.ref('password')],
+          'Mật khẩu xác nhận phải trùng với mật khẩu!'
+        ),
     })
     .required();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validateSchema),
   });
+
   const submitForm = (data) => {
-    setLoading(true);
-    handleLoginAction(data.username, data.password);
-    setLoading(false);
+    handleResetPassword(data.password, data.email);
   };
 
-  const handleLoginAction = async (username, password) => {
+  const handleResetPassword = async (password, email) => {
+    console.log('data handle reset pass');
     try {
-      const authenInfor = await loginApi({ password, username });
-      if (authenInfor.status === 200) {
-        const decodeToken = parseJwt(authenInfor.data.token);
+      await resetPasswordApi({ password, email });
+      await Swal.fire({
+        icon: 'success',
+        text: 'Đặt lại mật khẩu thành công',
+        timer: 3000,
+        showConfirmButton: false,
+      });
 
-        const userInforObject = {
-          token: authenInfor.data.token,
-          id: decodeToken.id,
-          username: decodeToken.userName,
-          email: decodeToken.email,
-          phone: decodeToken.phone,
-          authorID: decodeToken.role[0].authority,
-        };
-
-        await localStorage.setItem(
-          'USERINFOR',
-          JSON.stringify(userInforObject)
-        );
-        await Swal.fire({
-          icon: 'success',
-          title: 'Đăng nhập thành công!',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        window.location.replace('home');
-      }
+      window.location.replace('/login');
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: 'Đăng nhập thất bại, vui lòng thử lại!!',
+        text: 'Đặt lại mật khẩu không thành công',
+        timer: 2000,
         showConfirmButton: false,
-        timer: 1500,
       });
     }
   };
-
-  function parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join('')
-    );
-
-    return JSON.parse(jsonPayload);
-  }
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-  const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
   return (
     <div
       style={{
@@ -134,7 +89,7 @@ const ResetPasswordPage = (props) => {
       }}
     >
       <Grid align="center">
-        <Paper elevation={10} style={paperStyle}>
+        <Paper elevation={10}>
           <img src={logo} alt="logo" style={{ width: '204px' }} />
 
           <Box sx={{ flexGrow: 1, width: '400px' }}>
@@ -147,6 +102,23 @@ const ResetPasswordPage = (props) => {
             </Grid>
             <form onSubmit={handleSubmit(submitForm)}>
               <TextField
+                {...register('email')}
+                error={errors.email != null}
+                label="Email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                fullWidth
+                helperText={errors.email?.message}
+                // InputProps={{
+                //   startAdornment: (
+                //     <InputAdornment position="start">
+                //       <EmailOutlinedIcon />
+                //     </InputAdornment>
+                //   ),
+                // }}
+              />
+              <TextField
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -155,7 +127,7 @@ const ResetPasswordPage = (props) => {
                 autoFocus
                 name="newpass"
                 type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
+                // autoComplete="current-password"
               />
               <TextField
                 variant="outlined"
@@ -178,14 +150,7 @@ const ResetPasswordPage = (props) => {
                     marginTop: '22px',
                   }}
                 >
-                  {loading ? (
-                    <>
-                      <CircularProgress color="white" size={24} /> &nbsp; Đang
-                      xử lí...
-                    </>
-                  ) : (
-                    ' Hoàn tất'
-                  )}
+                  Hoàn tất
                 </Button>
               </Grid>
             </form>

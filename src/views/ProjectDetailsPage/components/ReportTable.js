@@ -90,18 +90,18 @@ const headCells = [
     disablePadding: false,
     label: 'Chi tiết',
   },
-  {
-    id: 'Capnhat',
-    numeric: false,
-    disablePadding: false,
-    label: 'Cập nhật',
-  },
-  {
-    id: 'xoa',
-    numeric: false,
-    disablePadding: false,
-    label: 'Xóa',
-  },
+//   {
+//     id: 'Capnhat',
+//     numeric: false,
+//     disablePadding: false,
+//     label: 'Cập nhật',
+//   },
+//   {
+//     id: 'xoa',
+//     numeric: false,
+//     disablePadding: false,
+//     label: 'Xóa',
+//   },
 ];
 
 function EnhancedTableHead(props) {
@@ -116,12 +116,11 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-  console.log(userInfor.authorID);
   return (
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) || index === 6 ? null : (
+          (userInfor.authorID !== '54' && index === 4) || index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'center' : 'left'}
@@ -236,7 +235,7 @@ export default function ReportTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { projectId, allReportDetails, totalPage } = props;
   const [{ pageNo, loading }, dispatch] = useStateValue();
-
+  console.log(allReportDetails);
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };

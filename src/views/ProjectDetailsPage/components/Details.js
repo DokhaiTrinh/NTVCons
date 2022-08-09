@@ -14,9 +14,7 @@ const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const Details = (props) => {
   const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
-  console.log(managerList);
   console.log(allProjectDetails);
-  console.log(workerList);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -83,14 +81,6 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Người quản trị
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.createdBy}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
               <Typography sx={{ width: '100%' }}>
@@ -136,30 +126,6 @@ const Details = (props) => {
                   {allProjectDetails.status}
                 </Typography>
               </Box>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Danh sách công nhân
-              </Typography>
-              <Typography sx={{ width: '100%' }}>
-                <Typography>
-                  {workerList ? (
-                    workerList.map((workerList, index) => (
-                      <Typography
-                        sx={{
-                          witdh: '100%',
-                          marginBottom: '10px',
-                          padding: '10px',
-                        }}
-                      >
-                        {managerList.projectWorkerId}
-                      </Typography>
-                    ))
-                  ) : (
-                    <div>Không có dữ liệu!!</div>
-                  )}
-                </Typography>
-              </Typography>
             </Grid>
 
             <Grid item xs="4">
@@ -211,6 +177,35 @@ const Details = (props) => {
               </Typography>
               <Typography variant="body1">
                 {allProjectDetails.planEndDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="12">
+              <Typography variant="body1" color="gray">
+                Danh sách công nhân
+              </Typography>
+              <Typography sx={{ width: '100%' }}>
+                <Typography>
+                  {workerList ? (
+                    workerList.map((workerList, index) => (
+                      <Grid item xs={4}>
+                        <Box sx={{ width: '100%' }}>
+                          <Card sx={{ width: '100%' }}>
+                            <CardContent>
+                              <Typography>
+                                Tên: {workerList.worker.fullName}
+                              </Typography>
+                              <Typography>
+                                CCCD: {workerList.worker.citizenId}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Box>
+                      </Grid>
+                    ))
+                  ) : (
+                    <div>Không có dữ liệu!!</div>
+                  )}
+                </Typography>
               </Typography>
             </Grid>
           </Grid>

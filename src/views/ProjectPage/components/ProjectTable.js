@@ -73,12 +73,6 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người quản trị',
-  },
-  {
     id: 'maduan',
     numeric: false,
     disablePadding: false,
@@ -139,7 +133,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          userInfor.authorID !== '54' && index === 7 ? null : (
+          userInfor.authorID !== '54' && index === 6 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
@@ -342,14 +336,14 @@ export const ProjectTable = (props) => {
                     key={row.name}
                     // selected={isItemSelected}
                   >
-                    <TableCell
+                    {/* <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       align="left"
                     >
                       {row.createdBy}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
                     <TableCell align="left">{row.manager}</TableCell>

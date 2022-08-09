@@ -54,15 +54,15 @@ const CreateProjectPage = (props) => {
   const ref = React.useRef(null);
   const [map, setMap] = React.useState();
 
-  React.useEffect(() => {
-    if (ref.current && !map) {
-      setMap(new window.google.maps.Map(ref.current, {}));
-    }
-  }, [ref, map]);
+  // React.useEffect(() => {
+  //   if (ref.current && !map) {
+  //     setMap(new window.google.maps.Map(ref.current, {}));
+  //   }
+  // }, [ref, map]);
 
-  <Wrapper apiKey={'YOUR_API_KEY'} render={render}>
-    <YourComponent />
-  </Wrapper>;
+  // <Wrapper apiKey={'YOUR_API_KEY'} render={render}>
+  //   <YourComponent />
+  // </Wrapper>;
   React.useEffect(() => {
     (async () => {
       try {
@@ -189,26 +189,26 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  const uploadImage = (e) => {
-    const formData = new FormData();
-    console.log(bluePrintDetail);
-    formData.append('file', imageSelected);
-    formData.append('upload_preset', 'u78fm100');
-    const postImage = async () => {
-      try {
-        const response = await axios.post(
-          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-          formData
-        );
-        console.log(response);
-        setImageData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    postImage();
-    e.preventDefault();
-  };
+  // const uploadImage = (e) => {
+  //   const formData = new FormData();
+  //   console.log(bluePrintDetail);
+  //   formData.append('file', imageSelected);
+  //   formData.append('upload_preset', 'u78fm100');
+  //   const postImage = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+  //         formData
+  //       );
+  //       console.log(response);
+  //       setImageData(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   postImage();
+  //   e.preventDefault();
+  // };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -618,7 +618,7 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    onClick={(event) => uploadImage(event)}
+                    // onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

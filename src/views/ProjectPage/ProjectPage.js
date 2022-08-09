@@ -103,6 +103,7 @@ const ProjectPage = (props) => {
 
   const [allProject, setAllProject] = React.useState([]);
   const [totalPage, setTotalPage] = React.useState();
+  const [managerList, setManagerList] = React.useState();
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
@@ -118,6 +119,7 @@ const ProjectPage = (props) => {
         });
         setAllProject(listAllProject.data);
         setTotalPage(listAllProject.data[0].totalPage);
+        setManagerList(listAllProject.data.projectWorkerList);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
@@ -191,13 +193,13 @@ const ProjectPage = (props) => {
             aria-label=""
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Chờ" {...a11yProps(1)} />
+            {/* <Tab label="Chờ" {...a11yProps(1)} />
             <Tab label="Đang thực hiện" {...a11yProps(2)} />
             <Tab label="Hoàn thành" {...a11yProps(3)} />
             <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} />
+            <Tab label="Đã hủy" {...a11yProps(5)} /> */}
             <Box sx={{ flex: 1 }}></Box>
-            <IconButton aria-label="export">
+            {/* <IconButton aria-label="export">
               <Box>
                 <OutputOutlinedIcon />
                 <div>
@@ -220,7 +222,7 @@ const ProjectPage = (props) => {
                   <Typography variant="button">Cài đặt</Typography>
                 </div>
               </Box>
-            </IconButton>
+            </IconButton> */}
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -237,8 +239,8 @@ const ProjectPage = (props) => {
             ) : null}
           </Box>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ProjectTable></ProjectTable>
+        {/* <TabPanel value={value} index={1}>
+          Item two
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three
@@ -251,9 +253,8 @@ const ProjectPage = (props) => {
         </TabPanel>
         <TabPanel value={value} index={5}>
           Item Six
-        </TabPanel>
+        </TabPanel> */}
       </Box>
-     
     </div>
   );
 };

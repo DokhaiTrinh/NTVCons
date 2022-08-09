@@ -67,7 +67,6 @@ const DialogTaskReport = (props) => {
       taskProgress: data.taskProgress,
       reportId: 0,
     };
-    // Đây thằng này là cách tạo ra 1 mảng gồm nhìu objects nè lm giống z
     setTaskReportDetail((taskReportDetail) => [
       ...taskReportDetail,
       detailTaskReport,

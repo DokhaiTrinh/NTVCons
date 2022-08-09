@@ -46,11 +46,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const listItems = [
-  {
-    listIcon: <Home />,
-    path: '/',
-    listText: 'Trang chủ',
-  },
+  // {
+  //   listIcon: <Home />,
+  //   path: '/',
+  //   listText: 'Trang chủ',
+  // },
   {
     listIcon: <AssignmentInd />,
     path: '/project',

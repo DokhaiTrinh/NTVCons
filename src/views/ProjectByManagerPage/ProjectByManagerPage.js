@@ -189,11 +189,11 @@ const ProjectByManagerPage = (props) => {
             aria-label=""
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Chờ" {...a11yProps(1)} />
+            {/* <Tab label="Chờ" {...a11yProps(1)} />
             <Tab label="Đang thực hiện" {...a11yProps(2)} />
             <Tab label="Hoàn thành" {...a11yProps(3)} />
             <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} />
+            <Tab label="Đã hủy" {...a11yProps(5)} /> */}
             <Box sx={{ flex: 1 }}></Box>
             <IconButton aria-label="export">
               <Box>
@@ -232,7 +232,7 @@ const ProjectByManagerPage = (props) => {
             ) : null}
           </Box>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        {/* <TabPanel value={value} index={1}>
           <ProjectTable></ProjectTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -246,7 +246,7 @@ const ProjectByManagerPage = (props) => {
         </TabPanel>
         <TabPanel value={value} index={5}>
           Item Six
-        </TabPanel>
+        </TabPanel> */}
       </Box>
     </div>
   );

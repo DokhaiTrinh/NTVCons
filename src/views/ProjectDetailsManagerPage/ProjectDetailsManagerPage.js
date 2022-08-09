@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
+import Blueprint from './components/Blueprint';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,6 +24,8 @@ import { getProjectByParam } from '../../apis/Project/getProjectById';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useParams } from 'react-router-dom';
+import FileDetail from './components/FileDetail';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -152,6 +155,8 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Báo cáo" {...a11yProps(1)} />
             <Tab label="Công việc" {...a11yProps(2)} />
             <Tab label="Yêu cầu" {...a11yProps(3)} />
+            <Tab label="Bản vẽ" {...a11yProps(4)} />
+            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box></Box>
           </Tabs>
@@ -182,6 +187,15 @@ const ProjectDetailsPage = (props) => {
             projectId={projectId}
             allRequestDetails={allRequestDetails}
           ></RequestTable>
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <Blueprint
+            projectId={projectId}
+            allRequestDetails={allRequestDetails}
+          ></Blueprint>
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <FileDetail projectId={projectId}></FileDetail>
         </TabPanel>
       </Box>
     </div>

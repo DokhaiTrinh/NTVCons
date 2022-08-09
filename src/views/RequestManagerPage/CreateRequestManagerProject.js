@@ -32,6 +32,8 @@ import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
+
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -45,6 +47,7 @@ const MenuProps = {
 const CreateRequestProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openRequestDetailDialog, setOpenRequestDetailDialog] = useState(false);
@@ -60,7 +63,7 @@ const CreateRequestProject = (props) => {
       requestDetail,
       data.requestName,
       requestTypeSelected,
-      data.requesterId
+      idUser
     );
   };
   const handleCreateRequest = async (
@@ -99,7 +102,7 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetails/${id}`);
+      await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -122,7 +125,6 @@ const CreateRequestProject = (props) => {
         .string()
         .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
-      requesterId: yup.number().required(),
     })
     .required();
   const {
@@ -189,7 +191,7 @@ const CreateRequestProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-            <Grid item xs={12}>
+              <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên yêu cầu
                 </Typography>
@@ -306,18 +308,6 @@ const CreateRequestProject = (props) => {
                     )}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người yêu cầu
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="requesterId"
-                  errors={errors.requesterId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
               </Grid>
               <Grid item xs={12}>
                 <Box

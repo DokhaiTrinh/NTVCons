@@ -34,6 +34,7 @@ import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDe
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 import { getRequestIdApi } from '../../apis/Request/getRequestByProjectId';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -47,6 +48,7 @@ const MenuProps = {
 const UpdateRequest = () => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openUpdateRequestDetailDialog, setOpenUpdateRequestDetailDialog] =
@@ -65,7 +67,7 @@ const UpdateRequest = () => {
       data.requestDesc,
       requestDetail,
       requestTypeSelected,
-      data.requesterId
+      idUser
     );
     console.log(requestDetail);
   };
@@ -94,7 +96,7 @@ const UpdateRequest = () => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetails/${id}`);
+      await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -304,19 +306,7 @@ const UpdateRequest = () => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Người yêu cầu
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="requesterId"
-                    defaultValue={allRequestDetail.requesterId}
-                    errors={errors.requesterId}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
+
                 <Grid item xs={12}>
                   <Box
                     sx={{

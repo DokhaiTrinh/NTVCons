@@ -15,221 +15,215 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { loginApi } from '../../apis/authentication/login';
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
+import { getOTPByEmailApi } from './../../apis/Resset/resetPassword';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const OTPByEmail = (props) => {
   const history = useHistory();
-    const handleClickShowPassword = () => {
-        setValues({
-            ...values,
-            showPassword: !values.showPassword,
-        });
-    };
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-    const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-    };
-    const [values, setValues] = React.useState({
-        amount: '',
-        password: '',
-        weight: '',
-        weightRange: '',
-        showPassword: false,
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
     });
-    const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    // const handleClickShowPassword = () => setShowPassword(!showPassword);
-    // const handleMouseDownPassword = () => setShowPassword(!showPassword);
-    const validationSchema = yup
-        .object({
-            username: yup
-                .string()
-                .min(3, 'Tên đăng nhập phải lớn hơn hoặc bằng 6 kí tự')
-                .required('Tên đăng nhập không được để trống!'),
-            password: yup
-                .string()
-                .min(3, 'Mật khẩu phải lớn hơn hoặc bằng 6 kí tự')
-                .required('Mật khẩu không được để trống!'),
-        })
-        .required();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema),
-    });
-    const submitForm = (data) => {
-        setLoading(true);
-        handleLoginAction(data.username, data.password);
-        setLoading(false);
-    };
+  };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+  const [values, setValues] = React.useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  // const handleClickShowPassword = () => setShowPassword(!showPassword);
+  // const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const validateSchema = yup
+    .object({
+      email: yup
+        .string()
+        .email('Email không hợp lệ')
+        .required('Phải điền Email để lấy mã OTP'),
+    })
+    .required();
 
-    const handleLoginAction = async (username, password) => {
-        try {
-            const authenInfor = await loginApi({ password, username });
-            if (authenInfor.status === 200) {
-                const decodeToken = parseJwt(authenInfor.data.token);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validateSchema),
+  });
 
-                const userInforObject = {
-                    token: authenInfor.data.token,
-                    id: decodeToken.id,
-                    username: decodeToken.userName,
-                    email: decodeToken.email,
-                    phone: decodeToken.phone,
-                    authorID: decodeToken.role[0].authority,
-                };
+  const submitForm = (data) => {
+    handleGetOTPByEmail(data.email);
+  };
 
-                await localStorage.setItem(
-                    'USERINFOR',
-                    JSON.stringify(userInforObject)
-                );
-                await Swal.fire({
-                    icon: 'success',
-                    title: 'Đăng nhập thành công!',
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-                window.location.replace('home');
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                text: 'Đăng nhập thất bại, vui lòng thử lại!!',
-                showConfirmButton: false,
-                timer: 1500,
-            });
-        }
-    };
+  const handleGetOTPByEmail = async (email) => {
+    try {
+      setLoading(true);
+      await getOTPByEmailApi(email);
+      setLoading(false);
+      localStorage.setItem('email', JSON.stringify(email));
+      await Swal.fire({
+        icon: 'success',
+        text: 'Gửi xác nhận thành công vui lòng nhận mã OTP tại email',
+        timer: 3000,
+        showConfirmButton: false,
+      });
 
-    function parseJwt(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(
-            atob(base64)
-                .split('')
-                .map(function (c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                })
-                .join('')
-        );
-
-        return JSON.parse(jsonPayload);
+      window.location.replace('/OTPPage');
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: 'Gửi email xác nhận không thành công',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      // window.location.reload();
     }
-    useEffect(() => {
-        localStorage.clear();
-    }, []);
-    const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
-    return (
-        <div
-            style={{
-                backgroundImage: `url(${background})`,
-                backgroundPosition: 'center',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                width: '100vw',
-                height: '100vh',
-                paddingTop: '15vh',
-            }}
-        >
-            <Grid align="center">
-                <Paper elevation={10} style={paperStyle}>
-                    <img src={logo} alt="logo" style={{ width: '204px' }} />
+  };
 
-                    <Box sx={{ flexGrow: 1, width: '400px' }}>
-                        <Grid container>
-                            <Grid>
-                                <Typography variant="h5" color="#DD8501">
-                                    Đặt lại mật khẩu
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <form onSubmit={handleSubmit(submitForm)}>
-                            <Grid container alignItems="center"
-                                justify="center">
-                                <Grid item xs={9}>
-                                    <TextField
-                                        {...register('username')}
-                                        // error={submitted && !username}
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        label="Email*"
-                                        autoComplete="username"
-                                        autoFocus
-                                        name="username"
-                                        // value={username}
-                                        error={errors.username != null}
-                                        // onChange={handleChange}
-                                        helperText={errors.username?.message}
-                                    />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Button type="submit"
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: '#DD8501',
-                                            borderRadius: 10,
-                                        }}>
-                                        Gửi OTP
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                            <TextField
-                                {...register('password')}
-                                error={errors.password != null}
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                name="password"
-                                label="Mã OTP*"
-                                type={showPassword ? 'text' : 'password'}
-                                autoComplete="current-password"
-                            />
-                            <Grid>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    style={{
-                                        backgroundColor: '#DD8501',
-                                        paddingRight: '50px',
-                                        paddingLeft: '50px',
-                                        borderRadius: 50,
-                                        marginTop: '22px',
-                                    }}
-                                >
-                                    {loading ? (
-                                        <>
-                                            <CircularProgress color="white" size={24} /> &nbsp; Đang
-                                            xử lí...
-                                        </>
-                                    ) : (
-                                        'Tiếp tục'
-                                    )}
-                                </Button>
-                                <Grid container>
-                                    <Grid item md={4}>
-                                        <Link color="#DD8501" variant="body1" onClick={() => {
-                                            history.push('/OTPByPhone');
-                                        }}>
-                                            Nhận OTP qua số điện thoại
-                                        </Link>
-                                    </Grid>
-                                    {/* <Grid item md={12}>
+  function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+
+    return JSON.parse(jsonPayload);
+  }
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+  const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
+  return (
+    <div
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        width: '100vw',
+        height: '100vh',
+        paddingTop: '15vh',
+      }}
+    >
+      <Grid align="center">
+        <Paper elevation={10} style={paperStyle}>
+          <img src={logo} alt="logo" style={{ width: '204px' }} />
+
+          <Box sx={{ flexGrow: 1, width: '400px' }}>
+            <Grid container>
+              <Grid>
+                <Typography variant="h5" color="#DD8501">
+                  Đặt lại mật khẩu
+                </Typography>
+              </Grid>
+            </Grid>
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Grid container alignItems="center" justify="center">
+                <Grid item xs={9}>
+                  <TextField
+                    {...register('email')}
+                    error={errors.email != null}
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    fullWidth
+                    helperText={errors.email?.message}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailOutlinedIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#DD8501',
+                      borderRadius: 10,
+                    }}
+                  >
+                    Gửi OTP
+                  </Button>
+                </Grid>
+              </Grid>
+              {/* <TextField
+                {...register('password')}
+                error={errors.password != null}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                name="password"
+                label="Mã OTP*"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+              /> */}
+              <Grid>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{
+                    backgroundColor: '#DD8501',
+                    paddingRight: '50px',
+                    paddingLeft: '50px',
+                    borderRadius: 50,
+                    marginTop: '22px',
+                  }}
+                >
+                  {loading ? (
+                    <>
+                      <CircularProgress color="white" size={24} /> &nbsp; Đang
+                      xử lí...
+                    </>
+                  ) : (
+                    'Tiếp tục'
+                  )}
+                </Button>
+                <Grid container>
+                  <Grid item md={4}>
+                    <Link
+                      color="#DD8501"
+                      variant="body1"
+                      onClick={() => {
+                        history.push('/OTPByPhone');
+                      }}
+                    >
+                      Nhận OTP qua số điện thoại
+                    </Link>
+                  </Grid>
+                  {/* <Grid item md={12}>
                     <Box style={{ textAlign: 'right' }}>
                       <Typography color="#DD8501" variant="body1">
                         Sign up for account
                       </Typography>
                     </Box>
                   </Grid> */}
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </Box>
-                </Paper>
-            </Grid>
-        </div>
-    );
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Paper>
+      </Grid>
+    </div>
+  );
 };
 export default OTPByEmail;
