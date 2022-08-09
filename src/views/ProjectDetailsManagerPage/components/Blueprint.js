@@ -101,6 +101,7 @@ export const Blueprint = (props) => {
           sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
           variant="elevation"
         >
+          <Typography variant="h6">Thông tin bản vẽ</Typography>
           {/* <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item xs={11}>
               <Typography variant="h6" sx={{ marginBottom: '20px' }}>
@@ -167,7 +168,7 @@ export const Blueprint = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography>Bản vẽ</Typography>
+              <Typography>Hình ảnh</Typography>
               {/* <input
                 type="file"
                 id="files"

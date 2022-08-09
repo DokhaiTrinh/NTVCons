@@ -111,18 +111,18 @@ const headCells = [
   //   disablePadding: false,
   //   label: 'Người nhận',
   // },
-  {
-    id: 'update',
-    numeric: false,
-    disablePadding: false,
-    label: 'Cập nhật',
-  },
-  {
-    id: 'delete',
-    numeric: false,
-    disablePadding: false,
-    label: 'Xóa',
-  },
+  // {
+  //   id: 'update',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Cập nhật',
+  // },
+  // {
+  //   id: 'delete',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Xóa',
+  // },
 ];
 
 function EnhancedTableHead(props) {
