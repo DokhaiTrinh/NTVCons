@@ -14,7 +14,8 @@ const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
   const { id } = useParams();
-  const { blueprintDetail, setBlueprintDetail } = React.useState();
+  console.log(id);
+  const [blueprintDetail, setBlueprintDetail] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -81,23 +82,25 @@ export const Blueprint = (props) => {
               <Typography variant="body1" color="gray">
                 Tên bản vẽ
               </Typography>
-              {/* <Typography variant="body1">{blueprintId.blueprintId}</Typography> */}
+              <Typography variant="body1">
+                {blueprintDetail.blueprintName}
+              </Typography>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Người thiết kế
               </Typography>
-              {/* <Typography variant="body1">
-                {allProjectDetails.projectName}
-              </Typography> */}
+              <Typography variant="body1">
+                {blueprintDetail.designerName}
+              </Typography>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Giá bản vẽ
               </Typography>
-              {/* <Typography variant="body1">
-                {allProjectDetails.actualStartDate}
-              </Typography> */}
+              <Typography variant="body1">
+                {blueprintDetail.estimatedCost}
+              </Typography>
             </Grid>
           </Grid>
         </Paper>
