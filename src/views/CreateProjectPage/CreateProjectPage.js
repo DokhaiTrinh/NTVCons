@@ -107,16 +107,33 @@ const CreateProjectPage = (props) => {
 
     // console.log(managerListDetail);
     //listWorkerChoice.push(element);
-    handleCreateProject(
-      planEndDate,
-      planStartDate,
-      locationDetail,
-      bluePrintDetail,
-      managerListDetail,
-      data.estimatedCost,
-      data.projectName,
-      workerListDetail
-    );
+    if (
+      bluePrintDetail === 0 ||
+      managerListDetail === 0 ||
+      workerListDetail === 0
+    ) {
+      handleCreateProject(
+        planEndDate,
+        planStartDate,
+        locationDetail,
+        null,
+        null,
+        data.estimatedCost,
+        data.projectName,
+        null
+      );
+    } else {
+      handleCreateProject(
+        planEndDate,
+        planStartDate,
+        locationDetail,
+        bluePrintDetail,
+        managerListDetail,
+        data.estimatedCost,
+        data.projectName,
+        workerListDetail
+      );
+    }
   };
   const handleCreateProject = async (
     planEndDate,
@@ -173,13 +190,13 @@ const CreateProjectPage = (props) => {
     .object({
       estimatedCost: yup
         .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
+        .min(100000000, 'Giá trị thấp nhất phải là 100.000.000 VNĐ')
         .typeError('Giá tiền phải là số tính theo VNĐ'),
       projectName: yup
         .string()
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
-        .required('Dự án '),
+        .required('Tên dự án đã trùng với dự án khác!!'),
     })
     .required();
   const {

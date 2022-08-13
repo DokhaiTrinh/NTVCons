@@ -31,7 +31,8 @@ import { getProjectByManagerApi } from '../../apis/ProjectManager/getAllManager'
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -54,6 +55,8 @@ const CreateTaskProject = (props) => {
   const [loading, setLoading] = useState('');
   const [projectByManager, setProjcetByManager] = React.useState();
   const [managerTypeSelected, setManagerTypeSelected] = React.useState();
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -96,7 +99,8 @@ const CreateTaskProject = (props) => {
       id,
       managerTypeSelected,
       data.taskDesc,
-      data.taskName
+      data.taskName,
+      filesImage
     );
   };
   const handleCreateTask = async (
@@ -105,7 +109,8 @@ const CreateTaskProject = (props) => {
     projectId,
     assigneeId,
     taskDesc,
-    taskName
+    taskName,
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -116,6 +121,7 @@ const CreateTaskProject = (props) => {
         assigneeId,
         taskDesc,
         taskName,
+        fileList,
       });
 
       setLoading(false);
@@ -178,7 +184,58 @@ const CreateTaskProject = (props) => {
   //   };
   //   postImage();
   // };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -290,6 +347,21 @@ const CreateTaskProject = (props) => {
                     )}
                   </Select>
                 </FormControl>
+              </Grid>
+              <Grid item container xs={12}>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item container sx={12}>
                 <Box

@@ -84,12 +84,12 @@ const headCells = [
     disablePadding: false,
     label: 'Tên dự án',
   },
-  {
-    id: 'nguoithamgia',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
+  // {
+  //   id: 'nguoithamgia',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Người tham gia',
+  // },
   {
     id: 'batdau',
     numeric: false,
@@ -243,8 +243,19 @@ const handleGetDate = (date) => {
 };
 
 export const ProjectTable = (props) => {
+  const handleGetDate = (date) => {
+    const getDate = date.substring(0, 10);
+    const getDateCom = getDate.split('-');
+    const getDateReformat = ''.concat(
+      getDateCom[2],
+      '/',
+      getDateCom[1],
+      '/',
+      getDateCom[0]
+    );
+    return getDateReformat;
+  };
   const { allProject, totalPage } = props;
-
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
@@ -346,10 +357,14 @@ export const ProjectTable = (props) => {
                     </TableCell> */}
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.manager}</TableCell>
+                    {/* <TableCell align="left">{row.manager}</TableCell> */}
                     {/* <TableCell align="left">{row.works}</TableCell> */}
-                    <TableCell align="left">{row.planStartDate}</TableCell>
-                    <TableCell align="left">{row.planEndDate}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planStartDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planEndDate)}
+                    </TableCell>
                     <TableCell align="left">
                       <IconButton
                         edge="end"

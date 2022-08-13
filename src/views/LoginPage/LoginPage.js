@@ -71,7 +71,6 @@ const LoginPage = (props) => {
       const authenInfor = await loginApi({ password, username });
       if (authenInfor.status === 200) {
         const decodeToken = parseJwt(authenInfor.data.token);
-
         const userInforObject = {
           token: authenInfor.data.token,
           id: decodeToken.id,

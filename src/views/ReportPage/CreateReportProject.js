@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
-import { createReportApi } from '../../apis/Report/createReport';
+import { createReportApi1 } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
@@ -97,7 +97,7 @@ const CreateReportProject = (props) => {
         typeof taskReportList,
         typeof fileList
       );
-      await createReportApi({
+      await createReportApi1({
         projectId,
         reportDate,
         reportDesc,

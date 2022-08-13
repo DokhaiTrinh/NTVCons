@@ -71,12 +71,12 @@ class AxiosService {
     const formData = new FormData();
     const reportDTO = {
       projectId: body.projectId,
+      reportDate: body.reportDate,
+      reportDesc: body.reportDesc,
+      reportDetailList: body.reportDetailList,
       reportTypeId: body.reportTypeId,
       reporterId: body.reporterId,
       reportName: body.reportName,
-      reportDesc: body.reportDesc,
-      reportDate: body.reportDate,
-      reportDetailList: body.reportDetailList,
       taskReportList: body.taskReportList,
     };
     const json = JSON.stringify(reportDTO);
@@ -98,11 +98,11 @@ class AxiosService {
     const formData = new FormData();
     const requestDTO = {
       projectId: body.projectId,
-      requestTypeId: body.requestTypeId,
-      requestName: body.requestName,
       requestDate: body.requestDate,
       requestDesc: body.requestDesc,
       requestDetailList: body.requestDetailList,
+      requestName: body.requestName,
+      requestTypeId: body.requestTypeId,
       requesterId: body.requesterId,
     };
     const json = JSON.stringify(requestDTO);

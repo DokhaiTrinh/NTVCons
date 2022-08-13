@@ -285,7 +285,7 @@ const CreateBlueprint = (props) => {
                   {...register('files')}
                   type="file"
                   id="files"
-                  multiple
+                  // multiple
                   onChange={handleChangeFile}
                 />
                 <div className="label-holder">

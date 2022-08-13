@@ -16,7 +16,10 @@ const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
   const { id } = useParams();
-  const { blueprintDetail, setBlueprintDetail } = React.useState();
+  const [blueprintDetail, setBlueprintDetail] = React.useState({});
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [imageGet, setImageGet] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -105,7 +108,7 @@ export const Blueprint = (props) => {
                 Thông tin bản vẽ
               </Typography>
             </Grid>
-            {userInfor.authorID !== '54' ? null : (
+            {/* {userInfor.authorID !== '54' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box
@@ -136,7 +139,7 @@ export const Blueprint = (props) => {
                   </Box>
                 </Grid>
               </Grid>
-            )}
+            )} */}
           </Grid>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
@@ -160,9 +163,25 @@ export const Blueprint = (props) => {
               <Typography variant="body1" color="gray">
                 Giá bản vẽ
               </Typography>
-              {/* <Typography variant="body1">
-                {allProjectDetails.actualStartDate}
-              </Typography> */}
+              {blueprintDetail.estimatedCost} VND
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Hình ảnh
+              </Typography>
+
+              {/* <input
+                type="file"
+                id="files"
+                multiple
+                onChange={handleChangeFile}
+              /> */}
+              <div className="label-holder">
+                <label htmlFor="file" className="img-upload"></label>
+              </div>
+
+              {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
+              <div className="result">{renderPhotos(imageGet)}</div>
             </Grid>
           </Grid>
         </Paper>
