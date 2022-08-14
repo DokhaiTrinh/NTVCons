@@ -8,7 +8,7 @@ const ReportPageContainer = () => {
     pageNo: 0,
     pageSize: 10,
     sortBy: 'createdAt',
-    sortType: true,
+    sortType: false,
   };
   const reducer = (state, action) => {
     switch (action.type) {

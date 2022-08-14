@@ -84,8 +84,8 @@ class AxiosService {
       'reportDTO',
       new Blob([json], { type: 'application/json' })
     );
-    for (let index = 0; index < body.file.length; index++) {
-      formData.append('reportDocList', body.file[index]);
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('reportDocList', body.fileList[index]);
     }
     return this.intance.post(url, formData, {
       headers: {

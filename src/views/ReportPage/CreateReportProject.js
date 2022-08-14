@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createReportApi1 } from '../../apis/Report/createReport';
+import { createReportApi } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
@@ -34,6 +35,8 @@ import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -47,6 +50,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -61,13 +65,38 @@ const CreateReportProject = (props) => {
 
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
+    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        null,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        null,
+        filesImage
+      );
+    } else {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        reportDetail,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        taskReportDetail,
+        filesImage
+      );
+    }
     handleCreateReport(
       idN,
       reportDate,
       data.reportDesc,
       reportDetail,
       reportTypeSelected,
-      data.reporterId,
+      idUser,
       data.reportName,
       taskReportDetail,
       filesImage
@@ -97,7 +126,7 @@ const CreateReportProject = (props) => {
         typeof taskReportList,
         typeof fileList
       );
-      await createReportApi1({
+      await createReportApi({
         projectId,
         reportDate,
         reportDesc,

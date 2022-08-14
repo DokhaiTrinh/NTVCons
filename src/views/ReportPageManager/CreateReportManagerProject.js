@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createReportApi1 } from '../../apis/Report/createReport';
+import { createReportApi } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
@@ -88,17 +89,7 @@ const CreateReportProject = (props) => {
         filesImage
       );
     }
-    handleCreateReport(
-      idN,
-      reportDate,
-      data.reportDesc,
-      reportDetail,
-      reportTypeSelected,
-      idUser,
-      data.reportName,
-      taskReportDetail,
-      filesImage
-    );
+
   };
   const handleCreateReport = async (
     projectId,
@@ -142,7 +133,7 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
