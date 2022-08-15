@@ -29,7 +29,7 @@ import { deleteTaskApi } from '../../../apis/Task/deleteTask';
 import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
-
+import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
@@ -259,7 +259,11 @@ export default function ReportTable(props) {
   const [{ loading }, dispatch] = useStateValue();
   const [allTaskDetails, setAllTaskDetails] = React.useState([]);
   const { id } = useParams();
-
+  const [totalPage, setTotalPage] = React.useState();
+  const [pageNum, setPageNum] = React.useState(0);
+  const handleChangePage = (event, value) => {
+    setPageNum(value - 1);
+  };
   React.useEffect(() => {
     (async () => {
       try {
@@ -272,11 +276,12 @@ export default function ReportTable(props) {
           false
         );
         setAllTaskDetails(listAllTaskDetail.data);
+        setTotalPage(listAllTaskDetail.data[0].totalPage);
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo công việc');
       }
     })();
-  }, []);
+  }, [pageNum]);
   console.log(allTaskDetails);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -311,10 +316,6 @@ export default function ReportTable(props) {
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -491,14 +492,12 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={allTaskDetails.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
         />
       </Paper>
     </Box>

@@ -27,7 +27,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
-import Pagination from '@mui/material/Pagination';
+  import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

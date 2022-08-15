@@ -7,10 +7,10 @@ const ProjectDetailPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
-    pageSize: 15,
+    pageSize: 5,
     projectId: id,
     sortBy: 'createdAt',
-    sortTypeAsc: true,
+    sortTypeAsc: false,
     searchType: 'BY_PROJECT_ID',
   };
   const reducer = (state, action) => {

@@ -89,7 +89,6 @@ const UpdateReportProject = (props) => {
       }
     })();
   }, []);
-  console.log(updateReportDetail);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleUpdateReport(
@@ -513,6 +512,7 @@ const UpdateReportProject = (props) => {
           updateTaskDetail={updateTaskDetail}
           actionUpdateTask={actionUpdateTask}
           itemDetailTaskUpdate={itemDetailTaskUpdate}
+          projectId={projectId}
         ></DialogUpdateTaskReport>
       </Dialog>
     </div>

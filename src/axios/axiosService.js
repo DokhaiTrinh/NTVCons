@@ -67,7 +67,7 @@ class AxiosService {
       },
     });
   }
-  post4(url, body, token) {
+  postCreateReport(url, body, token) {
     const formData = new FormData();
     const reportDTO = {
       projectId: body.projectId,
@@ -94,7 +94,7 @@ class AxiosService {
       },
     });
   }
-  post5(url, body, token) {
+  postCreateRequest(url, body, token) {
     const formData = new FormData();
     const requestDTO = {
       projectId: body.projectId,
@@ -110,8 +110,8 @@ class AxiosService {
       'requestDTO',
       new Blob([json], { type: 'application/json' })
     );
-    for (let index = 0; index < body.file.length; index++) {
-      formData.append('requestDocList', body.file[index]);
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('requestDocList', body.fileList[index]);
     }
     return this.intance.post(url, formData, {
       headers: {
@@ -120,20 +120,20 @@ class AxiosService {
       },
     });
   }
-  post6(url, body, token) {
+  postCreateTask(url, body, token) {
     const formData = new FormData();
     const taskDTO = {
-      projectId: body.projectId,
-      taskName: body.taskName,
-      taskDesc: body.taskDesc,
-      planStartDate: body.planStartDate,
       planEndDate: body.planEndDate,
+      planStartDate: body.planStartDate,
+      projectId: body.projectId,
       assigneeId: body.assigneeId,
+      taskDesc: body.taskDesc,
+      taskName: body.taskName,
     };
     const json = JSON.stringify(taskDTO);
     formData.append('taskDTO', new Blob([json], { type: 'application/json' }));
-    for (let index = 0; index < body.file.length; index++) {
-      formData.append('taskDocList', body.file[index]);
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('taskDocList', body.fileList[index]);
     }
     return this.intance.post(url, formData, {
       headers: {

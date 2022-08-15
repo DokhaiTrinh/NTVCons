@@ -89,7 +89,6 @@ const CreateReportProject = (props) => {
         filesImage
       );
     }
-
   };
   const handleCreateReport = async (
     projectId,

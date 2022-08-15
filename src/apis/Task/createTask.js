@@ -3,7 +3,7 @@ import * as API_LINK from './../../contants/ApiLinks/apiLinks';
 
 export const createTaskApi1 = (data) => {
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-  return axiosService.post6(
+  return axiosService.postCreateTask(
     `${API_LINK.CREATE_TASK_WITH_FILE}`,
     data,
     userInfor.token

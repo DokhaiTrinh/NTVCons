@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import Dialog from '@mui/material/Dialog';
 import { createTaskApi } from '../../apis/Task/createTask';
+import { createTaskApi1 } from '../../apis/Task/createTask';
 import { getUserByIdApi } from '../../apis/User/getAllUser';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -114,7 +115,7 @@ const CreateTaskProject = (props) => {
   ) => {
     try {
       setLoading(true);
-      await createTaskApi({
+      await createTaskApi1({
         planEndDate,
         planStartDate,
         projectId,
@@ -131,7 +132,7 @@ const CreateTaskProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace(`/projectDetails/${id}`);
+      // window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -141,7 +142,6 @@ const CreateTaskProject = (props) => {
       });
       setLoading(false);
     }
-    console.log(userListDetail);
   };
   const valideSchema = yup.object({}).required();
   const {

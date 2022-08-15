@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useParams } from 'react-router-dom';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 
 const ITEM_HEIGHT = 48;
@@ -27,8 +28,9 @@ const DialogUpdateTaskReport = (props) => {
     setUpdateTaskDetail,
     actionUpdateTask,
     itemDetailTaskUpdate,
-    id,
+    projectId,
   } = props;
+  console.log(projectId);
   const [allTask, setAllTask] = React.useState([]);
   const [taskIdSelected, setTaskIdSelected] = React.useState();
   const valideSchema = yup
@@ -47,7 +49,7 @@ const DialogUpdateTaskReport = (props) => {
   });
   const submitForm = (data) => {
     const createDetailTask = {
-      taskId: data.taskId,
+      taskId: taskIdSelected,
       taskNote: data.taskNote,
       taskProgress: data.taskProgress,
       reportId: null,
@@ -63,7 +65,7 @@ const DialogUpdateTaskReport = (props) => {
         t.taskReportId === itemDetailTaskUpdate.taskReportId
           ? (t = {
               ...t,
-              taskId: data.taskId,
+              taskId: taskIdSelected,
               taskNote: data.taskNote,
               taskProgress: data.taskProgress,
             })
@@ -79,7 +81,7 @@ const DialogUpdateTaskReport = (props) => {
         const listAllTask = await getTaskByProjectIdApi(
           0,
           15,
-          id,
+          projectId,
           'BY_PROJECT_ID',
           'createdAt',
           false

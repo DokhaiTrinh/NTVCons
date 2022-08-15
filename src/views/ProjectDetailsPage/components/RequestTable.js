@@ -269,8 +269,8 @@ export default function RequestTable(props) {
   const { projectId } = props;
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [{ loading }, dispatch] = useStateValue();
-  const [totalPage, setTotalPage] = React.useState();
-  const [pageNum, setPageNum] = React.useState(0);
+    const [totalPage, setTotalPage] = React.useState();
+    const [pageNum, setPageNum] = React.useState(0);
   const handleChangePage = (event, value) => {
     setPageNum(value - 1);
   };

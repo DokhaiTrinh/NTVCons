@@ -60,7 +60,7 @@ const CreateRequestProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
-    if (requestDetail === 0) {
+    if (requestDetail.length === 0) {
       handleCreateRequest(
         idN,
         requestDate,
@@ -122,7 +122,7 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',

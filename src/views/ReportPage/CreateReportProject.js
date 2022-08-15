@@ -65,7 +65,10 @@ const CreateReportProject = (props) => {
 
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+    if (
+      reportDetail.length === 0 ||
+      taskReportDetail.length === 0 
+    ) {
       handleCreateReport(
         idN,
         reportDate,

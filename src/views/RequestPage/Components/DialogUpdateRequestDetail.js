@@ -48,7 +48,6 @@ const DialogUpdateRequestDetail = (props) => {
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
     };
-
     setRequestDetail((requestDetail) => [...requestDetail, detailRequest]);
 
     props.handleCloseRequestDetailDialog();
