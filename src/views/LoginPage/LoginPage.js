@@ -71,7 +71,6 @@ const LoginPage = (props) => {
       const authenInfor = await loginApi({ password, username });
       if (authenInfor.status === 200) {
         const decodeToken = parseJwt(authenInfor.data.token);
-
         const userInforObject = {
           token: authenInfor.data.token,
           id: decodeToken.id,
@@ -91,7 +90,7 @@ const LoginPage = (props) => {
           showConfirmButton: false,
           timer: 1500,
         });
-        window.location.replace('home');
+        window.location.replace('project');
       }
     } catch (error) {
       Swal.fire({
@@ -250,10 +249,14 @@ const LoginPage = (props) => {
                 </Button>
                 <Grid container>
                   <Grid item md={4}>
-                    <Box style={{ textAlign: 'left' }} >
-                      <Link color="#DD8501" variant="body1" onClick={() => {
+                    <Box style={{ textAlign: 'left' }}>
+                      <Link
+                        color="#DD8501"
+                        variant="body1"
+                        onClick={() => {
                           history.push('/OTPByEmail');
-                        }}>
+                        }}
+                      >
                         Quên mật khẩu
                       </Link>
                     </Box>

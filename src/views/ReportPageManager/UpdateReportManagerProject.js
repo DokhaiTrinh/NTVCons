@@ -31,6 +31,8 @@ import { getReportById } from '../../apis/Report/getReportByProjectId';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -45,7 +47,7 @@ const UpdateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
   const [projectId, setProjectId] = useState();
-
+  var idUser = parseFloat(userInfor.authorID);
   const [actionUpdateReport, setActionUpdateReport] = useState();
   const [actionUpdateTask, setActionUpdateTask] = useState();
   const [itemDetailReportUpdate, setitemDetailReportUpdate] = useState();
@@ -87,7 +89,6 @@ const UpdateReportProject = (props) => {
       }
     })();
   }, []);
-  console.log(updateReportDetail);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
     handleUpdateReport(
@@ -97,7 +98,7 @@ const UpdateReportProject = (props) => {
       idN,
       data.reportName,
       reportTypeSelected,
-      data.reporterId,
+      idUser,
       updateReportDetail,
       updateTaskDetail
     );
@@ -511,6 +512,7 @@ const UpdateReportProject = (props) => {
           updateTaskDetail={updateTaskDetail}
           actionUpdateTask={actionUpdateTask}
           itemDetailTaskUpdate={itemDetailTaskUpdate}
+          projectId={projectId}
         ></DialogUpdateTaskReport>
       </Dialog>
     </div>

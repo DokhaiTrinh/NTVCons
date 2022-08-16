@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
+import Blueprint from './components/Blueprint';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,6 +24,8 @@ import { getProjectByParam } from '../../apis/Project/getProjectById';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useParams } from 'react-router-dom';
+import FileDetail from './components/FileDetail';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -72,6 +75,7 @@ const ProjectDetailsPage = (props) => {
   const [workerList, setWorkerList] = React.useState();
   const [blueprint, setBlueprint] = React.useState();
   const [projectName, setProjectName] = React.useState();
+  const [totalPage, setTotalPage] = React.useState();
   // const handleChange1 = (event) => {
   //   setAge(event.target.value);
   // };
@@ -102,6 +106,7 @@ const ProjectDetailsPage = (props) => {
           sortTypeAsc,
         });
         setAllReportDetails(listAllReportDetails.data);
+        setTotalPage(listAllReportDetails.data.totalPage);
       } catch (error) {
         console.log('Không thể lấy danh sách báo cáo');
       }
@@ -110,34 +115,6 @@ const ProjectDetailsPage = (props) => {
   console.log(projectName);
   return (
     <div>
-      <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-              >
-                <Add sx={{ color: 'white' }}></Add>
-                {/* //{allProjectDetails.projectName} asdsadsadsad */}
-              </IconButton>
-            </Box>
-          </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            ></Box>
-          </Grid>
-        </Grid>
-      </Grid>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -152,6 +129,8 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Báo cáo" {...a11yProps(1)} />
             <Tab label="Công việc" {...a11yProps(2)} />
             <Tab label="Yêu cầu" {...a11yProps(3)} />
+            <Tab label="Bản vẽ" {...a11yProps(4)} />
+            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box></Box>
           </Tabs>
@@ -172,6 +151,7 @@ const ProjectDetailsPage = (props) => {
           <ReportTable
             projectId={projectId}
             allReportDetails={allReportDetails}
+            totalPage={totalPage}
           ></ReportTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -182,6 +162,15 @@ const ProjectDetailsPage = (props) => {
             projectId={projectId}
             allRequestDetails={allRequestDetails}
           ></RequestTable>
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <Blueprint
+            projectId={projectId}
+            allRequestDetails={allRequestDetails}
+          ></Blueprint>
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <FileDetail projectId={projectId}></FileDetail>
         </TabPanel>
       </Box>
     </div>

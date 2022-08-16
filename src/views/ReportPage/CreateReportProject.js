@@ -17,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import { createReportApi1 } from '../../apis/Report/createReport';
 import { createReportApi } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -32,7 +33,10 @@ import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -46,6 +50,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -55,17 +60,49 @@ const CreateReportProject = (props) => {
   const [taskReportDetail, setTaskReportDetail] = React.useState([]);
   const [openTaskReportDetailDialog, setOpenTaskReportDetailDialog] =
     useState(false);
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
+
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
+    if (
+      reportDetail.length === 0 ||
+      taskReportDetail.length === 0 
+    ) {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        null,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        null,
+        filesImage
+      );
+    } else {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        reportDetail,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        taskReportDetail,
+        filesImage
+      );
+    }
     handleCreateReport(
       idN,
       reportDate,
       data.reportDesc,
       reportDetail,
       reportTypeSelected,
-      data.reporterId,
+      idUser,
       data.reportName,
-      taskReportDetail
+      taskReportDetail,
+      filesImage
     );
   };
   const handleCreateReport = async (
@@ -76,7 +113,8 @@ const CreateReportProject = (props) => {
     reportTypeId,
     reporterId,
     reportName,
-    taskReportList
+    taskReportList,
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -88,7 +126,8 @@ const CreateReportProject = (props) => {
         typeof reportTypeId,
         typeof reporterId,
         typeof reportName,
-        typeof taskReportList
+        typeof taskReportList,
+        typeof fileList
       );
       await createReportApi({
         projectId,
@@ -99,6 +138,7 @@ const CreateReportProject = (props) => {
         reporterId,
         reportName,
         taskReportList,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -118,7 +158,7 @@ const CreateReportProject = (props) => {
       setLoading(false);
     }
   };
-  // const handleCreateReportDetails = async (
+
   //   itemAmount,
   //   itemDesc,
   //   itemPrice,
@@ -199,6 +239,59 @@ const CreateReportProject = (props) => {
       }
     })();
   }, []);
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -407,6 +500,19 @@ const CreateReportProject = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <input
+                {...register('files')}
+                type="file"
+                id="files"
+                multiple
+                onChange={handleChangeFile}
+              />
+              <div className="label-holder">
+                <label htmlFor="file" className="img-upload"></label>
+              </div>
+
+              <div className="result">{renderPhotos(selectedImages)}</div>
+              {/* <input type="file" multiple {...register("file")} /> */}
               <Grid item xs={12}>
                 <Box
                   sx={{

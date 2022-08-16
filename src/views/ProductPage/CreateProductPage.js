@@ -170,7 +170,7 @@ const CreateProductPage = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Box sx={{ width: '100%', height: '20px' }}></Box>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Hình ảnh
                 </Typography>
@@ -203,7 +203,7 @@ const CreateProductPage = (props) => {
                     <Add sx={{ color: 'white' }}></Add>
                   </IconButton>
                 </Box>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên dự án

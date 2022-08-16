@@ -54,11 +54,11 @@ const CreateProjectPage = (props) => {
   const ref = React.useRef(null);
   const [map, setMap] = React.useState();
 
-  React.useEffect(() => {
-    if (ref.current && !map) {
-      setMap(new window.google.maps.Map(ref.current, {}));
-    }
-  }, [ref, map]);
+  // React.useEffect(() => {
+  //   if (ref.current && !map) {
+  //     setMap(new window.google.maps.Map(ref.current, {}));
+  //   }
+  // }, [ref, map]);
 
   // <Wrapper apiKey={'YOUR_API_KEY'} render={render}>
   //   <YourComponent />
@@ -107,16 +107,33 @@ const CreateProjectPage = (props) => {
 
     // console.log(managerListDetail);
     //listWorkerChoice.push(element);
-    handleCreateProject(
-      planEndDate,
-      planStartDate,
-      locationDetail,
-      bluePrintDetail,
-      managerListDetail,
-      data.estimatedCost,
-      data.projectName,
-      workerListDetail
-    );
+    if (
+      bluePrintDetail === 0 ||
+      managerListDetail === 0 ||
+      workerListDetail === 0
+    ) {
+      handleCreateProject(
+        planEndDate,
+        planStartDate,
+        locationDetail,
+        null,
+        null,
+        data.estimatedCost,
+        data.projectName,
+        null
+      );
+    } else {
+      handleCreateProject(
+        planEndDate,
+        planStartDate,
+        locationDetail,
+        bluePrintDetail,
+        managerListDetail,
+        data.estimatedCost,
+        data.projectName,
+        workerListDetail
+      );
+    }
   };
   const handleCreateProject = async (
     planEndDate,
@@ -173,13 +190,13 @@ const CreateProjectPage = (props) => {
     .object({
       estimatedCost: yup
         .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
+        .min(100000000, 'Giá trị thấp nhất phải là 100.000.000 VNĐ')
         .typeError('Giá tiền phải là số tính theo VNĐ'),
       projectName: yup
         .string()
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
-        .required('Dự án '),
+        .required('Tên dự án đã trùng với dự án khác!!'),
     })
     .required();
   const {
@@ -189,26 +206,26 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  const uploadImage = (e) => {
-    const formData = new FormData();
-    console.log(bluePrintDetail);
-    formData.append('file', imageSelected);
-    formData.append('upload_preset', 'u78fm100');
-    const postImage = async () => {
-      try {
-        const response = await axios.post(
-          'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
-          formData
-        );
-        console.log(response);
-        setImageData(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    postImage();
-    e.preventDefault();
-  };
+  // const uploadImage = (e) => {
+  //   const formData = new FormData();
+  //   console.log(bluePrintDetail);
+  //   formData.append('file', imageSelected);
+  //   formData.append('upload_preset', 'u78fm100');
+  //   const postImage = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'https://api.cloudinary.com/v1_1/niem-tin-vang/upload',
+  //         formData
+  //       );
+  //       console.log(response);
+  //       setImageData(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   postImage();
+  //   e.preventDefault();
+  // };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -309,7 +326,7 @@ const CreateProjectPage = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -396,7 +413,7 @@ const CreateProjectPage = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -444,7 +461,7 @@ const CreateProjectPage = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -523,7 +540,7 @@ const CreateProjectPage = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -580,11 +597,11 @@ const CreateProjectPage = (props) => {
                 />
               </Grid> */}
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Chọn file
                 </Typography>
-                <input
+                <inputF
                   type="file"
                   name="file"
                   onChange={(event) => {
@@ -599,7 +616,7 @@ const CreateProjectPage = (props) => {
                     publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
                   />
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -618,7 +635,7 @@ const CreateProjectPage = (props) => {
                       width: '200px',
                       alignSelf: 'center',
                     }}
-                    onClick={(event) => uploadImage(event)}
+                    // onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

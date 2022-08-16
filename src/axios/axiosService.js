@@ -67,6 +67,106 @@ class AxiosService {
       },
     });
   }
+  postCreateReport(url, body, token) {
+    const formData = new FormData();
+    const reportDTO = {
+      projectId: body.projectId,
+      reportDate: body.reportDate,
+      reportDesc: body.reportDesc,
+      reportDetailList: body.reportDetailList,
+      reportTypeId: body.reportTypeId,
+      reporterId: body.reporterId,
+      reportName: body.reportName,
+      taskReportList: body.taskReportList,
+    };
+    const json = JSON.stringify(reportDTO);
+    formData.append(
+      'reportDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('reportDocList', body.fileList[index]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  postCreateRequest(url, body, token) {
+    const formData = new FormData();
+    const requestDTO = {
+      projectId: body.projectId,
+      requestDate: body.requestDate,
+      requestDesc: body.requestDesc,
+      requestDetailList: body.requestDetailList,
+      requestName: body.requestName,
+      requestTypeId: body.requestTypeId,
+      requesterId: body.requesterId,
+    };
+    const json = JSON.stringify(requestDTO);
+    formData.append(
+      'requestDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('requestDocList', body.fileList[index]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  postCreateTask(url, body, token) {
+    const formData = new FormData();
+    const taskDTO = {
+      planEndDate: body.planEndDate,
+      planStartDate: body.planStartDate,
+      projectId: body.projectId,
+      assigneeId: body.assigneeId,
+      taskDesc: body.taskDesc,
+      taskName: body.taskName,
+    };
+    const json = JSON.stringify(taskDTO);
+    formData.append('taskDTO', new Blob([json], { type: 'application/json' }));
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('taskDocList', body.fileList[index]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  postCreateUser(url, body, token) {
+    const formData = new FormData();
+    const userDTO = {
+      email: body.email,
+      phone: body.phone,
+      roleId: body.roleId,
+      username: body.username,
+      password: body.password,
+      fullName: body.fullName,
+    };
+    const json = JSON.stringify(userDTO);
+    formData.append(
+      'userDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('userAvatar', body.file[0]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   put(url, body, token) {
     return this.intance.put(url, body, {
       headers: { Authorization: `Bearer ${token}` },

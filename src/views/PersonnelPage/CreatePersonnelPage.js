@@ -14,6 +14,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { createUserApi } from './../../apis/User/createUser';
+import { createUserApi1 } from './../../apis/User/createUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -24,6 +25,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -44,6 +47,8 @@ const CreatePersonnelPage = (props) => {
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const [allRole, setAllRole] = React.useState([]);
   const [roleSelected, setRoleSelected] = React.useState();
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -54,8 +59,6 @@ const CreatePersonnelPage = (props) => {
       }
     })();
   }, []);
-  console.log(allRole);
-
   const validateSchema = yup
     .object({
       username: yup
@@ -95,7 +98,8 @@ const CreatePersonnelPage = (props) => {
       roleSelected,
       data.username,
       data.password,
-      data.fullName
+      data.fullName,
+      filesImage
     );
   };
   const handleCreateUser = async (
@@ -104,17 +108,19 @@ const CreatePersonnelPage = (props) => {
     roleId,
     username,
     password,
-    fullName
+    fullName,
+    file
   ) => {
     try {
       setLoading(true);
-      await createUserApi({
+      await createUserApi1({
         email,
         phone,
         roleId,
         username,
         password,
         fullName,
+        file,
       });
       setLoading(false);
       await Swal.fire({
@@ -123,7 +129,7 @@ const CreatePersonnelPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/personnel');
+      // window.location.replace('/personnel');
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -137,7 +143,57 @@ const CreatePersonnelPage = (props) => {
   const handleChange = (event) => {
     setRoleSelected(event.target.value);
   };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -167,6 +223,10 @@ const CreatePersonnelPage = (props) => {
             Ảnh đại diện
           </Typography> */}
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+          <Typography variant="body1" color="#DD8501" fontWeight="bold">
+            Sơ yếu lý lịch
+          </Typography>
+          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Box sx={{ width: '100%', height: '20px' }}>
               <Grid container>
@@ -177,27 +237,21 @@ const CreatePersonnelPage = (props) => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Avatar
-                    sx={{ height: '150px', width: '150px', zIndex: 0 }}
-                    variant="square"
-                    src="src/assets/images/non-avatar.png"
-                  ></Avatar>
-                  <IconButton
-                    aria-label="add"
-                    sx={{
-                      alignSelf: 'center',
-                      backgroundColor: '#DD8501',
-                      zIndex: 1,
-                    }}
-                  >
-                    <Add sx={{ color: 'white' }}></Add>
-                  </IconButton>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    // multiple
+                    onChange={handleChangeFile}
+                  />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="img-upload"></label>
+                  </div>
+
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  {/* <input type="file" multiple {...register("file")} /> */}
                 </Box>
               </Grid>
-              <Typography variant="body1" color="#DD8501" fontWeight="bold">
-                Sơ yếu lý lịch
-              </Typography>
-              <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
               <Box sx={{ width: '100%', height: '20px' }}></Box>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -295,6 +349,7 @@ const CreatePersonnelPage = (props) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
+                    marginTop: '30px'
                   }}
                 >
                   <Button

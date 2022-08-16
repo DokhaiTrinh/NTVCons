@@ -95,6 +95,7 @@ const PersonnelPage = (props) => {
   const [allUser, setAllUser] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
   const [totalPage, setToltalPage] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -106,6 +107,11 @@ const PersonnelPage = (props) => {
         });
         setAllUser(listAllUser.data);
         setToltalPage(listAllUser.data[0].totalPage);
+        if (listAllUser.data.file) {
+          let arrayLinkImg = [];
+          arrayLinkImg.push(listAllUser.data.file.fileLink);
+          setImageGet(arrayLinkImg);
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
@@ -123,6 +129,8 @@ const PersonnelPage = (props) => {
       }
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
+  console.log(imageGet);
+  console.log(allUser);
   return (
     <div>
       <Grid container justify="center">

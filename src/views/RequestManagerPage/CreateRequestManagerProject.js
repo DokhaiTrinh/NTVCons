@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createRequestApi } from '../../apis/Request/createRequest';
+import { createRequestApi1 } from '../../apis/Request/createRequest';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
@@ -32,6 +33,10 @@ import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -45,23 +50,40 @@ const MenuProps = {
 const CreateRequestProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openRequestDetailDialog, setOpenRequestDetailDialog] = useState(false);
   const [requestDetail, setRequestDetail] = React.useState([]);
   const [allRequestType, setAllRequestType] = React.useState([]);
   const [requestTypeSelected, setRequestTypeSelected] = React.useState();
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
-    handleCreateRequest(
-      idN,
-      requestDate,
-      data.requestDesc,
-      requestDetail,
-      data.requestName,
-      requestTypeSelected,
-      data.requesterId
-    );
+    if (requestDetail.length === 0) {
+      handleCreateRequest(
+        idN,
+        requestDate,
+        data.requestDesc,
+        null,
+        data.requestName,
+        requestTypeSelected,
+        idUser,
+        filesImage
+      );
+    } else {
+      handleCreateRequest(
+        idN,
+        requestDate,
+        data.requestDesc,
+        requestDetail,
+        data.requestName,
+        requestTypeSelected,
+        idUser,
+        filesImage
+      );
+    }
   };
   const handleCreateRequest = async (
     projectId,
@@ -70,7 +92,8 @@ const CreateRequestProject = (props) => {
     requestDetailList,
     requestName,
     requestTypeId,
-    requesterId
+    requesterId,
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -81,9 +104,10 @@ const CreateRequestProject = (props) => {
         typeof requestDetailList,
         typeof requestName,
         typeof requestTypeId,
-        typeof requesterId
+        typeof requesterId,
+        typeof fileList
       );
-      await createRequestApi({
+      await createRequestApi1({
         projectId,
         requestDate,
         requestDesc,
@@ -91,6 +115,7 @@ const CreateRequestProject = (props) => {
         requestName,
         requestTypeId,
         requesterId,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -99,11 +124,11 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetails/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Tạo yêu cầu thất bại!!',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -122,7 +147,6 @@ const CreateRequestProject = (props) => {
         .string()
         .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
-      requesterId: yup.number().required(),
     })
     .required();
   const {
@@ -157,6 +181,58 @@ const CreateRequestProject = (props) => {
       }
     })();
   }, []);
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -189,7 +265,7 @@ const CreateRequestProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-            <Grid item xs={12}>
+              <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên yêu cầu
                 </Typography>
@@ -283,7 +359,7 @@ const CreateRequestProject = (props) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} spacing={2}>
                 <Typography variant="body2" color="#DD8501">
                   Loại yêu cầu
                 </Typography>
@@ -307,17 +383,20 @@ const CreateRequestProject = (props) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người yêu cầu
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="requesterId"
-                  errors={errors.requesterId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
+              <Grid item container xs={12}>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
                 />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>
                 <Box

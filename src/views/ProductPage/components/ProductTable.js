@@ -386,6 +386,7 @@ export const ProductTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -393,7 +394,6 @@ export const ProductTable = (props) => {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 };

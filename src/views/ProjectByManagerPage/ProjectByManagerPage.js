@@ -123,62 +123,6 @@ const ProjectByManagerPage = (props) => {
   console.log(managerProject);
   return (
     <div>
-      <Grid container justify="center">
-        {userInfor.authorID !== '54' && userInfor.authorID !== '24' ? null : (
-          <Grid container md="8">
-            <Grid item>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ margin: '20px' }}
-              >
-                <IconButton
-                  aria-label="add"
-                  sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                  component={Link}
-                  to={'/createProject'}
-                >
-                  <Add sx={{ color: 'white' }}></Add>
-                </IconButton>
-              </Box>
-            </Grid>
-            {/* <Grid item>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ height: '100%' }}
-              >
-                <Typography variant="body1">Tạo dự án mới</Typography>
-              </Box>
-            </Grid> */}
-          </Grid>
-        )}
-        <Grid item md="4">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: '20px',
-              border: 2,
-              borderColor: '#DD8501',
-              borderRadius: '10px',
-            }}
-          >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Tìm kiếm"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Box>
-        </Grid>
-      </Grid>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -189,36 +133,11 @@ const ProjectByManagerPage = (props) => {
             aria-label=""
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Chờ" {...a11yProps(1)} />
+            {/* <Tab label="Chờ" {...a11yProps(1)} />
             <Tab label="Đang thực hiện" {...a11yProps(2)} />
             <Tab label="Hoàn thành" {...a11yProps(3)} />
             <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <IconButton aria-label="export">
-              <Box>
-                <OutputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Xuất</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="import">
-              <Box>
-                <InputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Nhập</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="setting">
-              <Box>
-                <SettingsOutlinedIcon />
-                <div>
-                  <Typography variant="button">Cài đặt</Typography>
-                </div>
-              </Box>
-            </IconButton>
+            <Tab label="Đã hủy" {...a11yProps(5)} /> */}
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -232,7 +151,7 @@ const ProjectByManagerPage = (props) => {
             ) : null}
           </Box>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        {/* <TabPanel value={value} index={1}>
           <ProjectTable></ProjectTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -246,7 +165,7 @@ const ProjectByManagerPage = (props) => {
         </TabPanel>
         <TabPanel value={value} index={5}>
           Item Six
-        </TabPanel>
+        </TabPanel> */}
       </Box>
     </div>
   );

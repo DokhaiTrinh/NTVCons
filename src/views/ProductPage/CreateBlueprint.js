@@ -205,9 +205,6 @@ const CreateBlueprint = (props) => {
             <Box sx={{ width: '100%', height: '20px' }}></Box>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Hình ảnh
-                </Typography>
                 {/* <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
                   {itemData.map((item) => (
                     <ImageListItem key={item.img}>
@@ -288,7 +285,7 @@ const CreateBlueprint = (props) => {
                   {...register('files')}
                   type="file"
                   id="files"
-                  multiple
+                  // multiple
                   onChange={handleChangeFile}
                 />
                 <div className="label-holder">

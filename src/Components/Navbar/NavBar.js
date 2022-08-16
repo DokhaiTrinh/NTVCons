@@ -46,11 +46,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const listItems = [
-  {
-    listIcon: <Home />,
-    path: '/',
-    listText: 'Trang chủ',
-  },
+  // {
+  //   listIcon: <Home />,
+  //   path: '/',
+  //   listText: 'Trang chủ',
+  // },
   {
     listIcon: <AssignmentInd />,
     path: '/project',
@@ -107,7 +107,7 @@ export default function App() {
       <List>
         {listItems.map((listItem, index) =>
           userInfor.authorID === '54' ? (
-            <NavLink to={listItem.path} key={index}>
+            <NavLink to={listItem.path} key={index} style={{ textDecoration: 'none' }}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>
                   {listItem.listIcon}
@@ -116,7 +116,7 @@ export default function App() {
               </ListItem>
             </NavLink>
           ) : userInfor.authorID === '44' && (index <= 2 || index >= 5) ? (
-            <NavLink to={listItem.path} key={index}>
+            <NavLink to={listItem.path} key={index} style={{ textDecoration: 'none' }}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>
                   {listItem.listIcon}
@@ -126,7 +126,7 @@ export default function App() {
             </NavLink>
           ) : userInfor.authorID === '24' &&
             (index <= 1 || index >= 5 || index === 3) ? (
-            <NavLink to={listItem.path} key={index}>
+            <NavLink to={listItem.path} key={index} style={{ textDecoration: 'none' }}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>
                   {listItem.listIcon}
@@ -148,10 +148,10 @@ export default function App() {
           style={{ backgroundColor: '#dd8500', color: 'black' }}
         >
           <Toolbar>
-            <IconButton onClick={toggleSlider} color="inherit">
-              <Menu />
+            <IconButton onClick={toggleSlider}>
+              <Menu style={{color: 'white'}}/>
             </IconButton>
-            <Typography variant="h6">Golden Trust</Typography>
+            <Typography variant="h6" style={{color: 'white'}}>Golden Trust</Typography>
             <Drawer open={open} anchor="left" onClose={toggleSlider}>
               {sideList()}
             </Drawer>

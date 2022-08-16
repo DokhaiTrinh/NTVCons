@@ -106,10 +106,10 @@ const headCells = [
     label: 'Kết thúc',
   },
   // {
-  //   id: 'detail',
+  //   id: 'nguoinhan',
   //   character: false,
   //   disablePadding: false,
-  //   label: 'Chi tiết',
+  //   label: 'Người nhận',
   // },
   {
     id: 'update',
@@ -153,7 +153,7 @@ function EnhancedTableHead(props) {
           />
         </TableCell> */}
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) || index === 6 ? null : (
+          (userInfor.authorID !== '54' && index === 6) || index === 7 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.character ? 'right' : 'left'}
@@ -433,6 +433,9 @@ export default function ReportTable(props) {
                     <TableCell align="left">
                       {handleGetDate(row.planEndDate)}
                     </TableCell>
+                    {/* <TableCell align="left">
+                      {row.taskAssignment.assignee.username}
+                    </TableCell> */}
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     {/* <TableCell align="center">

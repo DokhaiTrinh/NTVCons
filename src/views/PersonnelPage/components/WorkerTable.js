@@ -307,7 +307,7 @@ export const WorkerTable = (props) => {
           component={Link}
           to={'/createWorker'}
         >
-          <Typography color="white">Tạo báo cáo</Typography>
+          <Typography color="white">Tạo công nhân</Typography>
         </Button>
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>

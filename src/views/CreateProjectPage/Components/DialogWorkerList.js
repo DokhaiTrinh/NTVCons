@@ -80,35 +80,37 @@ export const DialogWorkerList = (props) => {
             ></List>
             {allWorker ? (
               allWorker.length > 0 ? (
-                allWorker.map((worker) => (
-                  <ListItem
-                    key={worker.workerId}
-                    secondaryAction={
-                      workerListDetail.length > 0 ? (
-                        <Checkbox
-                          onChange={handleToggle(worker.workerId)}
-                          checked={checked.indexOf(worker.workerId) !== -1}
-                        />
-                      ) : (
-                        <Checkbox
-                          onChange={handleToggle(worker.workerId)}
-                          checked={checked.indexOf(worker.workerId) !== -1}
-                        />
-                      )
-                    }
-                    disablePadding
-                  >
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        {/* <Avatar
-                alt={`Avatar n°${value + 1}`}
-                src={`/static/images/avatar/${value + 1}.jpg`}
-              /> */}
-                      </ListItemAvatar>
-                      <ListItemText primary={`${worker.fullName}`} />
-                    </ListItemButton>
-                  </ListItem>
-                ))
+                allWorker.map((worker) =>
+                  worker.isAvailable ? (
+                    <ListItem
+                      key={worker.workerId}
+                      secondaryAction={
+                        workerListDetail.length > 0 ? (
+                          <Checkbox
+                            onChange={handleToggle(worker.workerId)}
+                            checked={checked.indexOf(worker.workerId) !== -1}
+                          />
+                        ) : (
+                          <Checkbox
+                            onChange={handleToggle(worker.workerId)}
+                            checked={checked.indexOf(worker.workerId) !== -1}
+                          />
+                        )
+                      }
+                      disablePadding
+                    >
+                      <ListItemButton>
+                        <ListItemAvatar>
+                          {/* <Avatar
+              alt={`Avatar n°${value + 1}`}
+              src={`/static/images/avatar/${value + 1}.jpg`}
+            /> */}
+                        </ListItemAvatar>
+                        <ListItemText primary={`${worker.fullName}`} />
+                      </ListItemButton>
+                    </ListItem>
+                  ) : null
+                )
               ) : (
                 <p>Không có dữ liệu!!</p>
               )

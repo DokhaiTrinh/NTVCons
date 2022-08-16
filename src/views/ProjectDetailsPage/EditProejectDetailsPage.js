@@ -163,7 +163,6 @@ const EditProejectDetailsPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  // const uploadImage = () => {
   //   const formData = new FormData();
   //   formData.append('file', imageSelected);
   //   formData.append('upload_preset', 'u78fm100');
@@ -362,7 +361,7 @@ const EditProejectDetailsPage = (props) => {
                     <Button
                       variant="contained"
                       style={{
-                        backgroundColor: '',
+                        backgroundColor: '#DD8501',
                         borderRadius: 50,
                         width: '200px',
                         alignSelf: 'center',

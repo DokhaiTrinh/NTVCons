@@ -43,13 +43,14 @@ import UpdateCategoryPage from '../views/CategoryPage/UpdateCategoryPage';
 import OTPByEmail from '../views/ForgotPassword/OTPByEmail';
 import OTPByPhone from '../views/ForgotPassword/OTPByPhone';
 import ResetPasswordPage from '../views/ForgotPassword/ResetPassword';
+import OTPPage from '../views/ForgotPassword/OTPPage';
 export const HOME_ROUTES = [
-  {
-    path: '/home',
-    name: 'Home Page',
-    exact: true,
-    component: HomePage,
-  },
+  // {
+  //   path: '/home',
+  //   name: 'Home Page',
+  //   exact: true,
+  //   component: HomePage,
+  // },
   {
     path: '/chat',
     name: 'Chat Page',
@@ -135,8 +136,8 @@ export const HOME_ROUTES = [
     component: CreateReportManagerPage,
   },
   {
-    path: '/createRequestManager/:id',
-    name: 'Create Request Manager Page',
+    path: '/createRequest/:id',
+    name: 'Create Request Page',
     exact: true,
     component: CreateRequestPage,
   },
@@ -296,7 +297,6 @@ export const HOME_ROUTES = [
     exact: true,
     component: UpdateTaskPage,
   },
-  
 ];
 
 export const LOGIN_ROUTES = [
@@ -317,6 +317,12 @@ export const LOGIN_ROUTES = [
     name: 'OTP By Phone Page',
     exact: true,
     component: OTPByPhone,
+  },
+  {
+    path: '/OTPPage',
+    name: 'OTP Page',
+    exact: true,
+    component: OTPPage,
   },
   {
     path: '/resetPassword',

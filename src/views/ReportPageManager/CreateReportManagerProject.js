@@ -17,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import { createReportApi1 } from '../../apis/Report/createReport';
 import { createReportApi } from '../../apis/Report/createReport';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -32,7 +33,10 @@ import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -46,6 +50,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -55,18 +60,35 @@ const CreateReportProject = (props) => {
   const [taskReportDetail, setTaskReportDetail] = React.useState([]);
   const [openTaskReportDetailDialog, setOpenTaskReportDetailDialog] =
     useState(false);
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    handleCreateReport(
-      idN,
-      reportDate,
-      data.reportDesc,
-      reportDetail,
-      reportTypeSelected,
-      data.reporterId,
-      data.reportName,
-      taskReportDetail
-    );
+    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        null,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        null,
+        filesImage
+      );
+    } else {
+      handleCreateReport(
+        idN,
+        reportDate,
+        data.reportDesc,
+        reportDetail,
+        reportTypeSelected,
+        idUser,
+        data.reportName,
+        taskReportDetail,
+        filesImage
+      );
+    }
   };
   const handleCreateReport = async (
     projectId,
@@ -76,7 +98,8 @@ const CreateReportProject = (props) => {
     reportTypeId,
     reporterId,
     reportName,
-    taskReportList
+    taskReportList,
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -88,9 +111,10 @@ const CreateReportProject = (props) => {
         typeof reportTypeId,
         typeof reporterId,
         typeof reportName,
-        typeof taskReportList
+        typeof taskReportList,
+        typeof fileList
       );
-      await createReportApi({
+      await createReportApi1({
         projectId,
         reportDate,
         reportDesc,
@@ -99,6 +123,7 @@ const CreateReportProject = (props) => {
         reporterId,
         reportName,
         taskReportList,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -107,18 +132,17 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Tạo bản vẽ không thành công',
         timer: 3000,
         showConfirmButton: false,
       });
       setLoading(false);
     }
   };
-  // const handleCreateReportDetails = async (
   //   itemAmount,
   //   itemDesc,
   //   itemPrice,
@@ -155,7 +179,6 @@ const CreateReportProject = (props) => {
         .string()
         .min(5, 'Thông tin báo cáo phải có thông tin nhiều hơn 5 ký tự!')
         .required(),
-      reporterId: yup.number().required(),
       reportName: yup
         .string()
         .min(5, 'Tên báo cáo phải có ít nhất 5 ký tự')
@@ -199,6 +222,58 @@ const CreateReportProject = (props) => {
       }
     })();
   }, []);
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Typography
@@ -395,17 +470,20 @@ const CreateReportProject = (props) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Người báo cáo
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="reporterId"
-                  errors={errors.reportDesc}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
+              <Grid item container xs={12}>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
                 />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>
                 <Box

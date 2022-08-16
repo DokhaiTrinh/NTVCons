@@ -73,12 +73,6 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người quản trị',
-  },
-  {
     id: 'maduan',
     numeric: false,
     disablePadding: false,
@@ -90,12 +84,12 @@ const headCells = [
     disablePadding: false,
     label: 'Tên dự án',
   },
-  {
-    id: 'nguoithamgia',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
+  // {
+  //   id: 'nguoithamgia',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Người tham gia',
+  // },
   {
     id: 'batdau',
     numeric: false,
@@ -139,7 +133,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          userInfor.authorID !== '54' && index === 7 ? null : (
+          userInfor.authorID !== '54' && index === 6 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
@@ -249,8 +243,19 @@ const handleGetDate = (date) => {
 };
 
 export const ProjectTable = (props) => {
+  const handleGetDate = (date) => {
+    const getDate = date.substring(0, 10);
+    const getDateCom = getDate.split('-');
+    const getDateReformat = ''.concat(
+      getDateCom[2],
+      '/',
+      getDateCom[1],
+      '/',
+      getDateCom[0]
+    );
+    return getDateReformat;
+  };
   const { allProject, totalPage } = props;
-
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
@@ -342,20 +347,24 @@ export const ProjectTable = (props) => {
                     key={row.name}
                     // selected={isItemSelected}
                   >
-                    <TableCell
+                    {/* <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       align="left"
                     >
                       {row.createdBy}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.manager}</TableCell>
+                    {/* <TableCell align="left">{row.manager}</TableCell> */}
                     {/* <TableCell align="left">{row.works}</TableCell> */}
-                    <TableCell align="left">{row.planStartDate}</TableCell>
-                    <TableCell align="left">{row.planEndDate}</TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planStartDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {handleGetDate(row.planEndDate)}
+                    </TableCell>
                     <TableCell align="left">
                       <IconButton
                         edge="end"
@@ -385,14 +394,15 @@ export const ProjectTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
           shape="rounded"
           onChange={handleChangePage}
           default={1}
+          sx={{marginBottom: '10px', marginTop: '10px'}}
         />
-      </Paper>
     </Box>
   );
 };

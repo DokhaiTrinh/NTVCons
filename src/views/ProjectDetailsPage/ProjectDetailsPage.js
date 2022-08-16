@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import Details from './components/Details';
 import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
+import Blueprint from './components/Blueprint';
+import FileDetail from './components/FileDetail';
 import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import InputLabel from '@mui/material/InputLabel';
@@ -104,42 +106,6 @@ const ProjectDetailsPage = (props) => {
   }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType]);
   return (
     <div>
-      <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-              >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-              <Typography
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                variant="button"
-                sx={{ margin: '20px' }}
-              >
-                {/* {allProjectDetails.projectName} */}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            ></Box>
-          </Grid>
-        </Grid>
-      </Grid>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -154,6 +120,8 @@ const ProjectDetailsPage = (props) => {
             <Tab label="Báo cáo" {...a11yProps(1)} />
             <Tab label="Công việc" {...a11yProps(2)} />
             <Tab label="Yêu cầu" {...a11yProps(3)} />
+            <Tab label="Bản vẽ" {...a11yProps(4)} />
+            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
             <Box sx={{ flex: 1 }}></Box>
             <Box></Box>
           </Tabs>
@@ -188,6 +156,12 @@ const ProjectDetailsPage = (props) => {
             projectId={projectId}
             allRequestDetails={allRequestDetails}
           ></RequestTable>
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <Blueprint projectId={projectId}></Blueprint>
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <FileDetail projectId={projectId}></FileDetail>
         </TabPanel>
       </Box>
     </div>
