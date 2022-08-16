@@ -138,6 +138,12 @@ const headCells = [
     label: 'Mã NV',
   },
   {
+    id: 'anhdaidien',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ảnh đại diện',
+  },
+  {
     id: 'hovaten',
     numeric: false,
     disablePadding: false,
@@ -393,6 +399,7 @@ export const PersonnelTable = (props) => {
                 return (
                   <TableRow>
                     <TableCell>{row.userId}</TableCell>
+                    <TableCell></TableCell>
                     <TableCell align="left">{row.username}</TableCell>
                     <TableCell align="left">{row.role.roleName}</TableCell>
                     <TableCell align="left">{row.role.updatedAt}</TableCell>

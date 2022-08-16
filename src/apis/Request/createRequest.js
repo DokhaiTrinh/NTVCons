@@ -2,6 +2,7 @@ import axiosService from '../../axios/axiosService';
 import * as API_LINK from '../../contants/ApiLinks/apiLinks';
 
 export const createRequestApi1 = (data) => {
+  console.log(data);
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
   return axiosService.postCreateRequest(
     `${API_LINK.CREATE_REQUEST_WITH_FILE}`,

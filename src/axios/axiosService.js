@@ -142,6 +142,31 @@ class AxiosService {
       },
     });
   }
+  postCreateUser(url, body, token) {
+    const formData = new FormData();
+    const userDTO = {
+      email: body.email,
+      phone: body.phone,
+      roleId: body.roleId,
+      username: body.username,
+      password: body.password,
+      fullName: body.fullName,
+    };
+    const json = JSON.stringify(userDTO);
+    formData.append(
+      'userDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('userAvatar', body.file[0]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   put(url, body, token) {
     return this.intance.put(url, body, {
       headers: { Authorization: `Bearer ${token}` },

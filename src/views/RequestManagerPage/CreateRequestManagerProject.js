@@ -61,7 +61,7 @@ const CreateRequestProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const requestDate = moment(valueRequestDate).format('YYYY-MM-DD HH:mm');
-    if (requestDetail.length === 0 || filesImage.length === 0) {
+    if (requestDetail.length === 0) {
       handleCreateRequest(
         idN,
         requestDate,
@@ -70,7 +70,7 @@ const CreateRequestProject = (props) => {
         data.requestName,
         requestTypeSelected,
         idUser,
-        null
+        filesImage
       );
     } else {
       handleCreateRequest(
