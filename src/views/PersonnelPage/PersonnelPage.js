@@ -10,6 +10,7 @@ import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUser
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
+import Badge from '@mui/material/Badge';
 import { PersonnelTable } from './components/PersonnelTable';
 import { WorkerTable } from './components/WorkerTable';
 import { getAllUserApi } from './../../apis/User/getAllUser';
@@ -96,6 +97,8 @@ const PersonnelPage = (props) => {
   const [allWorker, setAllWorker] = React.useState([]);
   const [totalPage, setToltalPage] = React.useState();
   const [imageGet, setImageGet] = React.useState([]);
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -131,6 +134,53 @@ const PersonnelPage = (props) => {
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
   console.log(imageGet);
   console.log(allUser);
+
+
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    if (src) {
+      return src.map((photo, index) => {
+        return (
+          <Badge
+            // badgeContent={<CancelIcon />}
+            // onClick={() => handleDeleteImage(photo, index)}
+          >
+            <img
+              style={{
+                width: '100%',
+                height: '100%',
+                // borderRadius: "50%",
+                marginRight: '5px',
+                marginBottom: '5px',
+              }}
+              src={photo}
+              key={index}
+            />
+          </Badge>
+        );
+      });
+    }
+  };
+
   return (
     <div>
       <Grid container justify="center">
@@ -217,6 +267,21 @@ const PersonnelPage = (props) => {
                 <Grid item xs={12}>
                   <Typography variant="button">Vai trò</Typography>
                 </Grid>
+              </Grid>
+              <Grid item xs="4">
+                <Typography>Hình ảnh</Typography>
+                {/* <input
+                type="file"
+                id="files"
+                multiple
+                onChange={handleChangeFile}
+              /> */}
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
+                <div className="result">{renderPhotos(imageGet)}</div>
               </Grid>
             </Box>
           </Tabs>

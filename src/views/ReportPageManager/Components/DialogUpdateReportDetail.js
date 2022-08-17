@@ -48,27 +48,33 @@ const DialogUpdateReportDetail = (props) => {
       itemUnit: data.itemUnit,
       reportId: null,
     };
-    if (actionUpdateReport === 'CreateNewReport') {
-      setUpdateReportDetail((updateReportDetail) => [
-        ...updateReportDetail,
-        createDetailReport,
-      ]);
+    console.log(updateReportDetail);
+    if (!updateReportDetail) {
+      if (actionUpdateReport === 'CreateNewReport') {
+        setUpdateReportDetail([createDetailReport]);
+      }
     } else {
-      let updateListReport = [...updateReportDetail];
-      updateListReport = updateListReport.map((u) =>
-        u.reportDetailId === itemDetailReportUpdate.reportDetailId
-          ? (u = {
-              ...u,
-              itemAmount: data.itemAmount,
-              itemDesc: data.itemDesc,
-              itemPrice: data.itemPrice,
-              itemUnit: data.itemUnit,
-            })
-          : u
-      );
-      setUpdateReportDetail(updateListReport);
+      if (actionUpdateReport === 'CreateNewReport') {
+        setUpdateReportDetail((updateReportDetail) => [
+          ...updateReportDetail,
+          createDetailReport,
+        ]);
+      } else {
+        let updateListReport = [...updateReportDetail];
+        updateListReport = updateListReport.map((u) =>
+          u.reportDetailId === itemDetailReportUpdate.reportDetailId
+            ? (u = {
+                ...u,
+                itemAmount: data.itemAmount,
+                itemDesc: data.itemDesc,
+                itemPrice: data.itemPrice,
+                itemUnit: data.itemUnit,
+              })
+            : u
+        );
+        setUpdateReportDetail(updateListReport);
+      }
     }
-
     props.handleCloseUpdateReportDetailDialog();
   };
   console.log(updateReportDetail);
