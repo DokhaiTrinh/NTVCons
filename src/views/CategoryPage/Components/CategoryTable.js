@@ -111,7 +111,6 @@ const headCells = [
 
 const EnhancedTableHead = (props) => {
   const {
-    onSelectAllClick,
     order,
     orderBy,
     numSelected,
@@ -126,15 +125,6 @@ const EnhancedTableHead = (props) => {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -362,15 +352,6 @@ export const CategoryTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
     </Box>
   );

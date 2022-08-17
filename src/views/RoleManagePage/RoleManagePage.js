@@ -141,29 +141,6 @@ const RoleManagePage = (props) => {
             </Box>
           </Grid>
         </Grid>
-        <Grid item md="4">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: '20px',
-              border: 2,
-              borderColor: '#DD8501',
-              borderRadius: '10px',
-            }}
-          >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Tìm kiếm"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Box>
-        </Grid>
       </Grid>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

@@ -432,6 +432,7 @@ export const PersonnelTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -439,7 +440,6 @@ export const PersonnelTable = (props) => {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 };

@@ -316,7 +316,7 @@ export default function RequestTable(props) {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -458,14 +458,14 @@ export default function RequestTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
       </Paper>
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

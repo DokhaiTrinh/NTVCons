@@ -106,42 +106,6 @@ const ProjectDetailsPage = (props) => {
   }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType]);
   return (
     <div>
-      <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-              >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-              <Typography
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                variant="button"
-                sx={{ margin: '20px' }}
-              >
-                {/* {allProjectDetails.projectName} */}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            ></Box>
-          </Grid>
-        </Grid>
-      </Grid>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

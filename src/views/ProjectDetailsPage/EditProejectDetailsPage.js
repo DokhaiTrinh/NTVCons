@@ -361,7 +361,7 @@ const EditProejectDetailsPage = (props) => {
                     <Button
                       variant="contained"
                       style={{
-                        backgroundColor: '',
+                        backgroundColor: '#DD8501',
                         borderRadius: 50,
                         width: '200px',
                         alignSelf: 'center',

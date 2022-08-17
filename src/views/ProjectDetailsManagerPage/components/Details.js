@@ -132,7 +132,7 @@ const Details = (props) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'black',
+                    color: 'white',
                   }}
                 >
                   {allProjectDetails.status}
