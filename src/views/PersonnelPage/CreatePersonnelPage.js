@@ -349,6 +349,7 @@ const CreatePersonnelPage = (props) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
+                    marginTop: '30px'
                   }}
                 >
                   <Button

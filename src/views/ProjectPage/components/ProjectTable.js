@@ -394,14 +394,15 @@ export const ProjectTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
           shape="rounded"
           onChange={handleChangePage}
           default={1}
+          sx={{marginBottom: '10px', marginTop: '10px'}}
         />
-      </Paper>
     </Box>
   );
 };

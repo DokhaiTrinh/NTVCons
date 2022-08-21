@@ -492,6 +492,7 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -499,7 +500,6 @@ export default function ReportTable(props) {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 }
