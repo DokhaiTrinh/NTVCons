@@ -30,6 +30,9 @@ import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
+
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
@@ -53,7 +56,8 @@ const CreateProjectPage = (props) => {
   const [allWorker, setAllWorker] = React.useState([]);
   const ref = React.useRef(null);
   const [map, setMap] = React.useState();
-
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
   // React.useEffect(() => {
   //   if (ref.current && !map) {
   //     setMap(new window.google.maps.Map(ref.current, {}));
@@ -94,44 +98,27 @@ const CreateProjectPage = (props) => {
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-
-    // let listManagerChoice = [];
-    // let listWorkerChoice = [];
-    // for (let index = 0; index < managerListDetail.length; index++) {
-    //   const element = managerListDetail[index];
-    //   let objectManager = {
-    //     managerId: element,
-    //   };
-    //   listManagerChoice.push(objectManager);
-    // }
-
-    // console.log(managerListDetail);
-    //listWorkerChoice.push(element);
-    if (
-      bluePrintDetail === 0 ||
-      managerListDetail === 0 ||
-      workerListDetail === 0
-    ) {
+    if (managerListDetail === 0 || workerListDetail === 0) {
       handleCreateProject(
         planEndDate,
         planStartDate,
         locationDetail,
         null,
-        null,
         data.estimatedCost,
         data.projectName,
-        null
+        null,
+        filesImage
       );
     } else {
       handleCreateProject(
         planEndDate,
         planStartDate,
         locationDetail,
-        bluePrintDetail,
         managerListDetail,
         data.estimatedCost,
         data.projectName,
-        workerListDetail
+        workerListDetail,
+        filesImage
       );
     }
   };
@@ -139,11 +126,11 @@ const CreateProjectPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    blueprint,
     managerIdList,
     estimatedCost,
     projectName,
-    workerIdList
+    workerIdList,
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -151,21 +138,21 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        blueprint,
         managerIdList,
         estimatedCost,
         projectName,
-        workerIdList
+        workerIdList,
+        fileList
       );
       await createProjectApi({
         planEndDate,
         planStartDate,
         location,
-        blueprint,
         managerIdList,
         estimatedCost,
         projectName,
         workerIdList,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -232,12 +219,12 @@ const CreateProjectPage = (props) => {
   const handleCloseLocationDialog = () => {
     setOpenLocationDialog(false);
   };
-  const handleOpenBluePrintDialog = () => {
-    setOpenBluePrintDialog(true);
-  };
-  const handleCloseBluePrintDialog = () => {
-    setOpenBluePrintDialog(false);
-  };
+  // const handleOpenBluePrintDialog = () => {
+  //   setOpenBluePrintDialog(true);
+  // };
+  // const handleCloseBluePrintDialog = () => {
+  //   setOpenBluePrintDialog(false);
+  // };
   const handleOpenManagerListDialog = () => {
     setOpenManagerListDialog(true);
   };
@@ -269,6 +256,58 @@ const CreateProjectPage = (props) => {
         }
       }
     }
+  };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   return (
     <div>
@@ -401,7 +440,7 @@ const CreateProjectPage = (props) => {
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              <Grid item container sx={12}>
+              {/* <Grid item container sx={12}>
                 <Box
                   sx={{
                     width: '100%',
@@ -448,7 +487,7 @@ const CreateProjectPage = (props) => {
                     <div>Không có dữ liệu của bản vẽ chi tiết!</div>
                   </Grid>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item container sx={12}>
                 <Box
                   sx={{
@@ -572,6 +611,21 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid>
+              <Grid item container xs={12}>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
+              </Grid>
               {/* <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Người quản lý
@@ -652,13 +706,13 @@ const CreateProjectPage = (props) => {
           locationDetail={locationDetail}
         ></DialogLocation>
       </Dialog>
-      <Dialog open={openBluePrintDialog} onClose={handleCloseBluePrintDialog}>
+      {/* <Dialog open={openBluePrintDialog} onClose={handleCloseBluePrintDialog}>
         <DialogBluePrint
           handleCloseBluePrintDialog={handleCloseBluePrintDialog}
           setBluePrintDetail={setBluePrintDetail}
           bluePrintDetail={bluePrintDetail}
         ></DialogBluePrint>
-      </Dialog>
+      </Dialog> */}
       <Dialog
         open={openManagerListDialog}
         onClose={handleCloseManagerListDialog}

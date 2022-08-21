@@ -9,7 +9,7 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-
+import Badge from '@mui/material/Badge';
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
     const getDate = date.substring(0, 10);
@@ -28,7 +28,10 @@ const ReportDetailPage = (props) => {
   const [allReportDetail, setAllReportDetail] = React.useState([]);
   const [allReportList, setAllReportList] = React.useState([]);
   const [taskReportList, setTaskReportList] = React.useState([]);
-  
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -36,11 +39,89 @@ const ReportDetailPage = (props) => {
         setAllReportDetail(listAllReportDetail.data);
         setAllReportList(listAllReportDetail.data.reportDetailList);
         setTaskReportList(listAllReportDetail.data.taskReportList);
+        if (listAllReportDetail.data) {
+          if (listAllReportDetail.data.fileList.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllReportDetail.data.fileList.length;
+              index++
+            ) {
+              const element = listAllReportDetail.data.fileList[index];
+              if (element.fileName.split('.')[1] === 'docx') {
+                arrayDocLink.push(element.fileLink);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
+        }
       } catch (error) {
         console.log('Không thể lấy dữ liệu của báo cáo');
       }
     })();
   }, []);
+  console.log(imageGet);
+  console.log(docGet);
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    if (src) {
+      console.log(src);
+      return src.map((photo, index) => {
+        return (
+          <Badge
+            // badgeContent={<CancelIcon />}
+            onClick={() => handleDeleteImage(photo, index)}
+          >
+            <img
+              style={{
+                width: '100%',
+                height: '100%',
+                // borderRadius: "50%",
+                marginRight: '5px',
+                marginBottom: '5px',
+              }}
+              src={photo}
+              key={index}
+            />
+          </Badge>
+        );
+      });
+    }
+  };
   console.log(allReportDetail);
   return (
     <div>
@@ -186,6 +267,33 @@ const ReportDetailPage = (props) => {
                       )}
                     </CardContent>
                   </Card>
+                  <Grid item xs="12">
+                    <Typography>Hình ảnh</Typography>
+                    {/* <input
+                type="file"
+                id="files"
+                multiple
+                onChange={handleChangeFile}
+              /> */}
+                    <div className="label-holder">
+                      <label htmlFor="file" className="img-upload"></label>
+                    </div>
+
+                    {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
+                    <div className="result">{renderPhotos(imageGet)}</div>
+                  </Grid>
+                  <Grid item xs={4}>
+                    {docGet.length > 0 ? (
+                      docGet.map((item, index) => (
+                        <>
+                          Tải file - <a href={item}>Click here to download</a>
+                        </>
+                      ))
+                    ) : (
+                      // <div>Không có tệp đi kèm!!</div>
+                      <></>
+                    )}
+                  </Grid>
                 </Box>
               </Grid>
             </Grid>

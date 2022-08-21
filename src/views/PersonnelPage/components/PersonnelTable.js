@@ -24,6 +24,8 @@ import { deleteUserkApi } from './../../../apis/User/deleteUser';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
+import Avatar from '@mui/material/Avatar';
+
 function createData(code, name, department, position, office, role, join, dob) {
   return {
     code,
@@ -399,7 +401,13 @@ export const PersonnelTable = (props) => {
                 return (
                   <TableRow>
                     <TableCell>{row.userId}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                      {row.file ? (
+                        <Avatar src={row.file.fileLink} />
+                      ) : (
+                        <Avatar src="/broken-image.jpg" />
+                      )}
+                    </TableCell>
                     <TableCell align="left">{row.username}</TableCell>
                     <TableCell align="left">{row.role.roleName}</TableCell>
                     <TableCell align="left">{row.role.updatedAt}</TableCell>

@@ -67,6 +67,32 @@ class AxiosService {
       },
     });
   }
+  postCreateProject(url, body, token) {
+    const formData = new FormData();
+    const projectDTO = {
+      planEndDate: body.reporterId,
+      planStartDate: body.reportTypeId,
+      location: body.reportDate,
+      managerIdList: body.reportDesc,
+      estimatedCost: body.reportName,
+      projectName: body.projectId,
+      workerIdList: body.reportDetailList,
+    };
+    const json = JSON.stringify(projectDTO);
+    formData.append(
+      'projectDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('projectDocList', body.fileList[index]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   postCreateReport(url, body, token) {
     const formData = new FormData();
     const reportDTO = {
@@ -153,12 +179,35 @@ class AxiosService {
       fullName: body.fullName,
     };
     const json = JSON.stringify(userDTO);
+    formData.append('userDTO', new Blob([json], { type: 'application/json' }));
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('userAvatar', body.file[0]);
+    }
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  postCreateWorker(url, body, token) {
+    const formData = new FormData();
+    const workerDTO = {
+      address: body.address,
+      citizenId: body.citizenId,
+      fullName: body.fullName,
+      socialSecurityCode: body.socialSecurityCode,
+      gender: body.gender,
+      birthday: body.birthday,
+      birthPlace: body.birthPlace,
+    };
+    const json = JSON.stringify(workerDTO);
     formData.append(
-      'userDTO',
+      'workerDTO',
       new Blob([json], { type: 'application/json' })
     );
     for (let index = 0; index < body.file.length; index++) {
-      formData.append('userAvatar', body.file[0]);
+      formData.append('workerAvatar', body.file[0]);
     }
     return this.intance.post(url, formData, {
       headers: {
