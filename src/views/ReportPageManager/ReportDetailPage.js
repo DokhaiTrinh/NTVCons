@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Paper from '@mui/material/Paper';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -10,6 +10,10 @@ import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Badge from '@mui/material/Badge';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
     const getDate = date.substring(0, 10);
@@ -32,6 +36,8 @@ const ReportDetailPage = (props) => {
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const [isShown, setIsShown] = useState(false);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -100,13 +106,13 @@ const ReportDetailPage = (props) => {
   const renderPhotos = (src) => {
     if (src) {
       console.log(src);
-      return src.map((photo, index) => {
+      // return src.map((photo, index) => {
         return (
           <Badge
             // badgeContent={<CancelIcon />}
-            onClick={() => handleDeleteImage(photo, index)}
+            // onClick={() => handleDeleteImage(photo, index)}
           >
-            <img
+            {/* <img
               style={{
                 width: '100%',
                 height: '100%',
@@ -116,10 +122,35 @@ const ReportDetailPage = (props) => {
               }}
               src={photo}
               key={index}
-            />
+            /> */}
+            <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
+            {src.map((photo, index) => (
+              <ImageListItem key={photo}>
+
+                <img
+                  src={photo}
+                  // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  key={index}
+                  style={{ objectFit: 'cover', height: '150px', width: '100%' }}
+                  onMouseOver={() => setIsShown(true)}
+                  onMouseOut={() => setIsShown(false)}
+                />
+                {isShown && (
+                  <Box sx={{
+                    height: '150px', width: '100%',
+                    backgroundColor: 'gray', opacity: 0.4, display: 'flex',
+                    alignItems: 'center', justifyContent: 'center', position: 'absolute'
+                  }}>
+                    <ZoomInIcon fontSize='large' />
+                  </Box>
+
+                )}
+              </ImageListItem>
+            ))}
+          </ImageList>
           </Badge>
         );
-      });
+      // });
     }
   };
   console.log(allReportDetail);
@@ -268,34 +299,33 @@ const ReportDetailPage = (props) => {
                       )}
                     </CardContent>
                   </Card>
-                  <Grid item xs="12">
-                    <Typography>Hình ảnh</Typography>
-                    {/* <input
-                type="file"
-                id="files"
-                multiple
-                onChange={handleChangeFile}
-              /> */}
-                    <div className="label-holder">
-                      <label htmlFor="file" className="img-upload"></label>
-                    </div>
-
-                    {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
-                    <div className="result">{renderPhotos(imageGet)}</div>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {docGet.length > 0 ? (
-                      docGet.map((item, index) => (
-                        <>
-                          Tải file - <a href={item}>Click here to download</a>
-                        </>
-                      ))
-                    ) : (
-                      // <div>Không có tệp đi kèm!!</div>
-                      <></>
-                    )}
-                  </Grid>
                 </Box>
+              </Grid>
+              <Grid container item xs="12">
+                <Grid item xs="4">
+                  <Typography variant="body1" color="gray">Hình ảnh</Typography>
+                  <Box sx={{ width: '200px', height: '300px' }}>
+
+                    <div className="label-holder" style={{ height: '200px' }}>
+                      <label htmlFor="file" className="img-upload"></label>
+                      <div className="result" >{renderPhotos(imageGet)}</div>
+                    </div>
+                    {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
+                  </Box>
+                </Grid>
+                <Grid item xs="4">
+                  <Typography variant="body1" color="gray">Tài liệu</Typography>
+                  {docGet.length > 0 ? (
+                    docGet.map((item, index) => (
+                      <>
+                        <a href={item}>Tải xuống</a>
+                      </>
+                    ))
+                  ) : (
+                    // <div>Không có tệp đi kèm!!</div>
+                    <></>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
           ) : (
