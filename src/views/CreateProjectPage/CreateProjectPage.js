@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
+import { createProjectApi1 } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Dialog from '@mui/material/Dialog';
@@ -30,6 +31,9 @@ import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
     new Date()
@@ -141,7 +145,7 @@ const CreateProjectPage = (props) => {
         workerIdList,
         fileList
       );
-      await createProjectApi({
+      await createProjectApi1({
         planEndDate,
         planStartDate,
         location,

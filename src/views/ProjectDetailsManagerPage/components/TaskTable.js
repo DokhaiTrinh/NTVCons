@@ -428,10 +428,10 @@ export default function ReportTable(props) {
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">
-                      {handleGetDate(row.planStartDate)}
+                      {(row.planStartDate)}
                     </TableCell>
                     <TableCell align="left">
-                      {handleGetDate(row.planEndDate)}
+                      {(row.planEndDate)}
                     </TableCell>
                     {/* <TableCell align="left">
                       {row.taskAssignment.assignee.username}

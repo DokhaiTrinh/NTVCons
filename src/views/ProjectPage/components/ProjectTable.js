@@ -243,18 +243,6 @@ const handleGetDate = (date) => {
 };
 
 export const ProjectTable = (props) => {
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '/',
-      getDateCom[1],
-      '/',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
   const { allProject, totalPage } = props;
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
@@ -360,10 +348,10 @@ export const ProjectTable = (props) => {
                     {/* <TableCell align="left">{row.manager}</TableCell> */}
                     {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">
-                      {handleGetDate(row.planStartDate)}
+                      {(row.planStartDate)}
                     </TableCell>
                     <TableCell align="left">
-                      {handleGetDate(row.planEndDate)}
+                      {(row.planEndDate)}
                     </TableCell>
                     <TableCell align="left">
                       <IconButton

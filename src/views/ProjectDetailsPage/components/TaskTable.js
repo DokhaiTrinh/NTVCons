@@ -31,18 +31,6 @@ import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -427,12 +415,8 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.taskDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
-                    <TableCell align="left">
-                      {handleGetDate(row.planStartDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {handleGetDate(row.planEndDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.planStartDate}</TableCell>
+                    <TableCell align="left">{row.planEndDate}</TableCell>
                     {/* <TableCell align="left">
                       {row.taskAssignment.assignee.username}
                     </TableCell> */}

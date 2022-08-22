@@ -216,18 +216,6 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
 export default function ReportTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -368,7 +356,7 @@ export default function ReportTable(props) {
                     </TableCell>
                     <TableCell align="left">{row.reportName}</TableCell>
                     <TableCell align="left">
-                      {handleGetDate(row.reportDate)}
+                      {(row.reportDate)}
                     </TableCell>
                     <TableCell align="left">
                       {row.reportType.reportTypeName}

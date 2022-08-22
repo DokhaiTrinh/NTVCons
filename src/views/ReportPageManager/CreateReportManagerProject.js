@@ -50,7 +50,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  var idUser = parseFloat(userInfor.authorID);
+  // var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -71,7 +71,7 @@ const CreateReportProject = (props) => {
         data.reportDesc,
         null,
         reportTypeSelected,
-        idUser,
+        // idUser,
         data.reportName,
         null,
         filesImage
@@ -83,7 +83,7 @@ const CreateReportProject = (props) => {
         data.reportDesc,
         reportDetail,
         reportTypeSelected,
-        idUser,
+        // idUser,
         data.reportName,
         taskReportDetail,
         filesImage
@@ -96,7 +96,7 @@ const CreateReportProject = (props) => {
     reportDesc,
     reportDetailList,
     reportTypeId,
-    reporterId,
+    // reporterId,
     reportName,
     taskReportList,
     fileList
@@ -120,7 +120,7 @@ const CreateReportProject = (props) => {
         reportDesc,
         reportDetailList,
         reportTypeId,
-        reporterId,
+        // reporterId,
         reportName,
         taskReportList,
         fileList,
