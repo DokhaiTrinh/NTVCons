@@ -9,10 +9,7 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Badge from '@mui/material/Badge';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import RenderPhoto from '../../Components/Render/RenderImage';
 
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
@@ -102,58 +99,6 @@ const ReportDetailPage = (props) => {
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
-  };
-  const renderPhotos = (src) => {
-    if (src) {
-      console.log(src);
-      // return src.map((photo, index) => {
-      return (
-        <Badge
-        // badgeContent={<CancelIcon />}
-        // onClick={() => handleDeleteImage(photo, index)}
-        >
-          {/* <img
-              style={{
-                width: '50%',
-                // height: '100%',
-                // borderRadius: "50%",
-                marginRight: '5px',
-                marginBottom: '5px',
-                borderRadius: '10px'
-              }}
-              onClick
-              src={photo}
-              key={index}
-            /> */}
-          <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
-            {src.map((photo, index) => (
-              <ImageListItem key={photo}>
-
-                <img
-                  src={photo}
-                  // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  key={index}
-                  style={{ objectFit: 'cover', height: '150px', width: '100%' }}
-                  onMouseOver={() => setIsShown(true)}
-                  onMouseOut={() => setIsShown(false)}
-                />
-                {isShown && (
-                  <Box sx={{
-                    height: '150px', width: '100%',
-                    backgroundColor: 'gray', opacity: 0.4, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center', position: 'absolute'
-                  }}>
-                    <ZoomInIcon fontSize='large' />
-                  </Box>
-
-                )}
-              </ImageListItem>
-            ))}
-          </ImageList>
-        </Badge>
-      );
-      // });
-    }
   };
   console.log(allReportDetail);
   return (
@@ -310,10 +255,8 @@ const ReportDetailPage = (props) => {
 
                     <div className="label-holder" style={{ height: '200px' }}>
                       <label htmlFor="file" className="img-upload"></label>
-                      <div className="result" >{renderPhotos(imageGet)}</div>
+                      <div className="result" >{RenderPhoto(imageGet)}</div>
                     </div>
-
-                    {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
                   </Box>
                 </Grid>
                 <Grid item xs="4">

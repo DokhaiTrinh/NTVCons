@@ -1,16 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import { Link, useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import Badge from '@mui/material/Badge';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
+import RenderPhoto from '../../../Components/Render/RenderImage';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
@@ -20,6 +17,7 @@ export const Blueprint = (props) => {
   const [filesImage, setFilesImage] = React.useState([]);
   const [imageGet, setImageGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -70,30 +68,7 @@ export const Blueprint = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    if (src) {
-      return src.map((photo, index) => {
-        return (
-          <Badge
-            // badgeContent={<CancelIcon />}
-            onClick={() => handleDeleteImage(photo, index)}
-          >
-            <img
-              style={{
-                width: '100%',
-                height: '100%',
-                // borderRadius: "50%",
-                marginRight: '5px',
-                marginBottom: '5px',
-              }}
-              src={photo}
-              key={index}
-            />
-          </Badge>
-        );
-      });
-    }
-  };
+
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -178,9 +153,7 @@ export const Blueprint = (props) => {
               <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>
-
-              {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
-              <div className="result">{renderPhotos(imageGet)}</div>
+              <div className="result">{RenderPhoto(imageGet)}</div>
             </Grid>
           </Grid>
         </Paper>

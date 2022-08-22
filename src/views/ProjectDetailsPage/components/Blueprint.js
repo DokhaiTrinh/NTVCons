@@ -12,6 +12,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
+import RenderPhoto from '../../../Components/Render/RenderImage';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
@@ -70,30 +71,6 @@ export const Blueprint = (props) => {
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
-  };
-  const renderPhotos = (src) => {
-    if (src) {
-      return src.map((photo, index) => {
-        return (
-          <Badge
-            // badgeContent={<CancelIcon />}
-            onClick={() => handleDeleteImage(photo, index)}
-          >
-            <img
-              style={{
-                width: '100%',
-                height: '100%',
-                // borderRadius: "50%",
-                marginRight: '5px',
-                marginBottom: '5px',
-              }}
-              src={photo}
-              key={index}
-            />
-          </Badge>
-        );
-      });
-    }
   };
   return (
     <div>
@@ -179,9 +156,7 @@ export const Blueprint = (props) => {
               <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>
-
-              {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
-              <div className="result">{renderPhotos(imageGet)}</div>
+              <div className="result">{RenderPhoto(imageGet)}</div>
             </Grid>
           </Grid>
         </Paper>

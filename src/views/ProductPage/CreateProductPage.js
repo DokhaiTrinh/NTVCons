@@ -5,13 +5,9 @@ import {
   TextField,
   Grid,
   Button,
+  Stack,
 } from '@mui/material';
-import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import * as yup from 'yup';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
@@ -22,6 +18,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { getAllCategoryApi1 } from './../../apis/CategoryPost/getAllCategory';
+import UploadImage from '../../Components/Upload/UploadImage';
+import RenderPhoto from '../../Components/Render/RenderImage';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -38,6 +37,9 @@ const CreateProductPage = (props) => {
   const [allCategory, setAllCategory] = React.useState([]);
   const [categorySelected, setCategorySelected] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -95,7 +97,8 @@ const CreateProductPage = (props) => {
       data.ownerName,
       categorySelected,
       data.postTitle,
-      data.scale
+      data.scale,
+      filesImage
     );
   };
   const handleCreatePost = async (
@@ -205,6 +208,15 @@ const CreateProductPage = (props) => {
                 </Box>
               </Grid> */}
               <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501" sx={{marginBottom: '10px'}}>
+                  Ảnh dự án
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  {UploadImage(setSelectedImage, setFilesImage)}
+                  <div className="result">{RenderPhoto(selectedImages)}</div>
+                </Stack>
+              </Grid>
+              <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên dự án
                 </Typography>
@@ -279,19 +291,19 @@ const CreateProductPage = (props) => {
                     )}
                   </Select>
                 </FormControl>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Tác giả
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="authorName"
-                    // label="Tên vai trò"
-                    errors={errors.authorName}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tác giả
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="authorName"
+                  // label="Tên vai trò"
+                  errors={errors.authorName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Box

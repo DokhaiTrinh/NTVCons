@@ -35,6 +35,7 @@ import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RenderPhoto from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -270,28 +271,6 @@ const CreateReportProject = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
-  };
   return (
     <div>
       <Typography
@@ -511,7 +490,7 @@ const CreateReportProject = (props) => {
                 <label htmlFor="file" className="img-upload"></label>
               </div>
 
-              <div className="result">{renderPhotos(selectedImages)}</div>
+              <div className="result">{RenderPhoto(selectedImages)}</div>
               {/* <input type="file" multiple {...register("file")} /> */}
               <Grid item xs={12}>
                 <Box

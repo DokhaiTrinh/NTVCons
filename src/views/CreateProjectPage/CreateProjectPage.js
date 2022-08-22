@@ -33,6 +33,7 @@ import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RenderPhoto from '../../Components/Render/RenderImage';
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -287,28 +288,6 @@ const CreateProjectPage = (props) => {
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
-  };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
   };
   return (
     <div>
@@ -624,7 +603,7 @@ const CreateProjectPage = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{renderPhotos(selectedImages)}</div>
+                <div className="result">{RenderPhoto(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item xs={12}>

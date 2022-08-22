@@ -23,17 +23,12 @@ import { createTaskApi1 } from '../../apis/Task/createTask';
 import { getUserByIdApi } from '../../apis/User/getAllUser';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { DialogTaskAssgin } from './Component/DialogTaskAssgin';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { getProjectByManagerApi } from '../../apis/ProjectManager/getAllManager';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
+import RenderPhoto from '../../Components/Render/RenderImage';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -214,28 +209,6 @@ const CreateTaskProject = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
-  };
   return (
     <div>
       <Typography
@@ -360,7 +333,7 @@ const CreateTaskProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{renderPhotos(selectedImages)}</div>
+                <div className="result">{RenderPhoto(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item container sx={12}>
