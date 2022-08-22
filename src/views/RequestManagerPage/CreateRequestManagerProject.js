@@ -35,7 +35,7 @@ import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDe
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -374,7 +374,7 @@ const CreateRequestProject = (props) => {
                   <div className="label-holder">
                     <label htmlFor="file" className="img-upload"></label>
                   </div>
-                {/* <div className="result">{RenderPhoto(selectedImages)}</div> */}
+                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

@@ -20,7 +20,7 @@ import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Select from '@mui/material/Select';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -271,7 +271,7 @@ const CreateBlueprint = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{RenderPhoto(selectedImages)}</div>
+                <div className="result">{RenderImage(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

@@ -19,7 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { getAllCategoryApi1 } from './../../apis/CategoryPost/getAllCategory';
 import UploadImage from '../../Components/Upload/UploadImage';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -213,7 +213,7 @@ const CreateProductPage = (props) => {
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderPhoto(selectedImages)}</div>
+                  <div className="result">{RenderImage(selectedImages)}</div>
                 </Stack>
               </Grid>
               <Grid item xs={12}>

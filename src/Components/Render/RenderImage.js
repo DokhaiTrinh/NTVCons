@@ -5,7 +5,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import { sr } from 'date-fns/locale';
 
-export default function RenderPhoto(src) {
+export default function RenderImage(src) {
   const [isShown, setIsShown] = useState(false);
   if (src) {
         console.log(src);

@@ -33,7 +33,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
@@ -290,7 +290,7 @@ const CreateReportProject = (props) => {
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderPhoto(selectedImages)}</div>
+                  <div className="result">{RenderImage(selectedImages)}</div>
                 </Stack>
               </Grid>
               <Grid item xs={12}>
@@ -472,7 +472,7 @@ const CreateReportProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                {/* <div className="result">{RenderPhoto(selectedImages)}</div> */}
+                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

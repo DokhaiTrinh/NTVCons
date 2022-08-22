@@ -33,7 +33,7 @@ import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -603,7 +603,7 @@ const CreateProjectPage = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{RenderPhoto(selectedImages)}</div>
+                <div className="result">{RenderImage(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item xs={12}>

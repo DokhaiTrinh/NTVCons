@@ -35,7 +35,7 @@ import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -490,7 +490,7 @@ const CreateReportProject = (props) => {
                 <label htmlFor="file" className="img-upload"></label>
               </div>
 
-              <div className="result">{RenderPhoto(selectedImages)}</div>
+              <div className="result">{RenderImage(selectedImages)}</div>
               {/* <input type="file" multiple {...register("file")} /> */}
               <Grid item xs={12}>
                 <Box

@@ -9,7 +9,7 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
@@ -255,7 +255,7 @@ const ReportDetailPage = (props) => {
 
                     <div className="label-holder" style={{ height: '200px' }}>
                       <label htmlFor="file" className="img-upload"></label>
-                      <div className="result" >{RenderPhoto(imageGet)}</div>
+                      <div className="result" >{RenderImage(imageGet)}</div>
                     </div>
                   </Box>
                 </Grid>

@@ -28,7 +28,7 @@ import { getProjectByManagerApi } from '../../apis/ProjectManager/getAllManager'
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -333,7 +333,7 @@ const CreateTaskProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{RenderPhoto(selectedImages)}</div>
+                <div className="result">{RenderImage(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item container sx={12}>

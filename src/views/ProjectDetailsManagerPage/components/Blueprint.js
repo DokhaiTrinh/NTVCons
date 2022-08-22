@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { Link, useParams } from 'react-router-dom';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
-import RenderPhoto from '../../../Components/Render/RenderImage';
+import RenderImage from '../../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -153,7 +153,7 @@ export const Blueprint = (props) => {
               <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>
-              <div className="result">{RenderPhoto(imageGet)}</div>
+              <div className="result">{RenderImage(imageGet)}</div>
             </Grid>
           </Grid>
         </Paper>

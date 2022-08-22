@@ -30,7 +30,7 @@ import CardContent from '@mui/material/CardContent';
 import moment from 'moment';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
@@ -227,7 +227,7 @@ export const CreateWorker = (props) => {
                     <label htmlFor="file" className="img-upload"></label>
                   </div>
 
-                  <div className="result">{RenderPhoto(selectedImages)}</div>
+                  <div className="result">{RenderImage(selectedImages)}</div>
                   {/* <input type="file" multiple {...register("file")} /> */}
                 </Box>
               </Grid>

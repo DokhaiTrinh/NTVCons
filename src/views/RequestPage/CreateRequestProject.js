@@ -34,7 +34,7 @@ import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
-import RenderPhoto from '../../Components/Render/RenderImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -373,7 +373,7 @@ const CreateRequestProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{RenderPhoto(selectedImages)}</div>
+                <div className="result">{RenderImage(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>
