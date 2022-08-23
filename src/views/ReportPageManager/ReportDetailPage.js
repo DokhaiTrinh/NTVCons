@@ -100,56 +100,56 @@ const ReportDetailPage = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    if (src) {
-      console.log(src);
-      // return src.map((photo, index) => {
-        return (
-          <Badge
-            // badgeContent={<CancelIcon />}
-            // onClick={() => handleDeleteImage(photo, index)}
-          >
-            {/* <img
-              style={{
-                width: '100%',
-                height: '100%',
-                // borderRadius: "50%",
-                marginRight: '5px',
-                marginBottom: '5px',
-              }}
-              src={photo}
-              key={index}
-            /> */}
-            <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
-            {src.map((photo, index) => (
-              <ImageListItem key={photo}>
+  // const renderPhotos = (src) => {
+  //   if (src) {
+  //     console.log(src);
+  //     // return src.map((photo, index) => {
+  //       return (
+  //         <Badge
+  //           // badgeContent={<CancelIcon />}
+  //           // onClick={() => handleDeleteImage(photo, index)}
+  //         >
+  //           {/* <img
+  //             style={{
+  //               width: '100%',
+  //               height: '100%',
+  //               // borderRadius: "50%",
+  //               marginRight: '5px',
+  //               marginBottom: '5px',
+  //             }}
+  //             src={photo}
+  //             key={index}
+  //           /> */}
+  //           <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
+  //           {src.map((photo, index) => (
+  //             <ImageListItem key={photo}>
 
-                <img
-                  src={photo}
-                  // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  key={index}
-                  style={{ objectFit: 'cover', height: '150px', width: '100%' }}
-                  onMouseOver={() => setIsShown(true)}
-                  onMouseOut={() => setIsShown(false)}
-                />
-                {isShown && (
-                  <Box sx={{
-                    height: '150px', width: '100%',
-                    backgroundColor: 'gray', opacity: 0.4, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center', position: 'absolute'
-                  }}>
-                    <ZoomInIcon fontSize='large' />
-                  </Box>
+  //               <img
+  //                 src={photo}
+  //                 // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+  //                 key={index}
+  //                 style={{ objectFit: 'cover', height: '150px', width: '100%' }}
+  //                 onMouseOver={() => setIsShown(true)}
+  //                 onMouseOut={() => setIsShown(false)}
+  //               />
+  //               {isShown && (
+  //                 <Box sx={{
+  //                   height: '150px', width: '100%',
+  //                   backgroundColor: 'gray', opacity: 0.4, display: 'flex',
+  //                   alignItems: 'center', justifyContent: 'center', position: 'absolute'
+  //                 }}>
+  //                   <ZoomInIcon fontSize='large' />
+  //                 </Box>
 
-                )}
-              </ImageListItem>
-            ))}
-          </ImageList>
-          </Badge>
-        );
-      // });
-    }
-  };
+  //               )}
+  //             </ImageListItem>
+  //           ))}
+  //         </ImageList>
+  //         </Badge>
+  //       );
+  //     // });
+  //   }
+  // };
   console.log(allReportDetail);
   return (
     <div>
@@ -306,7 +306,7 @@ const ReportDetailPage = (props) => {
                   <Box sx={{ width: '200px', height: '300px' }}>
                     <div className="label-holder" style={{ height: '200px' }}>
                       <label htmlFor="file" className="img-upload"></label>
-                      <div className="result" >{renderPhotos(imageGet)}</div>
+                      <div className="result">{RenderImage(imageGet)}</div>
                     </div>
                   </Box>
                 </Grid>
