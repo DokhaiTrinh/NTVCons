@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -107,12 +107,12 @@ const ReportDetailPage = (props) => {
     if (src) {
       console.log(src);
       // return src.map((photo, index) => {
-        return (
-          <Badge
-            // badgeContent={<CancelIcon />}
-            // onClick={() => handleDeleteImage(photo, index)}
-          >
-            {/* <img
+      return (
+        <Badge
+        // badgeContent={<CancelIcon />}
+        // onClick={() => handleDeleteImage(photo, index)}
+        >
+          {/* <img
               style={{
                 width: '100%',
                 height: '100%',
@@ -123,10 +123,13 @@ const ReportDetailPage = (props) => {
               src={photo}
               key={index}
             /> */}
-            <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
+          <ImageList
+            sx={{ width: 450, height: '150px' }}
+            cols={3}
+            rowHeight={164}
+          >
             {src.map((photo, index) => (
               <ImageListItem key={photo}>
-
                 <img
                   src={photo}
                   // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -136,20 +139,26 @@ const ReportDetailPage = (props) => {
                   onMouseOut={() => setIsShown(false)}
                 />
                 {isShown && (
-                  <Box sx={{
-                    height: '150px', width: '100%',
-                    backgroundColor: 'gray', opacity: 0.4, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center', position: 'absolute'
-                  }}>
-                    <ZoomInIcon fontSize='large' />
+                  <Box
+                    sx={{
+                      height: '150px',
+                      width: '100%',
+                      backgroundColor: 'gray',
+                      opacity: 0.4,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      position: 'absolute',
+                    }}
+                  >
+                    <ZoomInIcon fontSize="large" />
                   </Box>
-
                 )}
               </ImageListItem>
             ))}
           </ImageList>
-          </Badge>
-        );
+        </Badge>
+      );
       // });
     }
   };
@@ -303,29 +312,32 @@ const ReportDetailPage = (props) => {
               </Grid>
               <Grid container item xs="12">
                 <Grid item xs="4">
-                  <Typography variant="body1" color="gray">Hình ảnh</Typography>
+                  <Typography variant="body1" color="gray">
+                    Hình ảnh
+                  </Typography>
                   <Box sx={{ width: '200px', height: '300px' }}>
-
                     <div className="label-holder" style={{ height: '200px' }}>
                       <label htmlFor="file" className="img-upload"></label>
-                      <div className="result" >{renderPhotos(imageGet)}</div>
+                      <div className="result">{renderPhotos(imageGet)}</div>
                     </div>
                     {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
                   </Box>
                 </Grid>
-                <Grid item xs="4">
-                  <Typography variant="body1" color="gray">Tài liệu</Typography>
-                  {docGet.length > 0 ? (
-                    docGet.map((item, index) => (
-                      <>
-                        <a href={item}>Tải xuống</a>
-                      </>
-                    ))
-                  ) : (
-                    // <div>Không có tệp đi kèm!!</div>
-                    <></>
-                  )}
-                </Grid>
+              </Grid>
+              <Grid item xs="4">
+                <Typography variant="body1" color="gray">
+                  Tài liệu
+                </Typography>
+                {docGet.length > 0 ? (
+                  docGet.map((item, index) => (
+                    <>
+                      <a href={item}>Tải xuống</a>
+                    </>
+                  ))
+                ) : (
+                  // <div>Không có tệp đi kèm!!</div>
+                  <></>
+                )}
               </Grid>
             </Grid>
           ) : (
