@@ -2,18 +2,13 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,6 +19,9 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { deleteCategoryApi } from './../../../apis/CategoryPost/deleteCategory';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import { tableCellClasses } from "@mui/material/TableCell";
+import TableRow from '@mui/material/TableRow';
+import { TableBody, Table } from '@mui/material';
 
 function createData(id, name, date) {
   return {
@@ -308,13 +306,17 @@ export const CategoryTable = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead />
-            <TableBody>
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {allCategory ? (
                 allCategory.map((row, index) => {
                   return (
-                    <TableRow>
+                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                       <TableCell></TableCell>
                       <TableCell align="left">{row.postCategoryId}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>

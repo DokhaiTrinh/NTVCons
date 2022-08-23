@@ -7,27 +7,27 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
 import photo from '../../../assets/images/toa-nha-van-phong.jpeg';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import UpdateIcon from '@mui/icons-material/Update';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Stack } from '@mui/material';
+
+import AddButton from '../../../Components/Button/AddButton';
+import SearchField from '../../../Components/TextField/SearchField';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(id, image, name, category, scale, location) {
   return {
@@ -252,6 +252,7 @@ export const ProductTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allProduct, totalPage } = props;
   const [{ pageNo, loading }, dispatch] = useStateValue();
+
   //const [totalPage, setTotalPage] = React.useState(allProduct.totalPage);
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
@@ -280,7 +281,7 @@ export const ProductTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -330,10 +331,16 @@ export const ProductTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%', mb: 2, padding: '20px', boxShadow: 'none' }}>
+        <Stack direction='row' justifyContent='space-between'>
+          {AddButton('/createProduct')}
+          <SearchField />
+        </Stack>
+      </Paper>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -342,13 +349,17 @@ export const ProductTable = (props) => {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {allProduct ? (
                 allProduct.map((row, index) => {
                   return (
-                    <TableRow>
+                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                       <TableCell>{row.postId}</TableCell>
-                      <TableCell align="left">{}</TableCell>
+                      <TableCell align="left">{ }</TableCell>
                       <TableCell align="left">{row.postTitle}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>
                       <TableCell align="left">{row.ownerName}</TableCell>
@@ -387,13 +398,13 @@ export const ProductTable = (props) => {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 };
