@@ -1,21 +1,16 @@
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import CategoryIcon from '@mui/icons-material/Category';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import { ProductTable } from './components/ProductTable';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { useHistory } from 'react-router-dom';
 import { getAllPostApi } from './../../apis/Post/getAllPost';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
@@ -135,7 +130,7 @@ const ProductPage = (props) => {
   console.log(totalPage);
   return (
     <div>
-      <Grid container justify="center">
+      {/* <Grid container justify="center">
         <Grid container md="8">
           <Grid item>
             <Box
@@ -188,7 +183,7 @@ const ProductPage = (props) => {
             </Box>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
