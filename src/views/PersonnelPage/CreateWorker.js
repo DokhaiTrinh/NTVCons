@@ -30,6 +30,7 @@ import CardContent from '@mui/material/CardContent';
 import moment from 'moment';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RenderImage from '../../Components/Render/RenderImage';
 
 export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
@@ -172,28 +173,6 @@ export const CreateWorker = (props) => {
     setFilesImage(input.files);
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
-  };
   return (
     <div>
       <Typography
@@ -248,7 +227,7 @@ export const CreateWorker = (props) => {
                     <label htmlFor="file" className="img-upload"></label>
                   </div>
 
-                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  <div className="result">{RenderImage(selectedImages)}</div>
                   {/* <input type="file" multiple {...register("file")} /> */}
                 </Box>
               </Grid>

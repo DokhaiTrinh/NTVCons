@@ -35,6 +35,7 @@ import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDe
 import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -211,28 +212,6 @@ const CreateRequestProject = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
-  };
   return (
     <div>
       <Typography
@@ -293,19 +272,17 @@ const CreateRequestProject = (props) => {
                 <Typography variant="body2" color="#DD8501">
                   Ngày yêu cầu
                 </Typography>
-                <Grid item xs={12}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField {...props} fullWidth />
-                      )}
-                      value={valueRequestDate}
-                      onChange={(newValue) => {
-                        setValueRequestDate(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    renderInput={(props) => (
+                      <TextField {...props} fullWidth />
+                    )}
+                    value={valueRequestDate}
+                    onChange={(newValue) => {
+                      setValueRequestDate(newValue);
+                    }}
+                  />
+                </LocalizationProvider>
               </Grid>
 
               <Grid item sx={12}>
@@ -320,7 +297,7 @@ const CreateRequestProject = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -359,7 +336,7 @@ const CreateRequestProject = (props) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12} spacing={2}>
+              <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Loại yêu cầu
                 </Typography>
@@ -383,19 +360,21 @@ const CreateRequestProject = (props) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item container xs={12}>
-                <input
-                  {...register('files')}
-                  type="file"
-                  id="files"
-                  multiple
-                  onChange={handleChangeFile}
-                />
-                <div className="label-holder">
-                  <label htmlFor="file" className="img-upload"></label>
-                </div>
-
-                <div className="result">{renderPhotos(selectedImages)}</div>
+              <Grid item xs={12}>
+                  <Typography variant="body2" color="#DD8501">
+                    Tệp đính kèm
+                  </Typography>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    multiple
+                    onChange={handleChangeFile}
+                  />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="img-upload"></label>
+                  </div>
+                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

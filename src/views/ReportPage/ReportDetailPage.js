@@ -9,10 +9,7 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Badge from '@mui/material/Badge';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
@@ -125,13 +122,10 @@ const ReportDetailPage = (props) => {
               src={photo}
               key={index}
             /> */}
-          <ImageList
-            sx={{ width: 450, height: '150px' }}
-            cols={3}
-            rowHeight={164}
-          >
+          <ImageList sx={{ width: 450, height: '150px' }} cols={3} rowHeight={164}>
             {src.map((photo, index) => (
               <ImageListItem key={photo}>
+
                 <img
                   src={photo}
                   // srcSet={`${photo}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -141,20 +135,14 @@ const ReportDetailPage = (props) => {
                   onMouseOut={() => setIsShown(false)}
                 />
                 {isShown && (
-                  <Box
-                    sx={{
-                      height: '150px',
-                      width: '100%',
-                      backgroundColor: 'gray',
-                      opacity: 0.4,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      position: 'absolute',
-                    }}
-                  >
-                    <ZoomInIcon fontSize="large" />
+                  <Box sx={{
+                    height: '150px', width: '100%',
+                    backgroundColor: 'gray', opacity: 0.4, display: 'flex',
+                    alignItems: 'center', justifyContent: 'center', position: 'absolute'
+                  }}>
+                    <ZoomInIcon fontSize='large' />
                   </Box>
+
                 )}
               </ImageListItem>
             ))}
@@ -319,10 +307,8 @@ const ReportDetailPage = (props) => {
                   <Box sx={{ width: '200px', height: '300px' }}>
                     <div className="label-holder" style={{ height: '200px' }}>
                       <label htmlFor="file" className="img-upload"></label>
-                      <div className="result">{renderPhotos(imageGet)}</div>
+                      <div className="result" >{renderPhotos(imageGet)}</div>
                     </div>
-
-                    {/* <div className="result">{renderPhotos(selectedImages)}</div> */}
                   </Box>
                 </Grid>
               </Grid>
