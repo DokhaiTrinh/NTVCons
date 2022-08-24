@@ -122,7 +122,7 @@ const Details = (props) => {
                 sx={{
                   width: '50%',
                   borderRadius: '10px',
-                  backgroundColor: 'green',
+                  backgroundColor: 'white',
                 }}
               >
                 <Typography
@@ -131,7 +131,7 @@ const Details = (props) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'white',
+                    color: 'green',
                   }}
                 >
                   {allProjectDetails.status}

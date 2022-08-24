@@ -73,6 +73,10 @@ const ProjectDetailsPage = (props) => {
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -83,10 +87,32 @@ const ProjectDetailsPage = (props) => {
         setAllProjectDetails(listAllProjectDetails.data);
         setManagerList(listAllProjectDetails.data.projectManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
+        if (listAllProjectDetails.data) {
+          if (listAllProjectDetails.data.fileList.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllProjectDetails.data.fileList.length;
+              index++
+            ) {
+              const element = listAllProjectDetails.data.fileList[index];
+              if (element.fileName.split('.')[1] === 'docx') {
+                arrayDocLink.push(element.fileLink);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
+    console.log(imageGet);
+    console.log(docGet);
     (async () => {
       try {
         const listAllReportDetails = await getReportByProjectIdApi({
@@ -161,7 +187,11 @@ const ProjectDetailsPage = (props) => {
           <Blueprint projectId={projectId}></Blueprint>
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <FileDetail projectId={projectId}></FileDetail>
+          <FileDetail
+            projectId={projectId}
+            imageGet={imageGet}
+            docGet={docGet}
+          ></FileDetail>
         </TabPanel>
       </Box>
     </div>
