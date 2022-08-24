@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import NavBar from '../../../Components/NavBar';
+import { Route,Redirect } from 'react-router-dom';
+import NavBar from '../../../Components/Navbar/NavBar';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 const HomeLayoutRoute = (props) => {
@@ -9,6 +9,13 @@ const HomeLayoutRoute = (props) => {
     <Route
       {...remainsprops}
       render={(routeProps) => {
+        if (!localStorage.getItem("USERINFOR")) {
+          return (
+            <Redirect
+              to={{ pathname: "/", state: { from: routeProps.location } }}
+            />
+          );
+        }
         return (
           <div>
             <NavBar />

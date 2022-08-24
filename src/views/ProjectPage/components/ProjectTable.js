@@ -2,25 +2,27 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import Swal from 'sweetalert2';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
-import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import { deleteProjectApi } from '../../../apis/Project/deleteProject';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import Pagination from '@mui/material/Pagination';
+import { TableBody, Table } from '@mui/material';
+import { tableCellClasses } from "@mui/material/TableCell";
+
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 function createData(admin, code, name, workers, process, works, start, end) {
   return {
@@ -31,26 +33,9 @@ function createData(admin, code, name, workers, process, works, start, end) {
     process,
     works,
     start,
-    end
+    end,
   };
 }
-
-const rows = [
-  createData('Đỗ Nam Trung', 1, 'abcxyz', 67, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Tuyền Qua Minh Quân', 2, 'abcxyz', 51, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Vũ Trí Ba Tá Trợ', 3, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Xuân Dã Anh', 4, 'abcxyz', 24, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kỳ Mộc Tạp Tạp Tây', 5, 'abcxyz', 49, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Mông Kỳ D. Lộ Phi', 6, 'abcxyz', 87, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('La La Nặc Á Sách Long', 7, 'abcxyz', 37, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Văn Tư Mạc Khắc Sơn Trị', 8, 'abcxyz', 94, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Na Mỹ', 9, 'abcxyz', 65, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ô Sách Phổ', 10, 'abcxyz', 98, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Kiều Ba', 11, 'abcxyz', 81, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Ni Khả La Tân', 12, 'abcxyz', 9, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-  createData('Phất Lan Cơ', 13, 'abcxyz', 63, '10%', 'abcxyz', '01/01/2022', '31/12/2022'),
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -83,58 +68,58 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'nguoiquantri',
-    numeric: false,
-    disablePadding: true,
-    label: 'Người quản trị',
-  },
-  {
     id: 'maduan',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Mã dự án',
   },
   {
     id: 'tenduan',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Tên dự án',
   },
-  {
-    id: 'nguoithamgia',
-    numeric: true,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
-  {
-    id: 'tiendo',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tiến độ',
-  },
-  {
-    id: 'congviec',
-    numeric: true,
-    disablePadding: false,
-    label: 'Công việc',
-  },
+  // {
+  //   id: 'nguoithamgia',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Người tham gia',
+  // },
   {
     id: 'batdau',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Bắt đầu',
   },
   {
     id: 'ketthuc',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Kết thúc',
+  },
+  {
+    id: 'chitiet',
+    numeric: false,
+    disablePadding: false,
+    label: 'Chi tiết',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -142,38 +127,31 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, index) =>
+          userInfor.authorID !== '54' && index === 6 ? null : (
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'normal'}
+              sortDirection={orderBy === headCell.id ? order : false}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc'
+                      ? 'sorted descending'
+                      : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -198,7 +176,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -222,7 +203,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -234,7 +215,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -243,28 +224,62 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function ProjectTable() {
+const handleGetDate = (date) => {
+  const getDate = date.substring(0, 10);
+  const getDateCom = getDate.split('-');
+  const getDateReformat = ''.concat(
+    getDateCom[2],
+    '/',
+    getDateCom[1],
+    '/',
+    getDateCom[0]
+  );
+  return getDateReformat;
+};
+
+export const ProjectTable = (props) => {
+  const { allProject, totalPage } = props;
+  const [{ loading }, dispatch] = useStateValue();
+  console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.admin);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
+  const handleDeleteProject = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteProject(id);
+      }
+    });
   };
 
+  const DeleteProject = async (id) => {
+    try {
+      await deleteProjectApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
     let newSelected = [];
@@ -278,117 +293,95 @@ export function ProjectTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const isSelected = (admin) => selected.indexOf(admin) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.admin);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
+              {allProject.map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
+                return (
+                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                    {/* <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      align="left"
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                      onClick={(event) => handleClick(event, row.admin)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+                      {row.createdBy}
+                    </TableCell> */}
+                    <TableCell align="left">{row.projectId}</TableCell>
+                    <TableCell align="left">{row.projectName}</TableCell>
+                    {/* <TableCell align="left">{row.manager}</TableCell> */}
+                    {/* <TableCell align="left">{row.works}</TableCell> */}
+                    <TableCell align="left">
+                      {(row.planStartDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {(row.planEndDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        edge="end"
+                        size="large"
+                        component={Link}
+                        to={`/projectDetails/${row.projectId}`}
                       >
-                        {row.admin}
+                        <InfoIcon />
+                      </IconButton>
+                    </TableCell>
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        <IconButton
+                          aria-label="delete"
+                          color="warning"
+                          edge="start"
+                          size="large"
+                          onClick={() => handleDeleteProject(row.projectId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.workers}</TableCell>
-                      <TableCell align="right">{row.process}</TableCell>
-                      <TableCell align="right">{row.works}</TableCell>
-                      <TableCell align="right">{row.start}</TableCell>
-                      <TableCell align="right">{row.end}</TableCell>
-                      <TableCell align="right">
-                        <Route>
-
-                        <Link underline="hover" to="/projectDetails">
-                          {'Chi Tiết'}
-                        </Link>
-                        </Route>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                    ) : null}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
+          sx={{marginBottom: '10px', marginTop: '10px'}}
+        />
     </Box>
   );
-}
+};

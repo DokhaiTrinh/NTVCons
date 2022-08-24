@@ -1,0 +1,30 @@
+.container{
+    overflow: hidden;
+}
+
+.chatArea{
+    background-color: #EEF2F5;
+    height: 100vh;
+    padding: 30px 20px 30px 20px;
+    overflow: auto;
+}
+
+.textField{
+    position: absolute;
+    bottom: 0;
+    left: 30%;
+    width: 40%;
+}    
+
+.left{
+    padding: 30px 20px 30px 20px;
+}
+
+.conversation{
+    padding: 20px 20px 20px 20px;
+}
+
+.right{
+    padding: 30px 20px 30px 20px;
+    
+}
