@@ -1,8 +1,6 @@
 import * as React from 'react';
 const HomePage = (props) => {
-  return <div>
-    home
-  </div>;
+  return <div></div>;
 };
 
 export default HomePage;

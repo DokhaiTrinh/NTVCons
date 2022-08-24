@@ -2,26 +2,26 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {Link} from 'react-router-dom';
-import { Route } from 'react-router';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Link } from 'react-router-dom';
+import UpdateIcon from '@mui/icons-material/Update';
+import { deleteUserkApi } from './../../../apis/User/deleteUser';
+import Swal from 'sweetalert2';
+import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import Pagination from '@mui/material/Pagination';
+import Avatar from '@mui/material/Avatar';
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Table, TableBody } from '@mui/material';
 
 function createData(code, name, department, position, office, role, join, dob) {
   return {
@@ -29,21 +29,12 @@ function createData(code, name, department, position, office, role, join, dob) {
     name,
     department,
     position,
-    office, 
+    office,
     role,
     join,
-    dob
+    dob,
   };
 }
-
-const rows = [
-  createData('1', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('2', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('3', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('4', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('5', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-  createData('6', 'Trương Quốc Vinh', 'Kiểm thử phần mềm', 'IT', 'Trưởng phòng kỹ thuật', 'employee', '01/01/2022', '31/12/1990'),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -79,56 +70,68 @@ const headCells = [
   {
     id: 'manv',
     numeric: false,
-    // disablePadding: true,
+    disablePadding: false,
     label: 'Mã NV',
+  },
+  {
+    id: 'anhdaidien',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ảnh đại diện',
   },
   {
     id: 'hovaten',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Họ Và Tên',
-  },
-  {
-    id: 'phongban',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Phòng ban',
-  },
-  {
-    id: 'vitri',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Vị trí',
   },
   {
     id: 'chucvu',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Chức vụ',
-  },
-  {
-    id: 'vaitro',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Vai trò',
   },
   {
     id: 'ngayvao',
     numeric: false,
-    // disablePadding: false,
+    disablePadding: false,
     label: 'Ngày vào',
   },
   {
-    id: 'ngaysinh',
+    id: 'sodienthoai',
     numeric: false,
-    // disablePadding: false,
-    label: 'Ngày sinh',
+    disablePadding: false,
+    label: 'Số điện thoại',
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+  },
+  {
+    id: 'capnhat',
+    numeric: false,
+    disablePadding: false,
+    label: 'Cập nhật',
+  },
+  {
+    id: 'xoa',
+    numeric: false,
+    disablePadding: false,
+    label: 'Xóa',
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -136,17 +139,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -192,7 +184,10 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
@@ -215,7 +210,7 @@ const EnhancedTableToolbar = (props) => {
           Nhân viên
         </Typography>
       )}
-
+      {/* 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -228,7 +223,7 @@ const EnhancedTableToolbar = (props) => {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -237,26 +232,48 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export function PersonnelTable() {
+export const PersonnelTable = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const { allUser, totalPage } = props;
+  const [{ pageNo, loading }, dispatch] = useStateValue();
+  // const [totalPage, setTotalPage] = React.useState(allUser.totalPage);
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
+  const handleDeleteUser = (id) => {
+    Swal.fire({
+      title: 'Bạn có chắc chứ?',
+      text: 'Bạn không thể thu hổi lại khi ấn nút!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Có, hãy xóa nó!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id);
+      }
+    });
+  };
+  const deleteUser = async (id) => {
+    try {
+      await deleteUserkApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Nhân viên của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.code);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleClick = (event, admin) => {
@@ -272,15 +289,11 @@ export function PersonnelTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -290,104 +303,76 @@ export function PersonnelTable() {
 
   const isSelected = (admin) => selected.indexOf(admin) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
-            <EnhancedTableHead
+          <Table sx={{ minWidth: 750 }}>
+            {/* <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.code);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.admin)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.code}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                      onClick={(event) => handleClick(event, row.code)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+            /> */}
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
+              {allUser.map((row, index) => {
+                return (
+                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                    <TableCell>{row.userId}</TableCell>
+                    <TableCell>
+                      {row.file ? (
+                        <Avatar src={row.file.fileLink} />
+                      ) : (
+                        <Avatar src="/broken-image.jpg" />
+                      )}
+                    </TableCell>
+                    <TableCell align="left">{row.username}</TableCell>
+                    <TableCell align="left">{row.role.roleName}</TableCell>
+                    <TableCell align="left">{row.role.updatedAt}</TableCell>
+                    <TableCell align="left">{row.phone}</TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        component={Link}
+                        // edge="start"
+                        size="large"
+                        to={`/updateReportDetails/${row.reportId}`}
                       >
-                        {row.code}
-                      </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.department}</TableCell>
-                      <TableCell align="left">{row.position}</TableCell>
-                      <TableCell align="left">{row.office}</TableCell>
-                      <TableCell align="left">
-                        {row.role}
-                          <IconButton aria-label="edit role" >
-                            <EditOutlinedIcon></EditOutlinedIcon>
-                          </IconButton>
-                      </TableCell>
-                      <TableCell align="left">{row.join}</TableCell>
-                      <TableCell align="left">{row.dob}</TableCell>
-                      <TableCell align="left">
-                        <Route>
-
-                        <Link underline="hover" to="/personnelProfile">
-                          {'Chi Tiết'}
-                        </Link>
-                        </Route>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                        <UpdateIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="left">
+                      <IconButton
+                        aria-label="delete"
+                        color="warning"
+                        edge="start"
+                        size="large"
+                        onClick={() => handleDeleteUser(row.userId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
+        <Pagination
+          count={totalPage + 1}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChangePage}
+          default={1}
+        />
     </Box>
   );
-}
+};
