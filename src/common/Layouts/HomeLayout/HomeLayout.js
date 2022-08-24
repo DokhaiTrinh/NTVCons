@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
     color: 'red',
   },
   avatar: {
-    margin: '0.5rem auto',
+   // margin: '0.5rem auto',
     padding: '1rem',
-    width: theme.spacing(13),
-    height: theme.spacing(13),
+    width: theme.spacing(8),
+    height: theme.spacing(8),
   },
   listItem: {
     color: 'black',
@@ -83,10 +83,10 @@ const closedMixin = (theme) => ({
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'start',
+  // padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -220,8 +220,9 @@ const HomeLayoutRoute = (props) => {
         className={classes.avatar}
         src="https://i.ibb.co/rx5DFbs/avatar.png"
         alt="Juaneme8"
+        
       />
-      <h3>Khải ngáo</h3>
+      <h3 style={{marginRight:'35px', marginLeft:'8px'}}>Khải ngáo</h3>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
