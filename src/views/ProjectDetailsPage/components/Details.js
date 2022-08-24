@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -9,12 +9,23 @@ import { Link, useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Dialog from '@mui/material/Dialog';
+import DialogWorker from './DialogWorker';
+import Button from '@mui/material/Button';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
   const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
+  const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
   console.log(allProjectDetails);
+  const handleOpenWorkerDialog = () => {
+    setOpenWorkerDialog(true);
+  };
+  const handleCloseWorkerDialog = () => {
+    setOpenWorkerDialog(false);
+  };
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -184,7 +195,28 @@ const Details = (props) => {
                 Danh sách công nhân
               </Typography>
               <Typography sx={{ width: '100%' }}>
-                <Typography>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#DD8501',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenWorkerDialog()}
+                  >
+                    Danh sách công nhân
+                  </Button>
+                </Box>
+                {/* <Typography>
                   {workerList ? (
                     workerList.map((workerList, index) => (
                       <Grid item xs={4}>
@@ -205,12 +237,15 @@ const Details = (props) => {
                   ) : (
                     <div>Không có dữ liệu!!</div>
                   )}
-                </Typography>
+                </Typography> */}
               </Typography>
             </Grid>
           </Grid>
         </Paper>
       </Box>
+      <Dialog open={openWorkerDialog} onClose={handleCloseWorkerDialog}>
+        <DialogWorker workerList={workerList}></DialogWorker>
+      </Dialog>
     </div>
   );
 };

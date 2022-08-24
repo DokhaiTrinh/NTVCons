@@ -8,5 +8,9 @@ export const createWorkerApi = (data) => {
 export const createWorkerApi1 = (data) => {
   console.log(data);
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-  return axiosService.postCreateWorker(`${API_LINK.CREATE_WORKER}`, data, userInfor.token);
+  return axiosService.postCreateWorker(
+    `${API_LINK.CREATE_WORKER_WITH_FILE}`,
+    data,
+    userInfor.token
+  );
 };

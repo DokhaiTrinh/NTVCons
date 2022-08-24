@@ -70,13 +70,13 @@ class AxiosService {
   postCreateProject(url, body, token) {
     const formData = new FormData();
     const projectDTO = {
-      planEndDate: body.reporterId,
-      planStartDate: body.reportTypeId,
-      location: body.reportDate,
-      managerIdList: body.reportDesc,
-      estimatedCost: body.reportName,
-      projectName: body.projectId,
-      workerIdList: body.reportDetailList,
+      planEndDate: body.planEndDate,
+      planStartDate: body.planStartDate,
+      location: body.location,
+      managerIdList: body.managerIdList,
+      estimatedCost: body.estimatedCost,
+      projectName: body.projectName,
+      workerIdList: body.workerIdList,
     };
     const json = JSON.stringify(projectDTO);
     formData.append(

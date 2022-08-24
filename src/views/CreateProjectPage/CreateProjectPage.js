@@ -31,15 +31,9 @@ import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
-<<<<<<< HEAD
-
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
-=======
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
->>>>>>> f36f5ef42ef5b12b096ba6947cb8411945c97dc5
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -66,15 +60,6 @@ const CreateProjectPage = (props) => {
   const [map, setMap] = React.useState();
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
-  // React.useEffect(() => {
-  //   if (ref.current && !map) {
-  //     setMap(new window.google.maps.Map(ref.current, {}));
-  //   }
-  // }, [ref, map]);
-
-  // <Wrapper apiKey={'YOUR_API_KEY'} render={render}>
-  //   <YourComponent />
-  // </Wrapper>;
   React.useEffect(() => {
     (async () => {
       try {
@@ -143,14 +128,14 @@ const CreateProjectPage = (props) => {
     try {
       setLoading(true);
       console.log(
-        planEndDate,
-        planStartDate,
-        location,
-        managerIdList,
-        estimatedCost,
-        projectName,
-        workerIdList,
-        fileList
+        typeof planEndDate,
+        typeof planStartDate,
+        typeof location,
+        typeof managerIdList,
+        typeof estimatedCost,
+        typeof projectName,
+        typeof workerIdList,
+        typeof fileList
       );
       await createProjectApi1({
         planEndDate,
@@ -227,12 +212,6 @@ const CreateProjectPage = (props) => {
   const handleCloseLocationDialog = () => {
     setOpenLocationDialog(false);
   };
-  // const handleOpenBluePrintDialog = () => {
-  //   setOpenBluePrintDialog(true);
-  // };
-  // const handleCloseBluePrintDialog = () => {
-  //   setOpenBluePrintDialog(false);
-  // };
   const handleOpenManagerListDialog = () => {
     setOpenManagerListDialog(true);
   };

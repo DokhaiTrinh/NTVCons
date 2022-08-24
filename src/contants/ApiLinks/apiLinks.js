@@ -112,6 +112,8 @@ export const GET_ALL_REQUEST_TYPE =
 
 export const CREATE_WORKER =
   'http://niemtinvang.herokuapp.com/worker/v1/createWorker';
+export const CREATE_WORKER_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/worker/v1/createWorker/withFile';
 export const GET_ALL_WORKER =
   'http://niemtinvang.herokuapp.com/worker/v1/getAll';
 export const DELETE_WORKER =

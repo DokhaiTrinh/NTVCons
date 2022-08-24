@@ -14,6 +14,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { createWorkerApi } from './../../apis/Worker/createWorker';
+import { createWorkerApi1 } from './../../apis/Worker/createWorker';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -100,7 +101,7 @@ export const CreateWorker = (props) => {
   ) => {
     try {
       setLoading(true);
-      await createWorkerApi({
+      await createWorkerApi1({
         address,
         citizenId,
         fullName,

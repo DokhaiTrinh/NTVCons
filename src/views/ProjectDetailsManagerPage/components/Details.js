@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
-import { Divider, Stack } from '@mui/material';
+import { Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -9,23 +9,23 @@ import { Link, useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Dialog from '@mui/material/Dialog';
+import DialogWorker from './DialogWorker';
+import Button from '@mui/material/Button';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '/',
-      getDateCom[1],
-      '/',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
-  const { allProjectDetails, managerList, workerList, blueprint } = props;
+  const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
+  const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
+  console.log(allProjectDetails);
+  const handleOpenWorkerDialog = () => {
+    setOpenWorkerDialog(true);
+  };
+  const handleCloseWorkerDialog = () => {
+    setOpenWorkerDialog(false);
+  };
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -39,8 +39,7 @@ const Details = (props) => {
                 Thông tin chung
               </Typography>
             </Grid>
-            {userInfor.authorID !== '54' &&
-            userInfor.authorID !== '44' ? null : (
+            {userInfor.authorID !== '54' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box
@@ -52,7 +51,7 @@ const Details = (props) => {
                     <IconButton
                       aria-label="edit report"
                       component={Link}
-                      to={`/editProjectDetailsManager/${id}`}
+                      to={`/editProjectDetails/${id}`}
                       sx={{ height: '100%' }}
                     >
                       <Box sx={{ height: '30px' }}>
@@ -95,13 +94,13 @@ const Details = (props) => {
               <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
-              <Typography sx={{ widsh: '100%' }}>
+              <Typography sx={{ width: '100%' }}>
                 <Typography>
                   {managerList ? (
                     managerList.map((managerList, index) => (
                       <Typography
                         sx={{
-                          // witdh: '100%',
+                          witdh: '100%',
                           marginBottom: '10px',
                           padding: '10px',
                         }}
@@ -139,11 +138,22 @@ const Details = (props) => {
                 </Typography>
               </Box>
             </Grid>
+
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Bảng vẽ
+                Thời gian bắt đầu dự kiến
               </Typography>
-              <Typography variant="body1"></Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualStartDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Thời gian kết thúc dự kiến
+              </Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualEndDate}
+              </Typography>
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
@@ -166,26 +176,10 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Thời gian bắt đầu dự kiến
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.actualStartDate}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Thời gian kết thúc dự kiến
-              </Typography>
-              <Typography variant="body1">
-                {allProjectDetails.actualEndDate}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Thời gian bắt đầu thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planStartDate)}
+                {allProjectDetails.planStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
@@ -193,19 +187,40 @@ const Details = (props) => {
                 Thời gian kết thúc thực tế
               </Typography>
               <Typography variant="body1">
-                {handleGetDate(allProjectDetails.planEndDate)}
+                {allProjectDetails.planEndDate}
               </Typography>
             </Grid>
-            <Grid item xs="4">
+            <Grid item xs="12">
               <Typography variant="body1" color="gray">
                 Danh sách công nhân
               </Typography>
               <Typography sx={{ width: '100%' }}>
-                <Typography>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#DD8501',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenWorkerDialog()}
+                  >
+                    Danh sách công nhân
+                  </Button>
+                </Box>
+                {/* <Typography>
                   {workerList ? (
                     workerList.map((workerList, index) => (
-                      // <Stack spacing={2}>
-                        <Box sx={{ width: '100%', marginTop: '5px'}}>
+                      <Grid item xs={4}>
+                        <Box sx={{ width: '100%' }}>
                           <Card sx={{ width: '100%' }}>
                             <CardContent>
                               <Typography>
@@ -217,17 +232,20 @@ const Details = (props) => {
                             </CardContent>
                           </Card>
                         </Box>
-                      // </Stack>
+                      </Grid>
                     ))
                   ) : (
                     <div>Không có dữ liệu!!</div>
                   )}
-                </Typography>
+                </Typography> */}
               </Typography>
             </Grid>
           </Grid>
         </Paper>
       </Box>
+      <Dialog open={openWorkerDialog} onClose={handleCloseWorkerDialog}>
+        <DialogWorker workerList={workerList}></DialogWorker>
+      </Dialog>
     </div>
   );
 };
