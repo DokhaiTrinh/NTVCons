@@ -133,60 +133,6 @@ const PersonnelPage = (props) => {
   console.log(allUser);
   return (
     <div>
-      <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                component={Link}
-                to={'/createPersonnel'}
-              >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-            </Box>
-          </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            >
-              <Typography variant="body1">Danh sách nhân sự</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid item md="4">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: '20px',
-              border: 2,
-              borderColor: '#DD8501',
-              borderRadius: '10px',
-            }}
-          >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Tìm kiếm"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Box>
-        </Grid>
-      </Grid>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', height: '70px' }}>
           <Tabs

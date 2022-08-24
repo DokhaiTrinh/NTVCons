@@ -127,39 +127,6 @@ const ProjectPage = (props) => {
   }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
   return (
     <div>
-      <Grid container justify="center">
-        {userInfor.authorID !== '54' && userInfor.authorID !== '24' ? null : (
-          <Grid container md="8">
-            <Grid item>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ margin: '20px' }}
-              >
-                <IconButton
-                  aria-label="add"
-                  sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                  component={Link}
-                  to={'/createProject'}
-                >
-                  <Add sx={{ color: 'white' }}></Add>
-                </IconButton>
-              </Box>
-            </Grid>
-            <Grid item>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ height: '100%' }}
-              >
-                <Typography variant="body1">Tạo dự án mới</Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        )}
-      </Grid>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
