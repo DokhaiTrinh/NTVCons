@@ -2,26 +2,23 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Table, TableBody } from '@mui/material';
 
 function createData(id, name, date) {
   return {
@@ -274,7 +271,7 @@ export const RoleTable = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -283,10 +280,14 @@ export const RoleTable = (props) => {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {allRole.map((row, index) => {
                 return (
-                  <TableRow>
+                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                     <TableCell></TableCell>
                     <TableCell align="left">{row.roleId}</TableCell>
                     <TableCell align="left">{row.roleName}</TableCell>

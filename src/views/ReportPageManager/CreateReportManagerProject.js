@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Stack
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -32,9 +33,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
-import { useStateValue } from '../../common/StateProvider/StateProvider';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
+import RenderImage from '../../Components/Render/RenderImage';
+import UploadImage from '../../Components/Upload/UploadImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -50,7 +50,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  var idUser = parseFloat(userInfor.authorID);
+  // var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -71,7 +71,7 @@ const CreateReportProject = (props) => {
         data.reportDesc,
         null,
         reportTypeSelected,
-        idUser,
+        // idUser,
         data.reportName,
         null,
         filesImage
@@ -83,7 +83,7 @@ const CreateReportProject = (props) => {
         data.reportDesc,
         reportDetail,
         reportTypeSelected,
-        idUser,
+        // idUser,
         data.reportName,
         taskReportDetail,
         filesImage
@@ -96,7 +96,7 @@ const CreateReportProject = (props) => {
     reportDesc,
     reportDetailList,
     reportTypeId,
-    reporterId,
+    // reporterId,
     reportName,
     taskReportList,
     fileList
@@ -120,7 +120,7 @@ const CreateReportProject = (props) => {
         reportDesc,
         reportDetailList,
         reportTypeId,
-        reporterId,
+        // reporterId,
         reportName,
         taskReportList,
         fileList,
@@ -252,28 +252,6 @@ const CreateReportProject = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
-  };
   return (
     <div>
       <Typography
@@ -306,6 +284,15 @@ const CreateReportProject = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501" sx={{ marginBottom: '10px' }}>
+                  Hình ảnh
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  {UploadImage(setSelectedImage, setFilesImage)}
+                  <div className="result">{RenderImage(selectedImages)}</div>
+                </Stack>
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Tên báo cáo
@@ -361,7 +348,7 @@ const CreateReportProject = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -412,7 +399,7 @@ const CreateReportProject = (props) => {
                   <Button
                     variant="contained"
                     style={{
-                      backgroundColor: '',
+                      backgroundColor: '#DD8501',
                       borderRadius: 50,
                       width: '200px',
                       alignSelf: 'center',
@@ -470,7 +457,10 @@ const CreateReportProject = (props) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item container xs={12}>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="#DD8501">
+                  Tệp đính kèm
+                </Typography>
                 <input
                   {...register('files')}
                   type="file"
@@ -482,7 +472,7 @@ const CreateReportProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{renderPhotos(selectedImages)}</div>
+                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

@@ -110,25 +110,27 @@ const DialogTaskReport = (props) => {
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              <FormControl sx={{ width: '100%' }}>
-                <Select
-                  onChange={handleChange}
-                  MenuProps={MenuProps}
-                  value={taskIdSelected}
-                >
-                  {allTask.length > 0 ? (
-                    allTask.map((taskType, index) => (
-                      <MenuItem value={taskType.taskId} key={index}>
-                        {taskType.taskName}
+              <Grid item xs={12}>
+                <FormControl sx={{ width: '100%' }}>
+                  <Select
+                    onChange={handleChange}
+                    MenuProps={MenuProps}
+                    value={taskIdSelected}
+                  >
+                    {allTask.length > 0 ? (
+                      allTask.map((taskType, index) => (
+                        <MenuItem value={taskType.taskId} key={index}>
+                          {taskType.taskName}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem>
+                        Không có dữ liệu của danh sách công việc!
                       </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem>
-                      Không có dữ liệu của danh sách công việc!
-                    </MenuItem>
-                  )}
-                </Select>
-              </FormControl>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" color="#DD8501">
                   Thông tin công việc
@@ -148,7 +150,6 @@ const DialogTaskReport = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="taskProgress"
-                  label="Tiến độ"
                   errors={errors.taskProgress}
                   variant="outlined"
                   sx={{ width: '100%' }}

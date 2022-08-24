@@ -25,10 +25,10 @@ const TextFieldComponent = (props) => {
       {...register(name)}
       error={errors != null}
       variant="outlined"
-      margin="normal"
+      // margin="normal"
       fullWidth
       defaultValue={defaultValue}
-      label={label}
+      placeholder={label}
       autoComplete={name}
       autoFocus
       multiline={multiline}

@@ -2,30 +2,25 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
 import Swal from 'sweetalert2';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import { Route } from 'react-router';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
-import ProjectDetailsPage from '../../ProjectDetailsPage/ProjectDetailsPage';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
+import { TableBody } from '@mui/material';
+import { Table } from '@mui/material';
+import { tableCellClasses } from "@mui/material/TableCell";
+
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -235,19 +230,6 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
-
 export const ProjectTable = (props) => {
   const { managerProject } = props;
 
@@ -287,7 +269,7 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
@@ -322,27 +304,23 @@ export const ProjectTable = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody>
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {managerProject.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
-                  <TableRow
-                    hover
-                    // onClick={(event) => handleClick(event, row.admin)}
-                    role="checkbox"
-                    // aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    // selected={isItemSelected}
-                  >
+                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                     <TableCell
                       component="th"
                       id={labelId}

@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import { createProjectApi } from '../../apis/Project/createProject';
+import { createProjectApi1 } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Dialog from '@mui/material/Dialog';
@@ -30,9 +31,15 @@ import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
+<<<<<<< HEAD
 
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+=======
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+import RenderImage from '../../Components/Render/RenderImage';
+>>>>>>> f36f5ef42ef5b12b096ba6947cb8411945c97dc5
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -145,7 +152,7 @@ const CreateProjectPage = (props) => {
         workerIdList,
         fileList
       );
-      await createProjectApi({
+      await createProjectApi1({
         planEndDate,
         planStartDate,
         location,
@@ -287,28 +294,6 @@ const CreateProjectPage = (props) => {
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
-  };
-  const renderPhotos = (src) => {
-    return src.map((photo, index) => {
-      return (
-        <Badge
-          badgeContent={<CancelIcon />}
-          onClick={() => handleDeleteImage(photo, index)}
-        >
-          <img
-            style={{
-              width: '150px',
-              height: '150px',
-              // borderRadius: "50%",
-              marginRight: '5px',
-              marginBottom: '5px',
-            }}
-            src={photo}
-            key={index}
-          />
-        </Badge>
-      );
-    });
   };
   return (
     <div>
@@ -624,7 +609,7 @@ const CreateProjectPage = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{renderPhotos(selectedImages)}</div>
+                <div className="result">{RenderImage(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item xs={12}>

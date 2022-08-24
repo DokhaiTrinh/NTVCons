@@ -7,7 +7,7 @@ const ProjectDetailPageContainer = () => {
   const initialState = {
     loading: false,
     pageNo: 0,
-    pageSize: 5,
+    pageSize: 15,
     projectId: id,
     sortBy: 'createdAt',
     sortTypeAsc: false,

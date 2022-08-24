@@ -2,12 +2,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,14 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import UpdateIcon from '@mui/icons-material/Update';
-import InfoIcon from '@mui/icons-material/Info';
 import { deleteUserkApi } from './../../../apis/User/deleteUser';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import Avatar from '@mui/material/Avatar';
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Table, TableBody } from '@mui/material';
 
 function createData(code, name, department, position, office, role, join, dob) {
   return {
@@ -38,69 +35,6 @@ function createData(code, name, department, position, office, role, join, dob) {
     dob,
   };
 }
-
-const rows = [
-  createData(
-    '1',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-  createData(
-    '2',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-  createData(
-    '3',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-  createData(
-    '4',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-  createData(
-    '5',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-  createData(
-    '6',
-    'Trương Quốc Vinh',
-    'Kiểm thử phần mềm',
-    'IT',
-    'Trưởng phòng kỹ thuật',
-    'employee',
-    '01/01/2022',
-    '31/12/1990'
-  ),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -342,15 +276,6 @@ export const PersonnelTable = (props) => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.code);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleClick = (event, admin) => {
     const selectedIndex = selected.indexOf(admin);
     let newSelected = [];
@@ -378,28 +303,28 @@ export const PersonnelTable = (props) => {
 
   const isSelected = (admin) => selected.indexOf(admin) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead
+          <Table sx={{ minWidth: 750 }}>
+            {/* <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
-            />
-            <TableBody>
+            /> */}
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {allUser.map((row, index) => {
                 return (
-                  <TableRow>
+                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                     <TableCell>{row.userId}</TableCell>
                     <TableCell>
                       {row.file ? (

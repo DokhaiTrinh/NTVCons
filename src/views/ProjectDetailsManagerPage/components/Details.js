@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
-import { Divider } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -196,7 +196,7 @@ const Details = (props) => {
                 {handleGetDate(allProjectDetails.planEndDate)}
               </Typography>
             </Grid>
-            <Grid item xs="12">
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Danh sách công nhân
               </Typography>
@@ -204,8 +204,8 @@ const Details = (props) => {
                 <Typography>
                   {workerList ? (
                     workerList.map((workerList, index) => (
-                      <Grid item xs={4}>
-                        <Box sx={{ width: '100%' }}>
+                      // <Stack spacing={2}>
+                        <Box sx={{ width: '100%', marginTop: '5px'}}>
                           <Card sx={{ width: '100%' }}>
                             <CardContent>
                               <Typography>
@@ -217,7 +217,7 @@ const Details = (props) => {
                             </CardContent>
                           </Card>
                         </Box>
-                      </Grid>
+                      // </Stack>
                     ))
                   ) : (
                     <div>Không có dữ liệu!!</div>

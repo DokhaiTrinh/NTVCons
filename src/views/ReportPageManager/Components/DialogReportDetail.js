@@ -111,7 +111,7 @@ const DialogReportProject = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="itemPrice"
-                  label="Giá tiền (VNĐ)"
+                  label="VNĐ"
                   errors={errors.itemPrice}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -124,7 +124,6 @@ const DialogReportProject = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="itemUnit"
-                  label="Đơn vị"
                   errors={errors.itemUnit}
                   variant="outlined"
                   sx={{ width: '100%' }}

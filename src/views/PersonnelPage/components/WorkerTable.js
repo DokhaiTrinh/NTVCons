@@ -2,8 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -14,21 +12,18 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import { Route } from 'react-router';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import UpdateIcon from '@mui/icons-material/Update';
-import InfoIcon from '@mui/icons-material/Info';
 import { deleteWorkerApi } from './../../../apis/Worker/deleteWorker';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Table, TableBody } from '@mui/material';
+
 function createData(code, name, department, position, office, role, join, dob) {
   return {
     code,
@@ -313,18 +308,22 @@ export const WorkerTable = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody>
+            <TableBody sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: "none"
+              }
+            }}>
               {allWorker ? (
                 allWorker.map((row, index) => {
                   return (
-                    <TableRow>
+                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
                       <TableCell>{row.workerId}</TableCell>
                       <TableCell align="left">{row.fullName}</TableCell>
                       <TableCell align="left">{row.citizenId}</TableCell>
