@@ -27,6 +27,9 @@ import { Stack } from '@mui/material';
 
 import AddButton from '../../../Components/Button/AddButton';
 import SearchField from '../../../Components/TextField/SearchField';
+import Header from '../../../Components/Tab/Header';
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import DeletePost from '../../../Components/Button/Delete/DeletePost';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(id, image, name, category, scale, location) {
@@ -39,17 +42,6 @@ function createData(id, image, name, category, scale, location) {
     location,
   };
 }
-
-const rows = [
-  createData(
-    '1',
-    photo,
-    'Tòa nhà văn phòng',
-    'Thiết kế nhà đẹp',
-    'Trệt + 3 lầu',
-    'Dĩ An, Bình Dương'
-  ),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -128,13 +120,13 @@ const headCells = [
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
@@ -289,14 +281,14 @@ export const ProductTable = (props) => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+  // const handleSelectAllClick = (event) => {
+  //   if (event.target.checked) {
+  //     const newSelecteds = rows.map((n) => n.id);
+  //     setSelected(newSelecteds);
+  //     return;
+  //   }
+  //   setSelected([]);
+  // };
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
@@ -326,28 +318,25 @@ export const ProductTable = (props) => {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2, padding: '20px', boxShadow: 'none' }}>
-        <Stack direction='row' justifyContent='space-between'>
-          {AddButton('/createProduct')}
-          <SearchField />
-        </Stack>
-      </Paper>
+      {
+        Header('/createProduct')
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              // order={order}
+              // orderBy={orderBy}
+              // onSelectAllClick={handleSelectAllClick}
+              // onRequestSort={handleRequestSort}
+              // rowCount={rows.length}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
@@ -366,18 +355,13 @@ export const ProductTable = (props) => {
                       <TableCell align="left">{row.scale}</TableCell>
                       <TableCell align="left">{row.address}</TableCell>
                       <TableCell align="left">
-                        <IconButton
-                          component={Link}
-                          // edge="start"
-                          size="large"
-                          to={`/updateProduct/${row.postId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
+                        {
+                          UpdateButton(`/updateProduct/${row.postId}`)
+                        }
                       </TableCell>
                       {userInfor.authorID === '54' ? (
                         <TableCell align="left">
-                          <IconButton
+                          {/* <IconButton
                             aria-label="delete"
                             color="warning"
                             edge="start"
@@ -385,7 +369,10 @@ export const ProductTable = (props) => {
                             onClick={() => handleDeletePost(row.postId)}
                           >
                             <DeleteIcon />
-                          </IconButton>
+                          </IconButton> */}
+                          {
+                            DeletePost(row.postId)
+                          }
                         </TableCell>
                       ) : null}
                     </TableRow>
