@@ -12,36 +12,17 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import photo from '../../../assets/images/toa-nha-van-phong.jpeg';
-import UpdateIcon from '@mui/icons-material/Update';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from "@mui/material/TableCell";
-import { Stack } from '@mui/material';
-
-import AddButton from '../../../Components/Button/AddButton';
-import SearchField from '../../../Components/TextField/SearchField';
 import Header from '../../../Components/Tab/Header';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import DeletePost from '../../../Components/Button/Delete/DeletePost';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-function createData(id, image, name, category, scale, location) {
-  return {
-    id,
-    image,
-    name,
-    category,
-    scale,
-    location,
-  };
-}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -335,7 +316,7 @@ export const ProductTable = (props) => {
               // order={order}
               // orderBy={orderBy}
               // onSelectAllClick={handleSelectAllClick}
-              // onRequestSort={handleRequestSort}
+              onRequestSort={handleRequestSort}
               // rowCount={rows.length}
             />
             <TableBody sx={{
@@ -361,15 +342,6 @@ export const ProductTable = (props) => {
                       </TableCell>
                       {userInfor.authorID === '54' ? (
                         <TableCell align="left">
-                          {/* <IconButton
-                            aria-label="delete"
-                            color="warning"
-                            edge="start"
-                            size="large"
-                            onClick={() => handleDeletePost(row.postId)}
-                          >
-                            <DeleteIcon />
-                          </IconButton> */}
                           {
                             DeletePost(row.postId)
                           }
