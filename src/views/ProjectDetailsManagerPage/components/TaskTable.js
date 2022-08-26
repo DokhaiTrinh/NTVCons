@@ -315,7 +315,7 @@ export default function ReportTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       {
-        Header(`/createTask/${projectId}`)
+        Header('')
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}

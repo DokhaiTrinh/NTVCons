@@ -5,7 +5,8 @@ import {
   TextField,
   Grid,
   Button,
-  Stack
+  Stack,
+  Paper
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -50,6 +51,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
+  console.log(id);
   // var idUser = parseFloat(userInfor.authorID);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
@@ -143,36 +145,7 @@ const CreateReportProject = (props) => {
       setLoading(false);
     }
   };
-  //   itemAmount,
-  //   itemDesc,
-  //   itemPrice,
-  //   itemUnit
-  // ) => {
-  //   try {
-  //     setLoading(true);
-  //     await createReportDetailApi({
-  //       itemAmount,
-  //       itemDesc,
-  //       itemPrice,
-  //       itemUnit,
-  //     });
-  //     setLoading(false);
-  //     await Swal.fire({
-  //       icon: 'success',
-  //       text: 'Tạo báo cáo chi tiết thành công',
-  //       timer: 3000,
-  //       showConfirmButton: false,
-  //     });
-  //   } catch (error) {
-  //     await Swal.fire({
-  //       icon: 'error',
-  //       text: error.response.data,
-  //       timer: 3000,
-  //       showConfirmButton: false,
-  //     });
-  //     setLoading(false);
-  //   }
-  // };
+
   const valideSchema = yup
     .object({
       reportDesc: yup
@@ -253,7 +226,7 @@ const CreateReportProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper sx={{padding: '32px'}}>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -522,7 +495,7 @@ const CreateReportProject = (props) => {
           taskReportDetail={taskReportDetail}
         ></DialogTaskReport>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 
