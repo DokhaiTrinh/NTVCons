@@ -5,38 +5,22 @@ import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
-import UpdateIcon from '@mui/icons-material/Update';
-import { deleteWorkerApi } from './../../../apis/Worker/deleteWorker';
-import Swal from 'sweetalert2';
 import Avatar from '@mui/material/Avatar';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
-
-function createData(code, name, department, position, office, role, join, dob) {
-  return {
-    code,
-    name,
-    department,
-    position,
-    office,
-    role,
-    join,
-    dob,
-  };
-}
+import DeletePost from '../../../Components/Button/Delete/DeletePost';
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import Header from '../../../Components/Tab/Header';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -103,23 +87,20 @@ const headCells = [
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -234,32 +215,7 @@ export const WorkerTable = (props) => {
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-  const handleDeleteWorker = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteWorker(id);
-      }
-    });
-  };
-  const deleteWorker = async (id) => {
-    try {
-      await deleteWorkerApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Nhân viên của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
-  };
+  
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -286,41 +242,19 @@ export const WorkerTable = (props) => {
     setSelected(newSelected);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-        <Button
-          sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-          component={Link}
-          to={'/createWorker'}
-        >
-          <Typography color="white">Tạo công nhân</Typography>
-        </Button>
-      </Box>
+      {
+        Header('/createWorker')
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
               orderBy={orderBy}
+              order={order}
               onRequestSort={handleRequestSort}
             />
             <TableBody
@@ -354,25 +288,22 @@ export const WorkerTable = (props) => {
                         {row.socialSecurityCode}
                       </TableCell>
                       <TableCell align="left">
-                        <IconButton
+                        {/* <IconButton
                           component={Link}
                           // edge="start"
                           size="large"
                           to={`/updateWorker/${row.workerId}`}
                         >
                           <UpdateIcon />
-                        </IconButton>
+                        </IconButton> */}
+                        {
+                          UpdateButton(`/updateWorker/${row.workerId}`)
+                        }
                       </TableCell>
                       <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          edge="start"
-                          size="large"
-                          onClick={() => handleDeleteWorker(row.workerId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                        {
+                          DeletePost(row.workerId)
+                        }
                       </TableCell>
                     </TableRow>
                   );
@@ -383,6 +314,7 @@ export const WorkerTable = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -390,7 +322,6 @@ export const WorkerTable = (props) => {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 };

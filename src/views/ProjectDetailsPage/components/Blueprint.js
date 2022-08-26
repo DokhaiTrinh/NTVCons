@@ -76,7 +76,7 @@ export const Blueprint = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
         >
           <Grid container spacing={0} alignItems="center" justify="center">

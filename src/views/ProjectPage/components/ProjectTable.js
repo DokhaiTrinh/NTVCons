@@ -21,6 +21,7 @@ import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
+import Header from '../../../Components/Tab/Header';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -245,6 +246,7 @@ export const ProjectTable = (props) => {
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
@@ -306,6 +308,9 @@ export const ProjectTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {
+        Header('/createProject')
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
