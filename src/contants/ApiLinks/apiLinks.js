@@ -154,7 +154,7 @@ export const GET_CATEGORY_BY_ID =
 export const CREATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/createPost';
 export const CREATE_POST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/post/v1/createPost';
+  'http://niemtinvang.herokuapp.com/post/v1/createPost/withFile';
 export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
 export const UPDATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/updatePost';
