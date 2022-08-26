@@ -210,7 +210,7 @@ export default function RequestTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       {
-        Header(`/createRequestManager/${projectId}`)
+        Header('/createRequestManager/' + {projectId})
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
