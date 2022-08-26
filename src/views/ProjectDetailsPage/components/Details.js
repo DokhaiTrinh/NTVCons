@@ -11,10 +11,9 @@ import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Dialog from '@mui/material/Dialog';
 import DialogWorker from './DialogWorker';
-import Button from '@mui/material/Button';
+import {Button, Stack} from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import IconButtonCus from '../../../Components/Button/IconButtonCus';
-import { Stack } from '@mui/system';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
