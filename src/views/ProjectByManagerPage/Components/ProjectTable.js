@@ -12,15 +12,14 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Swal from 'sweetalert2';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { TableBody } from '@mui/material';
 import { Table } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
-
+import { useHistory } from 'react-router';
+import { DetailButton } from '../../../Components/Button/DetailButton';
+import Header from '../../../Components/Tab/Header';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -107,23 +106,20 @@ const headCells = [
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -141,20 +137,20 @@ function EnhancedTableHead(props) {
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
-              <TableSortLabel
+              {/* <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
-              >
+              > */}
                 {headCell.label}
-                {orderBy === headCell.id ? (
+                {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </Box>
                 ) : null}
-              </TableSortLabel>
+              </TableSortLabel> */}
             </TableCell>
           )
         )}
@@ -238,6 +234,7 @@ export const ProjectTable = (props) => {
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  const history = useHistory();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -271,45 +268,17 @@ export const ProjectTable = (props) => {
       dispatch({ type: 'LOADING', newLoading: !loading });
     } catch (error) { }
   };
-  const handleClick = (event, admin) => {
-    const selectedIndex = selected.indexOf(admin);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, admin);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Header/>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onRequestSort={handleRequestSort}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
@@ -332,18 +301,20 @@ export const ProjectTable = (props) => {
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
                     <TableCell align="left">{row.manager}</TableCell>
-                    {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
-                      <IconButton
+                      {/* <IconButton
                         edge="end"
                         size="large"
                         component={Link}
                         to={`/projectDetailsManager/${row.projectId}`}
                       >
                         <InfoIcon />
-                      </IconButton>
+                      </IconButton> */}
+                     {
+                       DetailButton(`/projectDetailsManager/${row.projectId}`)
+                     }
                     </TableCell>
                     {/* {userInfor.authorID === '54' ? (
                       <TableCell align="left">

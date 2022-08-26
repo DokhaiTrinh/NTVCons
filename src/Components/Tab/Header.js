@@ -6,12 +6,12 @@ const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Header = (link) => {
   return (
-    <Paper sx={{ width: '100%', mb: 2, padding: '20px', boxShadow: 'none' }}>
+    <Paper sx={{ width: '100%', mb: 2, padding: '32px', boxShadow: 'none'}}>
       <Stack direction="row" justifyContent="space-between">
         {userInfor.authorID === '54' || userInfor.authorID === '24'
           ? AddButton(link)
           : null}
-        <SearchField />
+          <SearchField />
       </Stack>
     </Paper>
   );

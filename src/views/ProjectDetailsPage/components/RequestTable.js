@@ -110,7 +110,7 @@ const headCells = [
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: '',
   },
 
   // {
@@ -239,18 +239,7 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
+
 export default function RequestTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -318,35 +307,6 @@ export default function RequestTable(props) {
     setOrderBy(property);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-
   return (
     <Box sx={{ width: '100%' }}>
       <Box
@@ -358,18 +318,9 @@ export default function RequestTable(props) {
           marginBottom: '30px',
         }}
       >
-        {/* {userInfor.authorID !== '44' ? null : (
-          <Button
-            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-            component={Link}
-            to={`/createRequest/${projectId}`}
-          >
-            <Typography color="white">Tạo yêu cầu</Typography>
-          </Button>
-        )} */}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
@@ -426,6 +377,7 @@ export default function RequestTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -433,7 +385,6 @@ export default function RequestTable(props) {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 }

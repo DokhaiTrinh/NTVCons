@@ -25,6 +25,7 @@ import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { TableBody } from '@mui/material';
 import { Table } from '@mui/material';
+import Header from '../../../Components/Tab/Header';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
@@ -284,48 +285,6 @@ export default function ReportTable(props) {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = allTaskDetails.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length)
-      : 0;
-
   const handleDeleteTask = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -355,36 +314,16 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-        {userInfor.authorID !== '54' ? null : (
-          <Button
-            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-            component={Link}
-            to={`/createTask/${projectId}`}
-          >
-            <Typography color="white">Tạo công việc</Typography>
-          </Button>
-        )}
-      </Box>
+      {
+        Header(`/createTask/${projectId}`)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={allTaskDetails.length}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {

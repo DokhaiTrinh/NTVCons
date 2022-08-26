@@ -35,7 +35,7 @@ export const DeleteWorker = (workerId) => {
       };
     return (
         <IconButtonCus onClick={() => handleDeleteWorker(workerId)} icon={
-            <DeleteIcon style={{color: '#696969'}}/>
+            <DeleteIcon />
         } />
     )
 }
