@@ -22,6 +22,7 @@ import Pagination from '@mui/material/Pagination';
 import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
 import Header from '../../../Components/Tab/Header';
+import DetailButton from '../../../Components/Button/DetailButton';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -102,23 +103,20 @@ const headCells = [
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -203,39 +201,12 @@ const EnhancedTableToolbar = (props) => {
           Dự án
         </Typography>
       )}
-
-      {/* {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )} */}
     </Toolbar>
   );
 };
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-};
-
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
 };
 
 export const ProjectTable = (props) => {
@@ -246,15 +217,11 @@ export const ProjectTable = (props) => {
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  
+
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
+
   const handleDeleteProject = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -280,31 +247,8 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
-  const handleClick = (event, admin) => {
-    const selectedIndex = selected.indexOf(admin);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, admin);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (admin) => selected.indexOf(admin) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -312,14 +256,12 @@ export const ProjectTable = (props) => {
         Header('/createProject')
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onRequestSort={handleRequestSort}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
@@ -331,18 +273,8 @@ export const ProjectTable = (props) => {
 
                 return (
                   <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
-                    {/* <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      align="left"
-                    >
-                      {row.createdBy}
-                    </TableCell> */}
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    {/* <TableCell align="left">{row.manager}</TableCell> */}
-                    {/* <TableCell align="left">{row.works}</TableCell> */}
                     <TableCell align="left">
                       {(row.planStartDate)}
                     </TableCell>
@@ -350,17 +282,12 @@ export const ProjectTable = (props) => {
                       {(row.planEndDate)}
                     </TableCell>
                     <TableCell align="left">
-                      <IconButton
-                        edge="end"
-                        size="large"
-                        component={Link}
-                        to={`/projectDetails/${row.projectId}`}
-                      >
-                        <InfoIcon />
-                      </IconButton>
+                      {
+                        DetailButton(`/projectDetails/${row.projectId}`)
+                      }
                     </TableCell>
-                    {userInfor.authorID === '54' ? (
-                      <TableCell align="left">
+                      {userInfor.authorID === '54' ? (
+                    <TableCell align="left">
                         <IconButton
                           aria-label="delete"
                           color="warning"
@@ -370,8 +297,8 @@ export const ProjectTable = (props) => {
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </TableCell>
-                    ) : null}
+                    </TableCell>
+                      ) : null}
                   </TableRow>
                 );
               })}
@@ -379,14 +306,14 @@ export const ProjectTable = (props) => {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-          sx={{marginBottom: '10px', marginTop: '10px'}}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+        sx={{ marginBottom: '10px', marginTop: '10px' }}
+      />
     </Box>
   );
 };

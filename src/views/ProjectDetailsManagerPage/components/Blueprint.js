@@ -73,49 +73,10 @@ export const Blueprint = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
         >
           <Typography variant="h6">Thông tin bản vẽ</Typography>
-          {/* <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item xs={11}>
-              <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-                Thông tin bản vẽ
-              </Typography>
-            </Grid>
-            {userInfor.authorID !== '54' ? null : (
-              <Grid item container xs={1}>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{ width: '100%' }}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <IconButton
-                      aria-label="edit report"
-                      component={Link}
-                      to={`/editProjectDetails/${id}`}
-                      sx={{ height: '100%' }}
-                    >
-                      <Box sx={{ height: '30px' }}>
-                        <EditOutlinedIcon fontSize="large" />
-                      </Box>
-                    </IconButton>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} justify="start">
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Typography variant="button">Chỉnh sửa bản vẽ</Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            )}
-          </Grid> */}
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="4">
@@ -143,13 +104,7 @@ export const Blueprint = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography>Hình ảnh</Typography>
-              {/* <input
-                type="file"
-                id="files"
-                multiple
-                onChange={handleChangeFile}
-              /> */}
+              <Typography variant="body1" color="gray">Hình ảnh</Typography>
               <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>

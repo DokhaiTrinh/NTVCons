@@ -5,9 +5,8 @@ import {
   TextField,
   Grid,
   Button,
+  Paper
 } from '@mui/material';
-import axios from 'axios';
-import { Image } from 'cloudinary-react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
@@ -29,9 +28,6 @@ import DialogUpdateRequestDetail from './Components/DialogUpdateRequestDetail';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { getAllRequestTypeApi } from '../../apis/RequestType/getAllRequestType';
-import { useStateValue } from '../../common/StateProvider/StateProvider';
-import { createRequestDetailApi } from '../../apis/RequestDetail/createRequestDetail';
-import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 import { getRequestIdApi } from '../../apis/Request/getRequestByProjectId';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
@@ -157,7 +153,7 @@ const UpdateRequest = () => {
   }, []);
   console.log(allRequestDetail);
   return (
-    <div>
+    <Paper>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -348,7 +344,7 @@ const UpdateRequest = () => {
           requestDetail={requestDetail}
         ></DialogUpdateRequestDetail>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

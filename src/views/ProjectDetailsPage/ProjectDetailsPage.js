@@ -1,8 +1,5 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -12,19 +9,10 @@ import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
 import Blueprint from './components/Blueprint';
 import FileDetail from './components/FileDetail';
-import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
-import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
 import { getProjectByParam } from '../../apis/Project/getProjectById';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { useParams } from 'react-router-dom';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -57,7 +45,6 @@ function a11yProps(index) {
   };
 }
 const ProjectDetailsPage = (props) => {
-  const { row } = props;
   const [value, setValue] = React.useState(0);
   const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
@@ -73,10 +60,9 @@ const ProjectDetailsPage = (props) => {
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
-  const [filesImage, setFilesImage] = React.useState([]);
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
-  const [selectedImages, setSelectedImage] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {

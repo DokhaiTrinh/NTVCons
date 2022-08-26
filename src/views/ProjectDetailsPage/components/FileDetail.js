@@ -3,6 +3,7 @@ import RenderImage from '../../../Components/Render/RenderImage';
 import { Box, Paper } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
+import RenderImageCard from '../../../Components/Render/RenderImageCard';
 
 const FileDetail = (props) => {
   const blockElements = {
@@ -15,21 +16,24 @@ const FileDetail = (props) => {
   console.log(docGet);
   return (
     <Tabs>
-      <Paper sx={{height: '100px', padding: '32px'}}>
+      <Paper sx={{width: '180px', height: '50px'}}>
 
       <TabList>
         <Tab>Hình ảnh</Tab>
         <Tab>Tài liệu</Tab>
       </TabList>
       </Paper>
-      <Paper sx={{position: 'absolute', width: '89%', top: '300px', padding: '32px'}}>
+      <Paper sx={{position: 'absolute', width: '89%', height: '70vh', top: '205px', padding: '32px'}}>
         <TabPanel>
-          <Box sx={{ width: '200px', height: '300px' }}>
+          {/* <Box sx={{ width: '200px', height: '300px' }}>
             <div className="label-holder" style={{ height: '200px' }}>
               <label htmlFor="file" className="img-upload"></label>
               <div className="result">{RenderImage(imageGet)}</div>
             </div>
-          </Box>
+          </Box> */}
+          {
+            RenderImageCard(imageGet)
+          }
         </TabPanel>
         <TabPanel>
           {docGet.length > 0 ? (

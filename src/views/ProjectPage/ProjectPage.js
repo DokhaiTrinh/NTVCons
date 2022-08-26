@@ -137,36 +137,7 @@ const ProjectPage = (props) => {
             aria-label=""
           >
             <Tab label="Tất cả" {...a11yProps(0)} />
-            {/* <Tab label="Chờ" {...a11yProps(1)} />
-            <Tab label="Đang thực hiện" {...a11yProps(2)} />
-            <Tab label="Hoàn thành" {...a11yProps(3)} />
-            <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} /> */}
             <Box sx={{ flex: 1 }}></Box>
-            {/* <IconButton aria-label="export">
-              <Box>
-                <OutputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Xuất</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="import">
-              <Box>
-                <InputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Nhập</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="setting">
-              <Box>
-                <SettingsOutlinedIcon />
-                <div>
-                  <Typography variant="button">Cài đặt</Typography>
-                </div>
-              </Box>
-            </IconButton> */}
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -183,21 +154,6 @@ const ProjectPage = (props) => {
             ) : null}
           </Box>
         </TabPanel>
-        {/* <TabPanel value={value} index={1}>
-          Item two
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          Item Five
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
-        </TabPanel> */}
       </Box>
     </div>
   );

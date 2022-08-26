@@ -58,9 +58,7 @@ function a11yProps(index) {
   };
 }
 const ProjectDetailsPage = (props) => {
-  const { row } = props;
   const [value, setValue] = React.useState(0);
-  const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -115,7 +113,6 @@ const ProjectDetailsPage = (props) => {
   console.log(projectName);
   return (
     <div>
-      <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs

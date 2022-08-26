@@ -6,7 +6,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 export const UpdateButton = (path) => {
     const history = useHistory();
     return (
-        <IconButtonCus onClick={() => {history.push(path)}} icon={<UpdateIcon style={{color: '#696969'}}/>}/>
+        <IconButtonCus onClick={() => {history.push(path)}} icon={<UpdateIcon/>}/>
     )
 }
 

@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper
 } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -18,7 +19,6 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateReportApi } from '../../apis/Report/updateReports';
-import { updateReportDetailApi } from '../../apis/ReportDetails/updateReportDetail';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,9 +28,9 @@ import moment from 'moment';
 import DialogUpdateReportDetail from './Components/DialogUpdateReportDetail';
 import DialogUpdateTaskReport from './Components/DialogUpdateTaskReport';
 import { getReportById } from '../../apis/Report/getReportByProjectId';
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ITEM_HEIGHT = 48;
@@ -215,7 +215,7 @@ const UpdateReportProject = (props) => {
     setOpenUpdateTaskReportDialog(false);
   };
   return (
-    <div>
+    <Paper sx={{padding: '32px'}}>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -515,7 +515,7 @@ const UpdateReportProject = (props) => {
           projectId={projectId}
         ></DialogUpdateTaskReport>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 export default UpdateReportProject;

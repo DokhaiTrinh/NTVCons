@@ -76,11 +76,8 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -90,17 +87,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
         {headCells.map((headCell, index) =>
           (userInfor.authorID !== '54' && index === 6) || index === 7 ? null : (
             <TableCell
@@ -199,13 +185,9 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function ReportTable(props) {
-  const { projectId } = props;
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [{ loading }, dispatch] = useStateValue();
   const [allTaskDetails, setAllTaskDetails] = React.useState([]);
   const { id } = useParams();
   const [totalPage, setTotalPage] = React.useState();
@@ -250,7 +232,7 @@ export default function ReportTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       {
-        Header(`/createTask/${projectId}`)
+        Header(`/createTask`)
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}

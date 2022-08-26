@@ -35,7 +35,7 @@ export const DeletePost = (postId) => {
       };
     return (
         <IconButtonCus onClick={() => handleDeletePost(postId)} icon={
-            <DeleteIcon style={{color: '#696969'}}/>
+            <DeleteIcon />
         } />
         // <DeleteButton onClick={() => handleDeletePost(postId)}/>
     )
