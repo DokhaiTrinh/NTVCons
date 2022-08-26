@@ -20,37 +20,11 @@ import { deleteReportApi } from '../../../apis/Report/deleteReport';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { Table, TableBody } from '@mui/material';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
+import { useHistory } from 'react-router';
+import Header from '../../../Components/Tab/Header';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -81,29 +55,14 @@ const headCells = [
     id: 'Chitiet',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: '',
   },
-//   {
-//     id: 'Capnhat',
-//     numeric: false,
-//     disablePadding: false,
-//     label: 'Cập nhật',
-//   },
-//   {
-//     id: 'xoa',
-//     numeric: false,
-//     disablePadding: false,
-//     label: 'Xóa',
-//   },
 ];
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -151,72 +110,72 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+// const EnhancedTableToolbar = (props) => {
+//   const { numSelected } = props;
 
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Báo cáo
-        </Typography>
-      )}
+//   return (
+//     <Toolbar
+//       sx={{
+//         pl: { sm: 2 },
+//         pr: { xs: 1, sm: 1 },
+//         ...(numSelected > 0 && {
+//           bgcolor: (theme) =>
+//             alpha(
+//               theme.palette.primary.main,
+//               theme.palette.action.activatedOpacity
+//             ),
+//         }),
+//       }}
+//     >
+//       {numSelected > 0 ? (
+//         <Typography
+//           sx={{ flex: '1 1 100%' }}
+//           color="inherit"
+//           variant="subtitle1"
+//           component="div"
+//         >
+//           {numSelected} selected
+//         </Typography>
+//       ) : (
+//         <Typography
+//           sx={{ flex: '1 1 100%' }}
+//           variant="h6"
+//           id="tableTitle"
+//           component="div"
+//         >
+//           Báo cáo
+//         </Typography>
+//       )}
 
-      {/* {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )} */}
-    </Toolbar>
-  );
-};
+//       {/* {numSelected > 0 ? (
+//         <Tooltip title="Delete">
+//           <IconButton>
+//             <DeleteIcon />
+//           </IconButton>
+//         </Tooltip>
+//       ) : (
+//         <Tooltip title="Filter list">
+//           <IconButton>
+//             <FilterListIcon />
+//           </IconButton>
+//         </Tooltip>
+//       )} */}
+//     </Toolbar>
+//   );
+// };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
+// EnhancedTableToolbar.propTypes = {
+//   numSelected: PropTypes.number.isRequired,
+// };
 
 export default function ReportTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { projectId, allReportDetails, totalPage } = props;
-  const [{ pageNo, loading }, dispatch] = useStateValue();
+  const { allReportDetails, totalPage } = props;
+  const [{ loading }, dispatch] = useStateValue();
+  const history = useHistory();
+
   console.log(allReportDetails);
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
@@ -262,41 +221,9 @@ export default function ReportTable(props) {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - allReportDetails.length)
-      : 0;
-
   return (
     <Box sx={{ width: '100%' }}>
+
       <Box
         sx={{
           width: '100%',
@@ -317,7 +244,7 @@ export default function ReportTable(props) {
         )} */}
       </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
@@ -352,14 +279,7 @@ export default function ReportTable(props) {
                       {row.reportType.reportTypeName}
                     </TableCell>
                     <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/reportDetails/${row.reportId}`}
-                      >
-                        <InfoIcon />
-                      </IconButton>
+                      <IconButtonCus onClick={() => history.push(`/reportDetails/${row.reportId}`)} icon={<InfoIcon style={{color: 'gray'}}/>}/>
                     </TableCell>
                     {/* {userInfor.authorID === '44' ? (
                       <TableCell align="left">
@@ -392,6 +312,7 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
+      </Paper>
         <Pagination
           count={totalPage + 1}
           variant="outlined"
@@ -399,7 +320,6 @@ export default function ReportTable(props) {
           onChange={handleChangePage}
           default={1}
         />
-      </Paper>
     </Box>
   );
 }

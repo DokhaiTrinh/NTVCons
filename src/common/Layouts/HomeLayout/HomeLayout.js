@@ -242,7 +242,7 @@ const HomeLayoutRoute = (props) => {
                 <ListItemText primary={listItem.listText} style={{color:"black"}}/>
               </ListItem>
             </NavLink>
-          ) : userInfor.authorID === '44' && (index <= 2 || index >= 5) ? (
+          ) : userInfor.authorID === '44' && (index <= 1 || index >= 4) ? (
             <NavLink to={listItem.path} key={index} style={{ textDecoration: 'none' }}>
               <ListItem className={classes.listItem} button key={index}>
                 <ListItemIcon className={classes.listItem}>

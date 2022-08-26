@@ -12,10 +12,14 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Dialog from '@mui/material/Dialog';
 import DialogWorker from './DialogWorker';
 import Button from '@mui/material/Button';
+import { useHistory } from 'react-router-dom';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
+import { Stack } from '@mui/system';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
+  const history = useHistory();
   const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
@@ -30,48 +34,19 @@ const Details = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
         >
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item xs={11}>
-              <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+          <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{mb: 2}}>
+              <Typography variant="h6">
                 Thông tin chung
               </Typography>
-            </Grid>
             {userInfor.authorID !== '54' ? null : (
-              <Grid item container xs={1}>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{ width: '100%' }}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <IconButton
-                      aria-label="edit report"
-                      component={Link}
-                      to={`/editProjectDetails/${id}`}
-                      sx={{ height: '100%' }}
-                    >
-                      <Box sx={{ height: '30px' }}>
-                        <EditOutlinedIcon fontSize="large" />
-                      </Box>
-                    </IconButton>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} justify="start">
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Typography variant="h6">Chỉnh sửa</Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+              <IconButtonCus onClick={() => {
+                history.push(`/editProjectDetails/${id}`);
+              }} icon={<EditOutlinedIcon style={{color: 'gray'}}/>}/>
             )}
-          </Grid>
+          </Stack>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="4">
