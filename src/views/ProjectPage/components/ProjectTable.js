@@ -210,6 +210,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const ProjectTable = (props) => {
+  const { projectId } = props;
   const { allProject, totalPage } = props;
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
@@ -253,7 +254,7 @@ export const ProjectTable = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       {
-        Header('/createProject')
+        Header(`/createProject`)
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
@@ -286,8 +287,8 @@ export const ProjectTable = (props) => {
                         DetailButton(`/projectDetails/${row.projectId}`)
                       }
                     </TableCell>
-                      {userInfor.authorID === '54' ? (
-                    <TableCell align="left">
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
                         <IconButton
                           aria-label="delete"
                           color="warning"
@@ -297,8 +298,8 @@ export const ProjectTable = (props) => {
                         >
                           <DeleteIcon />
                         </IconButton>
-                    </TableCell>
-                      ) : null}
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

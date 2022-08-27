@@ -106,6 +106,7 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function ReportTable(props) {
+  const {projectId} = props;
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const { allReportDetails, totalPage } = props;
@@ -120,7 +121,7 @@ export default function ReportTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       {
-        Header(`/createReport`)
+        Header(`/createReport/${projectId}`)
       }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
