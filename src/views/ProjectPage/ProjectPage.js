@@ -142,16 +142,16 @@ const ProjectPage = (props) => {
         </Box>
         <TabPanel value={value} index={0}>
           <Box width="100%">
-            {allProject ? (
-              allProject.length > 0 ? (
-                <ProjectTable
-                  allProject={allProject}
-                  totalPage={totalPage}
-                ></ProjectTable>
-              ) : (
+            {/* {allProject ? (
+              allProject.length > 0 ? ( */}
+            <ProjectTable
+              allProject={allProject}
+              totalPage={totalPage}
+            ></ProjectTable>
+            {/* ) : (
                 <div>Không có dữ liệu để hiển thị</div>
               )
-            ) : null}
+            ) : null} */}
           </Box>
         </TabPanel>
       </Box>

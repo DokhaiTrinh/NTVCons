@@ -24,6 +24,11 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
 
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
+import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const headCells = [
@@ -93,8 +98,8 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
               > */}
-                {headCell.label}
-                {/* {orderBy === headCell.id ? (
+              {headCell.label}
+              {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
@@ -169,111 +174,103 @@ export const ProjectTable = (props) => {
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
+
+  // const [selected, setSelected] = React.useState([]);
+  // const [page, setPage] = React.useState(0);
+  const [alignment, setAlignment] = React.useState(sortBy);
 
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-
-  const handleDeleteProject = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteProject(id);
-      }
-    });
+  const handleChangeViewByStatus = (event, newAlignment) => {
+    setAlignment(newAlignment);
+    dispatch({ type: 'CHANGE_SORTBY', newSortBy: newAlignment });
+  };
+  const handleChangeViewTime = () => {
+    if (sortTypeAsc) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
+      // handleSearch(title, sortBy, false);
+    } else if (sortTypeAsc === false) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
+      // handleSearch(title, sortBy, true);
+    }
   };
 
-  const DeleteProject = async (id) => {
-    try {
-      await deleteProjectApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Dự án của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
-  };
+  // <<<<<<< HEAD
+  //   const DeleteProject = async (id) => {
+  //     try {
+  //       await deleteProjectApi(id);
+  //       await Swal.fire(
+  //         'Xóa thành công!',
+  //         'Dự án của bạn đã được xóa thành công.',
+  //         'success'
+  //       );
+  //       dispatch({ type: 'LOADING', newLoading: !loading });
+  //     } catch (error) {}
+  //   };
+  // =======
+  // >>>>>>> 03853395694c071c9e15750b9998607be91e9874
 
   return (
     <Box sx={{ width: '100%' }}>
       {Header(`/createProject`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+
         <TableContainer>
-          <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead order={order} orderBy={orderBy} />
-            <ToggleButtonGroup
-              color="primary"
-              value={alignment}
-              exclusive
-              size="small"
-              onChange={handleChangeViewTime}
-            >
-              <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
+          {allProject ? (
+            allProject.length > 0 ? (
+              <Table sx={{ minWidth: 750 }}>
+                <EnhancedTableHead order={order} orderBy={orderBy} />
+                <ToggleButtonGroup
+                  color="primary"
+                  value={alignment}
+                  exclusive
+                  size="small"
+                  onChange={handleChangeViewTime}
+                >
+                  <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
 
-              {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
-            </ToggleButtonGroup>
-            <TableBody
-              sx={{
-                [`& .${tableCellClasses.root}`]: {
-                  borderBottom: 'none',
-                },
-              }}
-            >
-              {allProject.map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    style={
-                      index % 2
-                        ? { background: '#FAFAFA' }
-                        : { background: 'white' }
-                    }
-                  >
-                    <TableCell align="left">{row.projectId}</TableCell>
-                    <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.planStartDate}</TableCell>
-                    <TableCell align="left">{row.planEndDate}</TableCell>
-                    <TableCell align="left">
-                      {(row.planStartDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {(row.planEndDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {
-                        DetailButton(`/projectDetails/${row.projectId}`)
-                      }
-                    </TableCell>
-                    {userInfor.authorID === '54' ? (
-                      <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          edge="start"
-                          size="large"
-                          onClick={() => handleDeleteProject(row.projectId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    ) : null}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                  {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
+                </ToggleButtonGroup>
+                <TableBody
+                  sx={{
+                    [`& .${tableCellClasses.root}`]: {
+                      borderBottom: 'none',
+                    },
+                  }}
+                >
+                  {allProject.map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        style={
+                          index % 2
+                            ? { background: '#FAFAFA' }
+                            : { background: 'white' }
+                        }
+                      >
+                        <TableCell align="left">{row.projectId}</TableCell>
+                        <TableCell align="left">{row.projectName}</TableCell>
+                        <TableCell align="left">{row.planStartDate}</TableCell>
+                        <TableCell align="left">{row.planEndDate}</TableCell>
+                        <TableCell align="left">
+                          {DetailButton(`/projectDetails/${row.projectId}`)}
+                        </TableCell>
+                        {userInfor.authorID === '54' ? (
+                          <TableCell align="left">
+                            {DeleteProject(row.projectId)}
+                          </TableCell>
+                        ) : null}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            ) : (
+              <div>Không có dữ liệu để hiển thị</div>
+            )
+          ) : null}
         </TableContainer>
       </Paper>
       <Pagination
