@@ -23,51 +23,8 @@ import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
-function createData(admin, code, name, workers, process, works, start, end) {
-  return {
-    admin,
-    code,
-    name,
-    workers,
-    process,
-    works,
-    start,
-    end,
-  };
-}
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -124,27 +81,27 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          userInfor.authorID !== '54' && index === 6 ? null : (
+          userInfor.authorID !== '54' && index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
-              <TableSortLabel
+              {/* <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
-              >
+              > */}
                 {headCell.label}
-                {orderBy === headCell.id ? (
+                {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </Box>
                 ) : null}
-              </TableSortLabel>
+              </TableSortLabel> */}
             </TableCell>
           )
         )}
@@ -207,7 +164,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const ProjectTable = (props) => {
-  const { projectId } = props;
   const { allProject, totalPage } = props;
   const [{ loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   console.log(allProject);
@@ -215,23 +171,9 @@ export const ProjectTable = (props) => {
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [alignment, setAlignment] = React.useState(sortBy);
 
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
-  };
-  const handleChangeViewByStatus = (event, newAlignment) => {
-    setAlignment(newAlignment);
-    dispatch({ type: 'CHANGE_SORTBY', newSortBy: newAlignment });
-  };
-  const handleChangeViewTime = () => {
-    if (sortTypeAsc) {
-      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
-      // handleSearch(title, sortBy, false);
-    } else if (sortTypeAsc === false) {
-      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
-      // handleSearch(title, sortBy, true);
-    }
   };
 
   const handleDeleteProject = (id) => {
@@ -259,7 +201,7 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -304,7 +246,15 @@ export const ProjectTable = (props) => {
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
-                      {DetailButton(`/projectDetails/${row.projectId}`)}
+                      {(row.planStartDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {(row.planEndDate)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {
+                        DetailButton(`/projectDetails/${row.projectId}`)
+                      }
                     </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">

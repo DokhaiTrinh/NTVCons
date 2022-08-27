@@ -6,9 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import { Add } from '@mui/icons-material';
 import {Link} from 'react-router-dom';
 // import * as image from '../../assets/images'
-import image1 from '../../assets/images/toa-nha-van-phong.jpeg';
-import image2 from '../../assets/images/toa-nha-van-phong-2.jpeg';
-import image3 from '../../assets/images/toa-nha-van-phong-3.jpeg';
+import image1 from '../../assets/images/background.jpg';
+import image2 from '../../assets/images/background.jpg';
+import image3 from '../../assets/images/background.jpg';
 
 const itemData = [
     {

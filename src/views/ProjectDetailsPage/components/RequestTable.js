@@ -21,6 +21,7 @@ import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { Table, TableBody, TableRow } from '@mui/material';
+import Header from '../../../Components/Tab/Header';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function createData(
@@ -309,16 +310,9 @@ export default function RequestTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-      </Box>
+      {
+        Header(``)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
