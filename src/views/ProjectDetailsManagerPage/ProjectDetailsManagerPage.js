@@ -74,6 +74,9 @@ const ProjectDetailsPage = (props) => {
   const [blueprint, setBlueprint] = React.useState();
   const [projectName, setProjectName] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
+
   // const handleChange1 = (event) => {
   //   setAge(event.target.value);
   // };
@@ -88,7 +91,26 @@ const ProjectDetailsPage = (props) => {
         setAllProjectDetails(listAllProjectDetails.data);
         setManagerList(listAllProjectDetails.data.projectManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
-        setBlueprint(listAllProjectDetails.data.blueprint);
+        if (listAllProjectDetails.data) {
+          if (listAllProjectDetails.data.fileList.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllProjectDetails.data.fileList.length;
+              index++
+            ) {
+              const element = listAllProjectDetails.data.fileList[index];
+              if (element.fileName.split('.')[1] === 'docx') {
+                arrayDocLink.push(element.fileLink);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
@@ -167,7 +189,11 @@ const ProjectDetailsPage = (props) => {
           ></Blueprint>
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <FileDetail projectId={projectId}></FileDetail>
+          <FileDetail
+            projectId={projectId}
+            imageGet={imageGet}
+            docGet={docGet}
+          ></FileDetail>
         </TabPanel>
       </Box>
     </div>

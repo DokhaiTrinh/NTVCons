@@ -23,50 +23,9 @@ import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
+import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
-function createData(admin, code, name, workers, process, works, start, end) {
-  return {
-    admin,
-    code,
-    name,
-    workers,
-    process,
-    works,
-    start,
-    end,
-  };
-}
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -127,27 +86,27 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          userInfor.authorID !== '54' && index === 6 ? null : (
+          userInfor.authorID !== '54' && index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
-              <TableSortLabel
+              {/* <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
-              >
+              > */}
                 {headCell.label}
-                {orderBy === headCell.id ? (
+                {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </Box>
                 ) : null}
-              </TableSortLabel>
+              </TableSortLabel> */}
             </TableCell>
           )
         )}
@@ -210,46 +169,17 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const ProjectTable = (props) => {
-  const { projectId } = props;
   const { allProject, totalPage } = props;
   const [{ loading }, dispatch] = useStateValue();
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
 
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
 
-  const handleDeleteProject = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteProject(id);
-      }
-    });
-  };
 
-  const DeleteProject = async (id) => {
-    try {
-      await deleteProjectApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Dự án của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
-  };
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -289,15 +219,9 @@ export const ProjectTable = (props) => {
                     </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          edge="start"
-                          size="large"
-                          onClick={() => handleDeleteProject(row.projectId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                        {
+                          DeleteProject(row.projectId)
+                        }
                       </TableCell>
                     ) : null}
                   </TableRow>
