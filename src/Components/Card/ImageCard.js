@@ -15,8 +15,10 @@ export const ImageCard = (image) => {
                 </IconButton>
                 <IconButton>
                     <ZoomInIcon/>
+
                 </IconButton>
             </CardActions>
+            
         </Card>
     )
 }

@@ -62,7 +62,6 @@ const ProjectDetailsPage = (props) => {
   const [totalPage, setTotalPage] = React.useState();
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
-
   React.useEffect(() => {
     (async () => {
       try {
@@ -84,7 +83,12 @@ const ProjectDetailsPage = (props) => {
             ) {
               const element = listAllProjectDetails.data.fileList[index];
               if (element.fileName.split('.')[1] === 'docx') {
-                arrayDocLink.push(element.fileLink);
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
               } else {
                 arrayImgLink.push(element.fileLink);
               }
