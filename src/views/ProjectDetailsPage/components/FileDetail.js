@@ -4,26 +4,34 @@ import { Box, Paper } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
+import RenderFileCard from '../../../Components/Render/RenderFileCard';
 
 const FileDetail = (props) => {
   const blockElements = {
     content: 'tabs-content',
     panel: 'tabs-panel',
-    label: 'tabs-title'
-  }
+    label: 'tabs-title',
+  };
   const { imageGet, docGet } = props;
   console.log(imageGet);
   console.log(docGet);
   return (
     <Tabs>
-      <Paper sx={{width: '180px', height: '50px'}}>
-
-      <TabList>
-        <Tab>Hình ảnh</Tab>
-        <Tab>Tài liệu</Tab>
-      </TabList>
+      <Paper sx={{ width: '180px', height: '50px' }}>
+        <TabList>
+          <Tab>Hình ảnh</Tab>
+          <Tab>Tài liệu</Tab>
+        </TabList>
       </Paper>
-      <Paper sx={{position: 'absolute', width: '89%', height: '70vh', top: '205px', padding: '32px'}}>
+      <Paper
+        sx={{
+          position: 'absolute',
+          width: '89%',
+          height: '70vh',
+          top: '205px',
+          padding: '32px',
+        }}
+      >
         <TabPanel>
           {/* <Box sx={{ width: '200px', height: '300px' }}>
             <div className="label-holder" style={{ height: '200px' }}>
@@ -31,21 +39,29 @@ const FileDetail = (props) => {
               <div className="result">{RenderImage(imageGet)}</div>
             </div>
           </Box> */}
-          {
-            RenderImageCard(imageGet)
-          }
+          {RenderImageCard(imageGet)}
         </TabPanel>
         <TabPanel>
-          {docGet.length > 0 ? (
+          {/* {docGet.length > 0 ? (
             docGet.map((item, index) => (
-              <>
-                <a href={item}>Tải xuống</a>
-              </>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <a href={item.link}>{item.name}</a>
+              </div>
             ))
           ) : (
             // <div>Không có tệp đi kèm!!</div>
             <></>
-          )}
+          )} */}
+          {
+            RenderFileCard(docGet)
+          }
         </TabPanel>
       </Paper>
     </Tabs>

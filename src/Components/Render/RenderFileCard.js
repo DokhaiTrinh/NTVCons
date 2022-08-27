@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import FileCard from '../Card/FileCard';
+import FileCard from '../Card/FileCard/FileCard';
 
 export default function RenderFileCard(src) {
   if (src) {

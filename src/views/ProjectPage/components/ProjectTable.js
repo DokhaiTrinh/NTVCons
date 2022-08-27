@@ -11,20 +11,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Swal from 'sweetalert2';
-import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import InfoIcon from '@mui/icons-material/Info';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import { TableBody, Table } from '@mui/material';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
-import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const headCells = [
@@ -73,11 +68,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -170,52 +161,87 @@ EnhancedTableToolbar.propTypes = {
 
 export const ProjectTable = (props) => {
   const { allProject, totalPage } = props;
-  const [{ loading }, dispatch] = useStateValue();
+  const [{ loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [alignment, setAlignment] = React.useState(sortBy);
 
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
+  const handleChangeViewByStatus = (event, newAlignment) => {
+    setAlignment(newAlignment);
+    dispatch({ type: 'CHANGE_SORTBY', newSortBy: newAlignment });
+  };
+  const handleChangeViewTime = () => {
+    if (sortTypeAsc) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
+      // handleSearch(title, sortBy, false);
+    } else if (sortTypeAsc === false) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
+      // handleSearch(title, sortBy, true);
+    }
+  };
 
 
+  const DeleteProject = async (id) => {
+    try {
+      await deleteProjectApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(`/createProject`)
-      }
+      {Header(`/createProject`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-            />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <EnhancedTableHead order={order} orderBy={orderBy} />
+            <ToggleButtonGroup
+              color="primary"
+              value={alignment}
+              exclusive
+              size="small"
+              onChange={handleChangeViewTime}
+            >
+              <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
+
+              {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
+            </ToggleButtonGroup>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allProject.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
+                    <TableCell align="left">{row.planStartDate}</TableCell>
+                    <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
-                      {(row.planStartDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {(row.planEndDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {
-                        DetailButton(`/projectDetails/${row.projectId}`)
-                      }
+                      {DetailButton(`/projectDetails/${row.projectId}`)}
                     </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">

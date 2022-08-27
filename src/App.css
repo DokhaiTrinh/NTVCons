@@ -19,19 +19,3 @@
     color: #696969;
 }	
 
-.MuiCard-root{
-    width: 250px;
-    height: 200px;
-    border-radius: 5px;
-    border: solid 0.5px;
-    box-shadow: n
-    one;
-}
-.MuiCardMedia-root{
-    height: 150px;
-}
-
-.MuiCardActions-root{
-    display: flex;
-    justify-content: space-between;
-}

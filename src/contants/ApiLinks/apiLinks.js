@@ -17,6 +17,8 @@ export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
 export const CREATE_PROJECT_WITH_FILE =
   'http://niemtinvang.herokuapp.com/project/v1/createProject/withFile';
+export const CREATE_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/project/v1/addFile';
 //Api link của role
 export const GET_ALL_ROLE = 'http://niemtinvang.herokuapp.com/role/v1/getAll';
 export const CREATE_ROLE =
@@ -154,7 +156,7 @@ export const GET_CATEGORY_BY_ID =
 export const CREATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/createPost';
 export const CREATE_POST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/post/v1/createPost';
+  'http://niemtinvang.herokuapp.com/post/v1/createPost/withFile';
 export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
 export const UPDATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/updatePost';

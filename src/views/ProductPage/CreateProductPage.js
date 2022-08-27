@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createPostApi } from '../../apis/Post/createPost';
+import { createPostApi1 } from '../../apis/Post/createPost';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -107,17 +108,19 @@ const CreateProductPage = (props) => {
     ownerName,
     postCategoryId,
     postTitle,
-    scale
+    scale,
+    fileList
   ) => {
     try {
       setLoading(true);
-      await createPostApi({
+      await createPostApi1({
         address,
         authorName,
         ownerName,
         postCategoryId,
         postTitle,
         scale,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -126,7 +129,7 @@ const CreateProductPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/product');
+      // window.location.replace('/product');
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -208,7 +211,11 @@ const CreateProductPage = (props) => {
                 </Box>
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501" sx={{marginBottom: '10px'}}>
+                <Typography
+                  variant="body2"
+                  color="#DD8501"
+                  sx={{ marginBottom: '10px' }}
+                >
                   Ảnh dự án
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>

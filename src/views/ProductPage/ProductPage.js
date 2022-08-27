@@ -128,6 +128,7 @@ const ProductPage = (props) => {
     })();
   }, [pageNo, pageSize, sortBy, sortTypeAsc]);
   console.log(totalPage);
+  console.log(allProduct);
   return (
     <div>
       {/* <Grid container justify="center">
