@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -20,6 +19,7 @@ import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const headCells = [
@@ -89,8 +89,8 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
               > */}
-                {headCell.label}
-                {/* {orderBy === headCell.id ? (
+              {headCell.label}
+              {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
@@ -165,8 +165,9 @@ export const ProjectTable = (props) => {
   console.log(allProject);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
+
+  // const [selected, setSelected] = React.useState([]);
+  // const [page, setPage] = React.useState(0);
   const [alignment, setAlignment] = React.useState(sortBy);
 
   const handleChangePage = (event, value) => {
@@ -204,57 +205,61 @@ export const ProjectTable = (props) => {
       {Header(`/createProject`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+
         <TableContainer>
-          <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead order={order} orderBy={orderBy} />
-            <ToggleButtonGroup
-              color="primary"
-              value={alignment}
-              exclusive
-              size="small"
-              onChange={handleChangeViewTime}
-            >
-              <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
+          {allProject ? (
+            allProject.length > 0 ? (
+              <Table sx={{ minWidth: 750 }}>
+                <EnhancedTableHead order={order} orderBy={orderBy} />
+                <ToggleButtonGroup
+                  color="primary"
+                  value={alignment}
+                  exclusive
+                  size="small"
+                  onChange={handleChangeViewTime}
+                >
+                  <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
 
-              {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
-            </ToggleButtonGroup>
-            <TableBody
-              sx={{
-                [`& .${tableCellClasses.root}`]: {
-                  borderBottom: 'none',
-                },
-              }}
-            >
-              {allProject.map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    style={
-                      index % 2
-                        ? { background: '#FAFAFA' }
-                        : { background: 'white' }
-                    }
-                  >
-                    <TableCell align="left">{row.projectId}</TableCell>
-                    <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.planStartDate}</TableCell>
-                    <TableCell align="left">{row.planEndDate}</TableCell>
-                    <TableCell align="left">
-                      {DetailButton(`/projectDetails/${row.projectId}`)}
-                    </TableCell>
-                    {userInfor.authorID === '54' ? (
-                      <TableCell align="left">
-                        {
-                          DeleteProject(row.projectId)
+                  {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
+                </ToggleButtonGroup>
+                <TableBody
+                  sx={{
+                    [`& .${tableCellClasses.root}`]: {
+                      borderBottom: 'none',
+                    },
+                  }}
+                >
+                  {allProject.map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        style={
+                          index % 2
+                            ? { background: '#FAFAFA' }
+                            : { background: 'white' }
                         }
-                      </TableCell>
-                    ) : null}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                      >
+                        <TableCell align="left">{row.projectId}</TableCell>
+                        <TableCell align="left">{row.projectName}</TableCell>
+                        <TableCell align="left">{row.planStartDate}</TableCell>
+                        <TableCell align="left">{row.planEndDate}</TableCell>
+                        <TableCell align="left">
+                          {DetailButton(`/projectDetails/${row.projectId}`)}
+                        </TableCell>
+                        {userInfor.authorID === '54' ? (
+                          <TableCell align="left">
+                            {DeleteProject(row.projectId)}
+                          </TableCell>
+                        ) : null}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            ) : (
+              <div>Không có dữ liệu để hiển thị</div>
+            )
+          ) : null}
         </TableContainer>
       </Paper>
       <Pagination
