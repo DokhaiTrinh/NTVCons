@@ -17,6 +17,7 @@ import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
+import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
@@ -185,19 +186,6 @@ export const ProjectTable = (props) => {
       dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
       // handleSearch(title, sortBy, true);
     }
-  };
-
-
-  const DeleteProject = async (id) => {
-    try {
-      await deleteProjectApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Dự án của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
   };
 
   return (
