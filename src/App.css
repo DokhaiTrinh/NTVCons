@@ -15,23 +15,52 @@
     font-size: 3rem;    
 }
 
+.body{
+    position: absolute;
+    top: 160px;
+    width: 88%;
+}
+
+.bodynonetab{
+    padding: 32px;
+}
+
 .MuiSvgIcon-root{
     color: #696969;
 }	
 
-.MuiCard-root{
-    width: 250px;
-    height: 200px;
-    border-radius: 5px;
-    border: solid 0.5px;
-    box-shadow: n
-    one;
-}
-.MuiCardMedia-root{
-    height: 150px;
+.MuiTabs-root{
+    width: 88%;
+    background: #FFD8A9;
+    border-radius: 10px;
+    border-bottom: none;
+    padding: 12px 32px;
+    position: fixed;
+    z-index: 1;
 }
 
-.MuiCardActions-root{
-    display: flex;
-    justify-content: space-between;
+.MuiTabs-centered{
 }
+
+.MuiTab-root{
+    border-radius: 10px;
+    height: min-content;
+}
+
+.MuiTabs-indicator{
+    height: 50px;
+    position: absolute;
+    top: 0;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.Mui-selected{
+    transition: background 1s;
+    z-index: 1;
+}
+
+.MuiTab-textColorPrimary{
+    color: #696969;
+}
+

@@ -4,6 +4,7 @@ import { Box, Paper } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
+import RenderFileCard from '../../../Components/Render/RenderFileCard';
 
 const FileDetail = (props) => {
   const blockElements = {
@@ -41,7 +42,7 @@ const FileDetail = (props) => {
           {RenderImageCard(imageGet)}
         </TabPanel>
         <TabPanel>
-          {docGet.length > 0 ? (
+          {/* {docGet.length > 0 ? (
             docGet.map((item, index) => (
               <div
                 style={{
@@ -57,7 +58,10 @@ const FileDetail = (props) => {
           ) : (
             // <div>Không có tệp đi kèm!!</div>
             <></>
-          )}
+          )} */}
+          {
+            RenderFileCard(docGet)
+          }
         </TabPanel>
       </Paper>
     </Tabs>

@@ -1,14 +1,7 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import OutputOutlinedIcon from '@mui/icons-material/OutputOutlined';
 import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -18,7 +11,6 @@ import { Link } from 'react-router-dom';
 //Get all project
 import { getAllProjectApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import Pagination from '@mui/material/Pagination';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
@@ -128,7 +120,6 @@ const ProjectPage = (props) => {
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
@@ -139,7 +130,8 @@ const ProjectPage = (props) => {
             <Tab label="Tất cả" {...a11yProps(0)} />
             <Box sx={{ flex: 1 }}></Box>
           </Tabs>
-        </Box>
+          <div className='body'>
+
         <TabPanel value={value} index={0}>
           <Box width="100%">
             {/* {allProject ? (
@@ -154,6 +146,7 @@ const ProjectPage = (props) => {
             ) : null} */}
           </Box>
         </TabPanel>
+          </div>
       </Box>
     </div>
   );

@@ -1,0 +1,22 @@
+.MuiCard-root{
+    width: 250px;
+    border-radius: 5px;
+    border: solid 0.5px;
+    box-shadow: none;
+}
+.MuiCardMedia-root{
+    height: 150px;
+}
+
+.MuiCardMedia-img{
+    object-fit: contain;
+}
+
+.MuiCardContent-root{
+    max-height: min-content;
+}
+
+.MuiCardActions-root{
+    display: flex;
+    justify-content: space-between;
+}

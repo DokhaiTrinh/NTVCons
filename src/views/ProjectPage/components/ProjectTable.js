@@ -6,16 +6,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Swal from 'sweetalert2';
-import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import InfoIcon from '@mui/icons-material/Info';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
@@ -23,11 +17,8 @@ import { TableBody, Table } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import DetailButton from '../../../Components/Button/DetailButton';
-
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -196,20 +187,18 @@ export const ProjectTable = (props) => {
     }
   };
 
-  // <<<<<<< HEAD
-  //   const DeleteProject = async (id) => {
-  //     try {
-  //       await deleteProjectApi(id);
-  //       await Swal.fire(
-  //         'Xóa thành công!',
-  //         'Dự án của bạn đã được xóa thành công.',
-  //         'success'
-  //       );
-  //       dispatch({ type: 'LOADING', newLoading: !loading });
-  //     } catch (error) {}
-  //   };
-  // =======
-  // >>>>>>> 03853395694c071c9e15750b9998607be91e9874
+
+  const DeleteProject = async (id) => {
+    try {
+      await deleteProjectApi(id);
+      await Swal.fire(
+        'Xóa thành công!',
+        'Dự án của bạn đã được xóa thành công.',
+        'success'
+      );
+      dispatch({ type: 'LOADING', newLoading: !loading });
+    } catch (error) {}
+  };
 
   return (
     <Box sx={{ width: '100%' }}>

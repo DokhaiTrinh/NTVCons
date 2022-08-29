@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ImageCard from '../Card/ImageCard';
+import ImageCard from '../Card/ImageCard/ImageCard';
 
 export default function RenderImageCard(src) {
   if (src) {

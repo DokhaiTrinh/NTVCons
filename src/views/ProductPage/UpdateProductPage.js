@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
@@ -163,6 +164,8 @@ const UpdateProductPage = (props) => {
 
   return (
     <div>
+
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -356,6 +359,7 @@ const UpdateProductPage = (props) => {
           )}
         </Box>
       </Box>
+    </Paper>
     </div>
   );
 };

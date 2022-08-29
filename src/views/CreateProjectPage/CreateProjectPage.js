@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -275,7 +276,7 @@ const CreateProjectPage = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -697,7 +698,7 @@ const CreateProjectPage = (props) => {
           workerListDetail={workerListDetail}
         ></DialogWorkerList>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

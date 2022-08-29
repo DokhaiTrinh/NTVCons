@@ -6,12 +6,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Swal from 'sweetalert2';
-import { visuallyHidden } from '@mui/utils';
 import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { TableBody } from '@mui/material';
@@ -190,8 +188,6 @@ export const ProjectTable = (props) => {
   const [{ loading }, dispatch] = useStateValue();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
   const history = useHistory();
 
   const handleRequestSort = (event, property) => {
@@ -229,7 +225,9 @@ export const ProjectTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Header/>
+      {
+        Header(``)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
