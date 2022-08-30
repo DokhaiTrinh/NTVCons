@@ -65,7 +65,7 @@ const CreateRolePage = (props) => {
     }
   };
   return (
-    <Paper sx={{padding: '32px'}}>
+    <Paper sx={{ padding: '32px' }}>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -86,12 +86,10 @@ const CreateRolePage = (props) => {
             Thông tin vai trò
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
-
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên vai trò
                 </Typography>
                 <TextFieldComponent
@@ -126,12 +124,7 @@ const CreateRolePage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     {loading ? (
                       <>

@@ -258,7 +258,7 @@ const CreateReportProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501" sx={{ marginBottom: '10px' }}>
+                <Typography variant="body2" sx={{ marginBottom: '10px' }}>
                   Hình ảnh
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -267,7 +267,7 @@ const CreateReportProject = (props) => {
                 </Stack>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên báo cáo
                 </Typography>
                 <TextFieldComponent
@@ -279,7 +279,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin báo cáo
                 </Typography>
                 <TextFieldComponent
@@ -291,7 +291,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item container xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Ngày báo cáo
                 </Typography>
                 <Grid item xs={12}>
@@ -407,7 +407,7 @@ const CreateReportProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Loại báo cáo
                 </Typography>
                 <FormControl sx={{ width: '100%' }}>
@@ -431,7 +431,7 @@ const CreateReportProject = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tệp đính kèm
                 </Typography>
                 <input

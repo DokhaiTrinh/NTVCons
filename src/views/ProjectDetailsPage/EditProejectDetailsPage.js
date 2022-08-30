@@ -223,7 +223,7 @@ const EditProejectDetailsPage = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Mã dự án
                   </Typography>
                   <TextField
@@ -240,7 +240,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên dự án
                   </Typography>
                   <TextField
@@ -254,7 +254,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Chi phí ước tính
                   </Typography>
                   <TextField
@@ -271,7 +271,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian dự kiến
                     </Typography>
                   </Grid>
@@ -306,7 +306,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian chính thức
                     </Typography>
                   </Grid>
@@ -437,7 +437,7 @@ const EditProejectDetailsPage = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Giá chính thức
                   </Typography>
                   <TextField
@@ -453,7 +453,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
+              <Typography variant="body2">
                 Chọn file
               </Typography>
               <input

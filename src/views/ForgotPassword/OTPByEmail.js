@@ -181,13 +181,7 @@ const OTPByEmail = (props) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    paddingRight: '50px',
-                    paddingLeft: '50px',
-                    borderRadius: 50,
-                    marginTop: '22px',
-                  }}
+                  className='submitButton'
                 >
                   {loading ? (
                     <>

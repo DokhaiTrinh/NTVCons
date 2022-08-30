@@ -6,9 +6,9 @@ import {
   Grid,
   Button,
   Paper,
+  Checkbox,
+  Autocomplete
 } from '@mui/material';
-import axios from 'axios';
-import { Image } from 'cloudinary-react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
@@ -18,7 +18,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
-import { createProjectApi } from '../../apis/Project/createProject';
 import { createProjectApi1 } from '../../apis/Project/createProject';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,15 +25,14 @@ import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import DialogLocation from './Components/DialogLocation';
-import DialogBluePrint from './Components/DialogBlueprint';
 import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
-import { Wrapper, Status } from '@googlemaps/react-wrapper';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
+import { Stack } from '@mui/system';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 const CreateProjectPage = (props) => {
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
@@ -42,25 +40,21 @@ const CreateProjectPage = (props) => {
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [locationDetail, setLocationDetail] = React.useState();
-  const [bluePrintDetail, setBluePrintDetail] = React.useState();
 
   // Dữ liệu list manager này phải là array. Để thêm dữ liệu zô array ở thằng report có mẫu á.
   const [managerListDetail, setManagerListDetail] = React.useState([]);
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
-  const [openBluePrintDialog, setOpenBluePrintDialog] = useState(false);
   const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
 
   const [workerListDetail, setWorkerListDetail] = React.useState([]);
   const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
-  const [imageSelected, setImageSelected] = useState('');
-  const [imageData, setImageData] = useState('');
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
-  const ref = React.useRef(null);
-  const [map, setMap] = React.useState();
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
   React.useEffect(() => {
     (async () => {
       try {
@@ -280,7 +274,6 @@ const CreateProjectPage = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         TẠO MỚI DỰ ÁN
       </Typography>
@@ -300,15 +293,14 @@ const CreateProjectPage = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin dự án
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
+            <Typography variant="body1" color="#DD8501" fontWeight="bold">
+              Thông tin dự án
+            </Typography>
+            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên dự án
                 </Typography>
                 <TextFieldComponent
@@ -319,7 +311,7 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item container sx={12}>
+              {/* <Grid item container sx={12}>
                 <Box
                   sx={{
                     width: '100%',
@@ -330,12 +322,6 @@ const CreateProjectPage = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenManagerListDialog()}
                   >
                     Kỹ sư phụ trách
@@ -362,9 +348,34 @@ const CreateProjectPage = (props) => {
                     <div>Không có dữ liệu của báo cáo chi tiết!</div>
                   </Grid>
                 )}
+              </Grid> */}
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Kỹ sư phụ trách
+                </Typography>
+                <Autocomplete
+                  multiple
+                  options={allManager}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.username}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.username}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Kỹ sư" />
+                  )}
+                />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Chi phí ước tính
                 </Typography>
                 <TextFieldComponent
@@ -373,11 +384,12 @@ const CreateProjectPage = (props) => {
                   errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
+                  label='VNĐ'
                 />
               </Grid>
               <Grid container item xs={12} spacing={1}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Thời gian dự kiến
                   </Typography>
                 </Grid>
@@ -454,6 +466,30 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid> */}
+              <Grid item xs={12}>
+                <Typography variant="body2">Công nhân</Typography>
+                <Autocomplete
+                  multiple
+                  id="checkboxes-tags-demo"
+                  options={allWorker}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.fullName}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Công nhân" />
+                  )}
+                />
+              </Grid>
               <Grid item container sx={12}>
                 <Box
                   sx={{
@@ -465,75 +501,52 @@ const CreateProjectPage = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenLocationDialog()}
                   >
                     Địa điểm thi công
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12}>
                 {locationDetail ? (
-                  <Grid item xs={4}>
-                    <Box sx={{ width: '100%' }}>
-                      {/* <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: '',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
-                        // onClick={() => handleOpenLocationDialog()}
-                      /> */}
-                      <Card sx={{ width: '100%' }}>
-                        <CardContent>
-                          <Typography>
-                            Số nhà: {locationDetail.addressNumber}
-                          </Typography>
-                          <Typography>
-                            Tên đường:{locationDetail.street}
-                          </Typography>
-                          <Typography>
-                            Quận: {locationDetail.district}{' '}
-                          </Typography>
-                          <Typography>
-                            Thành phố: {locationDetail.city}
-                          </Typography>
-                          <Typography>
-                            Khu vực: {locationDetail.ward}
-                          </Typography>
-                          <Typography>
-                            Địa bàn tỉnh: {locationDetail.province}
-                          </Typography>
-                          <Typography>
-                            Quốc gia: {locationDetail.country}
-                          </Typography>
-                          <Typography>
-                            Diện tích: {locationDetail.area}
-                          </Typography>
-                          <Typography>
-                            Điều phối: {locationDetail.coordinate}
-                          </Typography>
-                          <Typography>
-                            Người tạo: {locationDetail.createdBy}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Box>
-                  </Grid>
+                  <Paper className='tag'>
+                    <Stack direction='row' spacing={1}>
+                      <Typography>
+                        {locationDetail.addressNumber},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.street},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.ward},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.district},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.city}
+                      </Typography>
+                      {/* <Typography>
+                        Địa bàn tỉnh: {locationDetail.province}
+                      </Typography>
+                      <Typography>
+                        Quốc gia: {locationDetail.country}
+                      </Typography>
+                      <Typography>
+                        Diện tích: {locationDetail.area}
+                      </Typography>
+                      <Typography>
+                        Điều phối: {locationDetail.coordinate}
+                      </Typography> */}
+                    </Stack>
+                  </Paper>
                 ) : (
                   <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                    <div>Không có dữ liệu!</div>
                   </Grid>
                 )}
               </Grid>
-              <Grid item container sx={12}>
+              {/* <Grid item container sx={12}>
                 <Box
                   sx={{
                     width: '100%',
@@ -544,12 +557,6 @@ const CreateProjectPage = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenWorkerDialog()}
                   >
                     Danh sách công nhân
@@ -576,7 +583,7 @@ const CreateProjectPage = (props) => {
                     <div>Không có dữ liệu của báo cáo chi tiết!</div>
                   </Grid>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item container xs={12}>
                 <input
                   {...register('files')}
@@ -593,7 +600,7 @@ const CreateProjectPage = (props) => {
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Người quản lý
                 </Typography>
                 <TextFieldComponent
@@ -605,7 +612,7 @@ const CreateProjectPage = (props) => {
                 />
               </Grid> */}
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Giá chính thức
                 </Typography>
                 <TextFieldComponent
@@ -618,7 +625,7 @@ const CreateProjectPage = (props) => {
               </Grid> */}
 
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Chọn file
                 </Typography>
                 <inputF
@@ -649,13 +656,8 @@ const CreateProjectPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                    // onClick={(event) => uploadImage(event)}
+                    className='submitButton'
+                  // onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

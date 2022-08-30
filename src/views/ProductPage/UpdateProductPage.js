@@ -198,7 +198,7 @@ const UpdateProductPage = (props) => {
               <Box sx={{ width: '100%', height: '20px' }}></Box>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Hình ảnh
                   </Typography>
                   <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
@@ -232,7 +232,7 @@ const UpdateProductPage = (props) => {
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên dự án
                   </Typography>
                   <TextField
@@ -249,7 +249,7 @@ const UpdateProductPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Chủ đầu tư
                   </Typography>
                   <TextFieldComponent
@@ -263,7 +263,7 @@ const UpdateProductPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Vị trí
                   </Typography>
                   <TextFieldComponent
@@ -277,7 +277,7 @@ const UpdateProductPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Quy mô
                   </Typography>
                   <TextFieldComponent
@@ -291,7 +291,7 @@ const UpdateProductPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Thể loại
                   </Typography>
                   <FormControl sx={{ width: '100%' }}>
@@ -315,7 +315,7 @@ const UpdateProductPage = (props) => {
                     </Select>
                   </FormControl>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Tác giả
                     </Typography>
                     <TextFieldComponent

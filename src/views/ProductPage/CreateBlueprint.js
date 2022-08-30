@@ -199,7 +199,7 @@ const CreateBlueprint = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên bản vẽ
                 </Typography>
                 <TextFieldComponent
@@ -212,7 +212,7 @@ const CreateBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Người thiết kế
                 </Typography>
                 <TextFieldComponent
@@ -225,7 +225,7 @@ const CreateBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên dự án
                 </Typography>
                 <FormControl sx={{ width: '100%' }}>
@@ -248,7 +248,7 @@ const CreateBlueprint = (props) => {
                   </Select>
                 </FormControl>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Giá bản vẽ
                   </Typography>
                   <TextFieldComponent

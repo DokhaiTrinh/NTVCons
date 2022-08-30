@@ -63,19 +63,19 @@ const EditServicePage = (props) => {
                             </Box>            
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Tên dự án</Typography>
+                        <Typography variant="body2">Tên dự án</Typography>
                         <TextField id="project-name" value="Tòa nhà văn phòng" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Thể loại</Typography>
+                        <Typography variant="body2">Thể loại</Typography>
                         <TextField id="project-name" value="Thiết kế nhà đẹp" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Quy mô</Typography>
+                        <Typography variant="body2">Quy mô</Typography>
                         <TextField id="project-name" value="Trệt + 3 lầu" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Vị trí</Typography>
+                        <Typography variant="body2">Vị trí</Typography>
                         <TextField id="project-name" value="Dĩ An, Bình Dương" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
 

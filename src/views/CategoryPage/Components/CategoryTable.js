@@ -23,6 +23,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import TableRow from '@mui/material/TableRow';
 import { TableBody, Table } from '@mui/material';
 import UpdateButton from '../../../Components/Button/UpdateButton';
+import Header from '../../../Components/Tab/Header';
 
 const headCells = [
   {
@@ -203,6 +204,9 @@ export const CategoryTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {
+        Header(`/createCategory/`)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
