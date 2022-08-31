@@ -73,7 +73,7 @@ const DialogBlueprint = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên bản vẽ
                 </Typography>
                 <TextFieldComponent
@@ -85,7 +85,7 @@ const DialogBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Nhà thiết kế
                 </Typography>
                 <TextFieldComponent
@@ -97,7 +97,7 @@ const DialogBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Giá bản vẽ
                 </Typography>
                 <TextFieldComponent

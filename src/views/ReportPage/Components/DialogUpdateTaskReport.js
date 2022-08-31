@@ -91,7 +91,7 @@ const DialogUpdateTaskReport = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Công việc thuộc mã công việc:
                 </Typography>
                 <TextFieldComponent
@@ -106,7 +106,7 @@ const DialogUpdateTaskReport = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin công việc
                 </Typography>
                 <TextFieldComponent
@@ -121,7 +121,7 @@ const DialogUpdateTaskReport = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tiến độ
                 </Typography>
                 <TextFieldComponent

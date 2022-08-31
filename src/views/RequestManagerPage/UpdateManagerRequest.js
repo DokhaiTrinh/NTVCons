@@ -183,7 +183,7 @@ const UpdateRequest = () => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs="4">
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Mã dự án
                   </Typography>
                   <Typography variant="body1">
@@ -191,7 +191,7 @@ const UpdateRequest = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Cập nhật thông tin yêu cầu
                   </Typography>
                   <TextFieldComponent
@@ -204,7 +204,7 @@ const UpdateRequest = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Ngày yêu cầu
                   </Typography>
                   <Grid item xs={12}>
@@ -276,7 +276,7 @@ const UpdateRequest = () => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Loại yêu cầu
                   </Typography>
                   <FormControl sx={{ width: 580 }}>

@@ -46,7 +46,7 @@ export const DialogAddress = (props) => {
       country: data.country,
       district: data.district,
       province: data.province,
-      street: null,
+      street: data.street,
       ward: data.ward,
     };
     setLocationDetail(detailLocation);
@@ -86,7 +86,7 @@ export const DialogAddress = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Số nhà
                 </Typography>
                 <TextFieldComponent
@@ -98,7 +98,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên đường
                 </Typography>
                 <TextFieldComponent
@@ -110,7 +110,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Phường
                 </Typography>
                 <TextFieldComponent
@@ -122,7 +122,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Quận
                 </Typography>
                 <TextFieldComponent
@@ -134,7 +134,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thành phố
                 </Typography>
                 <TextFieldComponent
@@ -146,7 +146,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Địa bàn tỉnh
                 </Typography>
                 <TextFieldComponent
@@ -158,7 +158,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Quốc gia
                 </Typography>
                 <TextFieldComponent
@@ -170,7 +170,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid>
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Diện tích
                 </Typography>
                 <TextFieldComponent
@@ -182,7 +182,7 @@ export const DialogAddress = (props) => {
                 />
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Điều phối
                 </Typography>
                 <TextFieldComponent
@@ -205,12 +205,7 @@ export const DialogAddress = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                  className='submitButton'
                   >
                     Lưu
                   </Button>

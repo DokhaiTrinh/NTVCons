@@ -210,7 +210,7 @@ const UpdateTaskProject = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên công việc
                   </Typography>
                   <TextField
@@ -226,7 +226,7 @@ const UpdateTaskProject = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Thông tin công việc
                   </Typography>
                   <TextField
@@ -243,7 +243,7 @@ const UpdateTaskProject = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian
                     </Typography>
                   </Grid>
@@ -274,7 +274,7 @@ const UpdateTaskProject = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian chính thức
                     </Typography>
                   </Grid>

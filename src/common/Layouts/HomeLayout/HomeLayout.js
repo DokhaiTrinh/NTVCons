@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route,Redirect } from 'react-router-dom';
-import NavBar from '../../../Components/Navbar/NavBar';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
@@ -17,11 +16,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 import { NavLink } from 'react-router-dom';
 
@@ -56,9 +52,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(8),
     height: theme.spacing(8),
   },
-  listItem: {
-    color: 'black',
-  },
+  // listItem: {
+  //   color: 'black',
+  // },
+  
 }));
 
 const openedMixin = (theme) => ({

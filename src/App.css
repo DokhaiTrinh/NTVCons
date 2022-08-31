@@ -25,12 +25,53 @@
     padding: 32px;
 }
 
+.table{
+    padding: 32px;
+}
+
+.MuiButton-root{
+    border-radius: 5px;
+    background: #F1F1F1;
+    color: #696969;
+    box-shadow: none;
+}
+
+.submitButton{
+    border-radius: 5px;
+    background: #F1A661;
+    color: white;
+    box-shadow: none;
+    margin-top: 20px;
+}
+
+.tag{
+    width: min-content;
+    padding: 5px 10px;
+}
+
+.dialog{
+    width: 500px;
+    padding: 32px;
+    display: grid ;
+    justify-content: center;
+    align-items: center;
+}
+
+.MuiButton-root:hover{
+    border-radius: 5px;
+    background: transparent;
+    color: #696969;
+    top: -4px;
+    transition: top 0.5s;
+}
+
 .MuiSvgIcon-root{
     color: #696969;
 }	
 
 .MuiTabs-root{
     width: 88%;
+    height: min-content;
     background: #FFD8A9;
     border-radius: 10px;
     border-bottom: none;
@@ -39,16 +80,9 @@
     z-index: 1;
 }
 
-.MuiTabs-centered{
-}
-
-.MuiTab-root{
-    border-radius: 10px;
-    height: min-content;
-}
 
 .MuiTabs-indicator{
-    height: 50px;
+    height: 48px;
     position: absolute;
     top: 0;
     border-radius: 10px;
@@ -64,3 +98,28 @@
     color: #696969;
 }
 
+.MuiDivider-root{
+    margin-bottom: 32px;
+}
+
+.MuiTypography-body2{
+    color: #DD8501;
+}
+
+.MuiTextField-root{
+    background: #F1F1F1;
+    outline-color: transparent !important;
+}
+
+.MuiTextField-root:focus{
+    outline: none;
+}
+
+.MuiFormControl-root{
+    background: #F1F1F1;
+}
+
+.Mui-selected{
+    
+    color: #DD8501;
+}

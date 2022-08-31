@@ -38,11 +38,11 @@ const EditPersonnleProfile = (props) => {
                 <Box sx={{ width: "100%", height: "20px" }}></Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Mã nhân viên</Typography>
+                        <Typography variant="body2">Mã nhân viên</Typography>
                         <TextField id="project-name" value="1" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Họ và tên</Typography>
+                        <Typography variant="body2">Họ và tên</Typography>
                         <TextField id="project-name" value="Trương Quốc Vinh" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
@@ -62,7 +62,7 @@ const EditPersonnleProfile = (props) => {
                         </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Giới tính</Typography>
+                        <Typography variant="body2">Giới tính</Typography>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -72,7 +72,7 @@ const EditPersonnleProfile = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Tình trạng hôn nhân</Typography>
+                        <Typography variant="body2">Tình trạng hôn nhân</Typography>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -82,15 +82,15 @@ const EditPersonnleProfile = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Quốc tịch</Typography>
+                        <Typography variant="body2">Quốc tịch</Typography>
                         <TextField id="project-name" value="Việt Nam" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Điện thoại</Typography>
+                        <Typography variant="body2">Điện thoại</Typography>
                         <TextField id="project-name" value="0909090909" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Email</Typography>
+                        <Typography variant="body2">Email</Typography>
                         <TextField id="project-name" value="vinh@gmail.com" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
 
@@ -100,35 +100,35 @@ const EditPersonnleProfile = (props) => {
                 <Box sx={{ width: "100%", height: "20px" }}></Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Dân tộc</Typography>
+                        <Typography variant="body2">Dân tộc</Typography>
                         <TextField id="project-name" value="Kinh" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Tôn giáo</Typography>
+                        <Typography variant="body2">Tôn giáo</Typography>
                         <TextField id="project-name" value="Không" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">CMT/Căn cước/Hộ chiếu</Typography>
+                        <Typography variant="body2">CMT/Căn cước/Hộ chiếu</Typography>
                         <TextField id="project-name" value="123456789" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Ngày cấp, Nơi cấp</Typography>
+                        <Typography variant="body2">Ngày cấp, Nơi cấp</Typography>
                         <TextField id="project-name" value="11/01/2003, tại công an Thành phố Hồ Chí Minh" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Nơi sinh</Typography>
+                        <Typography variant="body2">Nơi sinh</Typography>
                         <TextField id="project-name" value="Thành phố Hồ Chí Minh, Việt Nam" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Nguyên quán</Typography>
+                        <Typography variant="body2">Nguyên quán</Typography>
                         <TextField id="project-name" value="Thành phố Hồ Chí Minh, Việt Nam" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Thường trú</Typography>
+                        <Typography variant="body2">Thường trú</Typography>
                         <TextField id="project-name" value="222 Hoàng Hoa Thám, phường 12, quân Tân Bình, Tp HCM" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Chỗ ở hiện tại</Typography>
+                        <Typography variant="body2">Chỗ ở hiện tại</Typography>
                         <TextField id="project-name" value="222 Hoàng Hoa Thám, phường 12, quân Tân Bình, Tp HCM" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                 </Grid>
@@ -137,19 +137,19 @@ const EditPersonnleProfile = (props) => {
                 <Box sx={{ width: "100%", height: "20px" }}></Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Phòng ban</Typography>
+                        <Typography variant="body2">Phòng ban</Typography>
                         <TextField id="project-name" value="Kiểm thử phần mềm" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Vị trí</Typography>
+                        <Typography variant="body2">Vị trí</Typography>
                         <TextField id="project-name" value="IT" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Chức vụ</Typography>
+                        <Typography variant="body2">Chức vụ</Typography>
                         <TextField id="project-name" value="Trưởng phòng kỹ thuật" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Vai trò</Typography>
+                        <Typography variant="body2">Vai trò</Typography>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"

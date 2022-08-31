@@ -5,33 +5,26 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import { createWorkerApi } from './../../apis/Worker/createWorker';
 import { createWorkerApi1 } from './../../apis/Worker/createWorker';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
-import { Add } from '@mui/icons-material';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import Dialog from '@mui/material/Dialog';
 import { DialogAddress } from './components/DialogAddress';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import moment from 'moment';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
+import { Stack } from '@mui/system';
 
 export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
@@ -175,7 +168,7 @@ export const CreateWorker = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -183,7 +176,7 @@ export const CreateWorker = (props) => {
       >
         Tạo mới hồ sơ công nhân
       </Typography>
-      <Divider></Divider>
+      <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
       <Box
         sx={{
           display: 'flex',
@@ -199,17 +192,16 @@ export const CreateWorker = (props) => {
             marginBottom: '30px',
           }}
         >
-          {/* <Typography variant="body1" color="#DD8501" fontWeight="bold">
-        Ảnh đại diện
-      </Typography> */}
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Typography variant="body1" color="#DD8501" fontWeight="bold">
               Sơ yếu lý lịch
             </Typography>
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-            <Box sx={{ width: '100%', height: '20px' }}>
-              <Grid container>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Typography variant="body1" color="#DD8501" fontWeight="bold">
+                  Ảnh đại diện
+                </Typography>
                 <Box
                   sx={{
                     width: '100%',
@@ -232,166 +224,152 @@ export const CreateWorker = (props) => {
                   {/* <input type="file" multiple {...register("file")} /> */}
                 </Box>
               </Grid>
-
-              <Box sx={{ width: '100%', height: '20px' }}></Box>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Họ và tên
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="fullName"
-                    // label="Tên vai trò"
-                    errors={errors.fullName}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Ngày sinh
-                  </Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      value={valueBirthDate}
-                      onChange={(newValue) => {
-                        setValueBirthDate(newValue);
-                      }}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Giới tính
-                  </Typography>
-                  <TextField
-                    {...register('gender')}
-                    // error={submitted && !gender}
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label="Giới tính"
-                    autoComplete="gender"
-                    select
-                    name="gender"
-                    //defaultValue={accountProfileData.gender}
-                    error={errors.gender != null}
-                    helperText={errors.gender?.message}
-                  >
-                    {gender.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Nơi sinh
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="birthPlace"
-                    // label="Tên vai trò"
-                    errors={errors.birthPlace}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Căn cước công dân
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="citizenId"
-                    // label="Tên vai trò"
-                    errors={errors.citizenId}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Số bảo hiểm
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="socialSecurityCode"
-                    // label="Tên vai trò"
-                    errors={errors.socialSecurityCode}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item container sx={12}>
-                  <Box
-                    sx={{
-                      width: '100%',
-                      justifyContent: 'left',
-                      alignItems: 'center',
-                      display: 'flex',
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Họ và tên
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="fullName"
+                  // label="Tên vai trò"
+                  errors={errors.fullName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Ngày sinh
+                </Typography>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    value={valueBirthDate}
+                    onChange={(newValue) => {
+                      setValueBirthDate(newValue);
                     }}
+                    renderInput={(params) => <TextField {...params}  fullWidth/>}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Giới tính
+                </Typography>
+                <TextField
+                  {...register('gender')}
+                  // error={submitted && !gender}
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  label="Giới tính"
+                  autoComplete="gender"
+                  select
+                  name="gender"
+                  //defaultValue={accountProfileData.gender}
+                  error={errors.gender != null}
+                  helperText={errors.gender?.message}
+                >
+                  {gender.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Nơi sinh
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="birthPlace"
+                  // label="Tên vai trò"
+                  errors={errors.birthPlace}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Căn cước công dân
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="citizenId"
+                  // label="Tên vai trò"
+                  errors={errors.citizenId}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  Số bảo hiểm
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="socialSecurityCode"
+                  // label="Tên vai trò"
+                  errors={errors.socialSecurityCode}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleOpenLocationDialog()}
                   >
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: '',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
-                      onClick={() => handleOpenLocationDialog()}
-                    >
-                      Địa chỉ
-                    </Button>
-                  </Box>
-                </Grid>
-                <Grid item container columns={12} spacing={2}>
-                  {locationDetail ? (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Số nhà: {locationDetail.addressNumber}
-                            </Typography>
-                            <Typography>
-                              Tên đường:{locationDetail.street}
-                            </Typography>
-                            <Typography>
-                              Phường: {locationDetail.ward}
-                            </Typography>
-                            <Typography>
-                              Quận: {locationDetail.district}{' '}
-                            </Typography>
-                            <Typography>
-                              Thành phố: {locationDetail.city}
-                            </Typography>
-                            {/* <Typography>
-                              Địa bàn tỉnh: {locationDetail.province}
-                            </Typography> */}
-                            <Typography>
-                              Quốc gia: {locationDetail.country}
-                            </Typography>
-                            {/* <Typography>
-                              Diện tích: {locationDetail.area}
-                            </Typography> */}
-                            <Typography>
-                              Điều phối: {locationDetail.coordinate}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ) : (
-                    <Grid item sx={12}>
-                      <div>Không có dữ liệu!</div>
-                    </Grid>
-                  )}
-                </Grid>
+                    Địa chỉ
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12}>
+                {locationDetail ? (
+                  <Paper className='tag'>
+                    <Stack direction='row' spacing={1}>
+                      <Typography>
+                        {locationDetail.addressNumber},
+                      </Typography>
+                      <Typography>
+                      {locationDetail.street},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.ward},
+                      </Typography>
+                      <Typography>
+                        {locationDetail.district},
+                      </Typography>
+                      <Typography>
+                        { locationDetail.city}
+                      </Typography>
+                      {/* <Typography>
+                        Địa bàn tỉnh: {locationDetail.province}
+                      </Typography>
+                      <Typography>
+                        Quốc gia: {locationDetail.country}
+                      </Typography>
+                      <Typography>
+                        Diện tích: {locationDetail.area}
+                      </Typography>
+                      <Typography>
+                        Điều phối: {locationDetail.coordinate}
+                      </Typography> */}
+                    </Stack>
+                  </Paper>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu!</div>
+                  </Grid>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Box
@@ -405,18 +383,13 @@ export const CreateWorker = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     Lưu
                   </Button>
                 </Box>
               </Grid>
-            </Box>
+            </Grid>
           </form>
         </Box>
       </Box>
@@ -427,8 +400,7 @@ export const CreateWorker = (props) => {
           locationDetail={locationDetail}
         ></DialogAddress>
       </Dialog>
-      ;
-    </div>
+    </Paper>
   );
 };
 

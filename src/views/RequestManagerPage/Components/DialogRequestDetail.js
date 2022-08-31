@@ -88,7 +88,7 @@ const DialogRequestProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin yêu cầu chi tiết
                 </Typography>
                 <TextFieldComponent
@@ -100,7 +100,7 @@ const DialogRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Số lượng
                 </Typography>
                 <TextFieldComponent
@@ -112,7 +112,7 @@ const DialogRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Giá tiền
                 </Typography>
                 <TextFieldComponent
@@ -125,7 +125,7 @@ const DialogRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Đơn vị tính
                 </Typography>
                 <TextFieldComponent

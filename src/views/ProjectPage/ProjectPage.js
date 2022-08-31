@@ -120,33 +120,32 @@ const ProjectPage = (props) => {
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Tất cả" {...a11yProps(0)} />
-            <Box sx={{ flex: 1 }}></Box>
-          </Tabs>
-          <div className='body'>
-
-        <TabPanel value={value} index={0}>
-          <Box width="100%">
-            {/* {allProject ? (
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Tất cả" {...a11yProps(0)} />
+          <Box sx={{ flex: 1 }}></Box>
+        </Tabs>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            <Box width="100%">
+              {/* {allProject ? (
               allProject.length > 0 ? ( */}
-            <ProjectTable
-              allProject={allProject}
-              totalPage={totalPage}
-            ></ProjectTable>
-            {/* ) : (
+              <ProjectTable
+                allProject={allProject}
+                totalPage={totalPage}
+              ></ProjectTable>
+              {/* ) : (
                 <div>Không có dữ liệu để hiển thị</div>
               )
             ) : null} */}
-          </Box>
-        </TabPanel>
-          </div>
+            </Box>
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

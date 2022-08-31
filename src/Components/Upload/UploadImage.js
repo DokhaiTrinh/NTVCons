@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import IconButton from '@mui/material/IconButton';
+import React from 'react'
+import { Button } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -26,7 +26,7 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
         resolver: yupResolver(valideSchema),
     });
     return (
-        <IconButton color="primary" aria-label="upload picture" component="label">
+        <Button variant='contained'>
             <input
                 {...register('files')}
                 type="file"
@@ -35,7 +35,7 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
                 hidden
                 onChange={handleChangeFile}
             />
-            <PhotoCamera style={{color: "#DD8501"}} fontSize='large'/>
-        </IconButton>
+            <PhotoCamera fontSize='large'/>
+        </Button>
     );
 }
