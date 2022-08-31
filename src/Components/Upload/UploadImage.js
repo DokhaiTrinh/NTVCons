@@ -26,7 +26,7 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
         resolver: yupResolver(valideSchema),
     });
     return (
-        <Button variant='contained'>
+        <Button aria-label="upload picture" component="label" variant='contained'>
             <input
                 {...register('files')}
                 type="file"
