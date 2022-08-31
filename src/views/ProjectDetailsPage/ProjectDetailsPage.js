@@ -142,47 +142,49 @@ const ProjectDetailsPage = (props) => {
             <Box></Box>
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
-          {allProjectDetails ? (
-            <Details
-              allProjectDetails={allProjectDetails}
-              managerList={managerList}
-              workerList={workerList}
-            />
-          ) : (
-            <div>Không có dữ liệu!!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          {allReportDetails ? (
-            <ReportTable
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            {allProjectDetails ? (
+              <Details
+                allProjectDetails={allProjectDetails}
+                managerList={managerList}
+                workerList={workerList}
+              />
+            ) : (
+              <div>Không có dữ liệu!!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {allReportDetails ? (
+              <ReportTable
+                projectId={projectId}
+                allReportDetails={allReportDetails}
+                totalPage={totalPage}
+              ></ReportTable>
+            ) : (
+              <div>Không có dữ liệu!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TaskTable projectId={projectId}></TaskTable>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <RequestTable
               projectId={projectId}
-              allReportDetails={allReportDetails}
-              totalPage={totalPage}
-            ></ReportTable>
-          ) : (
-            <div>Không có dữ liệu!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TaskTable projectId={projectId}></TaskTable>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <RequestTable
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></RequestTable>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Blueprint projectId={projectId}></Blueprint>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <FileDetail
-            projectId={projectId}
-            imageGet={imageGet}
-            docGet={docGet}
-          ></FileDetail>
-        </TabPanel>
+              allRequestDetails={allRequestDetails}
+            ></RequestTable>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Blueprint projectId={projectId}></Blueprint>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <FileDetail
+              projectId={projectId}
+              imageGet={imageGet}
+              docGet={docGet}
+            ></FileDetail>
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

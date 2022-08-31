@@ -136,7 +136,6 @@ const ProjectDetailsPage = (props) => {
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
@@ -153,48 +152,49 @@ const ProjectDetailsPage = (props) => {
             <Box sx={{ flex: 1 }}></Box>
             <Box></Box>
           </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          {allProjectDetails ? (
-            <Details
-              allProjectDetails={allProjectDetails}
-              managerList={managerList}
-              workerList={workerList}
-              blueprint={blueprint}
-            />
-          ) : (
-            <div>Không có dữ liệu!!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ReportTable
-            projectId={projectId}
-            allReportDetails={allReportDetails}
-            totalPage={totalPage}
-          ></ReportTable>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TaskTable projectId={projectId}></TaskTable>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <RequestTable
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></RequestTable>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Blueprint
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></Blueprint>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <FileDetail
-            projectId={projectId}
-            imageGet={imageGet}
-            docGet={docGet}
-          ></FileDetail>
-        </TabPanel>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            {allProjectDetails ? (
+              <Details
+                allProjectDetails={allProjectDetails}
+                managerList={managerList}
+                workerList={workerList}
+                blueprint={blueprint}
+              />
+            ) : (
+              <div>Không có dữ liệu!!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <ReportTable
+              projectId={projectId}
+              allReportDetails={allReportDetails}
+              totalPage={totalPage}
+            ></ReportTable>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TaskTable projectId={projectId}></TaskTable>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <RequestTable
+              projectId={projectId}
+              allRequestDetails={allRequestDetails}
+            ></RequestTable>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Blueprint
+              projectId={projectId}
+              allRequestDetails={allRequestDetails}
+            ></Blueprint>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <FileDetail
+              projectId={projectId}
+              imageGet={imageGet}
+              docGet={docGet}
+            ></FileDetail>
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

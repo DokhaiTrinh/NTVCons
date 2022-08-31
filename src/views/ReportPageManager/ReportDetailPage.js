@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import RenderImage from '../../Components/Render/RenderImage';
+import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 const ReportDetailPage = (props) => {
   const handleGetDate = (date) => {
@@ -100,154 +101,154 @@ const ReportDetailPage = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  
+
   console.log(allReportDetail);
   return (
-      <Box sx={{ width: '100%' }}>
-        <Paper
-          sx={{
-            width: '100%',
-            mp: 2,
-            padding: '32px',
-          }}
-          variant="elevation"
-        >
-          <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-            Thông tin chung
-          </Typography>
-          <Divider sx={{ marginBottom: '20px' }}></Divider>
-          {allReportDetail ? (
-            <Grid container spacing={2}>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Mã dự án
-                  {/* <a href={allReportDetail.fileList[1].fileLink} >Download</a> */}
-                </Typography>
-                <Typography variant="body1">
-                  {allReportDetail.projectId}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Mã báo cáo
-                </Typography>
-                <Typography variant="body1">
-                  {allReportDetail.reportId}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Tên báo báo cáo
-                </Typography>
-                <Typography variant="body1">
-                  {allReportDetail.reportName}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Ngày báo cáo
-                </Typography>
-                <Typography variant="body1">
-                  {allReportDetail.reportDate}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Mô tả báo cáo
-                </Typography>
-                <Typography variant="body1">
-                  {allReportDetail.reportDesc}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Người báo cáo
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  {allReportDetail.reporterId}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Loại báo cáo
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  {allReportDetail.reportType ? (
-                    allReportDetail.reportType.reportTypeName
+    <Box sx={{ width: '100%' }}>
+      <Paper
+        sx={{
+          width: '100%',
+          mp: 2,
+          padding: '32px',
+        }}
+        variant="elevation"
+      >
+        <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+          Thông tin chung
+        </Typography>
+        <Divider sx={{ marginBottom: '20px' }}></Divider>
+        {allReportDetail ? (
+          <Grid container spacing={2}>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Mã dự án
+                {/* <a href={allReportDetail.fileList[1].fileLink} >Download</a> */}
+              </Typography>
+              <Typography variant="body1">
+                {allReportDetail.projectId}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Mã báo cáo
+              </Typography>
+              <Typography variant="body1">
+                {allReportDetail.reportId}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Tên báo báo cáo
+              </Typography>
+              <Typography variant="body1">
+                {allReportDetail.reportName}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Ngày báo cáo
+              </Typography>
+              <Typography variant="body1">
+                {allReportDetail.reportDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Mô tả báo cáo
+              </Typography>
+              <Typography variant="body1">
+                {allReportDetail.reportDesc}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Người báo cáo
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {allReportDetail.reporterId}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Loại báo cáo
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {allReportDetail.reportType ? (
+                  allReportDetail.reportType.reportTypeName
+                ) : (
+                  <div>Chua co du lieu</div>
+                )}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="body1" color="gray">
+                Báo cáo chi tiết
+              </Typography>
+              <Card sx={{ width: '100%' }}>
+                <CardContent>
+                  {allReportList ? (
+                    allReportList.map((reportDetail, index) => (
+                      <Card
+                        sx={{
+                          witdh: '100%',
+                          marginBottom: '10px',
+                          padding: '10px',
+                        }}
+                      >
+                        <Typography>
+                          Thông tin báo cáo chi tiết: {reportDetail.itemDesc}
+                        </Typography>
+                        <Typography>
+                          Số lượng:
+                          {reportDetail.itemAmount}
+                        </Typography>
+                        <Typography>
+                          Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
+                        </Typography>
+                        <Typography>
+                          Đơn vị: {reportDetail.itemUnit}
+                        </Typography>
+                      </Card>
+                    ))
                   ) : (
-                    <div>Chua co du lieu</div>
+                    <div>Không có dữ liệu!!</div>
                   )}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs="4">
+              <Box sx={{ width: '100%' }}>
                 <Typography variant="body1" color="gray">
-                  Báo cáo chi tiết
+                  Công việc chi tiết
                 </Typography>
                 <Card sx={{ width: '100%' }}>
                   <CardContent>
-                    {allReportList ? (
-                      allReportList.map((reportDetail, index) => (
+                    {taskReportList ? (
+                      taskReportList.map((taskReport, index) => (
                         <Card
                           sx={{
                             witdh: '100%',
-                            marginBottom: '10px',
                             padding: '10px',
+                            marginBottom: '10px',
                           }}
                         >
                           <Typography>
-                            Thông tin báo cáo chi tiết: {reportDetail.itemDesc}
-                          </Typography>
-                          <Typography>
-                            Số lượng:
-                            {reportDetail.itemAmount}
-                          </Typography>
-                          <Typography>
-                            Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
-                          </Typography>
-                          <Typography>
-                            Đơn vị: {reportDetail.itemUnit}
+                            <Typography>
+                              Mã công việc chi tiết: {taskReport.taskReportId}
+                            </Typography>
+                            Tên công việc : {taskReport.taskNote}
                           </Typography>
                         </Card>
                       ))
                     ) : (
-                      <div>Không có dữ liệu!!</div>
+                      <div>No data!</div>
                     )}
                   </CardContent>
                 </Card>
-              </Grid>
-              <Grid item xs="4">
-                <Box sx={{ width: '100%' }}>
-                  <Typography variant="body1" color="gray">
-                    Công việc chi tiết
-                  </Typography>
-                  <Card sx={{ width: '100%' }}>
-                    <CardContent>
-                      {taskReportList ? (
-                        taskReportList.map((taskReport, index) => (
-                          <Card
-                            sx={{
-                              witdh: '100%',
-                              padding: '10px',
-                              marginBottom: '10px',
-                            }}
-                          >
-                            <Typography>
-                              <Typography>
-                                Mã công việc chi tiết: {taskReport.taskReportId}
-                              </Typography>
-                              Tên công việc : {taskReport.taskNote}
-                            </Typography>
-                          </Card>
-                        ))
-                      ) : (
-                        <div>No data!</div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Box>
-              </Grid>
-              <Grid container item xs="12">
-                <Grid item xs="4">
+              </Box>
+            </Grid>
+            <Grid container item xs="12">
+              {/* <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Hình ảnh
                   </Typography>
@@ -272,14 +273,19 @@ const ReportDetailPage = (props) => {
                 ) : (
                   // <div>Không có tệp đi kèm!!</div>
                   <></>
-                )}
-              </Grid>
+                )} */}
+              <FileDetail
+                // projectId={projectId}
+                imageGet={imageGet}
+                docGet={docGet}
+              ></FileDetail>
             </Grid>
-          ) : (
-            <div>Loading ...</div>
-          )}
-        </Paper>
-      </Box>
+          </Grid>
+        ) : (
+          <div>Loading ...</div>
+        )}
+      </Paper>
+    </Box>
   );
 };
 

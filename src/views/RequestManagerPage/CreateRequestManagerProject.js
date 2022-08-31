@@ -213,11 +213,10 @@ const CreateRequestProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <div className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         TẠO YÊU CẦU
       </Typography>
@@ -241,7 +240,6 @@ const CreateRequestProject = (props) => {
             Thông tin yêu cầu
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -296,12 +294,6 @@ const CreateRequestProject = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenRequestDetailDialog()}
                   >
                     Chi tiết yêu cầu
@@ -340,7 +332,7 @@ const CreateRequestProject = (props) => {
                 <Typography variant="body2">
                   Loại yêu cầu
                 </Typography>
-                <FormControl sx={{ width: 580 }}>
+                <FormControl fullWidth>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
@@ -389,12 +381,7 @@ const CreateRequestProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     Lưu
                   </Button>

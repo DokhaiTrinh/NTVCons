@@ -3,14 +3,15 @@
   }
   
   .react-tabs__tab-list {
-    width: 180px;
+    width: 100%;
     padding: 6px;
   }
 
   .react-tabs__tab {
-    background-color: #fff;
-    display: inline-block;
-    border: solid 1px;
+    width: 100px;
+    justify-content: center;
+    background-color: #f1f1f1;
+    display: flex;
     /* bottom: -1px; */
     position: relative;
     list-style: none;
@@ -26,7 +27,6 @@
     transition: background 0.2s ease-in-out;
   }
 
-  
   .react-tabs__tab--selected,
   .react-tabs__tab--selected:hover {
     background: #757575;

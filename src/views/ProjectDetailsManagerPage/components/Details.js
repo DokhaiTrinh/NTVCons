@@ -203,12 +203,6 @@ const Details = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenWorkerDialog()}
                   >
                     Danh sách công nhân

@@ -1,26 +1,29 @@
 import React from 'react'
-import {Card, CardActions, CardMedia, IconButton} from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
+import { Card, CardActions, CardMedia, IconButton, Paper } from '@mui/material';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import './style.css'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 export const ImageCard = (image) => {
     return (
-        <Card>
-            <CardMedia
-                component="img"
-                src={image}
-            />
-            <CardActions>
-                <IconButton>
-                    <DownloadIcon/>
-                </IconButton>
-                <IconButton>
-                    <ZoomInIcon/>
+        <Paper elevation={8}>
+            <Card className='card'>
+                <CardMedia
+                    component="img"
+                    src={image}
+                    className='img'
+                />
+                <CardActions className='cardActions'>
+                    <IconButton>
+                        <ZoomInIcon />
 
-                </IconButton>
-            </CardActions>
-            
-        </Card>
+                    </IconButton>
+                    <IconButton>
+                        <MoreVertIcon />
+
+                    </IconButton>
+                </CardActions>
+
+            </Card>
+        </Paper>
     )
 }
 

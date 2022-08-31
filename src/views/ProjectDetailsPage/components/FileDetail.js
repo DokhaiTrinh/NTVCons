@@ -1,6 +1,6 @@
 import React from 'react';
 import RenderImage from '../../../Components/Render/RenderImage';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Stack } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
@@ -17,19 +17,20 @@ const FileDetail = (props) => {
   console.log(docGet);
   return (
     <Tabs>
-      <Paper sx={{ width: '180px', height: '50px' }}>
+      <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>
         <TabList>
+        <Stack direction='row'>
           <Tab>Hình ảnh</Tab>
           <Tab>Tài liệu</Tab>
+        </Stack>
         </TabList>
       </Paper>
       <Paper
         sx={{
-          position: 'absolute',
-          width: '89%',
-          height: '70vh',
-          top: '205px',
+          width: '100%',
+          // top: '205px',
           padding: '32px',
+          borderRadius: '0'
         }}
       >
         <TabPanel>
