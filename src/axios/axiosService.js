@@ -181,7 +181,7 @@ class AxiosService {
     const json = JSON.stringify(userDTO);
     formData.append('userDTO', new Blob([json], { type: 'application/json' }));
     for (let index = 0; index < body.file.length; index++) {
-      formData.append('userAvatar', body.file[0]);
+      formData.append('userAvatar', body.file[index]);
     }
     return this.intance.post(url, formData, {
       headers: {

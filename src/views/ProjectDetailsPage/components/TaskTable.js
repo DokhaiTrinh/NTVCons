@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody, TableRow } from '@mui/material';
 import DeleteTask from '../../../Components/Button/Delete/DeleteTask';
 import UpdateButton from '../../../Components/Button/UpdateButton';
@@ -75,11 +75,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -231,9 +227,7 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(``)
-      }
+      {Header(`/createTask/${id}`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -246,15 +240,23 @@ export default function ReportTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={allTaskDetails.length}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allTaskDetails.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
@@ -270,16 +272,12 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.planEndDate}</TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
-                        {
-                          UpdateButton(`/updateTask/${row.taskId}`)
-                        }
+                        {UpdateButton(`/updateTask/${row.taskId}`)}
                       </TableCell>
                     ) : null}
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
-                        {
-                          DeleteTask(row.taskId)
-                        }
+                        {DeleteTask(row.taskId)}
                       </TableCell>
                     ) : null}
                   </TableRow>
