@@ -206,7 +206,7 @@ const CreatePersonnelPage = (props) => {
                   color="#DD8501"
                   sx={{ marginBottom: '10px' }}
                 >
-                  Ảnh dự án
+                  Ảnh đại diện
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}
@@ -315,7 +315,7 @@ const CreatePersonnelPage = (props) => {
                     variant="contained"
                     className='submitButton'
                   >
-                    Lưu
+                    Tạo mới
                   </Button>
                 </Box>
               </Grid>
