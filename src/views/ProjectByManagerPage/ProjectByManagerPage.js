@@ -131,18 +131,19 @@ const ProjectByManagerPage = (props) => {
             <Tab label="Đã hủy" {...a11yProps(5)} /> */}
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
-          <Box width="100%">
-            {managerProject ? (
-              managerProject.length > 0 ? (
-                <ProjectTable managerProject={managerProject}></ProjectTable>
-              ) : (
-                <div>Không có dữ liệu để hiển thị</div>
-              )
-            ) : null}
-          </Box>
-        </TabPanel>
-        {/* <TabPanel value={value} index={1}>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            <Box width="100%">
+              {managerProject ? (
+                managerProject.length > 0 ? (
+                  <ProjectTable managerProject={managerProject}></ProjectTable>
+                ) : (
+                  <div>Không có dữ liệu để hiển thị</div>
+                )
+              ) : null}
+            </Box>
+          </TabPanel>
+          {/* <TabPanel value={value} index={1}>
           <ProjectTable></ProjectTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -157,6 +158,7 @@ const ProjectByManagerPage = (props) => {
         <TabPanel value={value} index={5}>
           Item Six
         </TabPanel> */}
+        </div>
       </Box>
     </div>
   );

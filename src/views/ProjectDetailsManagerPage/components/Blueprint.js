@@ -70,8 +70,6 @@ export const Blueprint = (props) => {
   };
 
   return (
-    <div>
-      <Box sx={{ width: '100%' }}>
         <Paper
           sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
@@ -112,8 +110,6 @@ export const Blueprint = (props) => {
             </Grid>
           </Grid>
         </Paper>
-      </Box>
-    </div>
   );
 };
 

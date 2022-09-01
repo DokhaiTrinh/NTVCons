@@ -7,9 +7,9 @@ export default function RenderFileCard(src) {
   if (src) {
     // return src.map((photo, index) => {
     return (
-        <ImageList sx={{display: 'flex', justifyContent: 'start', padding: '5px'}}>
+        <ImageList sx={{width: '100%'}} cols={4}>
           {src.map((file, index) => (
-            <ImageListItem key={file} sx={{margin: '20px'}}>
+            <ImageListItem key={file} sx={{margin: '20px', width: 'min-content'}}>
                 {
                     FileCard(file)
                 }

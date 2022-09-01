@@ -6,10 +6,12 @@ import {
   Grid,
   Button,
   Stack,
-  Paper
+  Paper,
+  Select,
+  Dialog,
+  FormControl,
+  MenuItem,
 } from '@mui/material';
-import axios from 'axios';
-import { Image } from 'cloudinary-react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
@@ -19,23 +21,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import moment from 'moment';
-import { createReportApi } from '../../apis/Report/createReport';
 import { createReportApi1 } from '../../apis/Report/createReport';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Dialog from '@mui/material/Dialog';
 import DialogReportDetail from './Components/DialogReportDetail';
 import DialogTaskReport from './Components/DialogTaskReport';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { createReportDetailApi } from '../../apis/ReportDetails/createReportDetails';
-import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
+import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -226,11 +220,10 @@ const CreateReportProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper sx={{padding: '32px'}}>
+    <Paper sx={{ padding: '32px' }}>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         TẠO BÁO CÁO
       </Typography>
@@ -254,7 +247,6 @@ const CreateReportProject = (props) => {
             Thông tin báo cáo
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -320,12 +312,6 @@ const CreateReportProject = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenReportDetailDialog()}
                   >
                     Chi tiết báo cáo
@@ -336,22 +322,20 @@ const CreateReportProject = (props) => {
                 {reportDetail.length ? (
                   reportDetail.map((report, index) => (
                     <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
+                      <Paper className='tag'>
+                        <Stack direction='row' spacing={1}>
                             <Typography>
-                              Thông tin báo cáo chi tiết: {report.itemDesc}
+                              {report.itemDesc}
                             </Typography>
                             <Typography>
-                              Số lượng:{report.itemAmount}
+                              {report.itemAmount}
                             </Typography>
+                            <Typography>{report.itemUnit}</Typography>
                             <Typography>
-                              Giá tiền: {report.itemPrice}{' '}
+                              {report.itemPrice}&nbsp;VNĐ
                             </Typography>
-                            <Typography>Đơn vị: {report.itemUnit}</Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
+                            </Stack>
+                      </Paper>
                     </Grid>
                   ))
                 ) : (
@@ -371,12 +355,6 @@ const CreateReportProject = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenTaskReportDetailDialog()}
                   >
                     Chi tiết công việc
@@ -387,17 +365,15 @@ const CreateReportProject = (props) => {
                 {taskReportDetail.length ? (
                   taskReportDetail.map((task, index) => (
                     <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>{task.taskId}</Typography>
-                            <Typography>Số lượng:{task.taskNote}</Typography>
-                            <Typography>
-                              Giá tiền: {task.taskProgress}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
+                      <Paper className='tag'>
+                        <Stack direction='row' spacing={1}>
+                          <Typography>{task.taskId}</Typography>
+                          <Typography>{task.taskNote}</Typography>
+                          <Typography>
+                            &nbsp;{task.taskProgress}
+                          </Typography>
+                        </Stack>
+                      </Paper>
                     </Grid>
                   ))
                 ) : (
@@ -460,12 +436,7 @@ const CreateReportProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     Tạo báo cáo
                   </Button>

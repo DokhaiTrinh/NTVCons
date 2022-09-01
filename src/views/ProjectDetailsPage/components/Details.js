@@ -37,7 +37,7 @@ const Details = (props) => {
           variant="elevation"
         >
           <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{mb: 2}}>
-              <Typography variant="h6">
+              <Typography variant="h5">
                 Thông tin chung
               </Typography>
             {userInfor.authorID !== '54' ? null : (
@@ -49,23 +49,23 @@ const Details = (props) => {
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Mã dự án
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.projectId}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Tên dự án
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.projectName}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Kỹ sư quản lý
               </Typography>
               <Typography sx={{ width: '100%' }}>
@@ -89,7 +89,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Trạng thái
               </Typography>
               <Box
@@ -100,7 +100,7 @@ const Details = (props) => {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   sx={{
                     display: 'flex',
                     alignItems: 'left',
@@ -114,26 +114,26 @@ const Details = (props) => {
             </Grid>
 
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Thời gian bắt đầu dự kiến
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.actualStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Thời gian kết thúc dự kiến
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Địa chỉ
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
                 {allProjectDetails.location.ward}, Q{' '}
@@ -141,31 +141,31 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Thành phố
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.location.country}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Thời gian bắt đầu thực tế
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.planStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Thời gian kết thúc thực tế
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.planEndDate}
               </Typography>
             </Grid>
             <Grid item xs="12">
-              <Typography variant="h6" color="gray">
+              <Typography variant="caption">
                 Danh sách công nhân
               </Typography>
               <Typography sx={{ width: '100%' }}>
@@ -179,12 +179,6 @@ const Details = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenWorkerDialog()}
                   >
                     Danh sách công nhân

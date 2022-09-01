@@ -5,7 +5,8 @@ import {
   TextField,
   Grid,
   Button,
-  Paper
+  Paper,
+  Stack
 } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -30,6 +31,8 @@ import DialogUpdateTaskReport from './Components/DialogUpdateTaskReport';
 import { getReportById } from '../../apis/Report/getReportByProjectId';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import UploadImage from '../../Components/Upload/UploadImage';
+import RenderImage from '../../Components/Render/RenderImage';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -63,6 +66,9 @@ const UpdateReportProject = (props) => {
   const [updateReportDetail, setUpdateReportDetail] = React.useState([]);
   const [updateTaskDetail, setUpdateTaskDetail] = React.useState([]);
   const [allReportDetail, setAllReportDetail] = React.useState();
+  const [selectedImages, setSelectedImage] = useState([]);
+  const [filesImage, setFilesImage] = useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -100,7 +106,8 @@ const UpdateReportProject = (props) => {
       reportTypeSelected,
       idUser,
       updateReportDetail,
-      updateTaskDetail
+      updateTaskDetail,
+      filesImage
     );
     // if (updateReportDetail.length > 0) {
     //   for (let urp of updateReportDetail) {
@@ -122,7 +129,8 @@ const UpdateReportProject = (props) => {
     reportTypeId,
     reporterId,
     reportDetailList,
-    taskReportList
+    taskReportList,
+    filesImage
   ) => {
     try {
       setLoading(true);
@@ -214,12 +222,12 @@ const UpdateReportProject = (props) => {
   const handleCloseUpdateTaskReportDetailDialog = () => {
     setOpenUpdateTaskReportDialog(false);
   };
+  
   return (
-    <Paper sx={{padding: '32px'}}>
+    <Paper sx={{ padding: '32px' }}>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         CẬP NHẬT BÁO CÁO
       </Typography>
@@ -244,9 +252,17 @@ const UpdateReportProject = (props) => {
               Thông tin báo cáo
             </Typography>
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-            <Box sx={{ width: '100%', height: '20px' }}></Box>
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
+                {/* <Grid item xs={12}>
+                  <Typography variant="body2" sx={{ marginBottom: '10px' }}>
+                    Hình ảnh
+                  </Typography>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    {UploadImage(setSelectedImage, setFilesImage)}
+                    <div className="result">{RenderImage(selectedImages)}</div>
+                  </Stack>
+                </Grid> */}
                 <Grid item xs={12}>
                   <Typography variant="body2">
                     Tên báo cáo
@@ -302,12 +318,6 @@ const UpdateReportProject = (props) => {
                   >
                     <Button
                       variant="contained"
-                      style={{
-                        backgroundColor: '',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
                       onClick={() =>
                         handleOpenUpdateReportDetailDialog('CreateNewReport')
                       }
@@ -376,17 +386,11 @@ const UpdateReportProject = (props) => {
                   >
                     <Button
                       variant="contained"
-                      style={{
-                        backgroundColor: '',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
+
                       onClick={() =>
                         handleOpenUpdateTaskReportDetailDialog('CreateNewTask')
                       }
-                    >
-                      Chi tiết công việc
+                    >                      Chi tiết công việc
                     </Button>
                   </Box>
                 </Grid>
@@ -468,12 +472,7 @@ const UpdateReportProject = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      style={{
-                        backgroundColor: '#DD8501',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
+                      className='submitButton'
                     >
                       Cập nhật
                     </Button>

@@ -9,6 +9,8 @@ import CardContent from '@mui/material/CardContent';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
 import { getRequestIdApi } from '../../apis/Request/getRequestByProjectId';
+import RenderImage from '../../Components/Render/RenderImage';
+import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 function RequestDetailPage() {
   const handleGetDate = (date) => {
@@ -26,18 +28,48 @@ function RequestDetailPage() {
   const { id } = useParams();
   const [allRequestList, setAllRequestList] = React.useState();
   const [requestDetail, setRequestDetail] = React.useState([]);
+  const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
         const listAllRequestDetail = await getRequestIdApi(id, 'BY_ID');
         setAllRequestList(listAllRequestDetail.data);
         setRequestDetail(listAllRequestDetail.data.requestDetailList);
+        if (listAllRequestDetail.data) {
+          if (listAllRequestDetail.data.fileList.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllRequestDetail.data.fileList.length;
+              index++
+            ) {
+              const element = listAllRequestDetail.data.fileList[index];
+              if (element.fileName.split('.')[1] === 'docx') {
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
+        }
       } catch (error) {
         console.log('Không thể lấy dữ liệu của yêu cầu!');
       }
     })();
   }, []);
   console.log(allRequestList);
+  console.log(docGet);
+  console.log(imageGet);
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -152,6 +184,39 @@ function RequestDetailPage() {
                     )}
                   </CardContent>
                 </Card>
+              </Grid>
+              <Grid container item xs="12">
+                {/* <Grid item xs="4">
+                  <Typography variant="body1" color="gray">
+                    Hình ảnh
+                  </Typography>
+                  <Box sx={{ width: '200px', height: '300px' }}>
+                    <div className="label-holder" style={{ height: '200px' }}>
+                      <label htmlFor="file" className="img-upload"></label>
+                      <div className="result">{RenderImage(imageGet)}</div>
+                    </div>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Grid item xs="4">
+                <Typography variant="body1" color="gray">
+                  Tài liệu
+                </Typography>
+                {docGet.length > 0 ? (
+                  docGet.map((item, index) => (
+                    <>
+                      <a href={item}>Tải xuống</a>
+                    </>
+                  ))
+                ) : (
+                  // <div>Không có tệp đi kèm!!</div>
+                  <></>
+                )} */}
+                <FileDetail
+                  // projectId={projectId}
+                  imageGet={imageGet}
+                  docGet={docGet}
+                ></FileDetail>
               </Grid>
             </Grid>
           ) : (
