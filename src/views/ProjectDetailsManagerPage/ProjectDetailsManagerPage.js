@@ -102,7 +102,12 @@ const ProjectDetailsPage = (props) => {
             ) {
               const element = listAllProjectDetails.data.fileList[index];
               if (element.fileName.split('.')[1] === 'docx') {
-                arrayDocLink.push(element.fileLink);
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
               } else {
                 arrayImgLink.push(element.fileLink);
               }
@@ -136,23 +141,23 @@ const ProjectDetailsPage = (props) => {
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Chi tiết" {...a11yProps(0)} />
-            <Tab label="Báo cáo" {...a11yProps(1)} />
-            <Tab label="Công việc" {...a11yProps(2)} />
-            <Tab label="Yêu cầu" {...a11yProps(3)} />
-            <Tab label="Bản vẽ" {...a11yProps(4)} />
-            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <Box></Box>
-          </Tabs>
-        <div className='body'>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Chi tiết" {...a11yProps(0)} />
+          <Tab label="Báo cáo" {...a11yProps(1)} />
+          <Tab label="Công việc" {...a11yProps(2)} />
+          <Tab label="Yêu cầu" {...a11yProps(3)} />
+          <Tab label="Bản vẽ" {...a11yProps(4)} />
+          <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          <Box sx={{ flex: 1 }}></Box>
+          <Box></Box>
+        </Tabs>
+        <div className="body">
           <TabPanel value={value} index={0}>
             {allProjectDetails ? (
               <Details
