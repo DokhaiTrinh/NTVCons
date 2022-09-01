@@ -7,7 +7,7 @@ import {
   Button,
   Paper,
   Checkbox,
-  Autocomplete
+  Autocomplete,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -55,6 +55,7 @@ const CreateProjectPage = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [value, setValue] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -83,6 +84,7 @@ const CreateProjectPage = (props) => {
       }
     })();
   }, []);
+  console.log(allManager);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
@@ -270,11 +272,8 @@ const CreateProjectPage = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper className='bodynonetab'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Paper className="bodynonetab">
+      <Typography variant="h6" color="#DD8501">
         TẠO MỚI DỰ ÁN
       </Typography>
       <Divider></Divider>
@@ -300,9 +299,7 @@ const CreateProjectPage = (props) => {
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên dự án
-                </Typography>
+                <Typography variant="body2">Tên dự án</Typography>
                 <TextFieldComponent
                   register={register}
                   name="projectName"
@@ -350,14 +347,17 @@ const CreateProjectPage = (props) => {
                 )}
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Kỹ sư phụ trách
-                </Typography>
+                <Typography variant="body2">Kỹ sư phụ trách</Typography>
                 <Autocomplete
                   multiple
                   options={allManager}
                   disableCloseOnSelect
                   getOptionLabel={(option) => option.username}
+                  // value={value}
+                  // onInputChange={(event, newInputValue) => {
+                  //   setValue(newInputValue);
+                  // }}
+                  onChange={(e, values) => setValue("food", values)}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
                       <Checkbox
@@ -375,23 +375,19 @@ const CreateProjectPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Chi phí ước tính
-                </Typography>
+                <Typography variant="body2">Chi phí ước tính</Typography>
                 <TextFieldComponent
                   register={register}
                   name="estimatedCost"
                   errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
-                  label='VNĐ'
+                  label="VNĐ"
                 />
               </Grid>
               <Grid container item xs={12} spacing={1}>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Thời gian dự kiến
-                  </Typography>
+                  <Typography variant="body2">Thời gian dự kiến</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body2">Bắt đầu dự kiến</Typography>
@@ -509,23 +505,13 @@ const CreateProjectPage = (props) => {
               </Grid>
               <Grid item container columns={12}>
                 {locationDetail ? (
-                  <Paper className='tag'>
-                    <Stack direction='row' spacing={1}>
-                      <Typography>
-                        {locationDetail.addressNumber},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.street},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.ward},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.district},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.city}
-                      </Typography>
+                  <Paper className="tag">
+                    <Stack direction="row" spacing={1}>
+                      <Typography>{locationDetail.addressNumber},</Typography>
+                      <Typography>{locationDetail.street},</Typography>
+                      <Typography>{locationDetail.ward},</Typography>
+                      <Typography>{locationDetail.district},</Typography>
+                      <Typography>{locationDetail.city}</Typography>
                       {/* <Typography>
                         Địa bàn tỉnh: {locationDetail.province}
                       </Typography>
@@ -656,8 +642,8 @@ const CreateProjectPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
-                  // onClick={(event) => uploadImage(event)}
+                    className="submitButton"
+                    // onClick={(event) => uploadImage(event)}
                   >
                     Tạo mới dự án
                   </Button>

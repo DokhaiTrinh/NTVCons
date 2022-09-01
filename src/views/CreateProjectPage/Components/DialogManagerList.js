@@ -40,7 +40,6 @@ const DialogManagerList = (props) => {
     props.handleCloseManagerListDialog();
   };
 
-
   // const handleCheckExisted = (managerID) => {
   //   for (let index = 0; index < managerListDetail.length; index++) {
   //     const element = managerListDetail[index];
@@ -52,11 +51,8 @@ const DialogManagerList = (props) => {
   // };
 
   return (
-    <Box className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Box className="dialog">
+      <Typography variant="h6" color="#DD8501">
         DANH SÁCH KỸ SƯ
       </Typography>
       <Divider></Divider>
@@ -77,16 +73,12 @@ const DialogManagerList = (props) => {
                 managerListDetail.length > 0 ? (
                   <Checkbox
                     onChange={handleToggle(manager.userId)}
-                    checked={
-                      checked.indexOf(manager.userId) !== -1
-                    }
+                    checked={checked.indexOf(manager.userId) !== -1}
                   />
                 ) : (
                   <Checkbox
                     onChange={handleToggle(manager.userId)}
-                    checked={
-                      checked.indexOf(manager.userId) !== -1
-                    }
+                    checked={checked.indexOf(manager.userId) !== -1}
                   />
                 )
               }
@@ -121,7 +113,7 @@ const DialogManagerList = (props) => {
           <Button
             type="submit"
             variant="contained"
-            className='submitButton'
+            className="submitButton"
             onClick={handleSaveListManager}
           >
             Lưu
