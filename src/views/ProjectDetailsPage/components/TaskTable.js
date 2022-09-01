@@ -26,6 +26,7 @@ import { Table, TableBody, TableRow } from '@mui/material';
 import DeleteTask from '../../../Components/Button/Delete/DeleteTask';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import Header from '../../../Components/Tab/Header';
+import DetailButton from '../../../Components/Button/DetailButton';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -270,6 +271,12 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.taskDesc}</TableCell>
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
+                    {/* <TableCell align="left">
+                      {row.taskAssignment.assignee.username}
+                    </TableCell> */}
+                    <TableCell align="left">
+                      {DetailButton(`/taskDetails/${row.taskId}`)}
+                    </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
                         {UpdateButton(`/updateTask/${row.taskId}`)}

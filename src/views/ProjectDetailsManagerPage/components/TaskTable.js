@@ -22,10 +22,12 @@ import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { TableBody } from '@mui/material';
 import { Table } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
+import DetailButton from '../../../Components/Button/DetailButton';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const handleGetDate = (date) => {
   const getDate = date.substring(0, 10);
@@ -101,18 +103,12 @@ const headCells = [
     disablePadding: false,
     label: 'Kết thúc',
   },
-  // {
-  //   id: 'kysunhanviec',
-  //   character: false,
-  //   disablePadding: false,
-  //   label: 'Người nhận',
-  // },
-  // {
-  //   id: 'update',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Cập nhật',
-  // },
+  {
+    id: 'kysunhanviec',
+    character: false,
+    disablePadding: false,
+    label: 'Kỹ sư nhận việc',
+  },
   // {
   //   id: 'delete',
   //   numeric: false,
@@ -314,26 +310,29 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header('')
-      }
+      {Header('')}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-            />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <EnhancedTableHead order={order} orderBy={orderBy} />
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allTaskDetails.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     {/* <TableCell padding="checkbox">
                       <Checkbox
                         onClick={(event) => handleClick(event, row.projectId)}
@@ -357,22 +356,18 @@ export default function ReportTable(props) {
                     <TableCell align="left">{row.taskDesc}</TableCell>
                     {/* <TableCell align="left">{row.}</TableCell> */}
                     {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
+                    <TableCell align="left">{row.planStartDate}</TableCell>
+                    <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">
-                      {(row.planStartDate)}
-                    </TableCell>
-                    <TableCell align="left">
-                      {(row.planEndDate)}
-                    </TableCell>
-                    {/* <TableCell align="left">
                       {row.taskAssignment.assignee.username}
-                    </TableCell> */}
+                    </TableCell>
                     {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
                     <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
                     {/* <TableCell align="center">
                       <IconButton
                         edge="start"
                         component={Link}
-                        to={`/requestDetails/${row.requestId}`}
+                        to={`/taskDetails/${row.taskId}`}
                       >
                         <InfoIcon />
                       </IconButton>
@@ -384,7 +379,10 @@ export default function ReportTable(props) {
                           {'Chi Tiết'}
                         </Link>
                       </Route>
-                    </TableCell>  */}
+                    </TableCell> */}
+                    <TableCell align="left">
+                      {DetailButton(`/taskDetails/${row.taskId}`)}
+                    </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
                         <IconButton
@@ -423,13 +421,13 @@ export default function ReportTable(props) {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

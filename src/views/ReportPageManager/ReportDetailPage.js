@@ -13,18 +13,6 @@ import RenderImage from '../../Components/Render/RenderImage';
 import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 const ReportDetailPage = (props) => {
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '/',
-      getDateCom[1],
-      '/',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
   const [{ loading }, dispatch] = useStateValue();
   const { id } = useParams();
   const [allReportDetail, setAllReportDetail] = React.useState([]);
@@ -143,7 +131,7 @@ const ReportDetailPage = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Tên báo báo cáo
+                Tên báo cáo
               </Typography>
               <Typography variant="body1">
                 {allReportDetail.reportName}
