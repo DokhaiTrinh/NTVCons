@@ -54,7 +54,12 @@ const ReportDetailPage = (props) => {
             ) {
               const element = listAllReportDetail.data.fileList[index];
               if (element.fileName.split('.')[1] === 'docx') {
-                arrayDocLink.push(element.fileLink);
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
               } else {
                 arrayImgLink.push(element.fileLink);
               }
@@ -205,9 +210,7 @@ const ReportDetailPage = (props) => {
                         <Typography>
                           Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
                         </Typography>
-                        <Typography>
-                          Đơn vị: {reportDetail.itemUnit}
-                        </Typography>
+                        <Typography>Đơn vị: {reportDetail.itemUnit}</Typography>
                       </Card>
                     ))
                   ) : (
