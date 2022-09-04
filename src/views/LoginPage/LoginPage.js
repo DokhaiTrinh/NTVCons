@@ -77,6 +77,7 @@ const LoginPage = (props) => {
           username: decodeToken.userName,
           email: decodeToken.email,
           phone: decodeToken.phone,
+          fullName: decodeToken.fullName,
           authorID: decodeToken.role[0].authority,
         };
 
@@ -230,7 +231,7 @@ const LoginPage = (props) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  className='submitButton'
+                  className="submitButton"
                 >
                   {loading ? (
                     <>
