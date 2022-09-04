@@ -29,7 +29,9 @@ import { getProjectByParam } from '../../apis/Project/updateProject';
 const EditProejectDetailsPage = (props) => {
   const { id } = useParams();
   var idN = parseInt(id);
-  const [valueActualStartDate, setValueActualStartDate] = React.useState();
+  const [valueActualStartDate, setValueActualStartDate] = React.useState(
+    new Date()
+  );
   const [valueActualEndDate, setValueActualEndDate] = React.useState(
     new Date()
   );
@@ -50,8 +52,8 @@ const EditProejectDetailsPage = (props) => {
       try {
         const listAllProjectDetails = await getProjectByParam(id, 'BY_ID');
         setAllProjectDetails(listAllProjectDetails.data);
-        setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
-        setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
+        // setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
+        // setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
         setValuePlanStartDate(listAllProjectDetails.data.planStartDate);
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
         setProjectId(listAllProjectDetails.data.projectId);
@@ -84,7 +86,6 @@ const EditProejectDetailsPage = (props) => {
           planEndDate,
           planStartDate,
           updateLocationDetail,
-          data.updatedBy,
           data.actualCost,
           data.estimatedCost,
           data.projectName
@@ -99,7 +100,6 @@ const EditProejectDetailsPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    updatedBy,
     actualCost,
     estimatedCost,
     projectName
@@ -113,7 +113,6 @@ const EditProejectDetailsPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        updatedBy,
         actualCost,
         estimatedCost,
         projectName,
@@ -153,7 +152,6 @@ const EditProejectDetailsPage = (props) => {
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
         .required(),
-      updatedBy: yup.number().required(),
     })
     .required();
   const {
@@ -219,13 +217,12 @@ const EditProejectDetailsPage = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
-          {allProjectDetails ? (
-            <form onSubmit={handleSubmit(submitForm)}>
+
+          <form onSubmit={handleSubmit(submitForm)}>
+            {allProjectDetails ? (
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Mã dự án
-                  </Typography>
+                {/* <Grid item xs={12}>
+                  <Typography variant="body2">Mã dự án</Typography>
                   <TextField
                     {...register('projectId')}
                     inputProps={{ readOnly: true }}
@@ -238,11 +235,9 @@ const EditProejectDetailsPage = (props) => {
                     helperText={errors.projectId?.message}
                     sx={{ width: '100%' }}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Tên dự án
-                  </Typography>
+                  <Typography variant="body2">Tên dự án</Typography>
                   <TextField
                     {...register('projectName')}
                     name="projectName"
@@ -254,9 +249,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Chi phí ước tính
-                  </Typography>
+                  <Typography variant="body2">Chi phí ước tính</Typography>
                   <TextField
                     {...register('estimatedCost')}
                     name="estimatedCost"
@@ -271,9 +264,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2">
-                      Thời gian dự kiến
-                    </Typography>
+                    <Typography variant="body2">Thời gian dự kiến</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">Bắt đầu dự kiến</Typography>
@@ -358,7 +349,7 @@ const EditProejectDetailsPage = (props) => {
                       display: 'flex',
                     }}
                   >
-                    <Button
+                    {/* <Button
                       variant="contained"
                       style={{
                         backgroundColor: '#DD8501',
@@ -366,66 +357,62 @@ const EditProejectDetailsPage = (props) => {
                         width: '200px',
                         alignSelf: 'center',
                       }}
-                      onClick={() =>
-                        handleOpenUpdateLocationDialog('CreateNewLocation')
-                      }
-                    >
-                      Chi tiết địa điểm
-                    </Button>
+                      // onClick={() =>
+                      //   handleOpenUpdateLocationDialog('CreateNewLocation')
+                      // }
+                    ></Button> */}
+                    Chi tiết địa điểm
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {updateLocationDetail.length > 0 ? (
-                    updateLocationDetail.map((locationDetailItem, index) => (
-                      <Grid
-                        item
-                        xs={4}
-                        key={index}
-                        onClick={() =>
-                          handleOpenUpdateLocationDialog(
-                            'UpdateLocation',
-                            locationDetailItem
-                          )
-                        }
-                      >
-                        <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%' }}>
-                            <CardContent>
-                              <Typography>
-                                Số nhà: {locationDetailItem.addressNumber}
-                              </Typography>
-                              <Typography>
-                                Tên đường:{locationDetailItem.street}
-                              </Typography>
-                              <Typography>
-                                Quận: {locationDetailItem.district}{' '}
-                              </Typography>
-                              <Typography>
-                                Thành phố: {locationDetailItem.city}
-                              </Typography>
-                              <Typography>
-                                Khu vực: {locationDetailItem.ward}
-                              </Typography>
-                              <Typography>
-                                Địa bàn tỉnh: {locationDetailItem.province}
-                              </Typography>
-                              <Typography>
-                                Quốc gia: {locationDetailItem.country}
-                              </Typography>
-                              <Typography>
-                                Diện tích: {locationDetailItem.area}
-                              </Typography>
-                              <Typography>
-                                Điều phối: {locationDetailItem.coordinate}
-                              </Typography>
-                              <Typography>
-                                Mã địa chỉ: {locationDetailItem.locationId}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
-                      </Grid>
-                    ))
+                  {updateLocationDetail ? (
+                    <Grid
+                      item
+                      xs={4}
+                      onClick={() =>
+                        handleOpenUpdateLocationDialog(
+                          'UpdateLocation',
+                          updateLocationDetail
+                        )
+                      }
+                    >
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Số nhà: {updateLocationDetail.addressNumber}
+                            </Typography>
+                            <Typography>
+                              Tên đường:{updateLocationDetail.street}
+                            </Typography>
+                            <Typography>
+                              Quận: {updateLocationDetail.district}{' '}
+                            </Typography>
+                            <Typography>
+                              Thành phố: {updateLocationDetail.city}
+                            </Typography>
+                            <Typography>
+                              Khu vực: {updateLocationDetail.ward}
+                            </Typography>
+                            <Typography>
+                              Địa bàn tỉnh: {updateLocationDetail.province}
+                            </Typography>
+                            <Typography>
+                              Quốc gia: {updateLocationDetail.country}
+                            </Typography>
+                            <Typography>
+                              Diện tích: {updateLocationDetail.area}
+                            </Typography>
+                            <Typography>
+                              Điều phối: {updateLocationDetail.coordinate}
+                            </Typography>
+                            {/* <Typography>
+                                Mã địa chỉ: {updateLocationDetail.locationId}
+                              </Typography> */}
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
                   ) : (
                     <Grid
                       item
@@ -437,9 +424,7 @@ const EditProejectDetailsPage = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Giá chính thức
-                  </Typography>
+                  <Typography variant="body2">Giá chính thức</Typography>
                   <TextField
                     {...register('actualCost')}
                     name="actualCost"
@@ -497,8 +482,8 @@ const EditProejectDetailsPage = (props) => {
                   </Box>
                 </Grid>
               </Grid>
-            </form>
-          ) : null}
+            ) : null}
+          </form>
         </Box>
       </Box>
       <Dialog
@@ -510,7 +495,7 @@ const EditProejectDetailsPage = (props) => {
           setUpdateLocationDetail={setUpdateLocationDetail}
           updateLocationDetail={updateLocationDetail}
           actionUpdateLocation={actionUpdateLocation}
-          itemDetailLocationUpdate={itemDetailLocationUpdate}
+          // itemDetailLocationUpdate={itemDetailLocationUpdate}
         ></DialogEditLocation>
       </Dialog>
     </div>

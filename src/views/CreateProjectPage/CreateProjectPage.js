@@ -55,7 +55,9 @@ const CreateProjectPage = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  const [value, setValue] = React.useState([]);
+  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [workerListChoice, setWokerListChoice] = React.useState([]);
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -84,11 +86,10 @@ const CreateProjectPage = (props) => {
       }
     })();
   }, []);
-  console.log(allManager);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    if (managerListDetail === 0 || workerListDetail === 0) {
+    if (managerListChoice === 0 || workerListChoice === 0) {
       handleCreateProject(
         planEndDate,
         planStartDate,
@@ -104,10 +105,10 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         locationDetail,
-        managerListDetail,
+        managerListChoice,
         data.estimatedCost,
         data.projectName,
-        workerListDetail,
+        workerListChoice,
         filesImage
       );
     }
@@ -161,7 +162,6 @@ const CreateProjectPage = (props) => {
       });
       setLoading(false);
     }
-    console.log(planStartDate);
   };
   const valideSchema = yup
     .object({
@@ -209,38 +209,38 @@ const CreateProjectPage = (props) => {
   const handleCloseLocationDialog = () => {
     setOpenLocationDialog(false);
   };
-  const handleOpenManagerListDialog = () => {
-    setOpenManagerListDialog(true);
-  };
+  // const handleOpenManagerListDialog = () => {
+  //   setOpenManagerListDialog(true);
+  // };
   const handleCloseManagerListDialog = () => {
     setOpenManagerListDialog(false);
   };
-  const handleOpenWorkerDialog = () => {
-    setOpenWorkerListDialog(true);
-  };
+  // const handleOpenWorkerDialog = () => {
+  //   setOpenWorkerListDialog(true);
+  // };
   const handleCloseWorkerDialog = () => {
     setOpenWorkerListDialog(false);
   };
 
-  const handleGetManagerName = (managerID) => {
-    if (allManager.length > 0) {
-      for (const manager of allManager) {
-        if (manager.userId === managerID) {
-          return manager.username;
-        }
-      }
-    }
-    return '';
-  };
-  const handleGetWorkerName = (workerId) => {
-    if (allWorker.length > 0) {
-      for (const worker of allWorker) {
-        if (worker.workerId === workerId) {
-          return worker.fullName;
-        }
-      }
-    }
-  };
+  // const handleGetManagerName = (managerID) => {
+  //   if (allManager.length > 0) {
+  //     for (const manager of allManager) {
+  //       if (manager.userId === managerID) {
+  //         return manager.username;
+  //       }
+  //     }
+  //   }
+  //   return '';
+  // };
+  // const handleGetWorkerName = (workerId) => {
+  //   if (allWorker.length > 0) {
+  //     for (const worker of allWorker) {
+  //       if (worker.workerId === workerId) {
+  //         return worker.fullName;
+  //       }
+  //     }
+  //   }
+  // };
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
 
@@ -271,6 +271,22 @@ const CreateProjectPage = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
+
+  const handleSelectManager = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setManagerListChoice(getIdList);
+  };
+  const handleSelectWorker = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.workerId);
+    }
+    setWokerListChoice(getIdList);
+  };
+  console.log(allWorker);
   return (
     <Paper className="bodynonetab">
       <Typography variant="h6" color="#DD8501">
@@ -353,11 +369,7 @@ const CreateProjectPage = (props) => {
                   options={allManager}
                   disableCloseOnSelect
                   getOptionLabel={(option) => option.username}
-                  // value={value}
-                  // onInputChange={(event, newInputValue) => {
-                  //   setValue(newInputValue);
-                  // }}
-                  onChange={(e, values) => setValue("food", values)}
+                  onChange={(e, option) => handleSelectManager(option)}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
                       <Checkbox
@@ -462,25 +474,28 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid> */}
+
               <Grid item xs={12}>
                 <Typography variant="body2">Công nhân</Typography>
                 <Autocomplete
                   multiple
-                  id="checkboxes-tags-demo"
                   options={allWorker}
                   disableCloseOnSelect
                   getOptionLabel={(option) => option.fullName}
-                  renderOption={(props, option, { selected }) => (
-                    <li {...props}>
-                      <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
-                      />
-                      {option.fullName}
-                    </li>
-                  )}
+                  onChange={(e, option) => handleSelectWorker(option)}
+                  renderOption={(props, option, { selected }) =>
+                    option.isAvailable ? (
+                      <li {...props}>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.fullName}
+                      </li>
+                    ) : null
+                  }
                   renderInput={(params) => (
                     <TextField {...params} placeholder="Công nhân" />
                   )}
@@ -512,18 +527,6 @@ const CreateProjectPage = (props) => {
                       <Typography>{locationDetail.ward},</Typography>
                       <Typography>{locationDetail.district},</Typography>
                       <Typography>{locationDetail.city}</Typography>
-                      {/* <Typography>
-                        Địa bàn tỉnh: {locationDetail.province}
-                      </Typography>
-                      <Typography>
-                        Quốc gia: {locationDetail.country}
-                      </Typography>
-                      <Typography>
-                        Diện tích: {locationDetail.area}
-                      </Typography>
-                      <Typography>
-                        Điều phối: {locationDetail.coordinate}
-                      </Typography> */}
                     </Stack>
                   </Paper>
                 ) : (
