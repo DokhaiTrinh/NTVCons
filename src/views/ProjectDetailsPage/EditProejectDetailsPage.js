@@ -5,6 +5,8 @@ import {
   TextField,
   Grid,
   Button,
+  Checkbox,
+  Autocomplete,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -26,6 +28,10 @@ import CardContent from '@mui/material/CardContent';
 import DialogEditLocation from './components/DialogEditLocation';
 import { useParams } from 'react-router-dom';
 import { getProjectByParam } from '../../apis/Project/updateProject';
+import { Stack } from '@mui/system';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
 const EditProejectDetailsPage = (props) => {
   const { id } = useParams();
   var idN = parseInt(id);
@@ -45,6 +51,12 @@ const EditProejectDetailsPage = (props) => {
   const [actionUpdateLocation, setActionUpdateLocation] = React.useState();
   const [itemDetailLocationUpdate, setItemDetailLocationUpdate] =
     React.useState();
+  const [allManager, setAllManager] = React.useState([]);
+  const [allWorker, setAllWorker] = React.useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [workerListChoice, setWokerListChoice] = React.useState([]);
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   React.useEffect(() => {
@@ -58,12 +70,14 @@ const EditProejectDetailsPage = (props) => {
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
         setProjectId(listAllProjectDetails.data.projectId);
         setUpdateLocationDetail(listAllProjectDetails.data.location);
+        setAllManager(listAllProjectDetails.data.projectManagerList);
+        setAllWorker(listAllProjectDetails.data.projectWorkerList);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
   }, []);
-  console.log(updateLocationDetail);
+  console.log(allProjectDetails);
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
@@ -79,17 +93,35 @@ const EditProejectDetailsPage = (props) => {
       denyButtonText: `Không cập nhật`,
     }).then((result) => {
       if (result.isConfirmed) {
-        handleUpdateProject(
-          projectId,
-          actualEndDate,
-          actualStartDate,
-          planEndDate,
-          planStartDate,
-          updateLocationDetail,
-          data.actualCost,
-          data.estimatedCost,
-          data.projectName
-        );
+        if (managerListChoice === 0 || workerListChoice === 0) {
+          handleUpdateProject(
+            projectId,
+            actualEndDate,
+            actualStartDate,
+            planEndDate,
+            planStartDate,
+            updateLocationDetail,
+            null,
+            null,
+            data.actualCost,
+            data.estimatedCost,
+            data.projectName
+          );
+        } else {
+          handleUpdateProject(
+            projectId,
+            actualEndDate,
+            actualStartDate,
+            planEndDate,
+            planStartDate,
+            updateLocationDetail,
+            null,
+            null,
+            data.actualCost,
+            data.estimatedCost,
+            data.projectName
+          );
+        }
       }
     });
   };
@@ -100,6 +132,8 @@ const EditProejectDetailsPage = (props) => {
     planEndDate,
     planStartDate,
     location,
+    managerListChoice,
+    workerListChoice,
     actualCost,
     estimatedCost,
     projectName
@@ -113,6 +147,8 @@ const EditProejectDetailsPage = (props) => {
         planEndDate,
         planStartDate,
         location,
+        managerListChoice,
+        workerListChoice,
         actualCost,
         estimatedCost,
         projectName,
@@ -187,6 +223,20 @@ const EditProejectDetailsPage = (props) => {
   const handleCloseUpdateLocationDialog = () => {
     setOpenLocationDialog(false);
   };
+  const handleSelectManager = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setManagerListChoice(getIdList);
+  };
+  const handleSelectWorker = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.workerId);
+    }
+    setWokerListChoice(getIdList);
+  };
   return (
     <div>
       <Typography
@@ -246,6 +296,30 @@ const EditProejectDetailsPage = (props) => {
                     error={errors.projectName != null}
                     helperText={errors.projectName?.message}
                     sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Kỹ sư phụ trách</Typography>
+                  <Autocomplete
+                    multiple
+                    options={allManager}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.manager.username}
+                    onChange={(e, option) => handleSelectManager(option)}
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props}>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.manager.username}
+                      </li>
+                    )}
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder="Kỹ sư" />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -329,6 +403,32 @@ const EditProejectDetailsPage = (props) => {
                       />
                     </LocalizationProvider>
                   </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Công nhân</Typography>
+                  <Autocomplete
+                    multiple
+                    options={allWorker}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.worker.fullName}
+                    onChange={(e, option) => handleSelectWorker(option)}
+                    renderOption={(props, option, { selected }) =>
+                      option.isAvailable ? (
+                        <li {...props}>
+                          <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                          />
+                          {option.worker.fullName}
+                        </li>
+                      ) : null
+                    }
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder="Công nhân" />
+                    )}
+                  />
                 </Grid>
                 <Grid item container sx={12}>
                   <Box
