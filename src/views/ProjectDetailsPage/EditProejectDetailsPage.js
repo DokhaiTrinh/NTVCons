@@ -170,7 +170,6 @@ const EditProejectDetailsPage = (props) => {
       });
       setLoading(false);
     }
-    console.log(planStartDate);
   };
   const valideSchema = yup
     .object({

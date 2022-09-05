@@ -15,7 +15,9 @@ const DialogUpdateReportDetail = (props) => {
     setUpdateReportDetail,
     actionUpdateReport,
     itemDetailReportUpdate,
+    idN,
   } = props;
+  console.log(idN);
   const [loading, setLoading] = useState('');
   const valideSchema = yup
     .object({
@@ -46,7 +48,7 @@ const DialogUpdateReportDetail = (props) => {
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
-      reportId: null,
+      reportDetailId: 0,
     };
     console.log(updateReportDetail);
     if (!updateReportDetail) {
@@ -77,8 +79,6 @@ const DialogUpdateReportDetail = (props) => {
     }
     props.handleCloseUpdateReportDetailDialog();
   };
-  console.log(updateReportDetail);
-  console.log(itemDetailReportUpdate);
   return (
     <div>
       <Typography
@@ -129,9 +129,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Số lượng
-                </Typography>
+                <Typography variant="body2">Số lượng</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemAmount"
@@ -146,9 +144,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Giá tiền
-                </Typography>
+                <Typography variant="body2">Giá tiền</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemPrice"
@@ -164,9 +160,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Đơn vị tính
-                </Typography>
+                <Typography variant="body2">Đơn vị tính</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemUnit"

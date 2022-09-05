@@ -60,12 +60,37 @@ const CreateReportProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+    // if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+    //   handleCreateReport(
+    //     idN,
+    //     reportDate,
+    //     data.reportDesc,
+    //     null,
+    //     reportTypeSelected,
+    //     // idUser,
+    //     data.reportName,
+    //     null,
+    //     filesImage
+    //   );
+    // } else {
+    //   handleCreateReport(
+    //     idN,
+    //     reportDate,
+    //     data.reportDesc,
+    //     reportDetail,
+    //     reportTypeSelected,
+    //     // idUser,
+    //     data.reportName,
+    //     taskReportDetail,
+    //     filesImage
+    //   );
+    // }
+    if (reportDetail === 0 || taskReportDetail.length === 0) {
       handleCreateReport(
         idN,
         reportDate,
         data.reportDesc,
-        null,
+        reportDetail,
         reportTypeSelected,
         // idUser,
         data.reportName,
@@ -132,7 +157,7 @@ const CreateReportProject = (props) => {
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: 'Tạo bản vẽ không thành công',
+        text: 'Tạo báo cáo không thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -221,10 +246,7 @@ const CreateReportProject = (props) => {
   };
   return (
     <Paper sx={{ padding: '32px' }}>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+      <Typography variant="h6" color="#DD8501">
         TẠO BÁO CÁO
       </Typography>
       <Divider></Divider>
@@ -259,9 +281,7 @@ const CreateReportProject = (props) => {
                 </Stack>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên báo cáo
-                </Typography>
+                <Typography variant="body2">Tên báo cáo</Typography>
                 <TextFieldComponent
                   register={register}
                   name="reportName"
@@ -271,9 +291,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thông tin báo cáo
-                </Typography>
+                <Typography variant="body2">Thông tin báo cáo</Typography>
                 <TextFieldComponent
                   register={register}
                   name="reportDesc"
@@ -283,9 +301,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item container xs={12}>
-                <Typography variant="body2">
-                  Ngày báo cáo
-                </Typography>
+                <Typography variant="body2">Ngày báo cáo</Typography>
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
@@ -322,19 +338,13 @@ const CreateReportProject = (props) => {
                 {reportDetail.length ? (
                   reportDetail.map((report, index) => (
                     <Grid item xs={4}>
-                      <Paper className='tag'>
-                        <Stack direction='row' spacing={1}>
-                            <Typography>
-                              {report.itemDesc}
-                            </Typography>
-                            <Typography>
-                              {report.itemAmount}
-                            </Typography>
-                            <Typography>{report.itemUnit}</Typography>
-                            <Typography>
-                              {report.itemPrice}&nbsp;VNĐ
-                            </Typography>
-                            </Stack>
+                      <Paper className="tag">
+                        <Stack direction="row" spacing={1}>
+                          <Typography>{report.itemDesc}</Typography>
+                          <Typography>{report.itemAmount}</Typography>
+                          <Typography>{report.itemUnit}</Typography>
+                          <Typography>{report.itemPrice}&nbsp;VNĐ</Typography>
+                        </Stack>
                       </Paper>
                     </Grid>
                   ))
@@ -365,13 +375,11 @@ const CreateReportProject = (props) => {
                 {taskReportDetail.length ? (
                   taskReportDetail.map((task, index) => (
                     <Grid item xs={4}>
-                      <Paper className='tag'>
-                        <Stack direction='row' spacing={1}>
+                      <Paper className="tag">
+                        <Stack direction="row" spacing={1}>
                           <Typography>{task.taskId}</Typography>
                           <Typography>{task.taskNote}</Typography>
-                          <Typography>
-                            &nbsp;{task.taskProgress}
-                          </Typography>
+                          <Typography>&nbsp;{task.taskProgress}</Typography>
                         </Stack>
                       </Paper>
                     </Grid>
@@ -383,9 +391,7 @@ const CreateReportProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Loại báo cáo
-                </Typography>
+                <Typography variant="body2">Loại báo cáo</Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
@@ -407,9 +413,7 @@ const CreateReportProject = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tệp đính kèm
-                </Typography>
+                <Typography variant="body2">Tệp đính kèm</Typography>
                 <input
                   {...register('files')}
                   type="file"
@@ -436,7 +440,7 @@ const CreateReportProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
+                    className="submitButton"
                   >
                     Tạo báo cáo
                   </Button>

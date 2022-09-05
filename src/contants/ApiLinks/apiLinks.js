@@ -38,7 +38,7 @@ export const CREATE_TASK_WITH_FILE =
 export const UPDATE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/updateTask';
 export const UPDATE_TASK_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/task/v1/updateTask';
+  'http://niemtinvang.herokuapp.com/task/v1/updateTask/withFile';
 export const GET_TASK_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/task/v1/getAllByParam';
 export const GET_TASK_BY_ID =
@@ -59,7 +59,7 @@ export const CREATE_REPORT_WITH_FILE =
 export const UPDATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/updateReport';
 export const UPDATE_REPORT_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/report/v1/updateReport';
+  'http://niemtinvang.herokuapp.com/report/v1/updateReport/withFile';
 export const DELETE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/deleteReport';
 //Api link của REPORT DETAILS
@@ -87,9 +87,9 @@ export const CREATE_REQUEST =
 export const CREATE_REQUEST_WITH_FILE =
   'http://niemtinvang.herokuapp.com/request/v1/createRequest/withFile';
 export const UPDATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest';
+  'http://niemtinvang.herokuapp.com/request/v1.1/updateRequest';
 export const UPDATE_REQUEST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest';
+  'http://niemtinvang.herokuapp.com/request/v1/updateRequest/withFile';
 export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1/deleteRequest';
 export const GET_ALL_REQUEST =

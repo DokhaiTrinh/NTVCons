@@ -6,7 +6,7 @@ import {
   Grid,
   Button,
   Paper,
-  Stack
+  Stack,
 } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -20,6 +20,7 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updateReportApi } from '../../apis/Report/updateReports';
+import { updateReportApi1 } from '../../apis/Report/updateReports';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -33,7 +34,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import UploadImage from '../../Components/Upload/UploadImage';
 import RenderImage from '../../Components/Render/RenderImage';
-
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ITEM_HEIGHT = 48;
@@ -53,8 +55,8 @@ const UpdateReportProject = (props) => {
   var idUser = parseFloat(userInfor.authorID);
   const [actionUpdateReport, setActionUpdateReport] = useState();
   const [actionUpdateTask, setActionUpdateTask] = useState();
-  const [itemDetailReportUpdate, setitemDetailReportUpdate] = useState();
-  const [itemDetailTaskUpdate, setitemDetailTaskUpdate] = useState();
+  const [itemDetailReportUpdate, setItemDetailReportUpdate] = useState();
+  const [itemDetailTaskUpdate, setItemDetailTaskUpdate] = useState();
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [allReportType, setAllReportType] = React.useState([]);
@@ -97,28 +99,47 @@ const UpdateReportProject = (props) => {
   }, []);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    handleUpdateReport(
-      projectId,
-      reportDate,
-      data.reportDesc,
-      idN,
-      data.reportName,
-      reportTypeSelected,
-      idUser,
-      updateReportDetail,
-      updateTaskDetail,
-      filesImage
-    );
-    // if (updateReportDetail.length > 0) {
-    //   for (let urp of updateReportDetail) {
-    //     handleUpdateReportDetails(
-    //       urp.itemAmount,
-    //       urp.itemDesc,
-    //       urp.itemPrice,
-    //       urp.itemUnit
-    //     );
-    //   }
-    // }
+    Swal.fire({
+      title: 'Cập nhật yêu cầu ?',
+      target: document.getElementById('form-modal12'),
+      text: 'Lưu ý cập nhật sẽ thay đổi dữ liệu của yêu cầu!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#25723F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'CẬP NHẬT',
+      cancelButtonText: 'KHÔNG CẬP NHẬT',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (updateTaskDetail === 0) {
+          handleUpdateReport(
+            projectId,
+            reportDate,
+            data.reportDesc,
+            idN,
+            data.reportName,
+            reportTypeSelected,
+            idUser,
+            updateReportDetail,
+            null,
+            filesImage
+          );
+        } else {
+          handleUpdateReport(
+            projectId,
+            reportDate,
+            data.reportDesc,
+            idN,
+            data.reportName,
+            reportTypeSelected,
+            idUser,
+            updateReportDetail,
+            updateTaskDetail,
+            filesImage
+          );
+        }
+      }
+    });
   };
   const handleUpdateReport = async (
     projectId,
@@ -130,7 +151,7 @@ const UpdateReportProject = (props) => {
     reporterId,
     reportDetailList,
     taskReportList,
-    filesImage
+    fileList
   ) => {
     try {
       setLoading(true);
@@ -145,7 +166,7 @@ const UpdateReportProject = (props) => {
         typeof reportDetailList,
         typeof taskReportList
       );
-      await updateReportApi({
+      await updateReportApi1({
         projectId,
         reportDate,
         reportDesc,
@@ -155,6 +176,7 @@ const UpdateReportProject = (props) => {
         reporterId,
         reportDetailList,
         taskReportList,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -163,7 +185,7 @@ const UpdateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -208,7 +230,7 @@ const UpdateReportProject = (props) => {
   };
   const handleOpenUpdateReportDetailDialog = (actionGetUpdate, itemReport) => {
     setActionUpdateReport(actionGetUpdate);
-    setitemDetailReportUpdate(itemReport);
+    setItemDetailReportUpdate(itemReport);
     setOpenUpdateReportDetailDialog(true);
   };
   const handleCloseUpdateReportDetailDialog = () => {
@@ -216,19 +238,70 @@ const UpdateReportProject = (props) => {
   };
   const handleOpenUpdateTaskReportDetailDialog = (actionGetTask, itemTask) => {
     setActionUpdateTask(actionGetTask);
-    setitemDetailTaskUpdate(itemTask);
+    setItemDetailTaskUpdate(itemTask);
     setOpenUpdateTaskReportDialog(true);
   };
   const handleCloseUpdateTaskReportDetailDialog = () => {
     setOpenUpdateTaskReportDialog(false);
   };
-  
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <Paper sx={{ padding: '32px' }}>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+      <Typography variant="h6" color="#DD8501">
         CẬP NHẬT BÁO CÁO
       </Typography>
       <Divider></Divider>
@@ -264,9 +337,7 @@ const UpdateReportProject = (props) => {
                   </Stack>
                 </Grid> */}
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Tên báo cáo
-                  </Typography>
+                  <Typography variant="body2">Tên báo cáo</Typography>
                   <TextFieldComponent
                     register={register}
                     name="reportName"
@@ -277,9 +348,7 @@ const UpdateReportProject = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Thông tin báo cáo
-                  </Typography>
+                  <Typography variant="body2">Thông tin báo cáo</Typography>
                   <TextFieldComponent
                     register={register}
                     name="reportDesc"
@@ -290,9 +359,7 @@ const UpdateReportProject = (props) => {
                   />
                 </Grid>
                 <Grid item container xs={12}>
-                  <Typography variant="body2">
-                    Ngày báo cáo
-                  </Typography>
+                  <Typography variant="body2">Ngày báo cáo</Typography>
                   <Grid item xs={12}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DateTimePicker
@@ -386,11 +453,12 @@ const UpdateReportProject = (props) => {
                   >
                     <Button
                       variant="contained"
-
                       onClick={() =>
                         handleOpenUpdateTaskReportDetailDialog('CreateNewTask')
                       }
-                    >                      Chi tiết công việc
+                    >
+                      {' '}
+                      Chi tiết công việc
                     </Button>
                   </Box>
                 </Grid>
@@ -437,9 +505,7 @@ const UpdateReportProject = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Loại báo cáo
-                  </Typography>
+                  <Typography variant="body2">Loại báo cáo</Typography>
                   <FormControl sx={{ width: '100%' }}>
                     <Select
                       onChange={handleChange}
@@ -460,6 +526,23 @@ const UpdateReportProject = (props) => {
                     </Select>
                   </FormControl>
                 </Grid>
+                <Grid item xs={6}>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    multiple
+                    onChange={handleChangeFile}
+                  />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="img-upload">
+                      Chọn hình
+                    </label>
+                  </div>
+
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  {/* <input type="file" multiple {...register("file")} /> */}
+                </Grid>
                 <Grid item xs={12}>
                   <Box
                     sx={{
@@ -472,7 +555,7 @@ const UpdateReportProject = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      className='submitButton'
+                      className="submitButton"
                     >
                       Cập nhật
                     </Button>
@@ -497,6 +580,7 @@ const UpdateReportProject = (props) => {
           updateReportDetail={updateReportDetail}
           actionUpdateReport={actionUpdateReport}
           itemDetailReportUpdate={itemDetailReportUpdate}
+          idN={idN}
         ></DialogUpdateReportDetail>
       </Dialog>
       <Dialog
