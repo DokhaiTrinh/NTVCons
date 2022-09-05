@@ -78,6 +78,7 @@ const LoginPage = (props) => {
           email: decodeToken.email,
           phone: decodeToken.phone,
           fullName: decodeToken.fullName,
+          avatarLink: decodeToken.avatarLink,
           authorID: decodeToken.role[0].authority,
         };
 

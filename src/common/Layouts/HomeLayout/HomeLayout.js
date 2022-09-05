@@ -213,7 +213,10 @@ const HomeLayoutRoute = (props) => {
               <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
                   {userInfor.avatarLink ? (
-                    <Avatar src={userInfor.avatarLink} />
+                    <Avatar
+                      className={classes.avatar}
+                      src={userInfor.avatarLink}
+                    />
                   ) : (
                     <Avatar
                       className={classes.avatar}
