@@ -160,6 +160,8 @@ export const CREATE_POST_WITH_FILE =
 export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
 export const UPDATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/updatePost';
+export const UPDATE_POST_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/post/v1/updatePost/withFile';
 export const DELETE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/deletePost';
 export const GET_POST_BY_ID =

@@ -196,7 +196,6 @@ const UpdateTaskProject = (props) => {
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
     }
   };
-
   const handleDeleteImage = (photo, indexImage) => {
     const index = selectedImages.indexOf(photo);
     if (index > -1) {

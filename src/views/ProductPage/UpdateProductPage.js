@@ -21,9 +21,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { getAllCategoryApi1 } from '../../apis/CategoryPost/getAllCategory';
 import { getPostByIdApi } from '../../apis/Post/getAllPost';
 import { updatePostApi } from '../../apis/Post/updatePost';
+import { updatePostApi1 } from '../../apis/Post/updatePost';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,6 +46,8 @@ const UpdateProductPage = (props) => {
   const [loading, setLoading] = React.useState(false);
   const { id } = useParams();
   const [postById, setPostById] = React.useState();
+  const [selectedImages, setSelectedImage] = React.useState([]);
+  const [filesImage, setFilesImage] = React.useState([]);
 
   React.useEffect(() => {
     (async () => {
@@ -115,7 +120,8 @@ const UpdateProductPage = (props) => {
           data.ownerName,
           categorySelected,
           data.postTitle,
-          data.scale
+          data.scale,
+          filesImage
         );
       }
     });
@@ -127,11 +133,12 @@ const UpdateProductPage = (props) => {
     ownerName,
     postCategoryId,
     postTitle,
-    scale
+    scale,
+    fileList
   ) => {
     try {
       setLoading(true);
-      await updatePostApi({
+      await updatePostApi1({
         postId,
         address,
         authorName,
@@ -139,6 +146,7 @@ const UpdateProductPage = (props) => {
         postCategoryId,
         postTitle,
         scale,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -147,7 +155,7 @@ const UpdateProductPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/product');
+      // window.location.replace('/product');
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -161,205 +169,263 @@ const UpdateProductPage = (props) => {
   const handleChange = (event) => {
     setCategorySelected(event.target.value);
   };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+
+    input.files = dt.files;
+    setFilesImage(input.files);
+
+    // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
-
-    <Paper className='bodynonetab'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
-      >
-        TẠO MỚI DỊCH VỤ
-      </Typography>
-      <Divider></Divider>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Paper className="bodynonetab">
+        <Typography
+          variant="h6"
+          color="#DD8501"
+          sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        >
+          TẠO MỚI DỊCH VỤ
+        </Typography>
+        <Divider></Divider>
         <Box
           sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin dịch vụ
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          {postById ? (
-            <form onSubmit={handleSubmit(submitForm)}>
-              <Box sx={{ width: '100%', height: '20px' }}></Box>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Hình ảnh
-                  </Typography>
-                  <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
-                    {itemData.map((item) => (
-                      <ImageListItem key={item.img}>
-                        <img
-                          src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                          srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                          alt={item.title}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{ width: 164, height: 164 }}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <IconButton
-                      aria-label="add"
-                      sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                      component={Link}
-                      to={'/createProject'}
-                    >
-                      <Add sx={{ color: 'white' }}></Add>
-                    </IconButton>
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Tên dự án
-                  </Typography>
-                  <TextField
-                    {...register('postTitle')}
-                    inputProps={{ readOnly: true }}
-                    name="postTitle"
-                    variant="outlined"
-                    autoComplete="postTitle"
-                    autoFocus
-                    defaultValue={postById.postTitle}
-                    error={errors.postTitle != null}
-                    helperText={errors.postTitle?.message}
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Chủ đầu tư
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="ownerName"
-                    // label="Tên vai trò"
-                    errors={errors.ownerName}
-                    defaultValue={postById.ownerName}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Vị trí
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="address"
-                    // label="Tên vai trò"
-                    errors={errors.address}
-                    defaultValue={postById.address}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Quy mô
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="scale"
-                    // label="Tên vai trò"
-                    errors={errors.scale}
-                    defaultValue={postById.scale}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Thể loại
-                  </Typography>
-                  <FormControl sx={{ width: '100%' }}>
-                    <Select
-                      onChange={handleChange}
-                      MenuProps={MenuProps}
-                      value={categorySelected}
-                      defaultValue={postById.categorySelected}
-                    >
-                      {allCategory.length > 0 ? (
-                        allCategory.map((cateType, index) => (
-                          <MenuItem value={cateType.postCategoryId} key={index}>
-                            {cateType.postCategoryName}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem>
-                          Không có dữ liệu của danh sách công việc!
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
+          <Box
+            sx={{
+              paddingLeft: '10px',
+              paddingTop: '10px',
+              width: '40%',
+              marginBottom: '30px',
+            }}
+          >
+            <Typography variant="body1" color="#DD8501" fontWeight="bold">
+              Thông tin dịch vụ
+            </Typography>
+            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+            {postById ? (
+              <form onSubmit={handleSubmit(submitForm)}>
+                <Box sx={{ width: '100%', height: '20px' }}></Box>
+                <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <Typography variant="body2">
-                      Tác giả
-                    </Typography>
+                    <Typography variant="body2">Hình ảnh</Typography>
+                    <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
+                      {itemData.map((item) => (
+                        <ImageListItem key={item.img}>
+                          <img
+                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                            alt={item.title}
+                            loading="lazy"
+                          />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{ width: 164, height: 164 }}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <IconButton
+                        aria-label="add"
+                        sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
+                        component={Link}
+                        to={'/createProject'}
+                      >
+                        <Add sx={{ color: 'white' }}></Add>
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Tên dự án</Typography>
+                    <TextField
+                      {...register('postTitle')}
+                      // inputProps={{ readOnly: true }}
+                      name="postTitle"
+                      variant="outlined"
+                      autoComplete="postTitle"
+                      autoFocus
+                      defaultValue={postById.postTitle}
+                      error={errors.postTitle != null}
+                      helperText={errors.postTitle?.message}
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Chủ đầu tư</Typography>
                     <TextFieldComponent
                       register={register}
-                      name="authorName"
+                      name="ownerName"
                       // label="Tên vai trò"
-                      errors={errors.authorName}
-                      defaultValue={postById.authorName}
+                      errors={errors.ownerName}
+                      defaultValue={postById.ownerName}
                       variant="outlined"
                       sx={{ width: '100%' }}
                     />
                   </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      width: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      display: 'flex',
-                    }}
-                  >
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      style={{
-                        backgroundColor: '#DD8501',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Vị trí</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="address"
+                      // label="Tên vai trò"
+                      errors={errors.address}
+                      defaultValue={postById.address}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Quy mô</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="scale"
+                      // label="Tên vai trò"
+                      errors={errors.scale}
+                      defaultValue={postById.scale}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Thể loại</Typography>
+                    <FormControl sx={{ width: '100%' }}>
+                      <Select
+                        onChange={handleChange}
+                        MenuProps={MenuProps}
+                        value={categorySelected}
+                        defaultValue={postById.categorySelected}
+                      >
+                        {allCategory.length > 0 ? (
+                          allCategory.map((cateType, index) => (
+                            <MenuItem
+                              value={cateType.postCategoryId}
+                              key={index}
+                            >
+                              {cateType.postCategoryName}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem>
+                            Không có dữ liệu của danh sách công việc!
+                          </MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                    <Grid item xs={12}>
+                      <Typography variant="body2">Tác giả</Typography>
+                      <TextFieldComponent
+                        register={register}
+                        name="authorName"
+                        // label="Tên vai trò"
+                        errors={errors.authorName}
+                        defaultValue={postById.authorName}
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <input
+                      {...register('files')}
+                      type="file"
+                      id="files"
+                      multiple
+                      onChange={handleChangeFile}
+                    />
+                    <div className="label-holder">
+                      <label htmlFor="file" className="img-upload">
+                        Chọn hình
+                      </label>
+                    </div>
+
+                    <div className="result">{renderPhotos(selectedImages)}</div>
+                    {/* <input type="file" multiple {...register("file")} /> */}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        display: 'flex',
                       }}
                     >
-                      Lưu
-                    </Button>
-                  </Box>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Lưu
+                      </Button>
+                    </Box>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          ) : (
-            <div>Không có dữ liệu</div>
-          )}
+              </form>
+            ) : (
+              <div>Không có dữ liệu</div>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Paper>
+      </Paper>
     </div>
   );
 };

@@ -299,8 +299,8 @@ const DialogWorker = (props) => {
                     >
                       <TableCell>{row.worker.workerId}</TableCell>
                       <TableCell>
-                        {row.file ? (
-                          <Avatar src={row.file.fileLink} />
+                        {row.worker.file ? (
+                          <Avatar src={row.worker.file.fileLink} />
                         ) : (
                           <Avatar src="/broken-image.jpg" />
                         )}

@@ -15,9 +15,10 @@ import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
+import Avatar from '@mui/material/Avatar';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import Header from '../../../Components/Tab/Header';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import DeletePost from '../../../Components/Button/Delete/DeletePost';
@@ -254,7 +255,7 @@ export const ProductTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -304,9 +305,7 @@ export const ProductTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header('/createProduct')
-      }
+      {Header('/createProduct')}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -319,32 +318,45 @@ export const ProductTable = (props) => {
               onRequestSort={handleRequestSort}
               // rowCount={rows.length}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allProduct ? (
                 allProduct.map((row, index) => {
                   return (
-                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                    <TableRow
+                      style={
+                        index % 2
+                          ? { background: '#FAFAFA' }
+                          : { background: 'white' }
+                      }
+                    >
                       <TableCell>{row.postId}</TableCell>
-                      <TableCell align="left">{ }</TableCell>
+                      <TableCell align="left">
+                        {row.fileList ? (
+                          <Avatar
+                            src={row.fileList[0].fileLink}
+                            variant="square"
+                          />
+                        ) : (
+                          <Avatar src="/broken-image.jpg" />
+                        )}
+                      </TableCell>
                       <TableCell align="left">{row.postTitle}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>
                       <TableCell align="left">{row.ownerName}</TableCell>
                       <TableCell align="left">{row.scale}</TableCell>
                       <TableCell align="left">{row.address}</TableCell>
                       <TableCell align="left">
-                        {
-                          UpdateButton(`/updateProduct/${row.postId}`)
-                        }
+                        {UpdateButton(`/updateProduct/${row.postId}`)}
                       </TableCell>
                       {userInfor.authorID === '54' ? (
                         <TableCell align="left">
-                          {
-                            DeletePost(row.postId)
-                          }
+                          {DeletePost(row.postId)}
                         </TableCell>
                       ) : null}
                     </TableRow>

@@ -348,6 +348,32 @@ class AxiosService {
       },
     });
   }
+  putUpdatePost(url, body, token) {
+    const formData = new FormData();
+    const updatePostModel = {
+      postId: body.postId,
+      address: body.address,
+      authorName: body.authorName,
+      ownerName: body.ownerName,
+      postCategoryId: body.postCategoryId,
+      postTitle: body.postTitle,
+      scale: body.scale,
+    };
+    const json = JSON.stringify(updatePostModel);
+    formData.append(
+      'updatePostModel',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('postFileList', body.fileList[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   delete(url, token) {
     return this.intance.delete(url, {
       headers: { Authorization: `Bearer ${token}` },
