@@ -14,9 +14,15 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const DialogUpdateRequestDetail = (props) => {
-  const { requestDetail, setRequestDetail } = props;
+  const {
+    requestDetail,
+    setRequestDetail,
+    actionUpdateRequest,
+    itemDetailRequestUpdate,
+    idN,
+  } = props;
   const [loading, setLoading] = useState('');
-
+  console.log(requestDetail);
   const valideSchema = yup
     .object({
       itemAmount: yup
@@ -42,16 +48,41 @@ const DialogUpdateRequestDetail = (props) => {
   });
 
   const submitForm = (data) => {
-    const detailRequest = {
+    const createDetailRequest = {
       itemAmount: data.itemAmount,
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
+      requestDetailId: 0,
     };
-
-    setRequestDetail((requestDetail) => [...requestDetail, detailRequest]);
-
-    props.handleCloseRequestDetailDialog();
+    if (!requestDetail) {
+      if (actionUpdateRequest === 'CreateNewRequest') {
+        setRequestDetail([createDetailRequest]);
+      }
+    } else {
+      if (actionUpdateRequest === 'CreateNewRequest') {
+        setRequestDetail((requestDetail) => [
+          ...requestDetail,
+          createDetailRequest,
+        ]);
+      } else {
+        let updateListRequest = [...requestDetail];
+        updateListRequest = updateListRequest.map((u) =>
+          u.requestDetailId === itemDetailRequestUpdate.requestDetailId
+            ? (u = {
+                ...u,
+                itemAmount: data.itemAmount,
+                itemDesc: data.itemDesc,
+                itemPrice: data.itemPrice,
+                itemUnit: data.itemUnit,
+              })
+            : u
+        );
+        setRequestDetail(updateListRequest);
+      }
+    }
+    // setRequestDetail((requestDetail) => [...requestDetail, detailRequest]);
+    props.handleCloseUpdateRequestDetailDialog();
   };
 
   return (
@@ -93,44 +124,58 @@ const DialogUpdateRequestDetail = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="itemDesc"
+                  defaultValue={
+                    itemDetailRequestUpdate
+                      ? itemDetailRequestUpdate.itemDesc
+                      : null
+                  }
                   errors={errors.itemDesc}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Số lượng
-                </Typography>
+                <Typography variant="body2">Số lượng</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemAmount"
+                  defaultValue={
+                    itemDetailRequestUpdate
+                      ? itemDetailRequestUpdate.itemAmount
+                      : null
+                  }
                   errors={errors.itemAmount}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Giá tiền
-                </Typography>
+                <Typography variant="body2">Giá tiền</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemPrice"
                   label="Giá tiền (VNĐ)"
+                  defaultValue={
+                    itemDetailRequestUpdate
+                      ? itemDetailRequestUpdate.itemPrice
+                      : null
+                  }
                   errors={errors.itemPrice}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Đơn vị tính
-                </Typography>
+                <Typography variant="body2">Đơn vị tính</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemUnit"
                   label="Đơn vị"
+                  defaultValue={
+                    itemDetailRequestUpdate
+                      ? itemDetailRequestUpdate.itemUnit
+                      : null
+                  }
                   errors={errors.itemUnit}
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -145,6 +190,35 @@ const DialogUpdateRequestDetail = (props) => {
                     display: 'flex',
                   }}
                 >
+                  {actionUpdateRequest ? (
+                    actionUpdateRequest === 'UpdateRequest' ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Cập nhật
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#DD8501',
+                          borderRadius: 50,
+                          width: '200px',
+                          alignSelf: 'center',
+                        }}
+                      >
+                        Tạo mới
+                      </Button>
+                    )
+                  ) : null}
                   <Button
                     type="submit"
                     variant="contained"
@@ -155,7 +229,7 @@ const DialogUpdateRequestDetail = (props) => {
                       alignSelf: 'center',
                     }}
                   >
-                    Lưu
+                    Hủy
                   </Button>
                 </Box>
               </Grid>

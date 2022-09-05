@@ -269,7 +269,85 @@ class AxiosService {
       },
     });
   }
-
+  putUpdateTask(url, body, token) {
+    const formData = new FormData();
+    const taskDTO = {
+      actualEndDate: body.actualEndDate,
+      actualStartDate: body.actualStartDate,
+      planEndDate: body.planEndDate,
+      planStartDate: body.planStartDate,
+      projectId: body.projectId,
+      // assigneeId: body.assigneeId,
+      taskDesc: body.taskDesc,
+      taskId: body.taskId,
+      taskName: body.taskName,
+    };
+    const json = JSON.stringify(taskDTO);
+    formData.append('taskDTO', new Blob([json], { type: 'application/json' }));
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('taskDocList', body.fileList[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  putUpdateReport(url, body, token) {
+    const formData = new FormData();
+    const reportDTO = {
+      projectId: body.projectId,
+      reportDate: body.reportDate,
+      reportDesc: body.reportDesc,
+      reportId: body.reportId,
+      reportName: body.reportName,
+      reportTypeId: body.reportTypeId,
+      reporterId: body.reporterId,
+      reportDetailList: body.reportDetailList,
+      taskReportList: body.taskReportList,
+    };
+    const json = JSON.stringify(reportDTO);
+    formData.append(
+      'reportDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('reportDocList', body.fileList[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  putUpdateRequest(url, body, token) {
+    const formData = new FormData();
+    const requestDTO = {
+      projectId: body.projectId,
+      requestDate: body.requestDate,
+      requestDesc: body.requestDesc,
+      requestDetailList: body.requestDetailList,
+      requestName: body.requestName,
+      requestTypeId: body.requestTypeId,
+      requesterId: body.requesterId,
+    };
+    const json = JSON.stringify(requestDTO);
+    formData.append(
+      'requestDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.fileList.length; index++) {
+      formData.append('requestDocList', body.fileList[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   delete(url, token) {
     return this.intance.delete(url, {
       headers: { Authorization: `Bearer ${token}` },
