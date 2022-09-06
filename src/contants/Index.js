@@ -44,6 +44,8 @@ import OTPByEmail from '../views/ForgotPassword/OTPByEmail';
 import OTPByPhone from '../views/ForgotPassword/OTPByPhone';
 import ResetPasswordPage from '../views/ForgotPassword/ResetPassword';
 import OTPPage from '../views/ForgotPassword/OTPPage';
+import UpdateWorkerPage from '../views/PersonnelPage/UpdateWorkerPage';
+import UpdatePersonnelPage from '../views/PersonnelPage/UpdatePersonnelPage';
 export const HOME_ROUTES = [
   // {
   //   path: '/home',
@@ -286,10 +288,22 @@ export const HOME_ROUTES = [
     component: CreatePersonnelPage,
   },
   {
+    path: '/updatePersonnel/:id',
+    name: 'Update Personnel Page',
+    exact: true,
+    component: UpdatePersonnelPage,
+  },
+  {
     path: '/createWorker',
     name: 'Create Worker Page',
     exact: true,
     component: CreateWorkerPage,
+  },
+  {
+    path: '/updateWorker/:id',
+    name: 'Update Worker Page',
+    exact: true,
+    component: UpdateWorkerPage,
   },
   {
     path: '/updateTask',

@@ -341,8 +341,7 @@ const UpdateReportProject = (props) => {
                         }
                       >
                         <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%', minHeight: '250px' }}>
-                            <CardContent>
+                          <Paper sx={{ width: '100%', padding: '10px'}}>
                               <Typography>
                                 Mã báo cáo chi tiết:{' '}
                                 {reportDetailItem.reportDetailId}
@@ -360,8 +359,7 @@ const UpdateReportProject = (props) => {
                               <Typography>
                                 Đơn vị: {reportDetailItem.itemUnit}
                               </Typography>
-                            </CardContent>
-                          </Card>
+                          </Paper>
                         </Box>
                       </Grid>
                     ))
@@ -482,7 +480,7 @@ const UpdateReportProject = (props) => {
             </form>
           </Box>
         ) : (
-          <div>Loading ... </div>
+          <Typography variant='h5'>Loading... </Typography>
         )}
       </Box>
       <Dialog

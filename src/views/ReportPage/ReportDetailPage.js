@@ -264,7 +264,7 @@ const ReportDetailPage = (props) => {
               </Grid>
             </Grid>
           ) : (
-            <div>Loading ...</div>
+            <Typography variant='h5'>Loading...</Typography>
           )}
         </Paper>
       </Box>

@@ -11,20 +11,13 @@ import {
 import DownloadIcon from '@mui/icons-material/Download';
 import docIcon from '../../../assets/images/Docs-icon.png';
 import excelIcon from '../../../assets/images/Sheet-icon.png';
-import { useHistory } from 'react-router';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
 import Menu from '@mui/material/Menu';
 import '../styles.css';
 const options = ['Delete'];
 const ITEM_HEIGHT = 48;
 export const FileCard = (file, fileName) => {
-  const history = useHistory();
-  var icon = '';
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -48,7 +41,7 @@ export const FileCard = (file, fileName) => {
           <Typography variant="h6">{file.name}</Typography>
         </CardContent>
         <CardActions>
-          <IconButton onClick={() => history.push(file.link)}>
+          <IconButton onClick={() => window.open(file.link)}>
             <DownloadIcon />
           </IconButton>
           <IconButton
@@ -79,7 +72,6 @@ export const FileCard = (file, fileName) => {
             {options.map((option) => (
               <MenuItem
                 key={option}
-                selected={option === 'Pyxis'}
                 onClick={handleClose}
               >
                 {option}

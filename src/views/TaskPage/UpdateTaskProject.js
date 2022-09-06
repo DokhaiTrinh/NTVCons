@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -177,11 +178,10 @@ const UpdateTaskProject = (props) => {
     resolver: yupResolver(valideSchema),
   });
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         CẬP NHẬT CÔNG VIỆC
       </Typography>
@@ -205,7 +205,6 @@ const UpdateTaskProject = (props) => {
             Thông tin công việc
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           {allTaskDetails ? (
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
@@ -316,12 +315,7 @@ const UpdateTaskProject = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      style={{
-                        backgroundColor: '#DD8501',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
+                      className='submitButton'
                     >
                       Lưu
                     </Button>
@@ -334,7 +328,7 @@ const UpdateTaskProject = (props) => {
           )}
         </Box>
       </Box>
-    </div>
+    </Paper>
   );
 };
 

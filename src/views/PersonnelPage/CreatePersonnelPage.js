@@ -170,7 +170,6 @@ const CreatePersonnelPage = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         Tạo mới hồ sơ nhân viên
       </Typography>
@@ -206,7 +205,7 @@ const CreatePersonnelPage = (props) => {
                   color="#DD8501"
                   sx={{ marginBottom: '10px' }}
                 >
-                  Ảnh dự án
+                  Ảnh đại diện
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}

@@ -92,7 +92,7 @@ export const DialogWorkerList = (props) => {
           <p>Không có dữ liệu!!</p>
         )
       ) : (
-        <div>Loading...</div>
+        <Typography variant='h5'>Loading...</Typography>
       )}
       <Grid item xs={12}>
         <Box

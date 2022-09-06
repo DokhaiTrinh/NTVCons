@@ -495,7 +495,7 @@ const UpdateReportProject = (props) => {
             </form>
           </Box>
         ) : (
-          <div>Loading ... </div>
+          <Typography variant='h5'>Loading... </Typography>
         )}
       </Box>
       <Dialog

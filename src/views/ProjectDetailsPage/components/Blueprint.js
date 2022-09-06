@@ -13,6 +13,7 @@ import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
 import RenderImage from '../../../Components/Render/RenderImage';
+import RenderImageCard from '../../../Components/Render/RenderImageCard';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
@@ -73,8 +74,7 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
-      <Box sx={{ width: '100%' }}>
+    <div className='bodynonetab'>
         <Paper
           sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
@@ -153,14 +153,16 @@ export const Blueprint = (props) => {
                 multiple
                 onChange={handleChangeFile}
               /> */}
-              <div className="label-holder">
+              {/* <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>
-              <div className="result">{RenderImage(imageGet)}</div>
+              <div className="result">{RenderImage(imageGet)}</div> */}
+              {
+                RenderImageCard(imageGet)
+              }
             </Grid>
           </Grid>
         </Paper>
-      </Box>
     </div>
   );
 };
