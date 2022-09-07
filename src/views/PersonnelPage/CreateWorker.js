@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   Paper,
+  Stack
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -24,7 +25,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import moment from 'moment';
 import RenderImage from '../../Components/Render/RenderImage';
-import { Stack } from '@mui/system';
+import UploadImage from '../../Components/Upload/UploadImage';
 
 export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
@@ -172,7 +173,6 @@ export const CreateWorker = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         Tạo mới hồ sơ công nhân
       </Typography>
@@ -202,7 +202,11 @@ export const CreateWorker = (props) => {
                 <Typography variant="body1" color="#DD8501" fontWeight="bold">
                   Ảnh đại diện
                 </Typography>
-                <Box
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  {UploadImage(setSelectedImage, setFilesImage)}
+                  <div className="result">{RenderImage(selectedImages)}</div>
+                </Stack>
+                {/* <Box
                   sx={{
                     width: '100%',
                     display: 'flex',
@@ -220,9 +224,9 @@ export const CreateWorker = (props) => {
                     <label htmlFor="file" className="img-upload"></label>
                   </div>
 
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <div className="result">{RenderImage(selectedImages)}</div> */}
                   {/* <input type="file" multiple {...register("file")} /> */}
-                </Box>
+                {/* </Box> */}
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">

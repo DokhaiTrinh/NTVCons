@@ -170,7 +170,6 @@ const CreatePersonnelPage = (props) => {
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         Tạo mới hồ sơ nhân viên
       </Typography>

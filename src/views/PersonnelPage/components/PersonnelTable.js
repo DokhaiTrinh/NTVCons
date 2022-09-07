@@ -327,7 +327,7 @@ export const PersonnelTable = (props) => {
                     <TableCell align="left">{row.email}</TableCell>
                     <TableCell align="left">
                       {
-                        UpdateButton(`/updateReportDetails/${row.reportId}`)
+                        UpdateButton(`/updatePersonnel/${row.reportId}`)
                       }
                     </TableCell>
                     <TableCell align="left">

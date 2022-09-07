@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import RenderFileCard from '../../../Components/Render/RenderFileCard';
+import FloatingAddButton from '../../../Components/Button/Add/FloatingAddButton';
 
 const FileDetail = (props) => {
   const blockElements = {
@@ -65,6 +66,7 @@ const FileDetail = (props) => {
           }
         </TabPanel>
       </Paper>
+      <FloatingAddButton/>
     </Tabs>
   );
 };

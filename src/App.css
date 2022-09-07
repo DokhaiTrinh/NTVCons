@@ -15,46 +15,11 @@
     font-size: 3rem;    
 }
 
-.body{
-    position: absolute;
-    top: 160px;
-    width: 88%;
-}
-
-.bodynonetab{
-    padding: 32px;
-}
-
-.table{
-    padding: 32px;
-}
-
 .MuiButton-root{
     border-radius: 5px;
     background: #F1F1F1;
     color: #696969;
     box-shadow: none;
-}
-
-.submitButton{
-    border-radius: 5px;
-    background: #F1A661;
-    color: white;
-    box-shadow: none;
-    margin-top: 20px;
-}
-
-.tag{
-    width: min-content;
-    padding: 5px 10px;
-}
-
-.dialog{
-    width: 500px;
-    padding: 32px;
-    display: grid ;
-    justify-content: center;
-    align-items: center;
 }
 
 .MuiButton-root:hover{
@@ -111,6 +76,15 @@
     font-weight: bolder;
 }
 
+.MuiTypography-h5{
+    font-weight: bolder;
+    color: #696969;
+}
+
+.MuiTypography-h4{
+    color: #fff;
+}
+
 .MuiTypography-caption{
     font-size: medium;
     font-weight: bolder;
@@ -135,3 +109,49 @@
     color: #DD8501;
 }
 
+.MuiSpeedDial-root{
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+}
+
+.MuiSpeedDial-fab,
+.MuiSpeedDial-fab:hover{
+    background-color: #FFD8A9;
+}
+
+
+.submitButton{
+    border-radius: 5px;
+    background: #F1A661;
+    color: white;
+    box-shadow: none;
+    margin-top: 20px;
+}
+
+.tag{
+    width: min-content;
+    padding: 5px 10px;
+}
+
+.dialog{
+    width: 500px;
+    padding: 32px;
+    display: grid ;
+    justify-content: center;
+    align-items: center;
+}
+
+.body{
+    position: absolute;
+    top: 160px;
+    width: 88%;
+}
+
+.bodynonetab{
+    padding: 32px;
+}
+
+.table{
+    padding: 32px;
+}

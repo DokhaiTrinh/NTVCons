@@ -8,6 +8,12 @@ import * as yup from 'yup';
 
 export default function UploadImage(setSelectedImage, setFilesImage) {
 
+    const valideSchema = yup.object({}).required();
+    const {
+        register,
+    } = useForm({
+        resolver: yupResolver(valideSchema),
+    });
     const handleChangeFile = (e) => {
         setFilesImage(e.target.files);
 
@@ -19,12 +25,6 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
             Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
         }
     };
-    const valideSchema = yup.object({}).required();
-    const {
-        register,
-    } = useForm({
-        resolver: yupResolver(valideSchema),
-    });
     return (
         <Button aria-label="upload picture" component="label" variant='contained'>
             <input
@@ -33,7 +33,7 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
                 id="files"
                 multiple
                 hidden
-                onChange={handleChangeFile}
+                onChange={() => handleChangeFile}
             />
             <PhotoCamera fontSize='large'/>
         </Button>

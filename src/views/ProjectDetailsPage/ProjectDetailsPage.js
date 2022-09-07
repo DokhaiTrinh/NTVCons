@@ -124,7 +124,6 @@ const ProjectDetailsPage = (props) => {
     <div>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
@@ -141,7 +140,6 @@ const ProjectDetailsPage = (props) => {
             <Box sx={{ flex: 1 }}></Box>
             <Box></Box>
           </Tabs>
-        </Box>
         <div className='body'>
           <TabPanel value={value} index={0}>
             {allProjectDetails ? (
