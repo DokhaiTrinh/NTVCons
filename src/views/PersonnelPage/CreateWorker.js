@@ -6,7 +6,7 @@ import {
   Grid,
   Button,
   Paper,
-  Stack
+  Stack,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -89,7 +89,7 @@ export const CreateWorker = (props) => {
     fullName,
     socialSecurityCode,
     gender,
-    birthday,
+    birthdate,
     birthPlace,
     file
   ) => {
@@ -101,7 +101,7 @@ export const CreateWorker = (props) => {
         fullName,
         socialSecurityCode,
         gender,
-        birthday,
+        birthdate,
         birthPlace,
         file,
       });
@@ -169,11 +169,8 @@ export const CreateWorker = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper className='bodynonetab'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Paper className="bodynonetab">
+      <Typography variant="h6" color="#DD8501">
         Tạo mới hồ sơ công nhân
       </Typography>
       <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
@@ -225,13 +222,11 @@ export const CreateWorker = (props) => {
                   </div>
 
                   <div className="result">{RenderImage(selectedImages)}</div> */}
-                  {/* <input type="file" multiple {...register("file")} /> */}
+                {/* <input type="file" multiple {...register("file")} /> */}
                 {/* </Box> */}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Họ và tên
-                </Typography>
+                <Typography variant="body2">Họ và tên</Typography>
                 <TextFieldComponent
                   register={register}
                   name="fullName"
@@ -242,23 +237,21 @@ export const CreateWorker = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Ngày sinh
-                </Typography>
+                <Typography variant="body2">Ngày sinh</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     value={valueBirthDate}
                     onChange={(newValue) => {
                       setValueBirthDate(newValue);
                     }}
-                    renderInput={(params) => <TextField {...params}  fullWidth/>}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
                   />
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Giới tính
-                </Typography>
+                <Typography variant="body2">Giới tính</Typography>
                 <TextField
                   {...register('gender')}
                   // error={submitted && !gender}
@@ -281,9 +274,7 @@ export const CreateWorker = (props) => {
                 </TextField>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Nơi sinh
-                </Typography>
+                <Typography variant="body2">Nơi sinh</Typography>
                 <TextFieldComponent
                   register={register}
                   name="birthPlace"
@@ -294,9 +285,7 @@ export const CreateWorker = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Căn cước công dân
-                </Typography>
+                <Typography variant="body2">Căn cước công dân</Typography>
                 <TextFieldComponent
                   register={register}
                   name="citizenId"
@@ -307,9 +296,7 @@ export const CreateWorker = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Số bảo hiểm
-                </Typography>
+                <Typography variant="body2">Số bảo hiểm</Typography>
                 <TextFieldComponent
                   register={register}
                   name="socialSecurityCode"
@@ -338,23 +325,13 @@ export const CreateWorker = (props) => {
               </Grid>
               <Grid item container columns={12}>
                 {locationDetail ? (
-                  <Paper className='tag'>
-                    <Stack direction='row' spacing={1}>
-                      <Typography>
-                        {locationDetail.addressNumber},
-                      </Typography>
-                      <Typography>
-                      {locationDetail.street},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.ward},
-                      </Typography>
-                      <Typography>
-                        {locationDetail.district},
-                      </Typography>
-                      <Typography>
-                        { locationDetail.city}
-                      </Typography>
+                  <Paper className="tag">
+                    <Stack direction="row" spacing={1}>
+                      <Typography>{locationDetail.addressNumber},</Typography>
+                      <Typography>{locationDetail.street},</Typography>
+                      <Typography>{locationDetail.ward},</Typography>
+                      <Typography>{locationDetail.district},</Typography>
+                      <Typography>{locationDetail.city}</Typography>
                       {/* <Typography>
                         Địa bàn tỉnh: {locationDetail.province}
                       </Typography>
@@ -387,7 +364,7 @@ export const CreateWorker = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
+                    className="submitButton"
                   >
                     Lưu
                   </Button>

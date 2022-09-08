@@ -21,6 +21,7 @@ export const Blueprint = (props) => {
   const [blueprintDetail, setBlueprintDetail] = React.useState({});
   const [filesImage, setFilesImage] = React.useState([]);
   const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
@@ -29,13 +30,37 @@ export const Blueprint = (props) => {
           id,
           'BY_PROJECT_ID'
         );
-        console.log(listAllBlueprint);
         setBlueprintDetail(listAllBlueprint.data);
-        if (listAllBlueprint.data.file) {
-          let arrayLinkImg = [];
-          arrayLinkImg.push(listAllBlueprint.data.file.fileLink);
-          setImageGet(arrayLinkImg);
+        if (listAllBlueprint.data) {
+          if (listAllBlueprint.data.file.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllBlueprint.data.file.length;
+              index++
+            ) {
+              const element = listAllBlueprint.data.file;
+              if (element.fileName.split('.')[1] === 'docx') {
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
         }
+        // if (listAllBlueprint.data.file) {
+        //   let arrayLinkImg = [];
+        //   arrayLinkImg.push(listAllBlueprint.data.file.fileLink);
+        //   setImageGet(arrayLinkImg);
+        // }
       } catch (error) {
         console.log('Không thể lấy dữ liệu của bản vẽ!');
       }
@@ -74,18 +99,15 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div className='bodynonetab'>
-        <Paper
-          sx={{ width: '100%', mp: 2, padding: '32px' }}
-          variant="elevation"
-        >
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item xs={11}>
-              <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-                Thông tin bản vẽ
-              </Typography>
-            </Grid>
-            {/* {userInfor.authorID !== '54' ? null : (
+    <div className="bodynonetab">
+      <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
+        <Grid container spacing={0} alignItems="center" justify="center">
+          <Grid item xs={11}>
+            <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+              Thông tin bản vẽ
+            </Typography>
+          </Grid>
+          {/* {userInfor.authorID !== '54' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box
@@ -117,52 +139,50 @@ export const Blueprint = (props) => {
                 </Grid>
               </Grid>
             )} */}
+        </Grid>
+        <Divider sx={{ marginBottom: '20px' }}></Divider>
+        <Grid container rowSpacing={{ xs: 5 }}>
+          <Grid item xs="4">
+            <Typography variant="body1" color="gray">
+              Tên bản vẽ
+            </Typography>
+            <Typography variant="body1">
+              {blueprintDetail.blueprintName}
+            </Typography>
           </Grid>
-          <Divider sx={{ marginBottom: '20px' }}></Divider>
-          <Grid container rowSpacing={{ xs: 5 }}>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Tên bản vẽ
-              </Typography>
-              <Typography variant="body1">
-                {blueprintDetail.blueprintName}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Người thiết kế
-              </Typography>
-              <Typography variant="body1">
-                {blueprintDetail.designerName}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Giá bản vẽ
-              </Typography>
-              {blueprintDetail.estimatedCost} VND
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Hình ảnh
-              </Typography>
+          <Grid item xs="4">
+            <Typography variant="body1" color="gray">
+              Người thiết kế
+            </Typography>
+            <Typography variant="body1">
+              {blueprintDetail.designerName}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="body1" color="gray">
+              Giá bản vẽ
+            </Typography>
+            {blueprintDetail.estimatedCost} VND
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="body1" color="gray">
+              Hình ảnh
+            </Typography>
 
-              {/* <input
+            {/* <input
                 type="file"
                 id="files"
                 multiple
                 onChange={handleChangeFile}
               /> */}
-              {/* <div className="label-holder">
+            {/* <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
               </div>
               <div className="result">{RenderImage(imageGet)}</div> */}
-              {
-                RenderImageCard(imageGet)
-              }
-            </Grid>
+            {RenderImageCard(imageGet)}
           </Grid>
-        </Paper>
+        </Grid>
+      </Paper>
     </div>
   );
 };

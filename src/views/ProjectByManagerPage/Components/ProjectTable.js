@@ -14,7 +14,7 @@ import { deleteProjectApi } from '../../../apis/Project/deleteProject';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { TableBody } from '@mui/material';
 import { Table } from '@mui/material';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { useHistory } from 'react-router';
 import { DetailButton } from '../../../Components/Button/DetailButton';
 import Header from '../../../Components/Tab/Header';
@@ -59,6 +59,12 @@ const headCells = [
     label: 'Kết thúc',
   },
   {
+    id: 'ngaytao',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ngày tạo',
+  },
+  {
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
@@ -73,11 +79,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -98,8 +100,8 @@ function EnhancedTableHead(props) {
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
               > */}
-                {headCell.label}
-                {/* {orderBy === headCell.id ? (
+              {headCell.label}
+              {/* {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
@@ -220,32 +222,35 @@ export const ProjectTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(``)
-      }
+      {Header(``)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-            />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <EnhancedTableHead order={order} orderBy={orderBy} />
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {managerProject.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
@@ -259,6 +264,7 @@ export const ProjectTable = (props) => {
                     <TableCell align="left">{row.manager}</TableCell>
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
+                    <TableCell align="left">{row.createdAt}</TableCell>
                     <TableCell align="left">
                       {/* <IconButton
                         edge="end"
@@ -268,9 +274,7 @@ export const ProjectTable = (props) => {
                       >
                         <InfoIcon />
                       </IconButton> */}
-                     {
-                       DetailButton(`/projectDetailsManager/${row.projectId}`)
-                     }
+                      {DetailButton(`/projectDetailsManager/${row.projectId}`)}
                     </TableCell>
                     {/* {userInfor.authorID === '54' ? (
                       <TableCell align="left">

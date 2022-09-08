@@ -4,7 +4,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-const options = ['Delete'];
+const options = ['Xóa'];
 const ITEM_HEIGHT = 48;
 export const ImageCard = (image) => {
     const [anchorEl, setAnchorEl] = React.useState(null);

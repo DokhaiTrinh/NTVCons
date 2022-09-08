@@ -205,9 +205,7 @@ const HomeLayoutRoute = (props) => {
                   >
                     <MenuIcon style={{ color: 'white' }} />
                   </IconButton>
-                  <Typography variant="h5" noWrap component="div" color="white">
-                    Golden Trust
-                  </Typography>
+                  <Typography variant="h4">Golden Trust</Typography>
                 </Toolbar>
               </AppBar>
               <Drawer variant="permanent" open={open}>

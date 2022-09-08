@@ -55,6 +55,12 @@ const headCells = [
     label: 'Kết thúc',
   },
   {
+    id: 'ngaytao',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ngày tạo',
+  },
+  {
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
@@ -231,6 +237,7 @@ export const ProjectTable = (props) => {
                         <TableCell align="left">{row.projectName}</TableCell>
                         <TableCell align="left">{row.planStartDate}</TableCell>
                         <TableCell align="left">{row.planEndDate}</TableCell>
+                        <TableCell align="left">{row.createdAt}</TableCell>
                         <TableCell align="left">
                           {DetailButton(`/projectDetails/${row.projectId}`)}
                         </TableCell>
