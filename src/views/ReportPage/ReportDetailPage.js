@@ -13,7 +13,6 @@ import RenderImage from '../../Components/Render/RenderImage';
 import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 const ReportDetailPage = (props) => {
-
   const [{ loading }, dispatch] = useStateValue();
   const { id } = useParams();
   const [allReportDetail, setAllReportDetail] = React.useState([]);
@@ -43,7 +42,12 @@ const ReportDetailPage = (props) => {
             ) {
               const element = listAllReportDetail.data.fileList[index];
               if (element.fileName.split('.')[1] === 'docx') {
-                arrayDocLink.push(element.fileLink);
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
               } else {
                 arrayImgLink.push(element.fileLink);
               }
@@ -236,10 +240,7 @@ const ReportDetailPage = (props) => {
                 </Box>
               </Grid>
               <Grid item xs="12">
-                <FileDetail
-                  imageGet={imageGet}
-                  docGet={docGet}
-                />
+                <FileDetail imageGet={imageGet} docGet={docGet} />
               </Grid>
               {/* <Grid container item xs="12">
                 <Grid item xs="4">
@@ -271,7 +272,7 @@ const ReportDetailPage = (props) => {
               </Grid> */}
             </Grid>
           ) : (
-            <Typography variant='h5'>Loading...</Typography>
+            <Typography variant="h5">Loading...</Typography>
           )}
         </Paper>
       </Box>
