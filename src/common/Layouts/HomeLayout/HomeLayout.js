@@ -191,7 +191,7 @@ const HomeLayoutRoute = (props) => {
               <AppBar
                 position="fixed"
                 open={open}
-                style={{ backgroundColor: '#dd8500', color: 'black' }}
+                style={{ backgroundColor: '#dd8500', color: 'black', boxShadow: 'none' }}
               >
                 <Toolbar>
                   <IconButton

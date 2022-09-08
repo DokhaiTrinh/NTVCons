@@ -66,7 +66,6 @@ const FileDetail = (props) => {
           }
         </TabPanel>
       </Paper>
-      <FloatingAddButton/>
     </Tabs>
   );
 };

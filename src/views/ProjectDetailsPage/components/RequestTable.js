@@ -130,11 +130,8 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -243,16 +240,13 @@ EnhancedTableToolbar.propTypes = {
 
 export default function RequestTable(props) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
+  const [orderBy, setOrderBy] = React.useState('ngay');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { id } = useParams();
-  const { projectId } = props;
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [{ loading }, dispatch] = useStateValue();
-    const [totalPage, setTotalPage] = React.useState();
-    const [pageNum, setPageNum] = React.useState(0);
+  const [totalPage, setTotalPage] = React.useState();
+  const [pageNum, setPageNum] = React.useState(0);
   const handleChangePage = (event, value) => {
     setPageNum(value - 1);
   };
@@ -300,12 +294,15 @@ export default function RequestTable(props) {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+
+    //Chỗ này code sort. Mã search 13399
+
   };
 
   return (
@@ -318,7 +315,6 @@ export default function RequestTable(props) {
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
@@ -372,13 +368,13 @@ export default function RequestTable(props) {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

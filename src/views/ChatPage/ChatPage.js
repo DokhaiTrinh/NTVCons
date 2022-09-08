@@ -6,7 +6,7 @@ import MsgBox from "./components/MsgBox";
 import './styles/ChatPage.styles.css';
 
 const ChatPage = () => (
-    <Paper className='bodynonetab'>
+    <Paper className='bodynonetab' elevation='none'>
         <Grid container>
             <Grid item xs={3}>
                 <MsgBox/>

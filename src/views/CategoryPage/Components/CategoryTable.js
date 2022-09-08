@@ -174,7 +174,17 @@ EnhancedTableToolbar.propTypes = {
 
 export const CategoryTable = (props) => {
   const { allCategory } = props;
-  const [{ loading }, dispatch] = useStateValue();
+  const [{loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('ngaythem');
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    
+    //Chỗ này code sort. Mã search 13399
+
+  };
   const handleDeleteCategory = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -199,7 +209,7 @@ export const CategoryTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -211,7 +221,11 @@ export const CategoryTable = (props) => {
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead />
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
                 borderBottom: "none"

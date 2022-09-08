@@ -13,6 +13,8 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 import { getProjectByParam } from '../../apis/Project/getProjectById';
+import FloatingAddButton from '../../Components/Button/Add/FloatingAddButton';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -124,22 +126,22 @@ const ProjectDetailsPage = (props) => {
     <div>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Chi tiết" {...a11yProps(0)} />
-            <Tab label="Báo cáo" {...a11yProps(1)} />
-            <Tab label="Công việc" {...a11yProps(2)} />
-            <Tab label="Yêu cầu" {...a11yProps(3)} />
-            <Tab label="Bản vẽ" {...a11yProps(4)} />
-            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <Box></Box>
-          </Tabs>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Chi tiết" {...a11yProps(0)} />
+          <Tab label="Báo cáo" {...a11yProps(1)} />
+          <Tab label="Công việc" {...a11yProps(2)} />
+          <Tab label="Yêu cầu" {...a11yProps(3)} />
+          <Tab label="Bản vẽ" {...a11yProps(4)} />
+          <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          <Box sx={{ flex: 1 }}></Box>
+          <Box></Box>
+        </Tabs>
         <div className='body'>
           <TabPanel value={value} index={0}>
             {allProjectDetails ? (
@@ -181,6 +183,7 @@ const ProjectDetailsPage = (props) => {
               imageGet={imageGet}
               docGet={docGet}
             ></FileDetail>
+            <FloatingAddButton />
           </TabPanel>
         </div>
       </Box>

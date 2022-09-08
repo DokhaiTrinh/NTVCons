@@ -39,127 +39,112 @@ function RequestDetailPage() {
   }, []);
   console.log(allRequestList);
   return (
-    <div>
-      <Box sx={{ width: '100%' }}>
-        <Paper
-          sx={{
-            width: '90%',
-            mp: 2,
-            borderRadius: '30px',
-            padding: '20px',
-            margin: '5%',
-          }}
-          variant="elevation"
-        >
-          <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-            Thông tin chung
-          </Typography>
-          <Divider sx={{ marginBottom: '20px' }}></Divider>
-          {allRequestList ? (
-            <Grid container spacing={2}>
-              {/* <Grid item xs="4">
-                <Typography variant="body1" color="gray">
+    <Paper
+      className='bodynonetab'
+      elevation='none'
+    >
+      <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+        Thông tin chung
+      </Typography>
+      <Divider sx={{ marginBottom: '20px' }}></Divider>
+      {allRequestList ? (
+        <Grid container spacing={2}>
+          {/* <Grid item xs="4">
+                <Typography variant="caption">
                   Mã dự án
                 </Typography>
                 <Typography variant="body1">
                   {allRequestList.projectId}
                 </Typography>
               </Grid> */}
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Tên yêu cầu
-                </Typography>
-                <Typography variant="body1">
-                  {allRequestList.requestName}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Mã yêu cầu
-                </Typography>
-                <Typography variant="body1">
-                  {allRequestList.requestId}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Thông tin yêu cầu
-                </Typography>
-                <Typography variant="body1">
-                  {/* {handleGetDate(allRequestList.reportDate)} */}
-                  {allRequestList.requestDesc}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Kiểu yêu cầu
-                </Typography>
-                <Typography variant="body1">
-                  {allRequestList.requestType ? (
-                    allRequestList.requestType.requestTypeName
-                  ) : (
-                    <div>Chưa có dữ liệu !!</div>
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Người yêu cầu
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  {allRequestList.requester.username}
-                </Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1" color="gray">
-                  Ngày yêu cầu
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  {allRequestList.requestDate}
-                </Typography>
-              </Grid>
-              <Grid item container xs="4">
-                <Typography variant="body1" color="gray">
-                  Chi tiết yêu cầu
-                </Typography>
-                <Card sx={{ width: '100%' }}>
-                  <CardContent>
-                    {requestDetail ? (
-                      requestDetail.map((req, index) => (
-                        <Card
-                          sx={{
-                            width: '100%',
-                            padding: '10px',
-                            marginBottom: '10px',
-                          }}
-                        >
-                          {/* <Typography>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Tên yêu cầu
+            </Typography>
+            <Typography variant="body1">
+              {allRequestList.requestName}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Mã yêu cầu
+            </Typography>
+            <Typography variant="body1">
+              {allRequestList.requestId}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Thông tin yêu cầu
+            </Typography>
+            <Typography variant="body1">
+              {/* {handleGetDate(allRequestList.reportDate)} */}
+              {allRequestList.requestDesc}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Kiểu yêu cầu
+            </Typography>
+            <Typography variant="body1">
+              {allRequestList.requestType ? (
+                allRequestList.requestType.requestTypeName
+              ) : (
+                <div>Chưa có dữ liệu !!</div>
+              )}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Người yêu cầu
+            </Typography>
+            <Typography variant="body1" paragraph>
+              {allRequestList.requester.username}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">
+              Ngày yêu cầu
+            </Typography>
+            <Typography variant="body1" paragraph>
+              {allRequestList.requestDate}
+            </Typography>
+          </Grid>
+          <Grid item container xs="4">
+            <Typography variant="caption">
+              Chi tiết yêu cầu
+            </Typography>
+          </Grid>
+          <Grid item container xs="12" spacing={1}>
+            {requestDetail ? (
+              requestDetail.map((req, index) => (
+                <Grid item xs="4">
+                  <Paper sx={{ padding: '10px' }}>
+                    {/* <Typography>
                             Mã yêu cầu chi tiết: {req.requestDetailId}
                           </Typography> */}
-                          <Typography>
-                            Thông tin yêu cầu chi tiết: {req.itemDesc}
-                          </Typography>
-                          <Typography>
-                            Số lượng:
-                            {req.itemAmount}
-                          </Typography>
-                          <Typography>Giá tiền: {req.itemPrice} VNĐ</Typography>
-                          <Typography>Đơn vị: {req.itemUnit}</Typography>
-                        </Card>
-                      ))
-                    ) : (
-                      <div>Không có dữ liệu!!</div>
-                    )}
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          ) : (
-            <div>Không có dữ liệu của yêu cầu!!</div>
-          )}
-        </Paper>
-      </Box>
-    </div>
+                    <Typography>
+                      {req.itemDesc}
+                    </Typography>
+                    <Typography>
+                      Số lượng:
+                      {req.itemAmount}
+                    </Typography>
+                    <Typography>Giá tiền: {req.itemPrice} VNĐ</Typography>
+                    <Typography>Đơn vị: {req.itemUnit}</Typography>
+                  </Paper>
+                </Grid>
+              ))
+            ) : (
+              <div>Không có dữ liệu!!</div>
+            )}
+
+          </Grid>
+        </Grid>
+      ) : (
+        <div>Không có dữ liệu của yêu cầu!!</div>
+      )}
+    </Paper>
   );
 }
 
