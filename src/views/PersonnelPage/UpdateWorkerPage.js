@@ -197,7 +197,7 @@ import {
               <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography variant="body1" color="#DD8501" fontWeight="bold">
+                  <Typography variant="body2">
                     Ảnh đại diện
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={2}>
