@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import RenderImage from '../../Components/Render/RenderImage';
+import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 const ReportDetailPage = (props) => {
 
@@ -89,7 +90,7 @@ const ReportDetailPage = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
-  
+
   console.log(allReportDetail);
   return (
     <div>
@@ -234,7 +235,13 @@ const ReportDetailPage = (props) => {
                   </Card>
                 </Box>
               </Grid>
-              <Grid container item xs="4">
+              <Grid item xs="12">
+                <FileDetail
+                  imageGet={imageGet}
+                  docGet={docGet}
+                />
+              </Grid>
+              {/* <Grid container item xs="12">
                 <Grid item xs="4">
                   <Typography variant="body1" color="gray">
                     Hình ảnh
@@ -261,7 +268,7 @@ const ReportDetailPage = (props) => {
                   // <div>Không có tệp đi kèm!!</div>
                   <></>
                 )}
-              </Grid>
+              </Grid> */}
             </Grid>
           ) : (
             <Typography variant='h5'>Loading...</Typography>
