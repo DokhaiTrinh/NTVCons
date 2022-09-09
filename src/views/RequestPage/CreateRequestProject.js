@@ -244,7 +244,7 @@ const CreateRequestProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên yêu cầu
                 </Typography>
                 <TextFieldComponent
@@ -256,7 +256,7 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin yêu cầu
                 </Typography>
                 <TextFieldComponent
@@ -268,7 +268,7 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Ngày yêu cầu
                 </Typography>
                 <Grid item xs={12}>
@@ -338,7 +338,7 @@ const CreateRequestProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Loại yêu cầu
                 </Typography>
                 <FormControl sx={{ width: 580 }}>

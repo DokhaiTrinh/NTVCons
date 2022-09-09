@@ -58,9 +58,7 @@ function a11yProps(index) {
   };
 }
 const ProjectDetailsPage = (props) => {
-  const { row } = props;
   const [value, setValue] = React.useState(0);
-  const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -76,6 +74,9 @@ const ProjectDetailsPage = (props) => {
   const [blueprint, setBlueprint] = React.useState();
   const [projectName, setProjectName] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
+  const [docGet, setDocGet] = React.useState([]);
+
   // const handleChange1 = (event) => {
   //   setAge(event.target.value);
   // };
@@ -90,7 +91,31 @@ const ProjectDetailsPage = (props) => {
         setAllProjectDetails(listAllProjectDetails.data);
         setManagerList(listAllProjectDetails.data.projectManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
-        setBlueprint(listAllProjectDetails.data.blueprint);
+        if (listAllProjectDetails.data) {
+          if (listAllProjectDetails.data.fileList.length > 0) {
+            let arrayImgLink = [];
+            let arrayDocLink = [];
+            for (
+              let index = 0;
+              index < listAllProjectDetails.data.fileList.length;
+              index++
+            ) {
+              const element = listAllProjectDetails.data.fileList[index];
+              if (element.fileName.split('.')[1] === 'docx') {
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
+              } else {
+                arrayImgLink.push(element.fileLink);
+              }
+            }
+            setDocGet(arrayDocLink);
+            setImageGet(arrayImgLink);
+          }
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
@@ -115,63 +140,66 @@ const ProjectDetailsPage = (props) => {
   console.log(projectName);
   return (
     <div>
-      <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Chi tiết" {...a11yProps(0)} />
-            <Tab label="Báo cáo" {...a11yProps(1)} />
-            <Tab label="Công việc" {...a11yProps(2)} />
-            <Tab label="Yêu cầu" {...a11yProps(3)} />
-            <Tab label="Bản vẽ" {...a11yProps(4)} />
-            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <Box></Box>
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          {allProjectDetails ? (
-            <Details
-              allProjectDetails={allProjectDetails}
-              managerList={managerList}
-              workerList={workerList}
-              blueprint={blueprint}
-            />
-          ) : (
-            <div>Không có dữ liệu!!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ReportTable
-            projectId={projectId}
-            allReportDetails={allReportDetails}
-            totalPage={totalPage}
-          ></ReportTable>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TaskTable projectId={projectId}></TaskTable>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <RequestTable
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></RequestTable>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Blueprint
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></Blueprint>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <FileDetail projectId={projectId}></FileDetail>
-        </TabPanel>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Chi tiết" {...a11yProps(0)} />
+          <Tab label="Báo cáo" {...a11yProps(1)} />
+          <Tab label="Công việc" {...a11yProps(2)} />
+          <Tab label="Yêu cầu" {...a11yProps(3)} />
+          <Tab label="Bản vẽ" {...a11yProps(4)} />
+          <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          <Box sx={{ flex: 1 }}></Box>
+          <Box></Box>
+        </Tabs>
+        <div className="body">
+          <TabPanel value={value} index={0}>
+            {allProjectDetails ? (
+              <Details
+                allProjectDetails={allProjectDetails}
+                managerList={managerList}
+                workerList={workerList}
+                blueprint={blueprint}
+              />
+            ) : (
+              <div>Không có dữ liệu!!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <ReportTable
+              projectId={projectId}
+              allReportDetails={allReportDetails}
+              totalPage={totalPage}
+            ></ReportTable>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TaskTable projectId={projectId}></TaskTable>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <RequestTable
+              projectId={projectId}
+              allRequestDetails={allRequestDetails}
+            ></RequestTable>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Blueprint
+              projectId={projectId}
+              allRequestDetails={allRequestDetails}
+            ></Blueprint>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <FileDetail
+              projectId={projectId}
+              imageGet={imageGet}
+              docGet={docGet}
+            ></FileDetail>
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

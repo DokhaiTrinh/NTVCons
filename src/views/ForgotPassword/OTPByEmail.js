@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Paper } from '@material-ui/core';
-import background from '../../assets/images/phong-thuy-dat-nha-o-1.jpeg';
-import logo from '../../assets/images/FILE_20220108_160017_GOLDEN TRUST-01.png';
+import background from '../../assets/images/background.jpg';
+import logo from '../../assets/images/logo.png';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
@@ -181,13 +181,7 @@ const OTPByEmail = (props) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    paddingRight: '50px',
-                    paddingLeft: '50px',
-                    borderRadius: 50,
-                    marginTop: '22px',
-                  }}
+                  className='submitButton'
                 >
                   {loading ? (
                     <>

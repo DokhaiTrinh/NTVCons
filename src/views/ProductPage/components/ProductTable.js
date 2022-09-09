@@ -12,44 +12,18 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import photo from '../../../assets/images/toa-nha-van-phong.jpeg';
-import UpdateIcon from '@mui/icons-material/Update';
 import { deletePostApi } from './../../../apis/Post/deletePost';
 import Swal from 'sweetalert2';
+import Avatar from '@mui/material/Avatar';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
-import { Stack } from '@mui/material';
-
-import AddButton from '../../../Components/Button/AddButton';
-import SearchField from '../../../Components/TextField/SearchField';
+import { tableCellClasses } from '@mui/material/TableCell';
+import Header from '../../../Components/Tab/Header';
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import DeletePost from '../../../Components/Button/Delete/DeletePost';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-function createData(id, image, name, category, scale, location) {
-  return {
-    id,
-    image,
-    name,
-    category,
-    scale,
-    location,
-  };
-}
-
-const rows = [
-  createData(
-    '1',
-    photo,
-    'Tòa nhà văn phòng',
-    'Thiết kế nhà đẹp',
-    'Trệt + 3 lầu',
-    'Dĩ An, Bình Dương'
-  ),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -128,13 +102,13 @@ const headCells = [
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
@@ -281,7 +255,7 @@ export const ProductTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -289,14 +263,14 @@ export const ProductTable = (props) => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+  // const handleSelectAllClick = (event) => {
+  //   if (event.target.checked) {
+  //     const newSelecteds = rows.map((n) => n.id);
+  //     setSelected(newSelecteds);
+  //     return;
+  //   }
+  //   setSelected([]);
+  // };
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
@@ -326,66 +300,63 @@ export const ProductTable = (props) => {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2, padding: '20px', boxShadow: 'none' }}>
-        <Stack direction='row' justifyContent='space-between'>
-          {AddButton('/createProduct')}
-          <SearchField />
-        </Stack>
-      </Paper>
+      {Header('/createProduct')}
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              // order={order}
+              // orderBy={orderBy}
+              // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              // rowCount={rows.length}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allProduct ? (
                 allProduct.map((row, index) => {
                   return (
-                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                    <TableRow
+                      style={
+                        index % 2
+                          ? { background: '#FAFAFA' }
+                          : { background: 'white' }
+                      }
+                    >
                       <TableCell>{row.postId}</TableCell>
-                      <TableCell align="left">{ }</TableCell>
+                      <TableCell align="left">
+                        {row.fileList ? (
+                          <Avatar
+                            src={row.fileList[0].fileLink}
+                            variant="square"
+                          />
+                        ) : (
+                          <Avatar src="/broken-image.jpg" />
+                        )}
+                      </TableCell>
                       <TableCell align="left">{row.postTitle}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>
                       <TableCell align="left">{row.ownerName}</TableCell>
                       <TableCell align="left">{row.scale}</TableCell>
                       <TableCell align="left">{row.address}</TableCell>
                       <TableCell align="left">
-                        <IconButton
-                          component={Link}
-                          // edge="start"
-                          size="large"
-                          to={`/updateProduct/${row.postId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
+                        {UpdateButton(`/updateProduct/${row.postId}`)}
                       </TableCell>
                       {userInfor.authorID === '54' ? (
                         <TableCell align="left">
-                          <IconButton
-                            aria-label="delete"
-                            color="warning"
-                            edge="start"
-                            size="large"
-                            onClick={() => handleDeletePost(row.postId)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
+                          {DeletePost(row.postId)}
                         </TableCell>
                       ) : null}
                     </TableRow>

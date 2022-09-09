@@ -147,7 +147,7 @@ const DialogUpdateTaskReport = (props) => {
                 </Select>
               </FormControl>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin công việc
                 </Typography>
                 <TextFieldComponent
@@ -162,7 +162,7 @@ const DialogUpdateTaskReport = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tiến độ
                 </Typography>
                 <TextFieldComponent

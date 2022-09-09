@@ -1,24 +1,15 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import OutputOutlinedIcon from '@mui/icons-material/OutputOutlined';
 import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { ProjectTable } from './Components/ProjectTable';
-//Get all s
 import { getAllProjectByManageApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import { toHaveFormValues } from '@testing-library/jest-dom/dist/matchers';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -140,18 +131,19 @@ const ProjectByManagerPage = (props) => {
             <Tab label="Đã hủy" {...a11yProps(5)} /> */}
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
-          <Box width="100%">
-            {managerProject ? (
-              managerProject.length > 0 ? (
-                <ProjectTable managerProject={managerProject}></ProjectTable>
-              ) : (
-                <div>Không có dữ liệu để hiển thị</div>
-              )
-            ) : null}
-          </Box>
-        </TabPanel>
-        {/* <TabPanel value={value} index={1}>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            <Box width="100%">
+              {managerProject ? (
+                managerProject.length > 0 ? (
+                  <ProjectTable managerProject={managerProject}></ProjectTable>
+                ) : (
+                  <div>Không có dữ liệu để hiển thị</div>
+                )
+              ) : null}
+            </Box>
+          </TabPanel>
+          {/* <TabPanel value={value} index={1}>
           <ProjectTable></ProjectTable>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -166,6 +158,7 @@ const ProjectByManagerPage = (props) => {
         <TabPanel value={value} index={5}>
           Item Six
         </TabPanel> */}
+        </div>
       </Box>
     </div>
   );

@@ -299,15 +299,15 @@ const DialogWorker = (props) => {
                     >
                       <TableCell>{row.worker.workerId}</TableCell>
                       <TableCell>
-                        {row.file ? (
-                          <Avatar src={row.file.fileLink} />
+                        {row.worker.file ? (
+                          <Avatar src={row.worker.file.fileLink} />
                         ) : (
                           <Avatar src="/broken-image.jpg" />
                         )}
                       </TableCell>
                       <TableCell align="left">{row.worker.fullName}</TableCell>
                       <TableCell align="left">{row.worker.gender}</TableCell>
-                      <TableCell align="left">{row.worker.birthday}</TableCell>
+                      <TableCell align="left">{row.worker.birthdate}</TableCell>
                       <TableCell align="left">
                         Q{''} {row.worker.address.district}, TP.{' '}
                         {row.worker.address.country}

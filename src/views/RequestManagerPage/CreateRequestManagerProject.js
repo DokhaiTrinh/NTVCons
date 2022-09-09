@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -213,11 +214,10 @@ const CreateRequestProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         TẠO YÊU CẦU
       </Typography>
@@ -241,11 +241,10 @@ const CreateRequestProject = (props) => {
             Thông tin yêu cầu
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên yêu cầu
                 </Typography>
                 <TextFieldComponent
@@ -257,7 +256,7 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin yêu cầu
                 </Typography>
                 <TextFieldComponent
@@ -269,7 +268,7 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Ngày yêu cầu
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -296,27 +295,20 @@ const CreateRequestProject = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenRequestDetailDialog()}
                   >
                     Chi tiết yêu cầu
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12} spacing={1}>
                 {requestDetail.length ? (
                   requestDetail.map((request, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
+                    <Grid item xs="4">
+
+                      <Paper sx={{ padding: '10px',}}>
                             <Typography>
-                              Thông tin báo cáo chi tiết: {request.itemDesc}
+                              {request.itemDesc}
                             </Typography>
                             <Typography>
                               Số lượng:{request.itemAmount}
@@ -325,9 +317,7 @@ const CreateRequestProject = (props) => {
                               Giá tiền: {request.itemPrice}{' '}
                             </Typography>
                             <Typography>Đơn vị: {request.itemUnit}</Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
+                      </Paper>
                     </Grid>
                   ))
                 ) : (
@@ -337,10 +327,10 @@ const CreateRequestProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Loại yêu cầu
                 </Typography>
-                <FormControl sx={{ width: 580 }}>
+                <FormControl fullWidth>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
@@ -361,7 +351,7 @@ const CreateRequestProject = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tệp đính kèm
                   </Typography>
                   <input
@@ -389,12 +379,7 @@ const CreateRequestProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     Lưu
                   </Button>
@@ -414,7 +399,7 @@ const CreateRequestProject = (props) => {
           requestDetail={requestDetail}
         ></DialogRequestProject>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

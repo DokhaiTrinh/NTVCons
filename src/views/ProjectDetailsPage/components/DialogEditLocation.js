@@ -27,7 +27,6 @@ const DialogEditLocation = (props) => {
         .required('Tên vùng phải khác biệt')
         .typeError('Tên vùng đã bị trùng!!!'),
       country: yup.string().required('Phải có tên quốc gia!'),
-      updatedBy: yup.number().required(),
       locationId: yup.number().required(),
       district: yup.string().required('Phải có tên đường!!!'),
       province: yup.string(),
@@ -99,9 +98,7 @@ const DialogEditLocation = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Số nhà mới
-                </Typography>
+                <Typography variant="body2">Số nhà mới</Typography>
                 <TextFieldComponent
                   register={register}
                   name="addressNumber"
@@ -116,9 +113,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tên đường
-                </Typography>
+                <Typography variant="body2">Tên đường</Typography>
                 <TextFieldComponent
                   register={register}
                   name="street"
@@ -133,9 +128,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Quận
-                </Typography>
+                <Typography variant="body2">Quận</Typography>
                 <TextFieldComponent
                   register={register}
                   name="district"
@@ -150,9 +143,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thành phố
-                </Typography>
+                <Typography variant="body2">Thành phố</Typography>
                 <TextFieldComponent
                   register={register}
                   name="city"
@@ -167,9 +158,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Khu vực
-                </Typography>
+                <Typography variant="body2">Khu vực</Typography>
                 <TextFieldComponent
                   register={register}
                   name="ward"
@@ -184,9 +173,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Địa bàn tỉnh
-                </Typography>
+                <Typography variant="body2">Địa bàn tỉnh</Typography>
                 <TextFieldComponent
                   register={register}
                   name="province"
@@ -201,9 +188,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Quốc gia
-                </Typography>
+                <Typography variant="body2">Quốc gia</Typography>
                 <TextFieldComponent
                   register={register}
                   name="country"
@@ -218,9 +203,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Diện tích
-                </Typography>
+                <Typography variant="body2">Diện tích</Typography>
                 <TextFieldComponent
                   register={register}
                   name="area"
@@ -235,9 +218,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Điều phối
-                </Typography>
+                <Typography variant="body2">Điều phối</Typography>
                 <TextFieldComponent
                   register={register}
                   name="coordinate"
@@ -252,9 +233,7 @@ const DialogEditLocation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Mã địa chỉ
-                </Typography>
+                <Typography variant="body2">Mã địa chỉ</Typography>
                 <TextFieldComponent
                   register={register}
                   name="locationId"

@@ -17,6 +17,8 @@ export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
 export const CREATE_PROJECT_WITH_FILE =
   'http://niemtinvang.herokuapp.com/project/v1/createProject/withFile';
+export const CREATE_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/project/v1/addFile';
 //Api link của role
 export const GET_ALL_ROLE = 'http://niemtinvang.herokuapp.com/role/v1/getAll';
 export const CREATE_ROLE =
@@ -36,7 +38,7 @@ export const CREATE_TASK_WITH_FILE =
 export const UPDATE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/updateTask';
 export const UPDATE_TASK_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/task/v1/updateTask';
+  'http://niemtinvang.herokuapp.com/task/v1/updateTask/withFile';
 export const GET_TASK_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/task/v1/getAllByParam';
 export const GET_TASK_BY_ID =
@@ -57,7 +59,7 @@ export const CREATE_REPORT_WITH_FILE =
 export const UPDATE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/updateReport';
 export const UPDATE_REPORT_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/report/v1/updateReport';
+  'http://niemtinvang.herokuapp.com/report/v1/updateReport/withFile';
 export const DELETE_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/deleteReport';
 //Api link của REPORT DETAILS
@@ -85,9 +87,9 @@ export const CREATE_REQUEST =
 export const CREATE_REQUEST_WITH_FILE =
   'http://niemtinvang.herokuapp.com/request/v1/createRequest/withFile';
 export const UPDATE_REQUEST =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest';
+  'http://niemtinvang.herokuapp.com/request/v1.1/updateRequest';
 export const UPDATE_REQUEST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest';
+  'http://niemtinvang.herokuapp.com/request/v1/updateRequest/withFile';
 export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1/deleteRequest';
 export const GET_ALL_REQUEST =
@@ -154,10 +156,12 @@ export const GET_CATEGORY_BY_ID =
 export const CREATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/createPost';
 export const CREATE_POST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/post/v1/createPost';
+  'http://niemtinvang.herokuapp.com/post/v1/createPost/withFile';
 export const GET_ALL_POST = 'http://niemtinvang.herokuapp.com/post/v1/getAll';
 export const UPDATE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/updatePost';
+export const UPDATE_POST_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/post/v1/updatePost/withFile';
 export const DELETE_POST =
   'http://niemtinvang.herokuapp.com/post/v1/deletePost';
 export const GET_POST_BY_ID =

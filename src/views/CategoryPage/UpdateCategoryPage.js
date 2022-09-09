@@ -131,7 +131,7 @@ const UpdateCategoryPage = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên vai trò
                   </Typography>
                   <TextFieldComponent

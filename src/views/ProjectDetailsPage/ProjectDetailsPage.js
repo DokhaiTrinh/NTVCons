@@ -1,8 +1,5 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -12,19 +9,12 @@ import ReportTable from './components/ReportTable';
 import TaskTable from './components/TaskTable';
 import Blueprint from './components/Blueprint';
 import FileDetail from './components/FileDetail';
-import { getProjectByIdApi } from '../../apis/Project/getProjectById';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
-import { getRequestByProjectIdApi } from '../../apis/Request/getRequestByProjectId';
 import { getProjectByParam } from '../../apis/Project/getProjectById';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { useParams } from 'react-router-dom';
+import FloatingAddButton from '../../Components/Button/Add/FloatingAddButton';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -57,7 +47,6 @@ function a11yProps(index) {
   };
 }
 const ProjectDetailsPage = (props) => {
-  const { row } = props;
   const [value, setValue] = React.useState(0);
   const [age, setAge] = React.useState('');
   const handleChange = (event, newValue) => {
@@ -73,10 +62,8 @@ const ProjectDetailsPage = (props) => {
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
-  const [filesImage, setFilesImage] = React.useState([]);
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
-  const [selectedImages, setSelectedImage] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -98,7 +85,12 @@ const ProjectDetailsPage = (props) => {
             ) {
               const element = listAllProjectDetails.data.fileList[index];
               if (element.fileName.split('.')[1] === 'docx') {
-                arrayDocLink.push(element.fileLink);
+                let objectDoc = {
+                  name: element.fileName,
+                  link: element.fileLink,
+                  id: element.fileId,
+                };
+                arrayDocLink.push(objectDoc);
               } else {
                 arrayImgLink.push(element.fileLink);
               }
@@ -134,65 +126,66 @@ const ProjectDetailsPage = (props) => {
     <div>
       <Box sx={{ minWidth: 120 }}></Box>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Chi tiết" {...a11yProps(0)} />
-            <Tab label="Báo cáo" {...a11yProps(1)} />
-            <Tab label="Công việc" {...a11yProps(2)} />
-            <Tab label="Yêu cầu" {...a11yProps(3)} />
-            <Tab label="Bản vẽ" {...a11yProps(4)} />
-            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <Box></Box>
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          {allProjectDetails ? (
-            <Details
-              allProjectDetails={allProjectDetails}
-              managerList={managerList}
-              workerList={workerList}
-            />
-          ) : (
-            <div>Không có dữ liệu!!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          {allReportDetails ? (
-            <ReportTable
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Chi tiết" {...a11yProps(0)} />
+          <Tab label="Báo cáo" {...a11yProps(1)} />
+          <Tab label="Công việc" {...a11yProps(2)} />
+          <Tab label="Yêu cầu" {...a11yProps(3)} />
+          <Tab label="Bản vẽ" {...a11yProps(4)} />
+          <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          <Box sx={{ flex: 1 }}></Box>
+          <Box></Box>
+        </Tabs>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            {allProjectDetails ? (
+              <Details
+                allProjectDetails={allProjectDetails}
+                managerList={managerList}
+                workerList={workerList}
+              />
+            ) : (
+              <div>Không có dữ liệu!!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {allReportDetails ? (
+              <ReportTable
+                projectId={projectId}
+                allReportDetails={allReportDetails}
+                totalPage={totalPage}
+              ></ReportTable>
+            ) : (
+              <div>Không có dữ liệu!</div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TaskTable projectId={projectId}></TaskTable>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <RequestTable
               projectId={projectId}
-              allReportDetails={allReportDetails}
-              totalPage={totalPage}
-            ></ReportTable>
-          ) : (
-            <div>Không có dữ liệu!</div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TaskTable projectId={projectId}></TaskTable>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <RequestTable
-            projectId={projectId}
-            allRequestDetails={allRequestDetails}
-          ></RequestTable>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <Blueprint projectId={projectId}></Blueprint>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <FileDetail
-            projectId={projectId}
-            imageGet={imageGet}
-            docGet={docGet}
-          ></FileDetail>
-        </TabPanel>
+              allRequestDetails={allRequestDetails}
+            ></RequestTable>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Blueprint projectId={projectId}></Blueprint>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <FileDetail
+              projectId={projectId}
+              imageGet={imageGet}
+              docGet={docGet}
+            ></FileDetail>
+            <FloatingAddButton />
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

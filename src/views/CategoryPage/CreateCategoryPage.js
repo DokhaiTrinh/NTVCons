@@ -2,13 +2,10 @@ import {
   Divider,
   Typography,
   Box,
-  TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -70,7 +67,7 @@ const CreateCategortPage = (props) => {
     }
   };
   return (
-    <div>
+    <Paper className='bodynonetab' elevation='none'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -96,7 +93,7 @@ const CreateCategortPage = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên vai trò
                 </Typography>
                 <TextFieldComponent
@@ -129,12 +126,7 @@ const CreateCategortPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     {loading ? (
                       <>
@@ -151,7 +143,7 @@ const CreateCategortPage = (props) => {
           </form>
         </Box>
       </Box>
-    </div>
+    </Paper>
   );
 };
 

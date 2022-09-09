@@ -70,7 +70,6 @@ const CreateTaskProject = (props) => {
       }
     })();
   }, []);
-  console.log(projectByManager);
   // React.useEffect(() => {
   //   (async () => {
   //     try {
@@ -138,7 +137,20 @@ const CreateTaskProject = (props) => {
       setLoading(false);
     }
   };
-  const valideSchema = yup.object({}).required();
+  const valideSchema = yup
+    .object({
+      taskName: yup
+        .string()
+        .min(5, 'Tên công việc phải lớn hơn 5')
+        .max(50, 'Tên công việc không được lớn hơn 50')
+        .required(),
+      taskDesc: yup
+        .string()
+        .min(5, 'Mô tả công việc phải lớn hơn 5')
+        .max(50, 'Mô tả công việc không được lớn hơn 50')
+        .required(),
+    })
+    .required();
   const {
     register,
     handleSubmit,
@@ -242,9 +254,7 @@ const CreateTaskProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Tên công việc
-                </Typography>
+                <Typography variant="body2">Tên công việc</Typography>
                 <TextFieldComponent
                   register={register}
                   name="taskName"
@@ -254,9 +264,7 @@ const CreateTaskProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thông tin công việc
-                </Typography>
+                <Typography variant="body2">Thông tin công việc</Typography>
                 <TextFieldComponent
                   register={register}
                   name="taskDesc"
@@ -267,9 +275,7 @@ const CreateTaskProject = (props) => {
               </Grid>
               <Grid container item xs={12} spacing={1}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Thời gian
-                  </Typography>
+                  <Typography variant="body2">Thời gian</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body2">Bắt đầu dự kiến</Typography>
@@ -297,9 +303,7 @@ const CreateTaskProject = (props) => {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Kỹ sư quản lý
-                </Typography>
+                <Typography variant="body2">Kỹ sư quản lý</Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}

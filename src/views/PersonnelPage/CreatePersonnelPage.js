@@ -2,32 +2,24 @@ import {
   Divider,
   Typography,
   Box,
-  TextField,
+  Paper,
   Grid,
   Button,
+  Stack
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import { createUserApi } from './../../apis/User/createUser';
 import { createUserApi1 } from './../../apis/User/createUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
-import { Add } from '@mui/icons-material';
 import { getAllRoleApi1 } from '../../apis/Role/GetAllRole';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
+import UploadImage from '../../Components/Upload/UploadImage';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -174,11 +166,10 @@ const CreatePersonnelPage = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper className='bodynonetab' elevation='none'>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         Tạo mới hồ sơ nhân viên
       </Typography>
@@ -201,40 +192,28 @@ const CreatePersonnelPage = (props) => {
           {/* <Typography variant="body1" color="#DD8501" fontWeight="bold">
             Ảnh đại diện
           </Typography> */}
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
             Sơ yếu lý lịch
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
-            <Box sx={{ width: '100%', height: '20px' }}>
-              <Grid container>
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <input
-                    {...register('files')}
-                    type="file"
-                    id="files"
-                    // multiple
-                    onChange={handleChangeFile}
-                  />
-                  <div className="label-holder">
-                    <label htmlFor="file" className="img-upload"></label>
-                  </div>
+            <Grid container spacing={2}>
 
+            <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  color="#DD8501"
+                  sx={{ marginBottom: '10px' }}
+                >
+                  Ảnh đại diện
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  {UploadImage(setSelectedImage, setFilesImage)}
                   <div className="result">{RenderImage(selectedImages)}</div>
-                  {/* <input type="file" multiple {...register("file")} /> */}
-                </Box>
+                </Stack>
               </Grid>
-              <Box sx={{ width: '100%', height: '20px' }}></Box>
-              <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên đăng nhập
                   </Typography>
                   <TextFieldComponent
@@ -246,7 +225,7 @@ const CreatePersonnelPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Mật khẩu
                   </Typography>
                   <TextFieldComponent
@@ -259,7 +238,7 @@ const CreatePersonnelPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Họ và tên
                   </Typography>
                   <TextFieldComponent
@@ -271,7 +250,7 @@ const CreatePersonnelPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Điện thoại
                   </Typography>
                   <TextFieldComponent
@@ -284,7 +263,7 @@ const CreatePersonnelPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Email
                   </Typography>
                   <TextFieldComponent
@@ -297,7 +276,7 @@ const CreatePersonnelPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Chức vụ
                   </Typography>
                   <FormControl sx={{ width: '100%' }}>
@@ -320,7 +299,6 @@ const CreatePersonnelPage = (props) => {
                     </Select>
                   </FormControl>
                 </Grid>
-              </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -334,22 +312,17 @@ const CreatePersonnelPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
-                    Lưu
+                    Tạo mới
                   </Button>
                 </Box>
               </Grid>
-            </Box>
+            </Grid>
           </form>
         </Box>
       </Box>
-    </div>
+    </Paper>
   );
 };
 

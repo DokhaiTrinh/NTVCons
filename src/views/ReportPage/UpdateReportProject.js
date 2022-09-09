@@ -247,7 +247,7 @@ const UpdateReportProject = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Tên báo cáo
                   </Typography>
                   <TextFieldComponent
@@ -260,7 +260,7 @@ const UpdateReportProject = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Thông tin báo cáo
                   </Typography>
                   <TextFieldComponent
@@ -273,7 +273,7 @@ const UpdateReportProject = (props) => {
                   />
                 </Grid>
                 <Grid item container xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Ngày báo cáo
                   </Typography>
                   <Grid item xs={12}>
@@ -432,7 +432,7 @@ const UpdateReportProject = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Loại báo cáo
                   </Typography>
                   <FormControl sx={{ width: '100%' }}>
@@ -456,7 +456,7 @@ const UpdateReportProject = (props) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
+                  <Typography variant="body2">
                     Người báo cáo
                   </Typography>
                   <TextFieldComponent
@@ -495,7 +495,7 @@ const UpdateReportProject = (props) => {
             </form>
           </Box>
         ) : (
-          <div>Loading ... </div>
+          <Typography variant='h5'>Loading... </Typography>
         )}
       </Box>
       <Dialog

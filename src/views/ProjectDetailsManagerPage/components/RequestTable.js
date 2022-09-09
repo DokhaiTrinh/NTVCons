@@ -10,74 +10,19 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Swal from 'sweetalert2';
-import InfoIcon from '@mui/icons-material/Info';
-import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
-import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
 import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { Table, TableBody } from '@mui/material';
+import Header from '../../../Components/Tab/Header';
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import DetailButton from '../../../Components/Button/DetailButton';
+import DeleteRequest from '../../../Components/Button/Delete/DeleteRequest';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-function createData(
-  name,
-  progress,
-  perform,
-  start,
-  end,
-  durationn,
-  status,
-  prioritized
-) {
-  return {
-    name,
-    progress,
-    perform,
-    start,
-    end,
-    durationn,
-    status,
-    prioritized,
-  };
-}
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -114,30 +59,27 @@ const headCells = [
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
-    label: 'Chi tiết',
+    label: '',
   },
 
   {
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -222,20 +164,6 @@ const EnhancedTableToolbar = (props) => {
           Yêu cầu
         </Typography>
       )}
-      {/* 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )} */}
     </Toolbar>
   );
 };
@@ -243,18 +171,7 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-const handleGetDate = (date) => {
-  const getDate = date.substring(0, 10);
-  const getDateCom = getDate.split('-');
-  const getDateReformat = ''.concat(
-    getDateCom[2],
-    '/',
-    getDateCom[1],
-    '/',
-    getDateCom[0]
-  );
-  return getDateReformat;
-};
+
 export default function RequestTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -289,97 +206,20 @@ export default function RequestTable(props) {
     })();
   }, [pageNum]);
   console.log(allRequestDetails);
-  const handleDeleteRequest = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteRequest(id);
-      }
-    });
-  };
-  const DeleteRequest = async (id) => {
-    try {
-      await deleteRequestApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Dự án của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
-  };
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-        {userInfor.authorID !== '44' ? null : (
-          <Button
-            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-            component={Link}
-            to={`/createRequestManager/${projectId}`}
-          >
-            <Typography color="white">Tạo yêu cầu</Typography>
-          </Button>
-        )}
-      </Box>
+      {
+        Header(`/createRequestManager/${projectId}`)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onRequestSort={handleRequestSort}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
@@ -395,7 +235,6 @@ export default function RequestTable(props) {
                       component="th"
                       id={labelId}
                       scope="row"
-                      // padding="none"
                       align="left"
                     >
                       {row.requestId}
@@ -407,50 +246,22 @@ export default function RequestTable(props) {
                     </TableCell>
                     <TableCell align="left">{row.requester.username}</TableCell>
                     <TableCell align="left">
-                      <IconButton
-                        size="large"
-                        component={Link}
-                        to={`/requestDetailsManager/${row.requestId}`}
-                      >
-                        <InfoIcon />
-                      </IconButton>
-                      {/* <Route>
-                        <Link
-                          underline="hover"
-                          to={`/requestDetails/${row.requestId}`}
-                        >
-                          {'Chi Tiết'}
-                        </Link>
-                      </Route> */}
+                      {
+                        DetailButton(`/requestDetailsManager/${row.requestId}`)
+                      }
                     </TableCell>
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                        <IconButton
-                          size="large"
-                          component={Link}
-                          to={`/updateRequestDetailsManager/${row.requestId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Cập nhật'}</Link>
-                      </Route> */}
+                        {
+                          UpdateButton(`/updateRequestDetailsManager/${row.requestId}`)
+                        }
                       </TableCell>
                     ) : null}
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          edge="start"
-                          size="large"
-                          color="warning"
-                          onClick={() => handleDeleteRequest(row.requestId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Xóa'}</Link>
-                      </Route> */}
+                        {
+                          DeleteRequest(row.requestId)
+                        }
                       </TableCell>
                     ) : null}
                   </TableRow>

@@ -6,8 +6,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Link, useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Dialog from '@mui/material/Dialog';
 import DialogWorker from './DialogWorker';
@@ -30,7 +28,7 @@ const Details = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
         >
           <Grid container spacing={0} alignItems="center" justify="center">
@@ -205,12 +203,6 @@ const Details = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenWorkerDialog()}
                   >
                     Danh sách công nhân

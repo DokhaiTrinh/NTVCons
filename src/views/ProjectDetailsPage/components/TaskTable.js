@@ -21,40 +21,14 @@ import Swal from 'sweetalert2';
 import { getTaskByProjectIdApi } from '../../../apis/Task/getTaskByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody, TableRow } from '@mui/material';
+import DeleteTask from '../../../Components/Button/Delete/DeleteTask';
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import Header from '../../../Components/Tab/Header';
+import DetailButton from '../../../Components/Button/DetailButton';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -87,35 +61,22 @@ const headCells = [
     disablePadding: false,
     label: 'Kết thúc',
   },
-  // {
-  //   id: 'nguoinhan',
-  //   character: false,
-  //   disablePadding: false,
-  //   label: 'Người nhận',
-  // },
   {
     id: 'update',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'delete',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -123,17 +84,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
         {headCells.map((headCell, index) =>
           (userInfor.authorID !== '54' && index === 6) || index === 7 ? null : (
             <TableCell
@@ -232,13 +182,9 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function ReportTable(props) {
-  const { projectId } = props;
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [{ loading }, dispatch] = useStateValue();
   const [allTaskDetails, setAllTaskDetails] = React.useState([]);
   const { id } = useParams();
   const [totalPage, setTotalPage] = React.useState();
@@ -280,89 +226,11 @@ export default function ReportTable(props) {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - allTaskDetails.length)
-      : 0;
-
-  const handleDeleteTask = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        DeleteTask(id);
-      }
-    });
-  };
-  const DeleteTask = async (id) => {
-    try {
-      await deleteTaskApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Công việc của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
-  };
-
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          marginBottom: '30px',
-        }}
-      >
-        {userInfor.authorID !== '54' ? null : (
-          <Button
-            sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-            component={Link}
-            to={`/createTask/${projectId}`}
-          >
-            <Typography color="white">Tạo công việc</Typography>
-          </Button>
-        )}
-      </Box>
+      {Header(`/createTask/${id}`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
@@ -373,25 +241,23 @@ export default function ReportTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={allTaskDetails.length}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allTaskDetails.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        onClick={(event) => handleClick(event, row.projectId)}
-                        color="primary"
-                        // checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell> */}
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
@@ -403,61 +269,22 @@ export default function ReportTable(props) {
                     </TableCell>
                     <TableCell align="left">{row.taskName}</TableCell>
                     <TableCell align="left">{row.taskDesc}</TableCell>
-                    {/* <TableCell align="left">{row.}</TableCell> */}
-                    {/* <TableCell align="left">{row.addressNumber}</TableCell> */}
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
                     {/* <TableCell align="left">
                       {row.taskAssignment.assignee.username}
                     </TableCell> */}
-                    {/* <TableCell align="left">{handleGetDate(row.actualStartDate)}</TableCell>
-                    <TableCell align="left">{handleGetDate(row.actualEndDate)}</TableCell> */}
-                    {/* <TableCell align="center">
-                      <IconButton
-                        edge="start"
-                        component={Link}
-                        to={`/requestDetails/${row.requestId}`}
-                      >
-                        <InfoIcon />
-                      </IconButton>
-                      <Route>
-                        <Link
-                          underline="hover"
-                          to={`/requestDetails/${row.requestId}`}
-                        >
-                          {'Chi Tiết'}
-                        </Link>
-                      </Route>
-                    </TableCell>  */}
+                    <TableCell align="left">
+                      {DetailButton(`/taskDetails/${row.taskId}`)}
+                    </TableCell>
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
-                        <IconButton
-                          // edge="start"
-                          size="large"
-                          component={Link}
-                          to={`/updateTask/${row.taskId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Cập nhật'}</Link>
-                      </Route> */}
+                        {UpdateButton(`/updateTask/${row.taskId}`)}
                       </TableCell>
                     ) : null}
                     {userInfor.authorID === '54' ? (
                       <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          edge="start"
-                          color="warning"
-                          size="large"
-                          onClick={() => handleDeleteTask(row.taskId)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        {/* <Route>
-                        <Link underline="hover">{'Xóa'}</Link>
-                      </Route> */}
+                        {DeleteTask(row.taskId)}
                       </TableCell>
                     ) : null}
                   </TableRow>
@@ -466,14 +293,14 @@ export default function ReportTable(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
       </Paper>
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

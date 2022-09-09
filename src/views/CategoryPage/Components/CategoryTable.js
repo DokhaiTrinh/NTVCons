@@ -22,51 +22,8 @@ import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { tableCellClasses } from "@mui/material/TableCell";
 import TableRow from '@mui/material/TableRow';
 import { TableBody, Table } from '@mui/material';
-
-function createData(id, name, date) {
-  return {
-    id,
-    name,
-    date,
-  };
-}
-
-const rows = [
-  createData('1', 'Quản trị cấp cao', '06/06/2022'),
-  createData('2', 'Giám sát hiện trường', '06/06/2022'),
-  createData('3', 'Kho - vật tư', '06/06/2022'),
-  createData('4', 'QA - QC', '06/06/2022'),
-];
-
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-};
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+import UpdateButton from '../../../Components/Button/UpdateButton';
+import Header from '../../../Components/Tab/Header';
 
 const headCells = [
   {
@@ -97,13 +54,13 @@ const headCells = [
     id: 'capnhat',
     numeric: false,
     // disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     // disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
@@ -111,8 +68,6 @@ const EnhancedTableHead = (props) => {
   const {
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -218,13 +173,18 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const CategoryTable = (props) => {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allCategory } = props;
-  const [{ loading }, dispatch] = useStateValue();
+  const [{loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('ngaythem');
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    
+    //Chỗ này code sort. Mã search 13399
+
+  };
   const handleDeleteCategory = (id) => {
     Swal.fire({
       title: 'Bạn có chắc chứ?',
@@ -249,65 +209,23 @@ export const CategoryTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
+    } catch (error) { }
   };
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
+      {
+        Header(`/createCategory/`)
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead />
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
                 borderBottom: "none"
@@ -323,14 +241,9 @@ export const CategoryTable = (props) => {
                       <TableCell align="left">{row.postCategoryDesc}</TableCell>
                       <TableCell align="left">{row.createdAt}</TableCell>
                       <TableCell align="left">
-                        <IconButton
-                          component={Link}
-                          // edge="start"
-                          size="large"
-                          to={`/updateCategory/${row.postCategoryId}`}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
+                        {
+                          UpdateButton(`/updateCategory/${row.postCategoryId}`)
+                        }
                       </TableCell>
                       <TableCell align="left">
                         <IconButton

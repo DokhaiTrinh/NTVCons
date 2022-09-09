@@ -5,6 +5,8 @@ import {
   TextField,
   Grid,
   Button,
+  Checkbox,
+  Autocomplete,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -26,10 +28,16 @@ import CardContent from '@mui/material/CardContent';
 import DialogEditLocation from './components/DialogEditLocation';
 import { useParams } from 'react-router-dom';
 import { getProjectByParam } from '../../apis/Project/updateProject';
+import { Stack } from '@mui/system';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
 const EditProejectDetailsPage = (props) => {
   const { id } = useParams();
   var idN = parseInt(id);
-  const [valueActualStartDate, setValueActualStartDate] = React.useState();
+  const [valueActualStartDate, setValueActualStartDate] = React.useState(
+    new Date()
+  );
   const [valueActualEndDate, setValueActualEndDate] = React.useState(
     new Date()
   );
@@ -43,6 +51,12 @@ const EditProejectDetailsPage = (props) => {
   const [actionUpdateLocation, setActionUpdateLocation] = React.useState();
   const [itemDetailLocationUpdate, setItemDetailLocationUpdate] =
     React.useState();
+  const [allManager, setAllManager] = React.useState([]);
+  const [allWorker, setAllWorker] = React.useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [workerListChoice, setWokerListChoice] = React.useState([]);
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   React.useEffect(() => {
@@ -50,18 +64,20 @@ const EditProejectDetailsPage = (props) => {
       try {
         const listAllProjectDetails = await getProjectByParam(id, 'BY_ID');
         setAllProjectDetails(listAllProjectDetails.data);
-        setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
-        setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
+        // setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
+        // setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
         setValuePlanStartDate(listAllProjectDetails.data.planStartDate);
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
         setProjectId(listAllProjectDetails.data.projectId);
         setUpdateLocationDetail(listAllProjectDetails.data.location);
+        setAllManager(listAllProjectDetails.data.projectManagerList);
+        setAllWorker(listAllProjectDetails.data.projectWorkerList);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
   }, []);
-  console.log(updateLocationDetail);
+  console.log(allProjectDetails);
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
@@ -77,18 +93,35 @@ const EditProejectDetailsPage = (props) => {
       denyButtonText: `Không cập nhật`,
     }).then((result) => {
       if (result.isConfirmed) {
-        handleUpdateProject(
-          projectId,
-          actualEndDate,
-          actualStartDate,
-          planEndDate,
-          planStartDate,
-          updateLocationDetail,
-          data.updatedBy,
-          data.actualCost,
-          data.estimatedCost,
-          data.projectName
-        );
+        if (managerListChoice === 0 || workerListChoice === 0) {
+          handleUpdateProject(
+            projectId,
+            actualEndDate,
+            actualStartDate,
+            planEndDate,
+            planStartDate,
+            updateLocationDetail,
+            null,
+            null,
+            data.actualCost,
+            data.estimatedCost,
+            data.projectName
+          );
+        } else {
+          handleUpdateProject(
+            projectId,
+            actualEndDate,
+            actualStartDate,
+            planEndDate,
+            planStartDate,
+            updateLocationDetail,
+            null,
+            null,
+            data.actualCost,
+            data.estimatedCost,
+            data.projectName
+          );
+        }
       }
     });
   };
@@ -99,7 +132,8 @@ const EditProejectDetailsPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    updatedBy,
+    managerListChoice,
+    workerListChoice,
     actualCost,
     estimatedCost,
     projectName
@@ -113,7 +147,8 @@ const EditProejectDetailsPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        updatedBy,
+        managerListChoice,
+        workerListChoice,
         actualCost,
         estimatedCost,
         projectName,
@@ -135,7 +170,6 @@ const EditProejectDetailsPage = (props) => {
       });
       setLoading(false);
     }
-    console.log(planStartDate);
   };
   const valideSchema = yup
     .object({
@@ -153,7 +187,6 @@ const EditProejectDetailsPage = (props) => {
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
         .required(),
-      updatedBy: yup.number().required(),
     })
     .required();
   const {
@@ -189,6 +222,20 @@ const EditProejectDetailsPage = (props) => {
   const handleCloseUpdateLocationDialog = () => {
     setOpenLocationDialog(false);
   };
+  const handleSelectManager = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setManagerListChoice(getIdList);
+  };
+  const handleSelectWorker = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.workerId);
+    }
+    setWokerListChoice(getIdList);
+  };
   return (
     <div>
       <Typography
@@ -219,13 +266,12 @@ const EditProejectDetailsPage = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
-          {allProjectDetails ? (
-            <form onSubmit={handleSubmit(submitForm)}>
+
+          <form onSubmit={handleSubmit(submitForm)}>
+            {allProjectDetails ? (
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Mã dự án
-                  </Typography>
+                {/* <Grid item xs={12}>
+                  <Typography variant="body2">Mã dự án</Typography>
                   <TextField
                     {...register('projectId')}
                     inputProps={{ readOnly: true }}
@@ -238,11 +284,9 @@ const EditProejectDetailsPage = (props) => {
                     helperText={errors.projectId?.message}
                     sx={{ width: '100%' }}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Tên dự án
-                  </Typography>
+                  <Typography variant="body2">Tên dự án</Typography>
                   <TextField
                     {...register('projectName')}
                     name="projectName"
@@ -254,9 +298,31 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Chi phí ước tính
-                  </Typography>
+                  <Typography variant="body2">Kỹ sư phụ trách</Typography>
+                  <Autocomplete
+                    multiple
+                    options={allManager}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.manager.username}
+                    onChange={(e, option) => handleSelectManager(option)}
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props}>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.manager.username}
+                      </li>
+                    )}
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder="Kỹ sư" />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Chi phí ước tính</Typography>
                   <TextField
                     {...register('estimatedCost')}
                     name="estimatedCost"
@@ -271,9 +337,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
-                      Thời gian dự kiến
-                    </Typography>
+                    <Typography variant="body2">Thời gian dự kiến</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">Bắt đầu dự kiến</Typography>
@@ -306,7 +370,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian chính thức
                     </Typography>
                   </Grid>
@@ -339,6 +403,32 @@ const EditProejectDetailsPage = (props) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Công nhân</Typography>
+                  <Autocomplete
+                    multiple
+                    options={allWorker}
+                    disableCloseOnSelect
+                    getOptionLabel={(option) => option.worker.fullName}
+                    onChange={(e, option) => handleSelectWorker(option)}
+                    renderOption={(props, option, { selected }) =>
+                      option.isAvailable ? (
+                        <li {...props}>
+                          <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                          />
+                          {option.worker.fullName}
+                        </li>
+                      ) : null
+                    }
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder="Công nhân" />
+                    )}
+                  />
+                </Grid>
                 <Grid item container sx={12}>
                   <Box
                     sx={{
@@ -358,7 +448,7 @@ const EditProejectDetailsPage = (props) => {
                       display: 'flex',
                     }}
                   >
-                    <Button
+                    {/* <Button
                       variant="contained"
                       style={{
                         backgroundColor: '#DD8501',
@@ -366,66 +456,62 @@ const EditProejectDetailsPage = (props) => {
                         width: '200px',
                         alignSelf: 'center',
                       }}
-                      onClick={() =>
-                        handleOpenUpdateLocationDialog('CreateNewLocation')
-                      }
-                    >
-                      Chi tiết địa điểm
-                    </Button>
+                      // onClick={() =>
+                      //   handleOpenUpdateLocationDialog('CreateNewLocation')
+                      // }
+                    ></Button> */}
+                    Chi tiết địa điểm
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
-                  {updateLocationDetail.length > 0 ? (
-                    updateLocationDetail.map((locationDetailItem, index) => (
-                      <Grid
-                        item
-                        xs={4}
-                        key={index}
-                        onClick={() =>
-                          handleOpenUpdateLocationDialog(
-                            'UpdateLocation',
-                            locationDetailItem
-                          )
-                        }
-                      >
-                        <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%' }}>
-                            <CardContent>
-                              <Typography>
-                                Số nhà: {locationDetailItem.addressNumber}
-                              </Typography>
-                              <Typography>
-                                Tên đường:{locationDetailItem.street}
-                              </Typography>
-                              <Typography>
-                                Quận: {locationDetailItem.district}{' '}
-                              </Typography>
-                              <Typography>
-                                Thành phố: {locationDetailItem.city}
-                              </Typography>
-                              <Typography>
-                                Khu vực: {locationDetailItem.ward}
-                              </Typography>
-                              <Typography>
-                                Địa bàn tỉnh: {locationDetailItem.province}
-                              </Typography>
-                              <Typography>
-                                Quốc gia: {locationDetailItem.country}
-                              </Typography>
-                              <Typography>
-                                Diện tích: {locationDetailItem.area}
-                              </Typography>
-                              <Typography>
-                                Điều phối: {locationDetailItem.coordinate}
-                              </Typography>
-                              <Typography>
-                                Mã địa chỉ: {locationDetailItem.locationId}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
-                      </Grid>
-                    ))
+                  {updateLocationDetail ? (
+                    <Grid
+                      item
+                      xs={4}
+                      onClick={() =>
+                        handleOpenUpdateLocationDialog(
+                          'UpdateLocation',
+                          updateLocationDetail
+                        )
+                      }
+                    >
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Số nhà: {updateLocationDetail.addressNumber}
+                            </Typography>
+                            <Typography>
+                              Tên đường:{updateLocationDetail.street}
+                            </Typography>
+                            <Typography>
+                              Quận: {updateLocationDetail.district}{' '}
+                            </Typography>
+                            <Typography>
+                              Thành phố: {updateLocationDetail.city}
+                            </Typography>
+                            <Typography>
+                              Khu vực: {updateLocationDetail.ward}
+                            </Typography>
+                            <Typography>
+                              Địa bàn tỉnh: {updateLocationDetail.province}
+                            </Typography>
+                            <Typography>
+                              Quốc gia: {updateLocationDetail.country}
+                            </Typography>
+                            <Typography>
+                              Diện tích: {updateLocationDetail.area}
+                            </Typography>
+                            <Typography>
+                              Điều phối: {updateLocationDetail.coordinate}
+                            </Typography>
+                            {/* <Typography>
+                                Mã địa chỉ: {updateLocationDetail.locationId}
+                              </Typography> */}
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
                   ) : (
                     <Grid
                       item
@@ -437,9 +523,7 @@ const EditProejectDetailsPage = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Giá chính thức
-                  </Typography>
+                  <Typography variant="body2">Giá chính thức</Typography>
                   <TextField
                     {...register('actualCost')}
                     name="actualCost"
@@ -453,7 +537,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
+              <Typography variant="body2">
                 Chọn file
               </Typography>
               <input
@@ -497,8 +581,8 @@ const EditProejectDetailsPage = (props) => {
                   </Box>
                 </Grid>
               </Grid>
-            </form>
-          ) : null}
+            ) : null}
+          </form>
         </Box>
       </Box>
       <Dialog
@@ -510,7 +594,7 @@ const EditProejectDetailsPage = (props) => {
           setUpdateLocationDetail={setUpdateLocationDetail}
           updateLocationDetail={updateLocationDetail}
           actionUpdateLocation={actionUpdateLocation}
-          itemDetailLocationUpdate={itemDetailLocationUpdate}
+          // itemDetailLocationUpdate={itemDetailLocationUpdate}
         ></DialogEditLocation>
       </Dialog>
     </div>

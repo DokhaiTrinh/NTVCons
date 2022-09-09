@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   Stack,
+  Paper,
 } from '@mui/material';
 import React, { useState } from 'react';
 import * as yup from 'yup';
@@ -14,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createPostApi } from '../../apis/Post/createPost';
+import { createPostApi1 } from '../../apis/Post/createPost';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -107,17 +109,19 @@ const CreateProductPage = (props) => {
     ownerName,
     postCategoryId,
     postTitle,
-    scale
+    scale,
+    fileList
   ) => {
     try {
       setLoading(true);
-      await createPostApi({
+      await createPostApi1({
         address,
         authorName,
         ownerName,
         postCategoryId,
         postTitle,
         scale,
+        fileList,
       });
       setLoading(false);
       await Swal.fire({
@@ -126,7 +130,7 @@ const CreateProductPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/product');
+      // window.location.replace('/product');
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -142,7 +146,7 @@ const CreateProductPage = (props) => {
   };
 
   return (
-    <div>
+    <Paper className='bodynonetab' elevation='none'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -174,7 +178,7 @@ const CreateProductPage = (props) => {
             <Box sx={{ width: '100%', height: '20px' }}></Box>
             <Grid container spacing={2}>
               {/* <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Hình ảnh
                 </Typography>
                 <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
@@ -208,7 +212,11 @@ const CreateProductPage = (props) => {
                 </Box>
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501" sx={{marginBottom: '10px'}}>
+                <Typography
+                  variant="body2"
+                  color="#DD8501"
+                  sx={{ marginBottom: '10px' }}
+                >
                   Ảnh dự án
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -217,7 +225,7 @@ const CreateProductPage = (props) => {
                 </Stack>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tên dự án
                 </Typography>
                 <TextFieldComponent
@@ -230,7 +238,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Chủ đầu tư
                 </Typography>
                 <TextFieldComponent
@@ -243,7 +251,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Vị trí
                 </Typography>
                 <TextFieldComponent
@@ -256,7 +264,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Quy mô
                 </Typography>
                 <TextFieldComponent
@@ -269,10 +277,10 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thể loại
                 </Typography>
-                <FormControl sx={{ width: '100%' }}>
+                <FormControl sx={{ width: '100%', bgcolor: '#F1F1F1' }}>
                   <Select
                     onChange={handleChange}
                     MenuProps={MenuProps}
@@ -293,7 +301,7 @@ const CreateProductPage = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Tác giả
                 </Typography>
                 <TextFieldComponent
@@ -317,12 +325,7 @@ const CreateProductPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                   >
                     Lưu
                   </Button>
@@ -332,7 +335,7 @@ const CreateProductPage = (props) => {
           </form>
         </Box>
       </Box>
-    </div>
+    </Paper>
   );
 };
 

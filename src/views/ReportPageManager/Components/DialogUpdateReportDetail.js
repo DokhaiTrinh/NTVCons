@@ -15,7 +15,9 @@ const DialogUpdateReportDetail = (props) => {
     setUpdateReportDetail,
     actionUpdateReport,
     itemDetailReportUpdate,
+    idN,
   } = props;
+  console.log(idN);
   const [loading, setLoading] = useState('');
   const valideSchema = yup
     .object({
@@ -46,7 +48,7 @@ const DialogUpdateReportDetail = (props) => {
       itemDesc: data.itemDesc,
       itemPrice: data.itemPrice,
       itemUnit: data.itemUnit,
-      reportId: null,
+      reportDetailId: 0,
     };
     console.log(updateReportDetail);
     if (!updateReportDetail) {
@@ -77,42 +79,23 @@ const DialogUpdateReportDetail = (props) => {
     }
     props.handleCloseUpdateReportDetailDialog();
   };
-  console.log(updateReportDetail);
-  console.log(itemDetailReportUpdate);
   return (
-    <div>
+    <div className='dialog'>
       <Typography
         variant="h6"
         color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
       >
         BÁO CÁO CHI TIẾT
       </Typography>
       <Divider></Divider>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '90%',
-            marginBottom: '30px',
-          }}
-        >
           <Typography variant="body1" color="#DD8501" fontWeight="bold">
             Thông tin báo cáo chi tiết
           </Typography>
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
+                <Typography variant="body2">
                   Thông tin báo cáo chi tiết
                 </Typography>
                 <TextFieldComponent
@@ -129,9 +112,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Số lượng
-                </Typography>
+                <Typography variant="body2">Số lượng</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemAmount"
@@ -146,9 +127,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Giá tiền
-                </Typography>
+                <Typography variant="body2">Giá tiền</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemPrice"
@@ -164,9 +143,7 @@ const DialogUpdateReportDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Đơn vị tính
-                </Typography>
+                <Typography variant="body2">Đơn vị tính</Typography>
                 <TextFieldComponent
                   register={register}
                   name="itemUnit"
@@ -185,7 +162,7 @@ const DialogUpdateReportDetail = (props) => {
                 <Box
                   sx={{
                     width: '100%',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
                   }}
@@ -195,12 +172,7 @@ const DialogUpdateReportDetail = (props) => {
                       <Button
                         type="submit"
                         variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
+                        className='submitButton'
                       >
                         Cập nhật
                       </Button>
@@ -208,36 +180,16 @@ const DialogUpdateReportDetail = (props) => {
                       <Button
                         type="submit"
                         variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
+                        className='submitButton'
                       >
                         Tạo mới
                       </Button>
                     )
                   ) : null}
-
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Hủy
-                  </Button>
                 </Box>
               </Grid>
             </Grid>
           </form>
-        </Box>
-      </Box>
     </div>
   );
 };

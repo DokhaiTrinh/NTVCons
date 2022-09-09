@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Grid, Paper } from '@material-ui/core';
-import background from '../../assets/images/phong-thuy-dat-nha-o-1.jpeg';
-import logo from '../../assets/images/FILE_20220108_160017_GOLDEN TRUST-01.png';
+import background from '../../assets/images/background.jpg';
+import logo from '../../assets/images/logo.png';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { loginApi } from '../../apis/authentication/login';
 import Swal from 'sweetalert2';
-import { useHistory } from 'react-router-dom';
 import { resetPasswordApi } from './../../apis/Resset/resetPassword';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ResetPasswordPage = (props) => {
@@ -142,13 +137,7 @@ const ResetPasswordPage = (props) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    paddingRight: '50px',
-                    paddingLeft: '50px',
-                    borderRadius: 50,
-                    marginTop: '22px',
-                  }}
+                  className='submitButton'
                 >
                   Hoàn tất
                 </Button>

@@ -30,7 +30,9 @@ import { getProjectByParam } from '../../apis/Project/updateProject';
 const EditProejectDetailsPage = (props) => {
   const { id } = useParams();
   var idN = parseInt(id);
-  const [valueActualStartDate, setValueActualStartDate] = React.useState();
+  const [valueActualStartDate, setValueActualStartDate] = React.useState(
+    new Date()
+  );
   const [valueActualEndDate, setValueActualEndDate] = React.useState(
     new Date()
   );
@@ -56,8 +58,8 @@ const EditProejectDetailsPage = (props) => {
       try {
         const listAllProjectDetails = await getProjectByParam(id, 'BY_ID');
         setAllProjectDetails(listAllProjectDetails.data);
-        setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
-        setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
+        // setValueActualStartDate(listAllProjectDetails.data.actualStartDate);
+        // setValueActualEndDate(listAllProjectDetails.data.actualEndDate);
         setValuePlanStartDate(listAllProjectDetails.data.planStartDate);
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
         setProjectId(listAllProjectDetails.data.projectId);
@@ -67,7 +69,6 @@ const EditProejectDetailsPage = (props) => {
       }
     })();
   }, []);
-  console.log(updateLocationDetail);
   const submitForm = (data) => {
     const actualStartDate =
       moment(valueActualStartDate).format('YYYY-MM-DD HH:mm');
@@ -138,7 +139,6 @@ const EditProejectDetailsPage = (props) => {
       });
       setLoading(false);
     }
-    console.log(planStartDate);
   };
   const valideSchema = yup
     .object({
@@ -226,9 +226,7 @@ const EditProejectDetailsPage = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Tên dự án
-                  </Typography>
+                  <Typography variant="body2">Tên dự án</Typography>
                   <TextField
                     {...register('projectName')}
                     name="projectName"
@@ -240,9 +238,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Chi phí ước tính
-                  </Typography>
+                  <Typography variant="body2">Chi phí ước tính</Typography>
                   <TextField
                     {...register('estimatedCost')}
                     name="estimatedCost"
@@ -257,9 +253,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
-                      Thời gian dự kiến
-                    </Typography>
+                    <Typography variant="body2">Thời gian dự kiến</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">Bắt đầu dự kiến</Typography>
@@ -292,7 +286,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color="#DD8501">
+                    <Typography variant="body2">
                       Thời gian chính thức
                     </Typography>
                   </Grid>
@@ -420,9 +414,7 @@ const EditProejectDetailsPage = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" color="#DD8501">
-                    Giá chính thức
-                  </Typography>
+                  <Typography variant="body2">Giá chính thức</Typography>
                   <TextField
                     {...register('actualCost')}
                     name="actualCost"
@@ -436,7 +428,7 @@ const EditProejectDetailsPage = (props) => {
                   />
                 </Grid>
                 {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
+              <Typography variant="body2">
                 Chọn file
               </Typography>
               <input

@@ -10,31 +10,15 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
-import UpdateIcon from '@mui/icons-material/Update';
-import { deleteUserkApi } from './../../../apis/User/deleteUser';
-import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import Avatar from '@mui/material/Avatar';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { Table, TableBody } from '@mui/material';
-
-function createData(code, name, department, position, office, role, join, dob) {
-  return {
-    code,
-    name,
-    department,
-    position,
-    office,
-    role,
-    join,
-    dob,
-  };
-}
+import Header from '../../../Components/Tab/Header';
+import DeleteUser from '../../../Components/Button/Delete/DeleteUser';
+import UpdateButton from '../../../Components/Button/UpdateButton';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -113,13 +97,13 @@ const headCells = [
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
-    label: 'Cập nhật',
+    label: '',
   },
   {
     id: 'xoa',
     numeric: false,
     disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
@@ -244,32 +228,32 @@ export const PersonnelTable = (props) => {
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-  const handleDeleteUser = (id) => {
-    Swal.fire({
-      title: 'Bạn có chắc chứ?',
-      text: 'Bạn không thể thu hổi lại khi ấn nút!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, hãy xóa nó!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteUser(id);
-      }
-    });
-  };
-  const deleteUser = async (id) => {
-    try {
-      await deleteUserkApi(id);
-      await Swal.fire(
-        'Xóa thành công!',
-        'Nhân viên của bạn đã được xóa thành công.',
-        'success'
-      );
-      dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) {}
-  };
+  // const handleDeleteUser = (id) => {
+  //   Swal.fire({
+  //     title: 'Bạn có chắc chứ?',
+  //     text: 'Bạn không thể thu hổi lại khi ấn nút!',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Có, hãy xóa nó!',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       deleteUser(id);
+  //     }
+  //   });
+  // };
+  // const deleteUser = async (id) => {
+  //   try {
+  //     await deleteUserkApi(id);
+  //     await Swal.fire(
+  //       'Xóa thành công!',
+  //       'Nhân viên của bạn đã được xóa thành công.',
+  //       'success'
+  //     );
+  //     dispatch({ type: 'LOADING', newLoading: !loading });
+  //   } catch (error) { }
+  // };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -305,18 +289,21 @@ export const PersonnelTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {
+        Header('/createPersonnel')
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            {/* <EnhancedTableHead
+            <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            /> */}
+            // rowCount={rows.length}
+            />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
                 borderBottom: "none"
@@ -339,25 +326,12 @@ export const PersonnelTable = (props) => {
                     <TableCell align="left">{row.phone}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
                     <TableCell align="left">
-                      <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateReportDetails/${row.reportId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
+                      {
+                        UpdateButton(`/updatePersonnel/${row.reportId}`)
+                      }
                     </TableCell>
                     <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                        onClick={() => handleDeleteUser(row.userId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {DeleteUser(row.userId)}
                     </TableCell>
                   </TableRow>
                 );
@@ -366,13 +340,13 @@ export const PersonnelTable = (props) => {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 };

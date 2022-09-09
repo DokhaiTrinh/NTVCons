@@ -11,11 +11,14 @@ import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Dialog from '@mui/material/Dialog';
 import DialogWorker from './DialogWorker';
-import Button from '@mui/material/Button';
+import { Button, Stack } from '@mui/material';
+import { useHistory } from 'react-router-dom';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
+  const history = useHistory();
   const { allProjectDetails, managerList, workerList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
@@ -30,94 +33,60 @@ const Details = (props) => {
     <div>
       <Box sx={{ width: '100%' }}>
         <Paper
-          sx={{ width: '100%', mp: 2, borderRadius: '30px', padding: '20px' }}
+          sx={{ width: '100%', mp: 2, padding: '32px' }}
           variant="elevation"
         >
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item xs={11}>
-              <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-                Thông tin chung
-              </Typography>
-            </Grid>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Typography variant="h5">Thông tin chung</Typography>
             {userInfor.authorID !== '54' ? null : (
-              <Grid item container xs={1}>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{ width: '100%' }}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <IconButton
-                      aria-label="edit report"
-                      component={Link}
-                      to={`/editProjectDetails/${id}`}
-                      sx={{ height: '100%' }}
-                    >
-                      <Box sx={{ height: '30px' }}>
-                        <EditOutlinedIcon fontSize="large" />
-                      </Box>
-                    </IconButton>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} justify="start">
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Typography variant="h6">Chỉnh sửa</Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+              <IconButtonCus
+                onClick={() => {
+                  history.push(`/editProjectDetails/${id}`);
+                }}
+                icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
+              />
             )}
-          </Grid>
+          </Stack>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Mã dự án
-              </Typography>
-              <Typography variant="h6">
+              <Typography variant="caption">Mã dự án</Typography>
+              <Typography variant="body1">
                 {allProjectDetails.projectId}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Tên dự án
-              </Typography>
-              <Typography variant="h6">
+              <Typography variant="caption">Tên dự án</Typography>
+              <Typography variant="body1">
                 {allProjectDetails.projectName}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Kỹ sư quản lý
-              </Typography>
-              <Typography sx={{ width: '100%' }}>
-                <Typography>
-                  {managerList ? (
-                    managerList.map((managerList, index) => (
-                      <Typography
-                        sx={{
-                          witdh: '100%',
-                          marginBottom: '10px',
-                          padding: '10px',
-                        }}
-                      >
-                        {managerList.manager.fullName}
-                      </Typography>
-                    ))
-                  ) : (
-                    <div>Không có dữ liệu!!</div>
-                  )}
-                </Typography>
+              <Typography variant="caption">Kỹ sư quản lý</Typography>
+              <Typography>
+                {managerList ? (
+                  managerList.map((managerList, index) => (
+                    <Typography
+                      sx={{
+                        witdh: '100%',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {managerList.manager.fullName}
+                    </Typography>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Trạng thái
-              </Typography>
+              <Typography variant="caption">Trạng thái</Typography>
               <Box
                 sx={{
                   width: '50%',
@@ -126,7 +95,7 @@ const Details = (props) => {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   sx={{
                     display: 'flex',
                     alignItems: 'left',
@@ -140,26 +109,24 @@ const Details = (props) => {
             </Grid>
 
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Thời gian bắt đầu dự kiến
+              <Typography variant="caption">
+                Thời gian bắt đầu thực tế
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.actualStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Thời gian kết thúc dự kiến
+              <Typography variant="caption">
+                Thời gian kết thúc thực tế
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.actualEndDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Địa chỉ
-              </Typography>
-              <Typography variant="h6">
+              <Typography variant="caption">Địa chỉ</Typography>
+              <Typography variant="body1">
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
                 {allProjectDetails.location.ward}, Q{' '}
@@ -167,33 +134,29 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Thành phố
-              </Typography>
-              <Typography variant="h6">
+              <Typography variant="caption">Thành phố</Typography>
+              <Typography variant="body1">
                 {allProjectDetails.location.country}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Thời gian bắt đầu thực tế
+              <Typography variant="caption">
+                Thời gian bắt đầu dự kiến
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.planStartDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="h6" color="gray">
-                Thời gian kết thúc thực tế
+              <Typography variant="caption">
+                Thời gian kết thúc dự kiến
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 {allProjectDetails.planEndDate}
               </Typography>
             </Grid>
             <Grid item xs="12">
-              <Typography variant="h6" color="gray">
-                Danh sách công nhân
-              </Typography>
+              <Typography variant="caption">Danh sách công nhân</Typography>
               <Typography sx={{ width: '100%' }}>
                 <Box
                   sx={{
@@ -205,12 +168,6 @@ const Details = (props) => {
                 >
                   <Button
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
                     onClick={() => handleOpenWorkerDialog()}
                   >
                     Danh sách công nhân

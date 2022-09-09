@@ -19,51 +19,7 @@ import { Link } from 'react-router-dom';
 import UpdateIcon from '@mui/icons-material/Update';
 import { tableCellClasses } from "@mui/material/TableCell";
 import { Table, TableBody } from '@mui/material';
-
-function createData(id, name, date) {
-  return {
-    id,
-    name,
-    date,
-  };
-}
-
-const rows = [
-  createData('1', 'Quản trị cấp cao', '06/06/2022'),
-  createData('2', 'Giám sát hiện trường', '06/06/2022'),
-  createData('3', 'Kho - vật tư', '06/06/2022'),
-  createData('4', 'QA - QC', '06/06/2022'),
-];
-
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-};
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+import Header from '../../../Components/Tab/Header';
 
 const headCells = [
   {
@@ -85,16 +41,10 @@ const headCells = [
     label: 'Ngày được thêm vào',
   },
   {
-    id: 'capnhat',
-    numeric: false,
-    // disablePadding: false,
-    label: 'Cập nhật',
-  },
-  {
     id: 'xoa',
     numeric: false,
     // disablePadding: false,
-    label: 'Xóa',
+    label: '',
   },
 ];
 
@@ -102,8 +52,6 @@ const EnhancedTableHead = (props) => {
   const {
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -122,18 +70,18 @@ const EnhancedTableHead = (props) => {
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
+            {/* <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
-            >
+            > */}
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {/* {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
-            </TableSortLabel>
+            </TableSortLabel> */}
           </TableCell>
         ))}
       </TableRow>
@@ -209,76 +157,19 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const RoleTable = (props) => {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('maduan');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allRole } = props;
   console.log(allRole);
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
+      {
+        Header('/createRole')
+      }
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {
@@ -294,21 +185,11 @@ export const RoleTable = (props) => {
                     <TableCell align="left">{row.updatedAt}</TableCell>
                     <TableCell align="left">
                       <IconButton
-                        component={Link}
-                        // edge="start"
-                        size="large"
-                        to={`/updateReportDetails/${row.reportId}`}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton
                         aria-label="delete"
                         color="warning"
                         edge="start"
                         size="large"
-                        // onClick={() => handleDeleteReport(row.reportId)}
+                      // onClick={() => handleDeleteReport(row.reportId)}
                       >
                         <DeleteIcon />
                       </IconButton>

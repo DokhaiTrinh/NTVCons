@@ -33,16 +33,16 @@ const EditReportPage = (props) => {
                 <Box sx={{ width: "100%", height: "20px" }}></Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Tên công việc</Typography>
+                        <Typography variant="body2">Tên công việc</Typography>
                         <TextField id="project-name" value="Buildlink trên PBN ngày 05/09" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Tiến độ</Typography>
+                        <Typography variant="body2">Tiến độ</Typography>
                         <TextField id="project-name" value="100%" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid container item xs={12} spacing={1}>
                         <Grid item xs={12}>
-                            <Typography variant="body2" color="#DD8501">Thời gian thực tế</Typography>
+                            <Typography variant="body2">Thời gian thực tế</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography variant="body2" >Bắt đầu</Typography>
@@ -79,15 +79,15 @@ const EditReportPage = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Người theo dõi</Typography>
+                        <Typography variant="body2">Người theo dõi</Typography>
                         <TextField id="project-name" value="" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Người giao việc</Typography>
+                        <Typography variant="body2">Người giao việc</Typography>
                         <TextField id="project-name" value="Nguyễn Văn A" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Mô tả</Typography>
+                        <Typography variant="body2">Mô tả</Typography>
                         <TextField
                             id="outlined-multiline-static"
                             value=""
@@ -97,11 +97,11 @@ const EditReportPage = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Loại công việc</Typography>
+                        <Typography variant="body2">Loại công việc</Typography>
                         <TextField id="project-name" value="Quan trọng nhưng không khẩn cấp" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Trạng thái</Typography>
+                        <Typography variant="body2">Trạng thái</Typography>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -112,7 +112,7 @@ const EditReportPage = (props) => {
                     </Grid>
                     <Grid container item xs={12} spacing={1}>
                         <Grid item xs={12}>
-                            <Typography variant="body2" color="#DD8501">Thời gian dự kiến</Typography>
+                            <Typography variant="body2">Thời gian dự kiến</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography variant="body2" >Bắt đầu</Typography>
@@ -149,11 +149,11 @@ const EditReportPage = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Người thực hiện</Typography>
+                        <Typography variant="body2">Người thực hiện</Typography>
                         <TextField id="project-name" value="Nguyễn Văn A" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body2" color="#DD8501">Ưu tiên</Typography>
+                        <Typography variant="body2">Ưu tiên</Typography>
                         <TextField id="project-name" value="" variant="outlined" sx={{ width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
