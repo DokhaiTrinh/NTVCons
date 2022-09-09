@@ -181,3 +181,6 @@ export const SEND_EMAIL_GET_OTP =
   'http://niemtinvang.herokuapp.com/resetPasswordOTPEmail';
 export const VALIDATE_OTP = 'http://niemtinvang.herokuapp.com/validateOTP';
 export const RESET_PASSWORD = 'http://niemtinvang.herokuapp.com/resetPassword';
+
+export const GET_USER_CONVERSATIONS =
+  'http://niemtinvang.herokuapp.com/conversation/v1/getUserConversations';

@@ -93,6 +93,7 @@ const UpdateProductPage = (props) => {
         .string()
         .min(5, 'Tên quy mô phải lớn hoặc hoặc bằng 6 kí tự')
         .required('Tên quy mô không được để trống'),
+      estimatedCost: yup.number().required(),
     })
     .required();
 
@@ -121,6 +122,7 @@ const UpdateProductPage = (props) => {
           categorySelected,
           data.postTitle,
           data.scale,
+          data.estimatedCost,
           filesImage
         );
       }
@@ -134,6 +136,7 @@ const UpdateProductPage = (props) => {
     postCategoryId,
     postTitle,
     scale,
+    estimatedCost,
     fileList
   ) => {
     try {
@@ -146,6 +149,7 @@ const UpdateProductPage = (props) => {
         postCategoryId,
         postTitle,
         scale,
+        estimatedCost,
         fileList,
       });
       setLoading(false);
@@ -257,7 +261,7 @@ const UpdateProductPage = (props) => {
               <form onSubmit={handleSubmit(submitForm)}>
                 <Box sx={{ width: '100%', height: '20px' }}></Box>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Typography variant="body2">Hình ảnh</Typography>
                     <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
                       {itemData.map((item) => (
@@ -271,8 +275,8 @@ const UpdateProductPage = (props) => {
                         </ImageListItem>
                       ))}
                     </ImageList>
-                  </Grid>
-                  <Grid item xs={12}>
+                  </Grid> */}
+                  {/* <Grid item xs={12}>
                     <Box
                       sx={{ width: 164, height: 164 }}
                       display="flex"
@@ -288,7 +292,7 @@ const UpdateProductPage = (props) => {
                         <Add sx={{ color: 'white' }}></Add>
                       </IconButton>
                     </Box>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2">Tên dự án</Typography>
                     <TextField
@@ -377,6 +381,17 @@ const UpdateProductPage = (props) => {
                         sx={{ width: '100%' }}
                       />
                     </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body2">Giá dự kiến</Typography>
+                      <TextFieldComponent
+                        register={register}
+                        name="estimatedCost"
+                        // label="Tên vai trò"
+                        errors={errors.estimatedCost}
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
                   </Grid>
                   <Grid item xs={6}>
                     <input
@@ -385,6 +400,7 @@ const UpdateProductPage = (props) => {
                       id="files"
                       multiple
                       onChange={handleChangeFile}
+                      accept="image/*"
                     />
                     <div className="label-holder">
                       <label htmlFor="file" className="img-upload">

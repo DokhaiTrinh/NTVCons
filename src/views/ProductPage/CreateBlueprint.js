@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Divider,
   Typography,
@@ -7,6 +7,7 @@ import {
   Grid,
   Button,
 } from '@mui/material';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createBlueprintApi } from '../../apis/Blueprint/createBlueprint';
@@ -38,7 +39,18 @@ const CreateBlueprint = (props) => {
   const [projectSelected, setProjectSelected] = React.useState();
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
+  const [ip, setIP] = useState('');
   //   const [{ loading }, dispatch] = useStateValue();
+  const getData = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/');
+    console.log(res.data);
+    setIP(res.data.IPv4);
+  };
+
+  useEffect(() => {
+    //passing getData method to the lifecycle method
+    getData();
+  }, []);
   React.useEffect(() => {
     (async () => {
       try {
@@ -153,6 +165,8 @@ const CreateBlueprint = (props) => {
   };
   return (
     <div>
+      <h2>Your IP Address is</h2>
+      <h4>{ip}</h4>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -199,9 +213,7 @@ const CreateBlueprint = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên bản vẽ
-                </Typography>
+                <Typography variant="body2">Tên bản vẽ</Typography>
                 <TextFieldComponent
                   register={register}
                   name="blueprintName"
@@ -212,9 +224,7 @@ const CreateBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Người thiết kế
-                </Typography>
+                <Typography variant="body2">Người thiết kế</Typography>
                 <TextFieldComponent
                   register={register}
                   name="designerName"
@@ -225,9 +235,7 @@ const CreateBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên dự án
-                </Typography>
+                <Typography variant="body2">Tên dự án</Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
@@ -248,9 +256,7 @@ const CreateBlueprint = (props) => {
                   </Select>
                 </FormControl>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Giá bản vẽ
-                  </Typography>
+                  <Typography variant="body2">Giá bản vẽ</Typography>
                   <TextFieldComponent
                     register={register}
                     name="estimatedCost"

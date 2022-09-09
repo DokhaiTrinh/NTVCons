@@ -225,6 +225,7 @@ class AxiosService {
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
       scale: body.scale,
+      estimatedCost: body.estimatedCost,
     };
     const json = JSON.stringify(createPostModel);
     formData.append(
@@ -358,6 +359,7 @@ class AxiosService {
       ownerName: body.ownerName,
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
+      estimatedCost: body.estimatedCost,
       scale: body.scale,
     };
     const json = JSON.stringify(updatePostModel);
