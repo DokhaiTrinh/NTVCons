@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Link } from 'react-router-dom';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
@@ -18,9 +18,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
-
 import {
   Apps,
   Menu,
@@ -164,7 +163,8 @@ const HomeLayoutRoute = (props) => {
 
   const classes = useStyles();
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
+  const id = userInfor.id;
+  console.log(id);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -231,9 +231,13 @@ const HomeLayoutRoute = (props) => {
                     src="https://i.ibb.co/rx5DFbs/avatar.png"
                     alt="Juaneme8"
                   /> */}
-                  <h3 style={{ marginRight: '35px', marginLeft: '8px' }}>
-                    {userInfor.fullName}
-                  </h3>
+                  <Route>
+                    <Link underline="hover" to={`/userProfile/${id}`}>
+                      <h3 style={{ marginRight: '35px', marginLeft: '8px' }}>
+                        {userInfor.fullName}
+                      </h3>
+                    </Link>
+                  </Route>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? (
                       <ChevronRightIcon />

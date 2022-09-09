@@ -325,11 +325,12 @@ class AxiosService {
   putUpdateRequest(url, body, token) {
     const formData = new FormData();
     const requestDTO = {
+      requestId: body.requestId,
       projectId: body.projectId,
       requestDate: body.requestDate,
+      requestName: body.requestName,
       requestDesc: body.requestDesc,
       requestDetailList: body.requestDetailList,
-      requestName: body.requestName,
       requestTypeId: body.requestTypeId,
       requesterId: body.requesterId,
     };

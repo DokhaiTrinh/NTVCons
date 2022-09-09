@@ -89,7 +89,7 @@ export const CREATE_REQUEST_WITH_FILE =
 export const UPDATE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1.1/updateRequest';
 export const UPDATE_REQUEST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest/withFile';
+  'http://niemtinvang.herokuapp.com/request/v1/editRequest/withFile';
 export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1/deleteRequest';
 export const GET_ALL_REQUEST =

@@ -75,7 +75,6 @@ import {
         email: yup.string().email('Email không chính xác'),
       })
       .required();
-  
     const {
       register,
       handleSubmit,
