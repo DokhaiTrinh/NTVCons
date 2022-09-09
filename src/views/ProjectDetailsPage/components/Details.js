@@ -68,24 +68,21 @@ const Details = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="caption">Kỹ sư quản lý</Typography>
-              <Typography sx={{ width: '100%' }}>
-                <Typography>
-                  {managerList ? (
-                    managerList.map((managerList, index) => (
-                      <Typography
-                        sx={{
-                          witdh: '100%',
-                          marginBottom: '10px',
-                          padding: '10px',
-                        }}
-                      >
-                        {managerList.manager.fullName}
-                      </Typography>
-                    ))
-                  ) : (
-                    <div>Không có dữ liệu!!</div>
-                  )}
-                </Typography>
+              <Typography>
+                {managerList ? (
+                  managerList.map((managerList, index) => (
+                    <Typography
+                      sx={{
+                        witdh: '100%',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {managerList.manager.fullName}
+                    </Typography>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
               </Typography>
             </Grid>
             <Grid item xs="4">

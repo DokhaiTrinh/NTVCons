@@ -56,14 +56,8 @@ const TaskDetailPage = (props) => {
   }, []);
   console.log(allTaskDetail);
   return (
-    <Box sx={{ width: '100%' }}>
       <Paper
-        sx={{
-          width: '100%',
-          mp: 2,
-          padding: '32px',
-        }}
-        variant="elevation"
+        className='bodynonetab' elevation='none'
       >
         <Typography variant="h6" sx={{ marginBottom: '20px' }}>
           Thông tin công việc
@@ -72,19 +66,19 @@ const TaskDetailPage = (props) => {
         {allTaskDetail ? (
           <Grid container spacing={2}>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Tên công việc
               </Typography>
               <Typography variant="body1">{allTaskDetail.taskName}</Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Mô tả công việc
               </Typography>
               <Typography variant="body1">{allTaskDetail.taskDesc}</Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Kỹ sư phụ trách
               </Typography>
               {/* <Typography variant="body1">
@@ -92,7 +86,7 @@ const TaskDetailPage = (props) => {
               </Typography> */}
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Ngày nhận việc
               </Typography>
               <Typography variant="body1">
@@ -100,7 +94,7 @@ const TaskDetailPage = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Ngày kết thúc
               </Typography>
               <Typography variant="body1">
@@ -109,7 +103,7 @@ const TaskDetailPage = (props) => {
             </Grid>
             <Grid container item xs="12">
               {/* <Grid item xs="4">
-                <Typography variant="body1" color="gray">
+                <Typography variant="caption">
                   Hình ảnh
                 </Typography>
                 <Box sx={{ width: '200px', height: '300px' }}>
@@ -121,7 +115,7 @@ const TaskDetailPage = (props) => {
               </Grid>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Tài liệu
               </Typography>
               {docGet.length > 0 ? (
@@ -145,7 +139,6 @@ const TaskDetailPage = (props) => {
           <div>Loading ...</div>
         )}
       </Paper>
-    </Box>
   );
 };
 

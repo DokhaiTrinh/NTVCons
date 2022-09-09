@@ -146,7 +146,7 @@ const CreateProductPage = (props) => {
   };
 
   return (
-    <Paper className='bodynonetab'>
+    <Paper className='bodynonetab' elevation='none'>
       <Typography
         variant="h6"
         color="#DD8501"

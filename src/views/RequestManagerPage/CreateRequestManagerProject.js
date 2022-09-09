@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -213,7 +214,7 @@ const CreateRequestProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div className='bodynonetab'>
+    <Paper className='bodynonetab'>
       <Typography
         variant="h6"
         color="#DD8501"
@@ -300,15 +301,14 @@ const CreateRequestProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12} spacing={1}>
                 {requestDetail.length ? (
                   requestDetail.map((request, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
+                    <Grid item xs="4">
+
+                      <Paper sx={{ padding: '10px',}}>
                             <Typography>
-                              Thông tin báo cáo chi tiết: {request.itemDesc}
+                              {request.itemDesc}
                             </Typography>
                             <Typography>
                               Số lượng:{request.itemAmount}
@@ -317,9 +317,7 @@ const CreateRequestProject = (props) => {
                               Giá tiền: {request.itemPrice}{' '}
                             </Typography>
                             <Typography>Đơn vị: {request.itemUnit}</Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
+                      </Paper>
                     </Grid>
                   ))
                 ) : (
@@ -401,7 +399,7 @@ const CreateRequestProject = (props) => {
           requestDetail={requestDetail}
         ></DialogRequestProject>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

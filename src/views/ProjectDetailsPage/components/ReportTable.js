@@ -106,9 +106,8 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function ReportTable(props) {
-  const {projectId} = props;
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
+  const [orderBy, setOrderBy] = React.useState('ngay');
   const { allReportDetails, totalPage } = props;
   const [{ loading }, dispatch] = useStateValue();
   const history = useHistory();
@@ -117,7 +116,14 @@ export default function ReportTable(props) {
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    
+    //Chỗ này code sort. Mã search 13399
 
+  };
   return (
     <Box sx={{ width: '100%' }}>
       {
@@ -130,6 +136,7 @@ export default function ReportTable(props) {
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
             <TableBody sx={{
               [`& .${tableCellClasses.root}`]: {

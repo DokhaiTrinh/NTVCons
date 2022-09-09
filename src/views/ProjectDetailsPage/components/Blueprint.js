@@ -143,7 +143,7 @@ export const Blueprint = (props) => {
         <Divider sx={{ marginBottom: '20px' }}></Divider>
         <Grid container rowSpacing={{ xs: 5 }}>
           <Grid item xs="4">
-            <Typography variant="body1" color="gray">
+            <Typography variant="caption">
               Tên bản vẽ
             </Typography>
             <Typography variant="body1">
@@ -151,7 +151,7 @@ export const Blueprint = (props) => {
             </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="body1" color="gray">
+            <Typography variant="caption">
               Người thiết kế
             </Typography>
             <Typography variant="body1">
@@ -159,13 +159,15 @@ export const Blueprint = (props) => {
             </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="body1" color="gray">
+            <Typography variant="caption">
               Giá bản vẽ
             </Typography>
-            {blueprintDetail.estimatedCost} VND
+            <Typography variant="body1">
+              {blueprintDetail.estimatedCost} VND
+            </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="body1" color="gray">
+            <Typography variant="caption">
               Hình ảnh
             </Typography>
 

@@ -20,6 +20,8 @@ import DetailButton from '../../../Components/Button/DetailButton';
 import DeleteProject from '../../../Components/Button/Delete/DeleteProject';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { TableSortLabel } from '@mui/material';
+import { visuallyHidden } from '@mui/utils';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -91,20 +93,20 @@ function EnhancedTableHead(props) {
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
-              {/* <TableSortLabel
+              <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
-              > */}
-              {headCell.label}
-              {/* {orderBy === headCell.id ? (
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </Box>
                 ) : null}
-              </TableSortLabel> */}
+              </TableSortLabel>
             </TableCell>
           )
         )}
@@ -168,13 +170,10 @@ EnhancedTableToolbar.propTypes = {
 
 export const ProjectTable = (props) => {
   const { allProject, totalPage } = props;
-  const [{ loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   console.log(allProject);
+  const [{ sortBy, sortTypeAsc }, dispatch] = useStateValue();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('maduan');
-
-  // const [selected, setSelected] = React.useState([]);
-  // const [page, setPage] = React.useState(0);
+  const [orderBy, setOrderBy] = React.useState('ngaytao');
   const [alignment, setAlignment] = React.useState(sortBy);
 
   const handleChangePage = (event, value) => {
@@ -184,7 +183,10 @@ export const ProjectTable = (props) => {
     setAlignment(newAlignment);
     dispatch({ type: 'CHANGE_SORTBY', newSortBy: newAlignment });
   };
-  const handleChangeViewTime = () => {
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
     if (sortTypeAsc) {
       dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
       // handleSearch(title, sortBy, false);
@@ -204,8 +206,12 @@ export const ProjectTable = (props) => {
           {allProject ? (
             allProject.length > 0 ? (
               <Table sx={{ minWidth: 750 }}>
-                <EnhancedTableHead order={order} orderBy={orderBy} />
-                <ToggleButtonGroup
+                <EnhancedTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                />
+                {/* <ToggleButtonGroup
                   color="primary"
                   value={alignment}
                   exclusive
@@ -214,8 +220,8 @@ export const ProjectTable = (props) => {
                 >
                   <ToggleButton value="createdAt">Xếp theo ngày</ToggleButton>
 
-                  {/* <ToggleButton value="">Bị hủy</ToggleButton> */}
-                </ToggleButtonGroup>
+                  <ToggleButton value="">Bị hủy</ToggleButton>
+                </ToggleButtonGroup> */}
                 <TableBody
                   sx={{
                     [`& .${tableCellClasses.root}`]: {
