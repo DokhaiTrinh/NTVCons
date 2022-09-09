@@ -80,8 +80,8 @@ const UpdateTaskProject = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleUpdateTask(
-          actualEndDate,
-          actualStartDate,
+          // actualEndDate,
+          // actualStartDate,
           planEndDate,
           planStartDate,
           projectId,
@@ -95,8 +95,8 @@ const UpdateTaskProject = (props) => {
     });
   };
   const handleUpdateTask = async (
-    actualEndDate,
-    actualStartDate,
+    // actualEndDate,
+    // actualStartDate,
     planEndDate,
     planStartDate,
     projectId,
@@ -109,8 +109,8 @@ const UpdateTaskProject = (props) => {
     try {
       setLoading(true);
       await updateTaskApi1({
-        actualEndDate,
-        actualStartDate,
+        // actualEndDate,
+        // actualStartDate,
         planEndDate,
         planStartDate,
         projectId,
@@ -241,11 +241,8 @@ const UpdateTaskProject = (props) => {
     });
   };
   return (
-    <Paper className='bodynonetab' elevation='none'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Paper className="bodynonetab" elevation="none">
+      <Typography variant="h6" color="#DD8501">
         CẬP NHẬT CÔNG VIỆC
       </Typography>
       <Divider></Divider>
@@ -328,7 +325,7 @@ const UpdateTaskProject = (props) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
-                <Grid container item xs={12} spacing={1}>
+                {/* <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
                     <Typography variant="body2">
                       Thời gian chính thức
@@ -358,50 +355,47 @@ const UpdateTaskProject = (props) => {
                       />
                     </LocalizationProvider>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Kỹ sư quản lý</Typography>
-                    <FormControl sx={{ width: '100%' }}>
-                      <Select
-                        onChange={handleChange}
-                        MenuProps={MenuProps}
-                        value={managerTypeSelected}
-                      >
-                        {projectByManager ? (
-                          projectByManager.map((managerType, index) => (
-                            <MenuItem
-                              value={managerType.manager.userId}
-                              key={index}
-                            >
-                              {managerType.manager.username}
-                            </MenuItem>
-                          ))
-                        ) : (
-                          <MenuItem>
-                            Không có dữ liệu! Vui lòng xem lại!
+                </Grid> */}
+                <Grid item xs={12}>
+                  <Typography variant="body2">Kỹ sư quản lý</Typography>
+                  <FormControl sx={{ width: '100%' }}>
+                    <Select
+                      onChange={handleChange}
+                      MenuProps={MenuProps}
+                      value={managerTypeSelected}
+                    >
+                      {projectByManager ? (
+                        projectByManager.map((managerType, index) => (
+                          <MenuItem
+                            value={managerType.manager.userId}
+                            key={index}
+                          >
+                            {managerType.manager.username}
                           </MenuItem>
-                        )}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <input
-                      {...register('files')}
-                      type="file"
-                      id="files"
-                      multiple
-                      onChange={handleChangeFile}
-                    />
-                    <div className="label-holder">
-                      <label htmlFor="file" className="img-upload">
-                        Chọn hình
-                      </label>
-                    </div>
-
-                    <div className="result">{renderPhotos(selectedImages)}</div>
-                    {/* <input type="file" multiple {...register("file")} /> */}
-                  </Grid>
+                        ))
+                      ) : (
+                        <MenuItem>Không có dữ liệu! Vui lòng xem lại!</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
                 </Grid>
+                <Grid item xs={6}>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    multiple
+                    onChange={handleChangeFile}
+                  />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="img-upload">
+                      Chọn hình
+                    </label>
+                  </div>
 
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  {/* <input type="file" multiple {...register("file")} /> */}
+                </Grid>
                 <Grid item xs={12}>
                   <Box
                     sx={{
@@ -414,7 +408,7 @@ const UpdateTaskProject = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      className='submitButton'
+                      className="submitButton"
                     >
                       Lưu
                     </Button>

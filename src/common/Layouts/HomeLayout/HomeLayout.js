@@ -191,7 +191,11 @@ const HomeLayoutRoute = (props) => {
               <AppBar
                 position="fixed"
                 open={open}
-                style={{ backgroundColor: '#dd8500', color: 'black', boxShadow: 'none' }}
+                style={{
+                  backgroundColor: '#dd8500',
+                  color: 'black',
+                  boxShadow: 'none',
+                }}
               >
                 <Toolbar>
                   <IconButton
@@ -243,7 +247,8 @@ const HomeLayoutRoute = (props) => {
 
                 <List>
                   {listItems.map((listItem, index) =>
-                    userInfor.authorID === '54' ? (
+                    userInfor.authorID === '54' &&
+                    (index <= 0 || index >= 2) ? (
                       <NavLink
                         to={listItem.path}
                         key={index}

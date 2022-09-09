@@ -202,7 +202,7 @@ export const ProjectTable = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
 
-        <TableContainer className='table'>
+        <TableContainer className="table">
           {allProject ? (
             allProject.length > 0 ? (
               <Table sx={{ minWidth: 750 }}>
