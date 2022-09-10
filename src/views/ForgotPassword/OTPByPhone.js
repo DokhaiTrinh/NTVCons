@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Stack, Box, Typography, TextField, Button } from '@mui/material';
 import background from '../../assets/images/background.jpg';
 import logo from '../../assets/images/logo.png';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -118,7 +114,6 @@ const OTPByPhone = (props) => {
     useEffect(() => {
         localStorage.clear();
     }, []);
-    const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
     return (
         <div
             style={{
@@ -131,44 +126,32 @@ const OTPByPhone = (props) => {
                 paddingTop: '15vh',
             }}
         >
-            <Grid align="center">
-                <Paper elevation={10} style={paperStyle}>
-                    <img src={logo} alt="logo" style={{ width: '204px' }} />
+            <Paper elevation={10} style={{ height: '70vh', width: '60vh', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <form onSubmit={handleSubmit(submitForm)}>
+                    <Stack direction='column' spacing={3} justifyContent='center' alignItems='center'>
+                        <img src={logo} alt="logo" style={{ width: '204px' }} />
 
-                    <Box sx={{ flexGrow: 1, width: '400px' }}>
-                        <Grid container>
-                            <Grid>
-                                <Typography variant="h5" color="#DD8501">
-                                    Đặt lại mật khẩu
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                        <form onSubmit={handleSubmit(submitForm)}>
-                            <Grid container alignItems="center"
-                                justify="center">
-                                <Grid item xs={9}>
-                                    <TextField
-                                        {...register('username')}
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        label="Số điện thoại*"
-                                        autoComplete="username"
-                                        autoFocus
-                                        name="phone"
-                                    />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Button type="submit"
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: '#DD8501',
-                                            borderRadius: 10,
-                                        }}>
-                                        Gửi OTP
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                        <Box sx={{ flexGrow: 1, width: '400px' }}>
+                            <Typography variant="h5" color="#DD8501">
+                                Đặt lại mật khẩu
+                            </Typography>
+                            <Stack direction='row' alignItems="center" justifyContent="center" spacing={2}>
+                                <TextField
+                                    {...register('username')}
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    label="Số điện thoại*"
+                                    autoComplete="username"
+                                    autoFocus
+                                    name="phone"
+                                />
+                                <Button type="submit"
+                                    variant="contained"
+                                >
+                                    Gửi&nbsp;OTP
+                                </Button>
+                            </Stack>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -176,32 +159,27 @@ const OTPByPhone = (props) => {
                                 name="otp"
                                 label="Mã OTP*"
                             />
-                            <Grid>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    style={{
-                                        backgroundColor: '#DD8501',
-                                        paddingRight: '50px',
-                                        paddingLeft: '50px',
-                                        borderRadius: 50,
-                                        marginTop: '22px',
-                                    }}
-                                >
-                                    {loading ? (
-                                        <>
-                                            <CircularProgress color="white" size={24} /> &nbsp; Đang
-                                            xử lí...
-                                        </>
-                                    ) : (
-                                        'Tiếp tục'
-                                    )}
-                                </Button>
-                            </Grid>
-                        </form>
-                    </Box>
-                </Paper>
-            </Grid>
+                            <Stack>
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                className='submitButton'
+                            >
+                                {loading ? (
+                                    <>
+                                        <CircularProgress color="white" size={24} /> &nbsp; Đang
+                                        xử lí...
+                                    </>
+                                ) : (
+                                    'Tiếp tục'
+                                )}
+                            </Button>
+                            </Stack>
+                        </Box>
+                    </Stack>
+                </form>
+            </Paper>
         </div>
     );
 };

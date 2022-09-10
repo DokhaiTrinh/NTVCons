@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Stack } from '@mui/material';
 import background from '../../assets/images/background.jpg';
 import logo from '../../assets/images/logo.png';
 import Box from '@mui/material/Box';
@@ -107,7 +107,7 @@ const OTPByEmail = (props) => {
   useEffect(() => {
     localStorage.clear();
   }, []);
-  const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
+
   return (
     <div
       style={{
@@ -120,21 +120,15 @@ const OTPByEmail = (props) => {
         paddingTop: '15vh',
       }}
     >
-      <Grid align="center">
-        <Paper elevation={10} style={paperStyle}>
-          <img src={logo} alt="logo" style={{ width: '204px' }} />
-
-          <Box sx={{ flexGrow: 1, width: '400px' }}>
-            <Grid container>
-              <Grid>
-                <Typography variant="h5" color="#DD8501">
+      <Paper elevation={10} style={{ height: '70vh', width: '60vh', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <form onSubmit={handleSubmit(submitForm)}>
+          <Stack direction='column' spacing={3} justifyContent='center' alignItems='center'>
+            <img src={logo} alt="logo" style={{ width: '204px' }} />
+            <Stack sx={{ flexGrow: 1, width: '400px' }} spacing={2}>
+                <Typography variant="h5">
                   Đặt lại mật khẩu
                 </Typography>
-              </Grid>
-            </Grid>
-            <form onSubmit={handleSubmit(submitForm)}>
-              <Grid container alignItems="center" justify="center">
-                <Grid item xs={9}>
+                <Stack direction='row' spacing={2} alignItems='center'>
                   <TextField
                     {...register('email')}
                     error={errors.email != null}
@@ -152,20 +146,14 @@ const OTPByEmail = (props) => {
                       ),
                     }}
                   />
-                </Grid>
-                <Grid item xs={3}>
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 10,
-                    }}
                   >
-                    Gửi OTP
+                    Gửi&nbsp;OTP
                   </Button>
-                </Grid>
-              </Grid>
+                </Stack>
+
               {/* <TextField
                 {...register('password')}
                 error={errors.password != null}
@@ -177,7 +165,7 @@ const OTPByEmail = (props) => {
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
               /> */}
-              <Grid>
+              <Stack direction='column' spacing={2}>
                 <Button
                   type="submit"
                   variant="contained"
@@ -192,31 +180,30 @@ const OTPByEmail = (props) => {
                     'Tiếp tục'
                   )}
                 </Button>
-                <Grid container>
-                  <Grid item md={4}>
-                    <Link
-                      color="#DD8501"
-                      variant="body1"
-                      onClick={() => {
-                        history.push('/OTPByPhone');
-                      }}
-                    >
-                      Nhận OTP qua số điện thoại
-                    </Link>
-                  </Grid>
-                  {/* <Grid item md={12}>
+                <Box style={{ textAlign: 'left' }}>
+
+                  <Link
+                    color="#DD8501"
+                    variant="body1"
+                    onClick={() => {
+                      history.push('/OTPByPhone');
+                    }}
+                  >
+                    Nhận OTP qua số điện thoại
+                  </Link>
+                </Box>
+              </Stack>
+              {/* <Grid item md={12}>
                     <Box style={{ textAlign: 'right' }}>
                       <Typography color="#DD8501" variant="body1">
                         Sign up for account
                       </Typography>
                     </Box>
                   </Grid> */}
-                </Grid>
-              </Grid>
-            </form>
-          </Box>
-        </Paper>
-      </Grid>
+            </Stack>
+          </Stack>
+        </form>
+      </Paper>
     </div>
   );
 };

@@ -28,15 +28,19 @@ export const ImageCard = (image) => {
                         <ZoomInIcon />
 
                     </IconButton>
-                    <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}>
-                        <MoreVertIcon />
-                    </IconButton>
+                    {window.location.pathname.includes('projectDetails') ?
+                        <IconButton
+                            aria-label="more"
+                            id="long-button"
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            onClick={handleClick}>
+                            <MoreVertIcon />
+                        </IconButton>
+                        : null
+                    }
+
                     <Menu
                         id="long-menu"
                         MenuListProps={{
