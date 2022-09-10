@@ -6,11 +6,6 @@ import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import RenderFileCard from '../../../Components/Render/RenderFileCard';
 
 const FileDetail = (props) => {
-  const blockElements = {
-    content: 'tabs-content',
-    panel: 'tabs-panel',
-    label: 'tabs-title',
-  };
   const { imageGet, docGet } = props;
   return (
     <Tabs>

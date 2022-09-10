@@ -16,6 +16,7 @@ export const getAllUserApi1 = (pageNo, pageSize, sortBy, sortTypeAsc) => {
   );
 };
 export const getUserByIdApi = (userId, searchType) => {
+  console.log(userId, searchType);
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
   return axiosService.get(
     `${API_LINK.GET_BY_ID}?searchParam=${userId}&searchType=${searchType}`,

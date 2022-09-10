@@ -13,7 +13,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteReportApi } from '../../../apis/Report/deleteReport';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
 import IconButtonCus from '../../../Components/Button/IconButtonCus';
 import { useHistory } from 'react-router';
@@ -55,11 +55,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -67,7 +63,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, index) =>
-          (userInfor.authorID !== '54' && index === 5) ? null : (
+          userInfor.authorID !== '54' && index === 5 ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'center' : 'left'}
@@ -109,7 +105,7 @@ export default function ReportTable(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('ngay');
   const { allReportDetails, totalPage } = props;
-  const [{ loading }, dispatch] = useStateValue();
+  const [{ loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   const history = useHistory();
 
   console.log(allReportDetails);
@@ -120,15 +116,18 @@ export default function ReportTable(props) {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    
+    if (sortTypeAsc) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
+      // handleSearch(title, sortBy, false);
+    } else if (sortTypeAsc === false) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
+      // handleSearch(title, sortBy, true);
+    }
     //Chỗ này code sort. Mã search 13399
-
   };
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(``)
-      }
+      {Header(``)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -138,15 +137,23 @@ export default function ReportTable(props) {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allReportDetails.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
@@ -156,14 +163,17 @@ export default function ReportTable(props) {
                       {row.reportId}
                     </TableCell>
                     <TableCell align="left">{row.reportName}</TableCell>
-                    <TableCell align="left">
-                      {(row.reportDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.reportDate}</TableCell>
                     <TableCell align="left">
                       {row.reportType.reportTypeName}
                     </TableCell>
                     <TableCell align="left">
-                      <IconButtonCus onClick={() => history.push(`/reportDetails/${row.reportId}`)} icon={<InfoIcon style={{color: 'gray'}}/>}/>
+                      <IconButtonCus
+                        onClick={() =>
+                          history.push(`/reportDetails/${row.reportId}`)
+                        }
+                        icon={<InfoIcon style={{ color: 'gray' }} />}
+                      />
                     </TableCell>
                   </TableRow>
                 );
@@ -172,13 +182,13 @@ export default function ReportTable(props) {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

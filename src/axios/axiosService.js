@@ -225,6 +225,7 @@ class AxiosService {
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
       scale: body.scale,
+      estimatedCost: body.estimatedCost,
     };
     const json = JSON.stringify(createPostModel);
     formData.append(
@@ -325,11 +326,12 @@ class AxiosService {
   putUpdateRequest(url, body, token) {
     const formData = new FormData();
     const requestDTO = {
+      requestId: body.requestId,
       projectId: body.projectId,
       requestDate: body.requestDate,
+      requestName: body.requestName,
       requestDesc: body.requestDesc,
       requestDetailList: body.requestDetailList,
-      requestName: body.requestName,
       requestTypeId: body.requestTypeId,
       requesterId: body.requesterId,
     };
@@ -357,6 +359,7 @@ class AxiosService {
       ownerName: body.ownerName,
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
+      estimatedCost: body.estimatedCost,
       scale: body.scale,
     };
     const json = JSON.stringify(updatePostModel);

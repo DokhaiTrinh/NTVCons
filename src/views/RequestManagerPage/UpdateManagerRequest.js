@@ -104,6 +104,7 @@ const UpdateRequest = () => {
           idN,
           projectId,
           requestDate,
+          data.requestName,
           data.requestDesc,
           requestDetail,
           requestTypeSelected,
@@ -117,6 +118,7 @@ const UpdateRequest = () => {
     requestId,
     projectId,
     requestDate,
+    requestName,
     requestDesc,
     requestDetailList,
     requestTypeId,
@@ -125,10 +127,11 @@ const UpdateRequest = () => {
   ) => {
     try {
       setLoading(true);
-      await updateRequestApi({
+      await updateRequestApi1({
         requestId,
         projectId,
         requestDate,
+        requestName,
         requestDesc,
         requestDetailList,
         requestTypeId,
@@ -155,6 +158,10 @@ const UpdateRequest = () => {
   };
   const valideSchema = yup
     .object({
+      requestName: yup
+        .string()
+        .min(5, 'Tên yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
+        .required(),
       requestDesc: yup
         .string()
         .min(5, 'Thông tin yêu cầu phải có thông tin nhiều hơn 5 ký tự!')
@@ -263,20 +270,32 @@ const UpdateRequest = () => {
               marginBottom: '30px',
             }}
           >
+            <Typography variant="body1" color="#DD8501" fontWeight="bold">
+              Thông tin yêu cầu
+            </Typography>
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Box sx={{ width: '100%', height: '20px' }}></Box>
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
-                <Grid item xs="4">
+                {/* <Grid item xs="4">
                   <Typography variant="body2">Mã dự án</Typography>
                   <Typography variant="body1">
                     {allRequestDetail.projectId}
                   </Typography>
+                </Grid> */}
+                <Grid item xs={12}>
+                  <Typography variant="body2">Tên yêu cầu</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="requestName"
+                    defaultValue={allRequestDetail.requestName}
+                    errors={errors.requestName}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Cập nhật thông tin yêu cầu
-                  </Typography>
+                  <Typography variant="body2">Thông tin yêu cầu</Typography>
                   <TextFieldComponent
                     register={register}
                     name="requestDesc"

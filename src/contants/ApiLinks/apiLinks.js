@@ -89,7 +89,7 @@ export const CREATE_REQUEST_WITH_FILE =
 export const UPDATE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1.1/updateRequest';
 export const UPDATE_REQUEST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest/withFile';
+  'http://niemtinvang.herokuapp.com/request/v1/editRequest/withFile';
 export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1/deleteRequest';
 export const GET_ALL_REQUEST =
@@ -181,3 +181,6 @@ export const SEND_EMAIL_GET_OTP =
   'http://niemtinvang.herokuapp.com/resetPasswordOTPEmail';
 export const VALIDATE_OTP = 'http://niemtinvang.herokuapp.com/validateOTP';
 export const RESET_PASSWORD = 'http://niemtinvang.herokuapp.com/resetPassword';
+
+export const GET_USER_CONVERSATIONS =
+  'http://niemtinvang.herokuapp.com/conversation/v1/getUserConversations';

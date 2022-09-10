@@ -307,7 +307,7 @@ const DialogWorker = (props) => {
                       </TableCell>
                       <TableCell align="left">{row.worker.fullName}</TableCell>
                       <TableCell align="left">{row.worker.gender}</TableCell>
-                      <TableCell align="left">{row.worker.birthday}</TableCell>
+                      <TableCell align="left">{row.worker.birthdate}</TableCell>
                       <TableCell align="left">
                         Q{''} {row.worker.address.district}, TP.{' '}
                         {row.worker.address.country}

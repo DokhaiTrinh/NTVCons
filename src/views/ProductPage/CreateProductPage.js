@@ -81,6 +81,7 @@ const CreateProductPage = (props) => {
         .string()
         .min(5, 'Tên quy mô phải lớn hoặc hoặc bằng 6 kí tự')
         .required('Tên quy mô không được để trống'),
+      estimatedCost: yup.number().required(),
     })
     .required();
 
@@ -100,6 +101,7 @@ const CreateProductPage = (props) => {
       categorySelected,
       data.postTitle,
       data.scale,
+      data.estimatedCost,
       filesImage
     );
   };
@@ -110,6 +112,7 @@ const CreateProductPage = (props) => {
     postCategoryId,
     postTitle,
     scale,
+    estimatedCost,
     fileList
   ) => {
     try {
@@ -121,6 +124,7 @@ const CreateProductPage = (props) => {
         postCategoryId,
         postTitle,
         scale,
+        estimatedCost,
         fileList,
       });
       setLoading(false);
@@ -146,7 +150,7 @@ const CreateProductPage = (props) => {
   };
 
   return (
-    <Paper className='bodynonetab' elevation='none'>
+    <Paper className="bodynonetab" elevation="none">
       <Typography
         variant="h6"
         color="#DD8501"
@@ -225,9 +229,7 @@ const CreateProductPage = (props) => {
                 </Stack>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên dự án
-                </Typography>
+                <Typography variant="body2">Tên dự án</Typography>
                 <TextFieldComponent
                   register={register}
                   name="postTitle"
@@ -238,9 +240,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Chủ đầu tư
-                </Typography>
+                <Typography variant="body2">Chủ đầu tư</Typography>
                 <TextFieldComponent
                   register={register}
                   name="ownerName"
@@ -251,9 +251,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Vị trí
-                </Typography>
+                <Typography variant="body2">Vị trí</Typography>
                 <TextFieldComponent
                   register={register}
                   name="address"
@@ -264,9 +262,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Quy mô
-                </Typography>
+                <Typography variant="body2">Quy mô</Typography>
                 <TextFieldComponent
                   register={register}
                   name="scale"
@@ -277,9 +273,7 @@ const CreateProductPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thể loại
-                </Typography>
+                <Typography variant="body2">Thể loại</Typography>
                 <FormControl sx={{ width: '100%', bgcolor: '#F1F1F1' }}>
                   <Select
                     onChange={handleChange}
@@ -301,14 +295,23 @@ const CreateProductPage = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tác giả
-                </Typography>
+                <Typography variant="body2">Tác giả</Typography>
                 <TextFieldComponent
                   register={register}
                   name="authorName"
                   // label="Tên vai trò"
                   errors={errors.authorName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Giá dự kiến</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="estimatedCost"
+                  // label="Tên vai trò"
+                  errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
@@ -325,7 +328,7 @@ const CreateProductPage = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
+                    className="submitButton"
                   >
                     Lưu
                   </Button>
