@@ -72,6 +72,12 @@ const headCells = [
     label: 'Họ Và Tên',
   },
   {
+    id: 'gioitinh',
+    numeric: false,
+    disablePadding: false,
+    label: 'Giới tính',
+  },
+  {
     id: 'cancuoccongdan',
     numeric: false,
     disablePadding: false,
@@ -82,6 +88,12 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'An sinh xã hội',
+  },
+  {
+    id: 'ngaytao',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ngày tạo',
   },
   {
     id: 'capnhat',
@@ -98,11 +110,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -210,16 +218,23 @@ export const WorkerTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allWorker, totalPage } = props;
   console.log(allWorker);
-  const [{ pageNo, loading }, dispatch] = useStateValue();
+  const [{ pageNo, loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   // const [totalPage, setTotalPage] = React.useState(allUser.totalPage);
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-  
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+    if (sortTypeAsc) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
+      // handleSearch(title, sortBy, false);
+    } else if (sortTypeAsc === false) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
+      // handleSearch(title, sortBy, true);
+    }
   };
 
   const handleClick = (event, admin) => {
@@ -244,9 +259,7 @@ export const WorkerTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header('/createWorker')
-      }
+      {Header('/createWorker')}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -283,9 +296,13 @@ export const WorkerTable = (props) => {
                         )}
                       </TableCell>
                       <TableCell align="left">{row.fullName}</TableCell>
+                      <TableCell align="left">{row.gender}</TableCell>
                       <TableCell align="left">{row.citizenId}</TableCell>
                       <TableCell align="left">
                         {row.socialSecurityCode}
+                      </TableCell>
+                      <TableCell align="left">
+                        {row.createdAt}
                       </TableCell>
                       <TableCell align="left">
                         {/* <IconButton
@@ -296,14 +313,10 @@ export const WorkerTable = (props) => {
                         >
                           <UpdateIcon />
                         </IconButton> */}
-                        {
-                          UpdateButton(`/updateWorker/${row.workerId}`)
-                        }
+                        {UpdateButton(`/updateWorker/${row.workerId}`)}
                       </TableCell>
                       <TableCell align="left">
-                        {
-                          DeletePost(row.workerId)
-                        }
+                        {DeletePost(row.workerId)}
                       </TableCell>
                     </TableRow>
                   );
@@ -315,13 +328,13 @@ export const WorkerTable = (props) => {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 };

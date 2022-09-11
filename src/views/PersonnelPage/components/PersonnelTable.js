@@ -14,7 +14,7 @@ import { visuallyHidden } from '@mui/utils';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import Avatar from '@mui/material/Avatar';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
 import DeleteUser from '../../../Components/Button/Delete/DeleteUser';
@@ -93,12 +93,12 @@ const headCells = [
     disablePadding: false,
     label: 'Email',
   },
-  {
-    id: 'capnhat',
-    numeric: false,
-    disablePadding: false,
-    label: '',
-  },
+  // {
+  //   id: 'capnhat',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: '',
+  // },
   {
     id: 'xoa',
     numeric: false,
@@ -223,7 +223,7 @@ export const PersonnelTable = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { allUser, totalPage } = props;
-  const [{ pageNo, loading }, dispatch] = useStateValue();
+  const [{ pageNo, loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   // const [totalPage, setTotalPage] = React.useState(allUser.totalPage);
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
@@ -258,6 +258,13 @@ export const PersonnelTable = (props) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+    if (sortTypeAsc) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: false });
+      // handleSearch(title, sortBy, false);
+    } else if (sortTypeAsc === false) {
+      dispatch({ type: 'CHANGE_SORTTYPEASC', newSortTypeAsc: true });
+      // handleSearch(title, sortBy, true);
+    }
   };
 
   const handleClick = (event, admin) => {
@@ -289,9 +296,7 @@ export const PersonnelTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header('/createPersonnel')
-      }
+      {Header('/createPersonnel')}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -302,16 +307,24 @@ export const PersonnelTable = (props) => {
               orderBy={orderBy}
               // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-            // rowCount={rows.length}
+              // rowCount={rows.length}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allUser.map((row, index) => {
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell>{row.userId}</TableCell>
                     <TableCell>
                       {row.file ? (
@@ -325,14 +338,10 @@ export const PersonnelTable = (props) => {
                     <TableCell align="left">{row.role.updatedAt}</TableCell>
                     <TableCell align="left">{row.phone}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
-                    <TableCell align="left">
-                      {
-                        UpdateButton(`/updatePersonnel/${row.reportId}`)
-                      }
-                    </TableCell>
-                    <TableCell align="left">
-                      {DeleteUser(row.userId)}
-                    </TableCell>
+                    {/* <TableCell align="left">
+                      {UpdateButton(`/updatePersonnel/${row.reportId}`)}
+                    </TableCell> */}
+                    <TableCell align="left">{DeleteUser(row.userId)}</TableCell>
                   </TableRow>
                 );
               })}
