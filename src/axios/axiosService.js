@@ -44,6 +44,22 @@ class AxiosService {
       },
     });
   }
+  postSendMessage(url, body, token) {
+    const formData = new FormData();
+    // if (body) {
+    //   for (let index = 0; index < body.file.length; index++) {
+    //     formData.append('file', body.file[index]);
+    //   }
+    // }
+
+    
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   post3(url, body, token) {
     const formData = new FormData();
     const blueprintDTO = {

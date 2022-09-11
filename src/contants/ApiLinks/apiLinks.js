@@ -184,3 +184,7 @@ export const RESET_PASSWORD = 'http://niemtinvang.herokuapp.com/resetPassword';
 
 export const GET_USER_CONVERSATIONS =
   'http://niemtinvang.herokuapp.com/conversation/v1/getUserConversations';
+export const GET_BY_CONVERSATION_ID =
+  'http://niemtinvang.herokuapp.com/message/v1/getByConversationId';
+export const SEND_MESSAGE_AUTHENTICATED =
+  'http://niemtinvang.herokuapp.com/message/v1/sendMessageAuthenticated';
