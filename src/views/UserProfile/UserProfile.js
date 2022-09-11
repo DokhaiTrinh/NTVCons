@@ -1,16 +1,9 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import { Divider } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { useStateValue } from '../../common/StateProvider/StateProvider';
+import { Paper, Divider, Stack, Typography, Grid, Box, TextField, FormControl, Select, MenuItem, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getUserByIdApi } from '../../apis/User/getAllUser';
-import RenderImage from '../../Components/Render/RenderImage';
-import FileDetail from '../ProjectDetailsPage/components/FileDetail';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import '../../Components/Tab/Tab.css';
 
 const UserProfile = (props) => {
   const { id } = useParams();
@@ -26,48 +19,169 @@ const UserProfile = (props) => {
       }
     })();
   }, []);
-  console.log(userId);
+  const [gender, setGender] = React.useState('');
+  const handleChange = (event) => {
+    setGender(event.target.value);
+  };
+
   return (
     <div>
-      <Box sx={{ width: '100%' }}>
+      <Tabs>
+        <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>
+          <TabList>
+            <Stack direction='row'>
+              <Tab>Hồ sơ</Tab>
+              <Tab>Mật khẩu</Tab>
+            </Stack>
+          </TabList>
+        </Paper>
         <Paper
           sx={{
-            width: '90%',
-            mp: 2,
-            borderRadius: '30px',
-            padding: '20px',
-            margin: '5%',
+            width: '100%',
+            // top: '205px',
+            padding: '32px',
+            borderRadius: '0'
           }}
-          variant="elevation"
         >
-          <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-            Trang cá nhân
-          </Typography>
-          <Divider sx={{ marginBottom: '20px' }}></Divider>
-          {userId ? (
-            <Grid container spacing={2}>
-              <Grid item xs="4">
-                <Typography variant="body1">{userId.username}</Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1">{userId.fullname}</Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1">{userId.email}</Typography>
-              </Grid>
-              <Grid item xs="4">
-                <Typography variant="body1">{userId.phone}</Typography>
-              </Grid>
-              <Grid item xs="4">
-                Giới tính
-                <Typography variant="body1">{userId.gender}</Typography>
-              </Grid>
-            </Grid>
-          ) : (
-            <div>Không có dữ liệu của yêu cầu!!</div>
-          )}
+          <TabPanel>
+            <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+              Chỉnh sửa hồ sơ
+            </Typography>
+            <Divider sx={{ marginBottom: '20px' }}></Divider>
+            {userId ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ width: '500px' }}>
+                  <Stack direction='column' spacing={2}>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Họ và tên
+                      </Typography>
+                      <TextField
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Tên đăng nhập
+                      </Typography>
+                      <TextField
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Email
+                      </Typography>
+                      <TextField
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Số điện thoại
+                      </Typography>
+                      <TextField
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Giới tính
+                      </Typography>
+                      <FormControl fullWidth>
+                        <Select
+                          value={gender}
+                          onChange={handleChange}
+                        >
+                          <MenuItem
+                          // value={ }
+                          >Nam</MenuItem>
+                          <MenuItem
+                          // value={ }
+                          >Nữ</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Stack>
+                    <Stack justifyContent='center'>
+                      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+
+                      <Button
+                        variant='contain'
+                        className='submitButton'>
+                        Lưu
+                      </Button>
+                      </Box>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Box>
+            ) : (
+              <div>Không có dữ liệu của yêu cầu!!</div>
+            )}
+          </TabPanel>
+          <TabPanel>
+            <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+              Đặt lại mật khẩu
+            </Typography>
+            <Divider sx={{ marginBottom: '20px' }}></Divider>
+            {userId ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ width: '500px' }}>
+                  <Stack direction='column' spacing={2}>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Mật khẩu cũ
+                      </Typography>
+                      <TextField
+                        type='password'
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Mật khẩu mới
+                      </Typography>
+                      <TextField
+                        type='password'
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack direction='column'>
+                      <Typography variant='body2'>
+                        Xác nhận mật khẩu mới
+                      </Typography>
+                      <TextField
+                        type='password'
+                        sx={{ width: '100%' }}
+                        variant="outlined"
+                      />
+                    </Stack>
+                    <Stack justifyContent='center'>
+                      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+
+                      <Button
+                        variant='contain'
+                        className='submitButton'>
+                        Lưu
+                      </Button>
+                      </Box>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Box>
+            ) : (
+              <div>Không có dữ liệu của yêu cầu!!</div>
+            )}
+          </TabPanel>
         </Paper>
-      </Box>
+      </Tabs>
+
     </div>
   );
 };
