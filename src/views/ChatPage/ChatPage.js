@@ -66,11 +66,9 @@ export default function ChatPage() {
       (async () => {
         try {
           const listConversationById = await getConversationsById(
-            ip,
-            'BY_CONVERSATION_ID_AUTHENTICATED',
             conversationId,
             0,
-            100,
+            200,
             'messageId',
             true
           );
@@ -86,11 +84,9 @@ export default function ChatPage() {
   const handleGetConversationById = async (conversationId) => {
     try {
       const listConversationById = await getConversationsById(
-        ip,
-        'BY_CONVERSATION_ID_AUTHENTICATED',
         conversationId,
         0,
-        20,
+        200,
         'messageId',
         true
       );
@@ -139,7 +135,7 @@ export default function ChatPage() {
                     handleGetConversationById(userConver.conversationId)
                   }
                 >
-                  <Avatar src={userConver.avatar} status="available" />
+                  <Avatar src={userConver.avatarLink} status="available" />
                 </Conversation>
               ))
             ) : (
@@ -176,11 +172,11 @@ export default function ChatPage() {
                       m.senderId === userInfor.id ? 'outgoing' : 'incoming',
                   }}
                 >
-                  {userInfor.avatarLink ? (
+                  {/* {userInfor.avatarLink ? (
                     <Avatar src={userInfor.avatarLink} />
                   ) : (
                     <Avatar src="https://i.ibb.co/rx5DFbs/avatar.png" />
-                  )}
+                  )} */}
                 </Message>
               ))
             ) : (
