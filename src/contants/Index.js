@@ -265,7 +265,7 @@ export const HOME_ROUTES = [
     component: CreateProductPage,
   },
   {
-    path: '/createBlueprint',
+    path: '/createBlueprint/:id',
     name: 'Create Blueprint Page',
     exact: true,
     component: CreateBlueprintPage,

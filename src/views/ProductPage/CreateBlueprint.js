@@ -22,6 +22,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import Select from '@mui/material/Select';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import RenderImage from '../../Components/Render/RenderImage';
+import { useParams } from 'react-router-dom';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -33,24 +34,25 @@ const MenuProps = {
   },
 };
 const CreateBlueprint = (props) => {
+  const { id } = useParams();
+  console.log(id);
   const [blueprint, setBlueprint] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [allProject, setAllProject] = React.useState([]);
-  const [projectSelected, setProjectSelected] = React.useState();
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
   const [ip, setIP] = useState('');
   //   const [{ loading }, dispatch] = useStateValue();
-  const getData = async () => {
-    const res = await axios.get('https://geolocation-db.com/json/');
-    console.log(res.data);
-    setIP(res.data.IPv4);
-  };
+  // const getData = async () => {
+  //   const res = await axios.get('https://geolocation-db.com/json/');
+  //   console.log(res.data);
+  //   setIP(res.data.IPv4);
+  // };
 
-  useEffect(() => {
-    //passing getData method to the lifecycle method
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   //passing getData method to the lifecycle method
+  //   getData();
+  // }, []);
   React.useEffect(() => {
     (async () => {
       try {
@@ -88,7 +90,7 @@ const CreateBlueprint = (props) => {
   const submitForm = (data) => {
     console.log(filesImage);
     handleCreateBlueprint(
-      projectSelected,
+      id,
       data.designerName,
       data.blueprintName,
       data.estimatedCost,
@@ -118,7 +120,7 @@ const CreateBlueprint = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      window.location.replace('/product');
+      await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -128,9 +130,6 @@ const CreateBlueprint = (props) => {
       });
       //   setLoading(false);
     }
-  };
-  const handleChange = (event) => {
-    setProjectSelected(event.target.value);
   };
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
@@ -165,15 +164,6 @@ const CreateBlueprint = (props) => {
   };
   return (
     <div>
-      <h2>Your IP Address is</h2>
-      <h4>{ip}</h4>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
-      >
-        TẠO MỚI BẢN VẼ
-      </Typography>
       <Divider></Divider>
       <Box
         sx={{
@@ -235,26 +225,6 @@ const CreateBlueprint = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">Tên dự án</Typography>
-                <FormControl sx={{ width: '100%' }}>
-                  <Select
-                    onChange={handleChange}
-                    MenuProps={MenuProps}
-                    value={projectSelected}
-                  >
-                    {allProject ? (
-                      allProject.map((projectType, index) => (
-                        <MenuItem value={projectType.projectId} key={index}>
-                          {projectType.projectName}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>
-                        Không có dữ liệu của danh sách công việc!
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
                 <Grid item xs={12}>
                   <Typography variant="body2">Giá bản vẽ</Typography>
                   <TextFieldComponent
@@ -271,6 +241,7 @@ const CreateBlueprint = (props) => {
                   type="file"
                   id="files"
                   // multiple
+                  accept="image/*"
                   onChange={handleChangeFile}
                 />
                 <div className="label-holder">

@@ -72,7 +72,7 @@ const ProjectDetailsPage = (props) => {
           'BY_ID'
         );
         setAllProjectDetails(listAllProjectDetails.data);
-        setManagerList(listAllProjectDetails.data.projectManagerList);
+        setManagerList(listAllProjectDetails.data.ntvManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
         if (listAllProjectDetails.data) {
           if (listAllProjectDetails.data.fileList.length > 0) {
@@ -142,7 +142,7 @@ const ProjectDetailsPage = (props) => {
           <Box sx={{ flex: 1 }}></Box>
           <Box></Box>
         </Tabs>
-        <div className='body'>
+        <div className="body">
           <TabPanel value={value} index={0}>
             {allProjectDetails ? (
               <Details

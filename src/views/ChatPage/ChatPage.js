@@ -43,6 +43,7 @@ import {
 import { getUserConversations } from '../../apis/Message/getUserConversations';
 import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
+import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
 
 import axios from 'axios';
@@ -143,6 +144,14 @@ const ChatPage = (props) => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleCreateConversationForAuthenticated = async (
+    targetUserId,
+    message
+  ) => {
+    try {
+      await createConversationByAuthenticated(targetUserId, message);
+    } catch (error) {}
   };
   return (
     <div

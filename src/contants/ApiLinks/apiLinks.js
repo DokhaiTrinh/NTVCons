@@ -124,6 +124,8 @@ export const DELETE_WORKER =
 //API LINK CỦA USER
 export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
 export const GET_BY_ID = 'http://niemtinvang.herokuapp.com/user/v1/getByParam';
+export const GET_BY_ROLE =
+  'http://niemtinvang.herokuapp.com/user/v1/getAllByParam';
 export const CREATE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/createUser';
 export const CREATE_USER_WITH_FILE =
@@ -188,3 +190,5 @@ export const GET_BY_CONVERSATION_ID =
   'http://niemtinvang.herokuapp.com/message/v1/getByConversationId';
 export const SEND_MESSAGE_AUTHENTICATED =
   'http://niemtinvang.herokuapp.com/message/v1/sendMessageAuthenticated';
+export const CREATE_CONVERSATION_BY_AUTHENTICATED =
+  'http://niemtinvang.herokuapp.com/conversation/v1/createConversationForAuthenticated';

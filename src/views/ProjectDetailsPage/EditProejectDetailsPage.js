@@ -57,6 +57,7 @@ const EditProejectDetailsPage = (props) => {
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [managerListChoice, setManagerListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
+  const [workerList, setWorkerList] = React.useState();
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   React.useEffect(() => {
@@ -297,7 +298,7 @@ const EditProejectDetailsPage = (props) => {
                     sx={{ width: '100%' }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <Typography variant="body2">Kỹ sư phụ trách</Typography>
                   <Autocomplete
                     multiple
@@ -320,7 +321,7 @@ const EditProejectDetailsPage = (props) => {
                       <TextField {...params} placeholder="Kỹ sư" />
                     )}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <Typography variant="body2">Chi phí ước tính</Typography>
                   <TextField
@@ -409,7 +410,8 @@ const EditProejectDetailsPage = (props) => {
                     multiple
                     options={allWorker}
                     disableCloseOnSelect
-                    getOptionLabel={(option) => option.worker.fullName}
+                    defaultValue={[allWorker.projectWorkerList]}
+                    getOptionLabel={(option) => option.username}
                     onChange={(e, option) => handleSelectWorker(option)}
                     renderOption={(props, option, { selected }) =>
                       option.isAvailable ? (
@@ -420,7 +422,7 @@ const EditProejectDetailsPage = (props) => {
                             style={{ marginRight: 8 }}
                             checked={selected}
                           />
-                          {option.worker.fullName}
+                          {option.fullName}
                         </li>
                       ) : null
                     }

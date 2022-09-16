@@ -29,6 +29,7 @@ import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
+import { getUserByRoleApi } from '../../apis/User/getAllUser';
 import RenderImage from '../../Components/Render/RenderImage';
 import { Stack } from '@mui/system';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -51,6 +52,7 @@ const CreateProjectPage = (props) => {
   const [loading, setLoading] = useState('');
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
+  const [allUser, setAllUser] = React.useState([]);
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -81,6 +83,19 @@ const CreateProjectPage = (props) => {
           true
         );
         setAllWorker(listAllWorker.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách công nhân');
+      }
+      try {
+        const listAllUser = await getUserByRoleApi(
+          14,
+          'BY_ROLE_ID',
+          0,
+          1000,
+          'createdAt',
+          false
+        );
+        setAllUser(listAllUser.data);
       } catch (error) {
         console.log('Không thể lấy danh sách công nhân');
       }
@@ -286,7 +301,6 @@ const CreateProjectPage = (props) => {
     }
     setWokerListChoice(getIdList);
   };
-  console.log(allWorker);
   return (
     <Paper className="bodynonetab">
       <Typography variant="h6" color="#DD8501">
@@ -363,12 +377,12 @@ const CreateProjectPage = (props) => {
                 )}
               </Grid> */}
               <Grid item xs={12}>
-                <Typography variant="body2">Kỹ sư phụ trách</Typography>
+                <Typography variant="body2">Chủ đầu tư</Typography>
                 <Autocomplete
                   multiple
-                  options={allManager}
+                  options={allUser}
                   disableCloseOnSelect
-                  getOptionLabel={(option) => option.username}
+                  getOptionLabel={(option) => option.fullName}
                   onChange={(e, option) => handleSelectManager(option)}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
@@ -378,7 +392,31 @@ const CreateProjectPage = (props) => {
                         style={{ marginRight: 8 }}
                         checked={selected}
                       />
-                      {option.username}
+                      {option.fullName}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Chủ đầu tư" />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Kỹ sư phụ trách</Typography>
+                <Autocomplete
+                  multiple
+                  options={allManager}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  onChange={(e, option) => handleSelectManager(option)}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.fullName}
                     </li>
                   )}
                   renderInput={(params) => (
