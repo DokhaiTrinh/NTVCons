@@ -96,7 +96,7 @@ const ChatPage = (props) => {
           const listConversationById = await getConversationsById(
             conversationId,
             0,
-            100,
+            200,
             'messageId',
             true
           );
@@ -112,7 +112,7 @@ const ChatPage = (props) => {
       const listConversationById = await getConversationsById(
         conversationId,
         0,
-        20,
+        200,
         'messageId',
         true
       );

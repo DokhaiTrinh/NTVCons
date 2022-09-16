@@ -13,3 +13,18 @@ export const getConversationsById = (
     userInfor.token
   );
 };
+// export const getConversationsById = (
+//   ipAddress,
+//   searchType,
+//   conversationId,
+//   pageNo,
+//   pageSize,
+//   sortBy,
+//   sortTypeAsc
+// ) => {
+//   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+//   return axiosService.get(
+//     `${API_LINK.GET_BY_CONVERSATION_ID}?ipAddress=${ipAddress}&searchType=${searchType}&conversationId=${conversationId}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortTypeAsc=${sortTypeAsc}`,
+//     userInfor.token
+//   );
+// };
