@@ -17,6 +17,7 @@ import Avatar from '@mui/material/Avatar';
 import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
+
 import DeleteUser from '../../../Components/Button/Delete/DeleteUser';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 
@@ -217,6 +218,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const PersonnelTable = (props) => {
+  
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -338,9 +340,9 @@ export const PersonnelTable = (props) => {
                     <TableCell align="left">{row.role.updatedAt}</TableCell>
                     <TableCell align="left">{row.phone}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
-                    {/* <TableCell align="left">
-                      {UpdateButton(`/updatePersonnel/${row.reportId}`)}
-                    </TableCell> */}
+                    <TableCell align="left">
+                      {UpdateButton(`/updatePersonnel/${row.userId}`)}
+                    </TableCell>
                     <TableCell align="left">{DeleteUser(row.userId)}</TableCell>
                   </TableRow>
                 );
