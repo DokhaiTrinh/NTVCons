@@ -130,6 +130,10 @@ export const CREATE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/createUser';
 export const CREATE_USER_WITH_FILE =
   'http://niemtinvang.herokuapp.com/user/v1/createUser/withFile';
+export const UPDATE_USER_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/user/v1/updateUser/withFile';
+export const UPDATE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/updateUser/';
 export const DELETE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/deleteUser';
 //API LINK CỦA MANAGER
