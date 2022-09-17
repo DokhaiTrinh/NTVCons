@@ -31,6 +31,7 @@ import { updateUserApi } from '../../apis/User/updateUser';
 import { updateUserApi1 } from '../../apis/User/updateUser';
 const UserProfile = (props) => {
   const { id } = useParams();
+  const idN = parseFloat(id);
   const [userId, setUserId] = React.useState();
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -38,17 +39,25 @@ const UserProfile = (props) => {
   const [loading, setLoading] = React.useState(false);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const [userName, setUserName] = React.useState();
+  const [roleId, setRoleId] = React.useState();
+  const [password, setPassword] = React.useState();
   React.useEffect(() => {
     (async () => {
       try {
         const listUser = await getUserByIdApi(id, 'BY_ID');
         setUserId(listUser.data);
         setValueBirthDate(listUser.data.birthdate);
+        setUserName(listUser.data.username);
+        setRoleId(listUser.data.role.roleId);
+        setPassword(listUser.data.password);
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
     })();
   }, []);
+  console.log(userName);
+  console.log(roleId);
   console.log(userId);
   const submitForm = (data) => {
     const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
@@ -65,7 +74,10 @@ const UserProfile = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleUpdateUser(
-          id,
+          idN,
+          userName,
+          roleId,
+          // password,
           data.email,
           data.phone,
           data.fullName,
@@ -78,6 +90,9 @@ const UserProfile = (props) => {
   };
   const handleUpdateUser = async (
     userId,
+    username,
+    roleId,
+    // password,
     email,
     phone,
     fullName,
@@ -89,6 +104,9 @@ const UserProfile = (props) => {
       setLoading(true);
       await updateUserApi({
         userId,
+        username,
+        roleId,
+        // password,
         email,
         phone,
         fullName,

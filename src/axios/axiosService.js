@@ -398,6 +398,8 @@ class AxiosService {
     const formData = new FormData();
     const userDTO = {
       userId: body.userId,
+      username: body.username,
+      roleId: body.roleId,
       email: body.email,
       phone: body.phone,
       fullName: body.fullName,
