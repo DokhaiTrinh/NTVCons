@@ -291,7 +291,7 @@ const HomeLayoutRoute = (props) => {
                         </ListItem>
                       </NavLink>
                     ) : userInfor.authorID === '24' &&
-                      (index <= 1 || index >= 5 || index === 3) ? (
+                      (index <= 1 || index >= 4 || index === 3) ? (
                       <NavLink
                         to={listItem.path}
                         key={index}
