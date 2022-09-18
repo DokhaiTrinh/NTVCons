@@ -283,21 +283,30 @@ const ChatPage = (props) => {
               <div>Bắt đầu cuộc trò chuyện với </div>
             )}
           </MessageList>
-          <MessageInput
-            placeholder="Nhập tin nhắn của bạn.."
-            onSend={handleSend}
-            onChange={setMsgInputValue}
-            value={msgInputValue}
-          />
-          <input
-            {...register('files')}
-            type="file"
-            id="files"
-            multiple
-            onChange={handleChangeFile}
-          />
-          <div className="label-holder">
-            <label htmlFor="file" className="img-upload"></label>
+          <div
+            as={MessageInput}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              borderTop: '1px dashed #d1dbe4',
+            }}
+          >
+            <MessageInput
+              placeholder="Nhập tin nhắn của bạn.."
+              onSend={handleSend}
+              onChange={setMsgInputValue}
+              value={msgInputValue}
+            />
+            <input
+              {...register('files')}
+              type="file"
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
+            <div className="label-holder">
+              <label htmlFor="file" className="img-upload"></label>
+            </div>
           </div>
         </ChatContainer>
       </MainContainer>
