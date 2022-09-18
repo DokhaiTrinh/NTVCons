@@ -198,3 +198,5 @@ export const CREATE_CONVERSATION_BY_AUTHENTICATED =
   'http://niemtinvang.herokuapp.com/conversation/v1/createConversationForAuthenticated';
 export const SEEN_MEESAGE =
   'http://niemtinvang.herokuapp.com/message/v1/seenMessageAuthenticated';
+export const SET_CONSULTANT_FOR_CHAT =
+  'http://niemtinvang.herokuapp.com/conversation/v1/setConsultantForChat';

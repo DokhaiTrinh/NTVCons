@@ -29,6 +29,7 @@ import {
   VideoCallButton,
   InfoButton,
   ConversationList,
+  AttachmentButton,
   InputToolbox,
   Loader,
   TypingIndicator,
@@ -45,13 +46,17 @@ import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
 import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
-
+import { setConsultantForChat } from '../../apis/Message/setConsultantForChat';
+import { seenMessageAuthenticated } from '../../apis/Message/seenMessageAuthenticated';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import axios from 'axios';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
   const [allUser, setAllUser] = React.useState([]);
-  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [managerChoice, setManagerChoice] = React.useState();
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -64,6 +69,8 @@ const ChatPage = (props) => {
   // const [ip, setIP] = React.useState('');
   const [msgInputValue, setMsgInputValue] = React.useState('');
   const [messages, setMessages] = React.useState([]);
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -74,7 +81,24 @@ const ChatPage = (props) => {
   //   //passing getData method to the lifecycle method
   //   getData();
   // }, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    // resolver: yupResolver(valideSchema),
+  });
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
   React.useEffect(() => {
     (async () => {
       try {
@@ -116,43 +140,67 @@ const ChatPage = (props) => {
         'messageId',
         true
       );
+      if (listConversationById.data.length > 0) {
+        setManagerChoice(undefined);
+      }
       setConversationById(listConversationById.data);
       setConversationId(conversationId);
     } catch (error) {
       console.log('Không có dữ liệu của tin nhắn!!');
     }
   };
+  console.log(managerChoice);
   const handleSend = (message) => {
-    handleSendMessage(conversationId, message);
-    setMsgInputValue('');
+    if (conversationId) {
+      handleSendMessage(conversationId, message);
+      setMsgInputValue('');
+    } else {
+      handleSendMessage(managerChoice.userId, message);
+    }
+
     // dispatchAction(
     //   getAllMessagesActions.getAllMessages(chatRoomId, page, perPage)
     // );
   };
-  const handleSelectUser = (options) => {
-    let getIdList = [];
-    for (const option of options) {
-      getIdList.push(option.userId);
+  const handleSelectUser = async (options) => {
+    setManagerChoice(options);
+    const listConversationById = await getConversationsById(
+      conversationId,
+      0,
+      200,
+      'messageId',
+      true
+    );
+    console.log(listConversationById.data);
+    if (listConversationById.data.length > 0) {
+      setConversationById(listConversationById.data);
+      setConversationId(conversationId);
+    } else {
     }
-    setManagerListChoice(getIdList);
-    console.log(managerListChoice);
   };
   const handleSendMessage = async (conversationId, message) => {
     try {
       await sendMessageAuthenticated(conversationId, message);
+
       await handleGetConversationById(conversationId);
     } catch (error) {
-      console.log(error);
+      try {
+        await createConversationByAuthenticated(conversationId, message);
+        await handleGetConversationById(conversationId);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-  const handleCreateConversationForAuthenticated = async (
-    targetUserId,
-    message
-  ) => {
-    try {
-      await createConversationByAuthenticated(targetUserId, message);
-    } catch (error) {}
-  };
+  // const handleCreateConversationForAuthenticated = async (
+  //   targetUserId,
+  //   message
+  // ) => {
+  //   try {
+
+  //   } catch (error) {}
+  // };
+  console.log(managerChoice);
   return (
     <div
       style={{
@@ -168,15 +216,7 @@ const ChatPage = (props) => {
             getOptionLabel={(option) => option.fullName}
             onChange={(e, option) => handleSelectUser(option)}
             renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                {/* <Checkbox
-                  // icon={icon}
-                  // checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                /> */}
-                {option.fullName}
-              </li>
+              <li {...props}>{option.fullName}</li>
             )}
             renderInput={(params) => (
               <TextField
@@ -190,98 +230,76 @@ const ChatPage = (props) => {
             )}
           />
           <ConversationList>
-            {userConversation.length > 0 ? (
-              userConversation.map((userConver, index) => (
-                <Conversation
-                  name={userConver.name}
-                  lastSenderName={userConver.name}
-                  info={userConver.lastMessage}
-                  onClick={() =>
-                    handleGetConversationById(userConver.conversationId)
-                  }
-                >
-                  <Avatar src={userConver.avatar} />
-                </Conversation>
-              ))
+            {!managerChoice ? (
+              userConversation.length > 0 ? (
+                userConversation.map((userConver, index) => (
+                  <Conversation
+                    name={userConver.name}
+                    lastSenderName={userConver.name}
+                    info={userConver.lastMessage}
+                    onClick={() =>
+                      handleGetConversationById(userConver.conversationId)
+                    }
+                  >
+                    <Avatar src={userConver.avatar} />
+                  </Conversation>
+                ))
+              ) : (
+                <></>
+              )
             ) : (
-              <div>Không có dữ liệu!!</div>
+              <Conversation
+                name={managerChoice.username}
+                lastSenderName={managerChoice.username}
+                info={managerChoice.lastMessage}
+                onClick={() => handleGetConversationById(managerChoice.userId)}
+              >
+                <Avatar src="#" />
+              </Conversation>
             )}
           </ConversationList>
         </Sidebar>
-
         <ChatContainer>
-          {/* <ConversationHeader>
-            <ConversationHeader.Back />
-            <Avatar src={avatarIco} name="Zoe" />
-            <ConversationHeader.Content
-              userName="Zoe"
-              info="Active 10 mins ago"
-            />
-            <ConversationHeader.Actions>
-              <VoiceCallButton />
-              <VideoCallButton />
-              <InfoButton />
-            </ConversationHeader.Actions>
-          </ConversationHeader> */}
           <MessageList>
-            <MessageSeparator content="Saturday, 30 November 2019" />
-            {conversationById.length > 0 ? (
-              conversationById.map((m) => (
-                <Message
-                  key={m.senderId}
-                  model={{
-                    message: m.message,
-                    sentTime: '15 mins ago',
-                    // sender: 'Zoe',
-                    direction:
-                      m.senderId === userInfor.id ? 'outgoing' : 'incoming',
-                  }}
-                ></Message>
-              ))
+            {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
+            {!managerChoice || conversationById.length !== 0 ? (
+              conversationById.length > 0 ? (
+                conversationById.map((m) => (
+                  <Message
+                    key={m.senderId}
+                    model={{
+                      message: m.message,
+                      sentTime: '15 mins ago',
+                      // sender: 'Zoe',
+                      direction:
+                        m.senderId === userInfor.id ? 'outgoing' : 'incoming',
+                    }}
+                  ></Message>
+                ))
+              ) : (
+                <div>Bắt đầu cuộc trò chuyện với </div>
+              )
             ) : (
-              <div>Không có dữ liệu!!</div>
+              <div>Bắt đầu cuộc trò chuyện với </div>
             )}
           </MessageList>
           <MessageInput
-            placeholder="Nhập gì đó.."
+            placeholder="Nhập tin nhắn của bạn.."
             onSend={handleSend}
             onChange={setMsgInputValue}
             value={msgInputValue}
           />
+          <input
+            {...register('files')}
+            type="file"
+            id="files"
+            multiple
+            onChange={handleChangeFile}
+          />
+          <div className="label-holder">
+            <label htmlFor="file" className="img-upload"></label>
+          </div>
         </ChatContainer>
-
-        {/* <Sidebar position="right">
-          <ExpansionPanel open title="INFO">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="LOCALIZATION">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="MEDIA">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="SURVEY">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="OPTIONS">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-        </Sidebar> */}
       </MainContainer>
     </div>
   );

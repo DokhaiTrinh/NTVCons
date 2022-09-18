@@ -1,9 +1,9 @@
 import axiosService from '../../axios/axiosService';
 import * as API_LINK from './../../contants/ApiLinks/apiLinks';
-export const seenMessageAuthenticated = (conversationId) => {
+export const setConsultantForChat = (conversationId, message) => {
   const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-  return axiosService.post(
-    `${API_LINK.SEEN_MEESAGE}?conversationId=${conversationId}`,
+  return axiosService.put(
+    `${API_LINK.SET_CONSULTANT_FOR_CHAT}?conversationId=${conversationId}&message=${message}`,
     userInfor.token
   );
 };
