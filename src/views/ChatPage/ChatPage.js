@@ -2,14 +2,9 @@ import './styles.css';
 import * as React from 'react';
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
-  Divider,
-  Typography,
-  Box,
-  TextField,
-  Grid,
   Paper,
-  Checkbox,
   Autocomplete,
+  Box
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -20,33 +15,17 @@ import {
   Message,
   MessageInput,
   Avatar,
-  AvatarGroup,
-  Button,
   Conversation,
-  ConversationHeader,
-  StarButton,
-  VoiceCallButton,
-  VideoCallButton,
-  InfoButton,
   ConversationList,
-  InputToolbox,
-  Loader,
-  TypingIndicator,
-  StatusList,
-  Status,
   Sidebar,
-  Search,
   MessageSeparator,
-  action,
-  ExpansionPanel,
 } from '@chatscope/chat-ui-kit-react';
 import { getUserConversations } from '../../apis/Message/getUserConversations';
 import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
 import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
-
-import axios from 'axios';
+import SearchField from '../../Components/TextField/SearchField';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -151,48 +130,59 @@ const ChatPage = (props) => {
   ) => {
     try {
       await createConversationByAuthenticated(targetUserId, message);
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
-    <div
+
+    <Paper
       style={{
-        height: '600px',
-        position: 'relative',
+        position: 'absolute',
+        top: '62px',
+        bottom: '0px',
+        right: '0px',
+        left: '62px',
+        padding: '32px'
       }}
     >
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
-          <Autocomplete
-            options={allUser}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option.fullName}
-            onChange={(e, option) => handleSelectUser(option)}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                {/* <Checkbox
+          {/* <Autocomplete
+              options={allUser}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.fullName}
+              onChange={(e, option) => handleSelectUser(option)}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
                   // icon={icon}
                   // checkedIcon={checkedIcon}
                   style={{ marginRight: 8 }}
                   checked={selected}
-                /> */}
-                {option.fullName}
-              </li>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Tìm kiếm.."
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-              />
-            )}
-          />
+                />
+                  {option.fullName}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Tìm kiếm.."
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                />
+              )}
+            /> */}
+          <Box sx={{ padding: '10px' }}>
+
+            <SearchField />
+          </Box>
           <ConversationList>
             {userConversation.length > 0 ? (
               userConversation.map((userConver, index) => (
                 <Conversation
+                  unreadDot
+                  active
                   name={userConver.name}
                   lastSenderName={userConver.name}
                   info={userConver.lastMessage}
@@ -224,19 +214,23 @@ const ChatPage = (props) => {
             </ConversationHeader.Actions>
           </ConversationHeader> */}
           <MessageList>
-            <MessageSeparator content="Saturday, 30 November 2019" />
+            {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
             {conversationById.length > 0 ? (
               conversationById.map((m) => (
-                <Message
-                  key={m.senderId}
-                  model={{
-                    message: m.message,
-                    sentTime: '15 mins ago',
-                    // sender: 'Zoe',
-                    direction:
+                  <Message
+                    key={m.senderId}
+                    model={{
+                      message: m.message,
+                      sentTime: '15 mins ago',
+                      // sender: 'Zoe',
+                      direction:
                       m.senderId === userInfor.id ? 'outgoing' : 'incoming',
-                  }}
-                ></Message>
+                    }}
+                  >
+                    <Avatar 
+                    // src={}
+                     />
+                  </Message>
               ))
             ) : (
               <div>Không có dữ liệu!!</div>
@@ -247,6 +241,7 @@ const ChatPage = (props) => {
             onSend={handleSend}
             onChange={setMsgInputValue}
             value={msgInputValue}
+            style={{ color: 'red' }}
           />
         </ChatContainer>
 
@@ -283,7 +278,7 @@ const ChatPage = (props) => {
           </ExpansionPanel>
         </Sidebar> */}
       </MainContainer>
-    </div>
+    </Paper>
   );
 };
 export default ChatPage;

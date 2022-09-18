@@ -30,6 +30,7 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -150,6 +151,11 @@ const listItems = [
     listText: 'Tin nhắn',
   },
   {
+    listIcon: <PersonIcon />,
+    path: '/userProfile/:id',
+    listText: 'Hồ sơ',
+  },
+  {
     listIcon: <LogoutIcon />,
     path: '/',
     listText: 'Đăng xuất',
@@ -232,11 +238,9 @@ const HomeLayoutRoute = (props) => {
                     alt="Juaneme8"
                   /> */}
                   <Route>
-                    <Link underline="hover" to={`/userProfile/${id}`}>
-                      <h3 style={{ marginRight: '35px', marginLeft: '8px' }}>
+                      <Typography variant='h6' style={{ marginRight: '35px', marginLeft: '8px' }}>
                         {userInfor.fullName}
-                      </h3>
-                    </Link>
+                      </Typography>
                   </Route>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? (

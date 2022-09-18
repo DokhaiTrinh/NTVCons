@@ -1,4 +1,4 @@
-import { Divider, Typography, Box, TextField, Grid, Button } from '@mui/material';
+import { Divider, Typography, Box, TextField, Grid, Button, Paper } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -20,7 +20,7 @@ const role = [
 const EditPersonnleProfile = (props) => {
     const [dob, setDob] = React.useState('12/31/1990');
     const [joinDate, setJoinDate] = React.useState('01/01/2022');
-    return <div>
+    return <Paper className='bodynonetab'>
 
         <Typography variant="h6" color="#DD8501" sx={{ marginTop: "20px", marginBottom: "20px", marginLeft: "30px" }}>
             Chỉnh sửa hồ sơ nhân viên
@@ -35,7 +35,6 @@ const EditPersonnleProfile = (props) => {
             <Box sx={{ paddingLeft: "10px", paddingTop: "10px", width: "40%", marginBottom: "30px" }}>
                 <Typography variant="body1" color="#DD8501" fontWeight="bold">Sơ yếu lý lịch</Typography>
                 <Divider sx={{ bgcolor: "#DD8501" }}></Divider>
-                <Box sx={{ width: "100%", height: "20px" }}></Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="body2">Mã nhân viên</Typography>
@@ -182,16 +181,14 @@ const EditPersonnleProfile = (props) => {
                             display: "flex"
                         }}>
                             <Button variant="contained"
-                                style={{
-                                    backgroundColor: "#DD8501", borderRadius: 50, width: "200px",
-                                    alignSelf: "center"
-                                }}>Lưu</Button>
+                            className='submitButton'
+                                >Lưu</Button>
                         </Box>
                     </Grid>
                 </Grid>
             </Box>
         </Box>
-    </div>;
+    </Paper>;
 };
 
 export default EditPersonnleProfile;
