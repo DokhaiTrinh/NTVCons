@@ -249,6 +249,7 @@ const ChatPage = (props) => {
               )
             ) : (
               <Conversation
+              
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
