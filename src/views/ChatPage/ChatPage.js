@@ -26,11 +26,12 @@ import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenti
 import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
 import SearchField from '../../Components/TextField/SearchField';
+import { useForm } from 'react-hook-form';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
   const [allUser, setAllUser] = React.useState([]);
-  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [managerChoice, setManagerChoice] = React.useState();
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -43,6 +44,8 @@ const ChatPage = (props) => {
   // const [ip, setIP] = React.useState('');
   const [msgInputValue, setMsgInputValue] = React.useState('');
   const [messages, setMessages] = React.useState([]);
+  const [filesImage, setFilesImage] = React.useState([]);
+  const [selectedImages, setSelectedImage] = React.useState([]);
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -53,7 +56,24 @@ const ChatPage = (props) => {
   //   //passing getData method to the lifecycle method
   //   getData();
   // }, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    // resolver: yupResolver(valideSchema),
+  });
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
 
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
   React.useEffect(() => {
     (async () => {
       try {
@@ -95,43 +115,67 @@ const ChatPage = (props) => {
         'messageId',
         true
       );
+      if (listConversationById.data.length > 0) {
+        setManagerChoice(undefined);
+      }
       setConversationById(listConversationById.data);
       setConversationId(conversationId);
     } catch (error) {
       console.log('Không có dữ liệu của tin nhắn!!');
     }
   };
+  console.log(managerChoice);
   const handleSend = (message) => {
-    handleSendMessage(conversationId, message);
-    setMsgInputValue('');
+    if (conversationId) {
+      handleSendMessage(conversationId, message);
+      setMsgInputValue('');
+    } else {
+      handleSendMessage(managerChoice.userId, message);
+    }
+
     // dispatchAction(
     //   getAllMessagesActions.getAllMessages(chatRoomId, page, perPage)
     // );
   };
-  const handleSelectUser = (options) => {
-    let getIdList = [];
-    for (const option of options) {
-      getIdList.push(option.userId);
+  const handleSelectUser = async (options) => {
+    setManagerChoice(options);
+    const listConversationById = await getConversationsById(
+      conversationId,
+      0,
+      200,
+      'messageId',
+      true
+    );
+    console.log(listConversationById.data);
+    if (listConversationById.data.length > 0) {
+      setConversationById(listConversationById.data);
+      setConversationId(conversationId);
+    } else {
     }
-    setManagerListChoice(getIdList);
-    console.log(managerListChoice);
   };
   const handleSendMessage = async (conversationId, message) => {
     try {
       await sendMessageAuthenticated(conversationId, message);
+
       await handleGetConversationById(conversationId);
     } catch (error) {
-      console.log(error);
+      try {
+        await createConversationByAuthenticated(conversationId, message);
+        await handleGetConversationById(conversationId);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-  const handleCreateConversationForAuthenticated = async (
-    targetUserId,
-    message
-  ) => {
-    try {
-      await createConversationByAuthenticated(targetUserId, message);
-    } catch (error) { }
-  };
+  // const handleCreateConversationForAuthenticated = async (
+  //   targetUserId,
+  //   message
+  // ) => {
+  //   try {
+
+  //   } catch (error) {}
+  // };
+  console.log(managerChoice);
   return (
 
     <Paper
@@ -194,29 +238,23 @@ const ChatPage = (props) => {
                 </Conversation>
               ))
             ) : (
-              <div>Không có dữ liệu!!</div>
+              <Conversation
+                name={managerChoice.username}
+                lastSenderName={managerChoice.username}
+                info={managerChoice.lastMessage}
+                onClick={() => handleGetConversationById(managerChoice.userId)}
+              >
+                <Avatar src="#" />
+              </Conversation>
             )}
           </ConversationList>
         </Sidebar>
-
         <ChatContainer>
-          {/* <ConversationHeader>
-            <ConversationHeader.Back />
-            <Avatar src={avatarIco} name="Zoe" />
-            <ConversationHeader.Content
-              userName="Zoe"
-              info="Active 10 mins ago"
-            />
-            <ConversationHeader.Actions>
-              <VoiceCallButton />
-              <VideoCallButton />
-              <InfoButton />
-            </ConversationHeader.Actions>
-          </ConversationHeader> */}
           <MessageList>
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-            {conversationById.length > 0 ? (
-              conversationById.map((m) => (
+            {!managerChoice || conversationById.length !== 0 ? (
+              conversationById.length > 0 ? (
+                conversationById.map((m) => (
                   <Message
                     key={m.senderId}
                     model={{
@@ -224,59 +262,43 @@ const ChatPage = (props) => {
                       sentTime: '15 mins ago',
                       // sender: 'Zoe',
                       direction:
-                      m.senderId === userInfor.id ? 'outgoing' : 'incoming',
+                        m.senderId === userInfor.id ? 'outgoing' : 'incoming',
                     }}
-                  >
-                    <Avatar 
-                    // src={}
-                     />
-                  </Message>
-              ))
+                  ></Message>
+                ))
+              ) : (
+                <div>Bắt đầu cuộc trò chuyện với </div>
+              )
             ) : (
-              <div>Không có dữ liệu!!</div>
+              <div>Bắt đầu cuộc trò chuyện với </div>
             )}
           </MessageList>
-          <MessageInput
-            placeholder="Nhập gì đó.."
-            onSend={handleSend}
-            onChange={setMsgInputValue}
-            value={msgInputValue}
-            style={{ color: 'red' }}
-          />
+          <div
+            as={MessageInput}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              borderTop: '1px dashed #d1dbe4',
+            }}
+          >
+            <MessageInput
+              placeholder="Nhập tin nhắn của bạn.."
+              onSend={handleSend}
+              onChange={setMsgInputValue}
+              value={msgInputValue}
+            />
+            <input
+              {...register('files')}
+              type="file"
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
+            <div className="label-holder">
+              <label htmlFor="file" className="img-upload"></label>
+            </div>
+          </div>
         </ChatContainer>
-
-        {/* <Sidebar position="right">
-          <ExpansionPanel open title="INFO">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="LOCALIZATION">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="MEDIA">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="SURVEY">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-          <ExpansionPanel title="OPTIONS">
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-            <p>Lorem ipsum</p>
-          </ExpansionPanel>
-        </Sidebar> */}
       </MainContainer>
     </Paper>
   );

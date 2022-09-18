@@ -58,6 +58,7 @@ const CreateProjectPage = (props) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [userListChoice, setUserListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
 
   React.useEffect(() => {
@@ -97,36 +98,23 @@ const CreateProjectPage = (props) => {
         );
         setAllUser(listAllUser.data);
       } catch (error) {
-        console.log('Không thể lấy danh sách công nhân');
+        console.log('Không thể lấy danh sách người dùng');
       }
     })();
   }, []);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    if (managerListChoice === 0 || workerListChoice === 0) {
-      handleCreateProject(
-        planEndDate,
-        planStartDate,
-        locationDetail,
-        null,
-        data.estimatedCost,
-        data.projectName,
-        null,
-        filesImage
-      );
-    } else {
-      handleCreateProject(
-        planEndDate,
-        planStartDate,
-        locationDetail,
-        managerListChoice,
-        data.estimatedCost,
-        data.projectName,
-        workerListChoice,
-        filesImage
-      );
-    }
+    handleCreateProject(
+      planEndDate,
+      planStartDate,
+      locationDetail,
+      managerListChoice,
+      data.estimatedCost,
+      data.projectName,
+      workerListChoice,
+      filesImage
+    );
   };
   const handleCreateProject = async (
     planEndDate,
@@ -283,8 +271,6 @@ const CreateProjectPage = (props) => {
     }
     input.files = dt.files;
     setFilesImage(input.files);
-
-    // dispatch({ type: 'LOADING', newLoading: !loading });
   };
 
   const handleSelectManager = (options) => {
@@ -294,6 +280,15 @@ const CreateProjectPage = (props) => {
     }
     setManagerListChoice(getIdList);
   };
+  console.log(setManagerListChoice);
+  const handleSelectUser = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setUserListChoice(getIdList);
+  };
+  console.log(setUserListChoice);
   const handleSelectWorker = (options) => {
     let getIdList = [];
     for (const option of options) {
@@ -338,44 +333,6 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              {/* <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    onClick={() => handleOpenManagerListDialog()}
-                  >
-                    Kỹ sư phụ trách
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {managerListDetail ? (
-                  managerListDetail.map((managerID, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Kỹ sư phụ trách: {handleGetManagerName(managerID)}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2">Chủ đầu tư</Typography>
                 <Autocomplete
@@ -383,7 +340,7 @@ const CreateProjectPage = (props) => {
                   options={allUser}
                   disableCloseOnSelect
                   getOptionLabel={(option) => option.fullName}
-                  onChange={(e, option) => handleSelectManager(option)}
+                  onChange={(e, option) => handleSelectUser(option)}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
                       <Checkbox
