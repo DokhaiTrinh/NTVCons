@@ -27,6 +27,7 @@ import { createConversationByAuthenticated } from '../../apis/Message/createConv
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
 import SearchField from '../../Components/TextField/SearchField';
 import { useForm } from 'react-hook-form';
+import { useRef } from 'react';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -46,6 +47,7 @@ const ChatPage = (props) => {
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const fileInput = useRef();
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -222,24 +224,26 @@ const ChatPage = (props) => {
             <SearchField />
           </Box>
           <ConversationList>
-            {userConversation.length > 0 ? (
-              userConversation.map((userConver, index) => (
-                <Conversation
-                  unreadDot
-                  active
-                  name={userConver.name}
-                  lastSenderName={userConver.name}
-                  info={userConver.lastMessage}
-                  onClick={() =>
-                    handleGetConversationById(userConver.conversationId)
-                  }
-                >
-                  <Avatar src={userConver.avatar} />
-                </Conversation>
-              ))
+            {!managerChoice ? (
+              userConversation.length > 0 ? (
+                userConversation.map((userConver, index) => (
+                  <Conversation
+                    name={userConver.name}
+                    lastSenderName={userConver.name}
+                    info={userConver.lastMessage}
+                    onClick={() =>
+                      handleGetConversationById(userConver.conversationId)
+                    }
+                  >
+                    <Avatar src={userConver.avatar} />
+                  </Conversation>
+                ))
+              ) : (
+                <></>
+              )
             ) : (
               <Conversation
-              
+
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
@@ -274,23 +278,26 @@ const ChatPage = (props) => {
               <div>Bắt đầu cuộc trò chuyện với </div>
             )}
           </MessageList>
-          <div
+          {/* <div
             as={MessageInput}
             style={{
               display: 'flex',
               flexDirection: 'row',
               borderTop: '1px dashed #d1dbe4',
             }}
-          >
+          > */}
             <MessageInput
               placeholder="Nhập tin nhắn của bạn.."
               onSend={handleSend}
               onChange={setMsgInputValue}
               value={msgInputValue}
+              onAttachClick={() => {fileInput.current.click(); }}
             />
             <input
               {...register('files')}
               type="file"
+              hidden
+              ref={fileInput}
               id="files"
               multiple
               onChange={handleChangeFile}
@@ -298,7 +305,7 @@ const ChatPage = (props) => {
             <div className="label-holder">
               <label htmlFor="file" className="img-upload"></label>
             </div>
-          </div>
+          {/* </div> */}
         </ChatContainer>
       </MainContainer>
     </Paper>
