@@ -167,7 +167,7 @@ const CreateProjectPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/project`);
+      // await window.location.replace(`/project`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',

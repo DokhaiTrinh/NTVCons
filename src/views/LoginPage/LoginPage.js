@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Typography, TextField, Button, Link, Box, Stack } from '@mui/material';
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Link,
+  Box,
+  Stack,
+} from '@mui/material';
 import background from '../../assets/images/background.jpg';
 import logo from '../../assets/images/logo.png';
 import { useForm } from 'react-hook-form';
@@ -127,15 +135,28 @@ const LoginPage = (props) => {
         paddingTop: '15vh',
       }}
     >
-      <Paper elevation={10} style={{ height: '70vh', width: '60vh', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <form onSubmit={handleSubmit(submitForm)}>
-        <Stack direction='column' spacing={3} justifyContent='center' alignItems='center'>
+      <Paper
+        elevation={10}
+        style={{
+          height: '70vh',
+          width: '60vh',
+          margin: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <form onSubmit={handleSubmit(submitForm)}>
+          <Stack
+            direction="column"
+            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+          >
             <img src={logo} alt="logo" style={{ width: '204px' }} />
 
             <Box sx={{ flexGrow: 1, width: '400px' }}>
-              <Typography variant="h5">
-                Đăng&nbsp;nhập
-              </Typography>
+              <Typography variant="h5">Đăng&nbsp;nhập</Typography>
               <TextField
                 {...register('username')}
                 // error={submitted && !username}
@@ -162,33 +183,32 @@ const LoginPage = (props) => {
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
               />
-              <Stack direction='column' spacing={2}>
-
-              <Button
-                type="submit"
-                variant="contained"
-                className="submitButton"
-              >
-                {loading ? (
-                  <>
-                    <CircularProgress color="white" size={24} /> &nbsp; Đang
-                    xử lí...
-                  </>
-                ) : (
-                  ' Đăng nhập'
-                )}
-              </Button>
-              <Box style={{ textAlign: 'left' }}>
-                <Link
-                  color="#DD8501"
-                  variant="body1"
-                  onClick={() => {
-                    history.push('/OTPByEmail');
-                  }}
+              <Stack direction="column" spacing={2}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="submitButton"
                 >
-                  Quên mật khẩu
-                </Link>
-              </Box>
+                  {loading ? (
+                    <>
+                      <CircularProgress color="white" size={24} /> &nbsp; Đang
+                      xử lí...
+                    </>
+                  ) : (
+                    ' Đăng nhập'
+                  )}
+                </Button>
+                <Box style={{ textAlign: 'left' }}>
+                  <Link
+                    color="#DD8501"
+                    variant="body1"
+                    onClick={() => {
+                      history.push('/OTPByEmail');
+                    }}
+                  >
+                    Quên mật khẩu
+                  </Link>
+                </Box>
               </Stack>
               {/* <Grid item md={12}>
                     <Box style={{ textAlign: 'right' }}>
@@ -198,8 +218,8 @@ const LoginPage = (props) => {
                     </Box>
                   </Grid> */}
             </Box>
-        </Stack>
-          </form>
+          </Stack>
+        </form>
       </Paper>
     </div>
   );
