@@ -192,3 +192,5 @@ export const SEND_MESSAGE_AUTHENTICATED =
   'http://niemtinvang.herokuapp.com/message/v1/sendMessageAuthenticated';
 export const CREATE_CONVERSATION_BY_AUTHENTICATED =
   'http://niemtinvang.herokuapp.com/conversation/v1/createConversationForAuthenticated';
+export const SEEN_MEESAGE =
+  'http://niemtinvang.herokuapp.com/message/v1/seenMessageAuthenticated';
