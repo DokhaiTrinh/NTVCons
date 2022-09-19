@@ -101,9 +101,9 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div className="bodynonetab">
+    <div >
       {Header(`/createBlueprint/${id}`)}
-      <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
+      <Paper className="bodynonetab">
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item xs={11}>
             <Typography variant="h6" sx={{ marginBottom: '20px' }}>
@@ -144,7 +144,7 @@ export const Blueprint = (props) => {
             )} */}
         </Grid>
         <Divider sx={{ marginBottom: '20px' }}></Divider>
-        <Grid container rowSpacing={{ xs: 5 }}>
+        <Grid container spacing={5}>
           <Grid item xs="4">
             <Typography variant="caption">Tên bản vẽ</Typography>
             <Typography variant="body1">

@@ -1,10 +1,10 @@
 import './styles.css';
-import * as React from 'react';
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import React, {useRef} from 'react';
 import {
   Paper,
   Autocomplete,
-  Box
+  Box,
+  Typography
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -27,7 +27,6 @@ import { createConversationByAuthenticated } from '../../apis/Message/createConv
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
 import SearchField from '../../Components/TextField/SearchField';
 import { useForm } from 'react-hook-form';
-import { useRef } from 'react';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -48,6 +47,7 @@ const ChatPage = (props) => {
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
   const fileInput = useRef();
+
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -177,19 +177,28 @@ const ChatPage = (props) => {
 
   //   } catch (error) {}
   // };
-  console.log(managerChoice);
+
   return (
 
     <Paper
       style={{
         position: 'absolute',
-        top: '62px',
-        bottom: '0px',
-        right: '0px',
-        left: '62px',
-        padding: '32px'
+        top: '92px',
+        bottom: '32px',
+        right: '32px',
+        left: '92px',
       }}
+      elevation={0}
     >
+      <input
+              {...register('files')}
+              type="file"
+              hidden
+              ref={fileInput}
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           {/* <Autocomplete
