@@ -33,9 +33,8 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
+const id = userInfor.id;
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
     width: 250,
@@ -152,7 +151,7 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    path: '/userProfile/:id',
+    path: `/userProfile/${id}`,
     listText: 'Hồ sơ',
   },
   {
@@ -168,9 +167,6 @@ const HomeLayoutRoute = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
-  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-  const id = userInfor.id;
-  console.log(id);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -238,9 +234,12 @@ const HomeLayoutRoute = (props) => {
                     alt="Juaneme8"
                   /> */}
                   <Route>
-                      <Typography variant='h6' style={{ marginRight: '35px', marginLeft: '8px' }}>
-                        {userInfor.fullName}
-                      </Typography>
+                    <Typography
+                      variant="h6"
+                      style={{ marginRight: '35px', marginLeft: '8px' }}
+                    >
+                      {userInfor.fullName}
+                    </Typography>
                   </Route>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? (

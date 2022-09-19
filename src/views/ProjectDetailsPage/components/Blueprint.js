@@ -15,6 +15,7 @@ import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprint
 import RenderImage from '../../../Components/Render/RenderImage';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import Header from '../../../Components/Tab/Header';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -103,6 +104,14 @@ export const Blueprint = (props) => {
   return (
     <div className="bodynonetab">
       {Header(`/createBlueprint/${id}`)}
+      {userInfor.authorID !== '54' ? null : (
+        <IconButtonCus
+          onClick={() => {
+            // `/editProjectDetails/${id}`;
+          }}
+          icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
+        />
+      )}
       <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item xs={11}>
