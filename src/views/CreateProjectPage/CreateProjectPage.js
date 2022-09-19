@@ -110,6 +110,7 @@ const CreateProjectPage = (props) => {
       planStartDate,
       locationDetail,
       managerListChoice,
+      userListChoice,
       data.estimatedCost,
       data.projectName,
       workerListChoice,
@@ -120,7 +121,8 @@ const CreateProjectPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    managerIdList,
+    ntvManagerIdList,
+    userManagerIdList,
     estimatedCost,
     projectName,
     workerIdList,
@@ -132,7 +134,7 @@ const CreateProjectPage = (props) => {
         typeof planEndDate,
         typeof planStartDate,
         typeof location,
-        typeof managerIdList,
+        typeof ntvManagerIdList,
         typeof estimatedCost,
         typeof projectName,
         typeof workerIdList,
@@ -142,7 +144,8 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        managerIdList,
+        ntvManagerIdList,
+        userManagerIdList,
         estimatedCost,
         projectName,
         workerIdList,
@@ -155,7 +158,7 @@ const CreateProjectPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/project`);
+      // await window.location.replace(`/project`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -280,7 +283,6 @@ const CreateProjectPage = (props) => {
     }
     setManagerListChoice(getIdList);
   };
-  console.log(setManagerListChoice);
   const handleSelectUser = (options) => {
     let getIdList = [];
     for (const option of options) {
@@ -288,7 +290,6 @@ const CreateProjectPage = (props) => {
     }
     setUserListChoice(getIdList);
   };
-  console.log(setUserListChoice);
   const handleSelectWorker = (options) => {
     let getIdList = [];
     for (const option of options) {

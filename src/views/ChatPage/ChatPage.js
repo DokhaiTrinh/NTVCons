@@ -1,11 +1,7 @@
 import './styles.css';
 import React, {useRef} from 'react';
-import {
-  Paper,
-  Autocomplete,
-  Box,
-  Typography
-} from '@mui/material';
+import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { Paper, Autocomplete, Box, Checkbox, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {
@@ -179,7 +175,6 @@ const ChatPage = (props) => {
   // };
 
   return (
-
     <Paper
       style={{
         position: 'absolute',
@@ -201,37 +196,34 @@ const ChatPage = (props) => {
             />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
-          {/* <Autocomplete
-              options={allUser}
-              disableCloseOnSelect
-              getOptionLabel={(option) => option.fullName}
-              onChange={(e, option) => handleSelectUser(option)}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox
+          <Autocomplete
+            options={allUser}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.fullName}
+            onChange={(e, option) => handleSelectUser(option)}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
                   // icon={icon}
                   // checkedIcon={checkedIcon}
                   style={{ marginRight: 8 }}
                   checked={selected}
                 />
-                  {option.fullName}
-                </li>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Tìm kiếm.."
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
-                  }}
-                />
-              )}
-            /> */}
-          <Box sx={{ padding: '10px' }}>
-
-            <SearchField />
-          </Box>
+                {option.fullName}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Tìm kiếm.."
+                InputProps={{
+                  ...params.InputProps,
+                  type: 'search',
+                }}
+              />
+            )}
+          />
+          <Box sx={{ padding: '10px' }}>{/* <SearchField /> */}</Box>
           <ConversationList>
             {!managerChoice ? (
               userConversation.length > 0 ? (
@@ -252,7 +244,6 @@ const ChatPage = (props) => {
               )
             ) : (
               <Conversation
-
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
@@ -295,25 +286,27 @@ const ChatPage = (props) => {
               borderTop: '1px dashed #d1dbe4',
             }}
           > */}
-            <MessageInput
-              placeholder="Nhập tin nhắn của bạn.."
-              onSend={handleSend}
-              onChange={setMsgInputValue}
-              value={msgInputValue}
-              onAttachClick={() => {fileInput.current.click(); }}
-            />
-            <input
-              {...register('files')}
-              type="file"
-              hidden
-              ref={fileInput}
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
-            <div className="label-holder">
-              <label htmlFor="file" className="img-upload"></label>
-            </div>
+          <MessageInput
+            placeholder="Nhập tin nhắn của bạn.."
+            onSend={handleSend}
+            onChange={setMsgInputValue}
+            value={msgInputValue}
+            onAttachClick={() => {
+              fileInput.current.click();
+            }}
+          />
+          <input
+            {...register('files')}
+            type="file"
+            hidden
+            ref={fileInput}
+            id="files"
+            multiple
+            onChange={handleChangeFile}
+          />
+          <div className="label-holder">
+            <label htmlFor="file" className="img-upload"></label>
+          </div>
           {/* </div> */}
         </ChatContainer>
       </MainContainer>

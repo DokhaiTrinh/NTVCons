@@ -35,7 +35,6 @@ import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
     width: 250,
@@ -118,7 +117,7 @@ const Drawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
-
+// var id = userInfor.id;
 const listItems = [
   // {
   //   listIcon: <Home />,
@@ -152,7 +151,8 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    path: '/userProfile/:id',
+    path: `/userProfile/${userInfor.id}`,
+    // path: '#',
     listText: 'Hồ sơ',
   },
   {
@@ -168,9 +168,6 @@ const HomeLayoutRoute = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
-  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-  const id = userInfor.id;
-  console.log(id);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -238,9 +235,12 @@ const HomeLayoutRoute = (props) => {
                     alt="Juaneme8"
                   /> */}
                   <Route>
-                      <Typography variant='h6' style={{ marginRight: '35px', marginLeft: '8px' }}>
-                        {userInfor.fullName}
-                      </Typography>
+                    <Typography
+                      variant="h6"
+                      style={{ marginRight: '35px', marginLeft: '8px' }}
+                    >
+                      {userInfor.fullName}
+                    </Typography>
                   </Route>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? (

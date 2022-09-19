@@ -19,7 +19,7 @@ const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
   const history = useHistory();
-  const { allProjectDetails, managerList, workerList } = props;
+  const { allProjectDetails, managerList, workerList, userList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
   console.log(allProjectDetails);
@@ -67,6 +67,25 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
+              <Typography variant="caption">Chủ đầu tư</Typography>
+              <Typography variant="body1">
+                {userList ? (
+                  userList.map((userList, index) => (
+                    <Typography
+                      sx={{
+                        witdh: '100%',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {userList.manager.fullName}
+                    </Typography>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
               <Typography variant="caption">Kỹ sư quản lý</Typography>
               <Typography>
                 {managerList ? (
@@ -107,7 +126,12 @@ const Details = (props) => {
                 </Typography>
               </Box>
             </Grid>
-
+            <Grid item xs="4">
+              <Typography variant="caption">Ngày tạo</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.createdAt}
+              </Typography>
+            </Grid>
             <Grid item xs="4">
               <Typography variant="caption">
                 Thời gian bắt đầu thực tế

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
-import { Divider } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,6 +15,7 @@ import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprint
 import RenderImage from '../../../Components/Render/RenderImage';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import Header from '../../../Components/Tab/Header';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -102,15 +103,27 @@ export const Blueprint = (props) => {
   };
   return (
     <div >
-      {Header(`/createBlueprint/${id}`)}
-      <Paper className="bodynonetab">
-        <Grid container spacing={0} alignItems="center" justify="center">
-          <Grid item xs={11}>
+      <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
+        <Grid container xs={12}>
+          <Grid item xs={11} display='flex' justifyContent='start' alignItems='start'>
+
             <Typography variant="h6" sx={{ marginBottom: '20px' }}>
               Thông tin bản vẽ
             </Typography>
           </Grid>
-          {/* {userInfor.authorID !== '54' ? null : (
+          <Grid item xs={1} display='flex' justifyContent='end' alignItems='start'>
+            {userInfor.authorID !== '54' ? null : (
+              <IconButtonCus
+                onClick={() => {
+                  // `/editProjectDetails/${id}`;
+                }}
+                icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
+              />
+            )}
+          </Grid>
+
+        </Grid>
+        {/* {userInfor.authorID !== '54' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
                   <Box
@@ -142,7 +155,6 @@ export const Blueprint = (props) => {
                 </Grid>
               </Grid>
             )} */}
-        </Grid>
         <Divider sx={{ marginBottom: '20px' }}></Divider>
         <Grid container spacing={5}>
           <Grid item xs="4">
