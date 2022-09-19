@@ -33,7 +33,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-const id = userInfor.id;
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -117,7 +117,7 @@ const Drawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
-
+// var id = userInfor.id;
 const listItems = [
   // {
   //   listIcon: <Home />,
@@ -151,7 +151,8 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    path: `/userProfile/${id}`,
+    path: `/userProfile/${userInfor.id}`,
+    // path: '#',
     listText: 'Hồ sơ',
   },
   {
