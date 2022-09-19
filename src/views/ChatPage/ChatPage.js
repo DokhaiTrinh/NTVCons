@@ -2,14 +2,9 @@ import './styles.css';
 import * as React from 'react';
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
-  Divider,
-  Typography,
-  Box,
-  TextField,
-  Grid,
   Paper,
-  Checkbox,
   Autocomplete,
+  Box
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -20,38 +15,19 @@ import {
   Message,
   MessageInput,
   Avatar,
-  AvatarGroup,
-  Button,
   Conversation,
-  ConversationHeader,
-  StarButton,
-  VoiceCallButton,
-  VideoCallButton,
-  InfoButton,
   ConversationList,
-  AttachmentButton,
-  InputToolbox,
-  Loader,
-  TypingIndicator,
-  StatusList,
-  Status,
   Sidebar,
-  Search,
   MessageSeparator,
-  action,
-  ExpansionPanel,
 } from '@chatscope/chat-ui-kit-react';
 import { getUserConversations } from '../../apis/Message/getUserConversations';
 import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
 import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
-import { setConsultantForChat } from '../../apis/Message/setConsultantForChat';
-import { seenMessageAuthenticated } from '../../apis/Message/seenMessageAuthenticated';
+import SearchField from '../../Components/TextField/SearchField';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import axios from 'axios';
+import { useRef } from 'react';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -71,6 +47,7 @@ const ChatPage = (props) => {
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const fileInput = useRef();
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -202,33 +179,50 @@ const ChatPage = (props) => {
   // };
   console.log(managerChoice);
   return (
-    <div
+
+    <Paper
       style={{
-        height: '600px',
-        position: 'relative',
+        position: 'absolute',
+        top: '62px',
+        bottom: '0px',
+        right: '0px',
+        left: '62px',
+        padding: '32px'
       }}
     >
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
-          <Autocomplete
-            options={allUser}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option.fullName}
-            onChange={(e, option) => handleSelectUser(option)}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>{option.fullName}</li>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Tìm kiếm.."
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-              />
-            )}
-          />
+          {/* <Autocomplete
+              options={allUser}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.fullName}
+              onChange={(e, option) => handleSelectUser(option)}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                  // icon={icon}
+                  // checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                  {option.fullName}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Tìm kiếm.."
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                />
+              )}
+            /> */}
+          <Box sx={{ padding: '10px' }}>
+
+            <SearchField />
+          </Box>
           <ConversationList>
             {!managerChoice ? (
               userConversation.length > 0 ? (
@@ -249,7 +243,7 @@ const ChatPage = (props) => {
               )
             ) : (
               <Conversation
-              
+
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
@@ -284,23 +278,26 @@ const ChatPage = (props) => {
               <div>Bắt đầu cuộc trò chuyện với </div>
             )}
           </MessageList>
-          <div
+          {/* <div
             as={MessageInput}
             style={{
               display: 'flex',
               flexDirection: 'row',
               borderTop: '1px dashed #d1dbe4',
             }}
-          >
+          > */}
             <MessageInput
               placeholder="Nhập tin nhắn của bạn.."
               onSend={handleSend}
               onChange={setMsgInputValue}
               value={msgInputValue}
+              onAttachClick={() => {fileInput.current.click(); }}
             />
             <input
               {...register('files')}
               type="file"
+              hidden
+              ref={fileInput}
               id="files"
               multiple
               onChange={handleChangeFile}
@@ -308,10 +305,10 @@ const ChatPage = (props) => {
             <div className="label-holder">
               <label htmlFor="file" className="img-upload"></label>
             </div>
-          </div>
+          {/* </div> */}
         </ChatContainer>
       </MainContainer>
-    </div>
+    </Paper>
   );
 };
 export default ChatPage;
