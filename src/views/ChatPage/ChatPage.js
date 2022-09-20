@@ -1,10 +1,12 @@
 import './styles.css';
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import {
   Paper,
   Autocomplete,
   Box,
-  Typography
+  Typography,
+  Checkbox,
+  TextField,
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -190,14 +192,14 @@ const ChatPage = (props) => {
       elevation={0}
     >
       <input
-              {...register('files')}
-              type="file"
-              hidden
-              ref={fileInput}
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
+        {...register('files')}
+        type="file"
+        hidden
+        ref={fileInput}
+        id="files"
+        multiple
+        onChange={handleChangeFile}
+      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
