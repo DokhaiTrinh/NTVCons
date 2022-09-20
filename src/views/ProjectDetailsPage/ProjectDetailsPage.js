@@ -61,6 +61,7 @@ const ProjectDetailsPage = (props) => {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
+  const [userList, setUserList] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
@@ -72,8 +73,9 @@ const ProjectDetailsPage = (props) => {
           'BY_ID'
         );
         setAllProjectDetails(listAllProjectDetails.data);
-        setManagerList(listAllProjectDetails.data.projectManagerList);
+        setManagerList(listAllProjectDetails.data.ntvManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
+        setUserList(listAllProjectDetails.data.userManagerList);
         if (listAllProjectDetails.data) {
           if (listAllProjectDetails.data.fileList.length > 0) {
             let arrayImgLink = [];
@@ -103,8 +105,6 @@ const ProjectDetailsPage = (props) => {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-    console.log(imageGet);
-    console.log(docGet);
     (async () => {
       try {
         const listAllReportDetails = await getReportByProjectIdApi({
@@ -142,13 +142,14 @@ const ProjectDetailsPage = (props) => {
           <Box sx={{ flex: 1 }}></Box>
           <Box></Box>
         </Tabs>
-        <div className='body'>
+        <div className="body">
           <TabPanel value={value} index={0}>
             {allProjectDetails ? (
               <Details
                 allProjectDetails={allProjectDetails}
                 managerList={managerList}
                 workerList={workerList}
+                userList={userList}
               />
             ) : (
               <div>Không có dữ liệu!!</div>

@@ -46,6 +46,7 @@ import ResetPasswordPage from '../views/ForgotPassword/ResetPassword';
 import OTPPage from '../views/ForgotPassword/OTPPage';
 import UpdateWorkerPage from '../views/PersonnelPage/UpdateWorkerPage';
 import UpdatePersonnelPage from '../views/PersonnelPage/UpdatePersonnelPage';
+import UserProfile from '../views/UserProfile/UserProfile';
 export const HOME_ROUTES = [
   // {
   //   path: '/home',
@@ -264,7 +265,7 @@ export const HOME_ROUTES = [
     component: CreateProductPage,
   },
   {
-    path: '/createBlueprint',
+    path: '/createBlueprint/:id',
     name: 'Create Blueprint Page',
     exact: true,
     component: CreateBlueprintPage,
@@ -310,6 +311,12 @@ export const HOME_ROUTES = [
     name: 'Update Task Page',
     exact: true,
     component: UpdateTaskPage,
+  },
+  {
+    path: '/userProfile/:id',
+    name: 'User Profile Page',
+    exact: true,
+    component: UserProfile,
   },
 ];
 

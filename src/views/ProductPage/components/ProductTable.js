@@ -99,6 +99,12 @@ const headCells = [
     label: 'Vị trí',
   },
   {
+    id: 'giadukien',
+    numeric: false,
+    disablePadding: false,
+    label: 'Giá dự kiến',
+  },
+  {
     id: 'capnhat',
     numeric: false,
     disablePadding: false,
@@ -351,6 +357,7 @@ export const ProductTable = (props) => {
                       <TableCell align="left">{row.ownerName}</TableCell>
                       <TableCell align="left">{row.scale}</TableCell>
                       <TableCell align="left">{row.address}</TableCell>
+                      <TableCell align="left">{row.estimatedCost}</TableCell>
                       <TableCell align="left">
                         {UpdateButton(`/updateProduct/${row.postId}`)}
                       </TableCell>

@@ -13,18 +13,6 @@ import RenderImage from '../../Components/Render/RenderImage';
 import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 function RequestDetailPage() {
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '/',
-      getDateCom[1],
-      '/',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
   const { id } = useParams();
   const [allRequestList, setAllRequestList] = React.useState();
   const [requestDetail, setRequestDetail] = React.useState([]);

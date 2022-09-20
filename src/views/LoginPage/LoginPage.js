@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Link,
+  Box,
+  Stack,
+} from '@mui/material';
 import background from '../../assets/images/background.jpg';
 import logo from '../../assets/images/logo.png';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -121,7 +123,6 @@ const LoginPage = (props) => {
   useEffect(() => {
     localStorage.clear();
   }, []);
-  const paperStyle = { height: '70vh', width: '60vh', margin: 'auto' };
   return (
     <div
       style={{
@@ -134,25 +135,28 @@ const LoginPage = (props) => {
         paddingTop: '15vh',
       }}
     >
-      <Grid align="center">
-        <Paper elevation={10} style={paperStyle}>
-          <img src={logo} alt="logo" style={{ width: '204px' }} />
+      <Paper
+        elevation={10}
+        style={{
+          height: '70vh',
+          width: '60vh',
+          margin: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <form onSubmit={handleSubmit(submitForm)}>
+          <Stack
+            direction="column"
+            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <img src={logo} alt="logo" style={{ width: '204px' }} />
 
-          <Box sx={{ flexGrow: 1, width: '400px' }}>
-            <Grid container>
-              <Grid>
-                <Typography variant="h5" color="#DD8501">
-                  Đăng
-                </Typography>
-              </Grid>
-              &nbsp;
-              <Grid>
-                <Typography variant="h5" color="#DD8501">
-                  nhập
-                </Typography>
-              </Grid>
-            </Grid>
-            <form onSubmit={handleSubmit(submitForm)}>
+            <Box sx={{ flexGrow: 1, width: '400px' }}>
+              <Typography variant="h5">Đăng&nbsp;nhập</Typography>
               <TextField
                 {...register('username')}
                 // error={submitted && !username}
@@ -178,57 +182,8 @@ const LoginPage = (props) => {
                 label="Mật khẩu*"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                // value={password}
-                // onChange={handleChange}
-                // InputProps={{
-                //   // <-- This is where the toggle button is added.
-                //   endAdornment: (
-                //     <InputAdornment position="end">
-                //       <IconButton
-                //         aria-label="toggle password visibility"
-                //         onClick={handleClickShowPassword}
-                //         onMouseDown={handleMouseDownPassword}
-                //       >
-                //         {showPassword ? <Visibility /> : <VisibilityOff />}
-                //       </IconButton>
-                //     </InputAdornment>
-                //   ),
-                // }}
-                // helperText={errors.password?.message}
               />
-              {/* <Grid container>
-                <FormControl
-                  fullWidth
-                  sx={{ width: 'wrap-parent' }}
-                  variant="outlined"
-                >
-                  <InputLabel></InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {values.showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                  />
-                </FormControl>
-              </Grid> */}
-              <Grid>
+              <Stack direction="column" spacing={2}>
                 <Button
                   type="submit"
                   variant="contained"
@@ -243,33 +198,29 @@ const LoginPage = (props) => {
                     ' Đăng nhập'
                   )}
                 </Button>
-                <Grid container>
-                  <Grid item md={4}>
-                    <Box style={{ textAlign: 'left' }}>
-                      <Link
-                        color="#DD8501"
-                        variant="body1"
-                        onClick={() => {
-                          history.push('/OTPByEmail');
-                        }}
-                      >
-                        Quên mật khẩu
-                      </Link>
-                    </Box>
-                  </Grid>
-                  {/* <Grid item md={12}>
+                <Box style={{ textAlign: 'left' }}>
+                  <Link
+                    color="#DD8501"
+                    variant="body1"
+                    onClick={() => {
+                      history.push('/OTPByEmail');
+                    }}
+                  >
+                    Quên mật khẩu
+                  </Link>
+                </Box>
+              </Stack>
+              {/* <Grid item md={12}>
                     <Box style={{ textAlign: 'right' }}>
                       <Typography color="#DD8501" variant="body1">
                         Sign up for account
                       </Typography>
                     </Box>
                   </Grid> */}
-                </Grid>
-              </Grid>
-            </form>
-          </Box>
-        </Paper>
-      </Grid>
+            </Box>
+          </Stack>
+        </form>
+      </Paper>
     </div>
   );
 };

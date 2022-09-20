@@ -22,3 +22,17 @@ export const getUserByIdApi = (userId, searchType) => {
     userInfor.token
   );
 };
+export const getUserByRoleApi = (
+  searchParam,
+  searchType,
+  pageNo,
+  pageSize,
+  sortBy,
+  sortTypeAsc
+) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.get(
+    `${API_LINK.GET_BY_ROLE}?searchParam=${searchParam}&searchType=${searchType}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortTypeAsc=${sortTypeAsc}`,
+    userInfor.token
+  );
+};

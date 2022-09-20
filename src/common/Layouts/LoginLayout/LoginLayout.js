@@ -10,7 +10,6 @@ const LoginLayoutRoute = (props) => {
         render={(routeProps) => {
           return (
             <div>
-     
               <div>
                 <YourComponent {...routeProps} />
               </div>

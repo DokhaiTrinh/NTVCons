@@ -5,12 +5,16 @@ import {
   Paper,
   Grid,
   Button,
-  Stack
+  Stack,
+  TextField,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { createUserApi1 } from './../../apis/User/createUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
 import { getAllRoleApi1 } from '../../apis/Role/GetAllRole';
@@ -20,7 +24,7 @@ import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
-
+import moment from 'moment';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -42,6 +46,7 @@ const CreatePersonnelPage = (props) => {
   const [roleSelected, setRoleSelected] = React.useState();
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
+  const [valueBirthDate, setValueBirthDate] = React.useState(new Date());
   React.useEffect(() => {
     (async () => {
       try {
@@ -52,6 +57,16 @@ const CreatePersonnelPage = (props) => {
       }
     })();
   }, []);
+  const gender = [
+    {
+      value: 'MALE',
+      label: 'Nam',
+    },
+    {
+      value: 'FEMALE',
+      label: 'Nữ',
+    },
+  ];
   const validateSchema = yup
     .object({
       username: yup
@@ -85,6 +100,7 @@ const CreatePersonnelPage = (props) => {
   });
 
   const submitForm = (data) => {
+    const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
     handleCreateUser(
       data.email,
       data.phone,
@@ -92,6 +108,8 @@ const CreatePersonnelPage = (props) => {
       data.username,
       data.password,
       data.fullName,
+      data.gender,
+      planBirthDate,
       filesImage
     );
   };
@@ -102,6 +120,8 @@ const CreatePersonnelPage = (props) => {
     username,
     password,
     fullName,
+    gender,
+    birthdate,
     file
   ) => {
     try {
@@ -113,6 +133,8 @@ const CreatePersonnelPage = (props) => {
         username,
         password,
         fullName,
+        gender,
+        birthdate,
         file,
       });
       setLoading(false);
@@ -166,11 +188,8 @@ const CreatePersonnelPage = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper className='bodynonetab' elevation='none'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Paper className="bodynonetab" elevation="none">
+      <Typography variant="h6" color="#DD8501">
         Tạo mới hồ sơ nhân viên
       </Typography>
       <Divider></Divider>
@@ -198,8 +217,7 @@ const CreatePersonnelPage = (props) => {
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-
-            <Grid item xs={12}>
+              <Grid item xs={12}>
                 <Typography
                   variant="body2"
                   color="#DD8501"
@@ -212,93 +230,117 @@ const CreatePersonnelPage = (props) => {
                   <div className="result">{RenderImage(selectedImages)}</div>
                 </Stack>
               </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Tên đăng nhập
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="username"
-                    errors={errors.username}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
+              <Grid item xs={12}>
+                <Typography variant="body2">Tên đăng nhập</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="username"
+                  errors={errors.username}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Mật khẩu</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="password"
+                  errors={errors.password}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                  isPassword={true}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Họ và tên</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="fullName"
+                  errors={errors.fullName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Giới tính</Typography>
+                <TextField
+                  {...register('gender')}
+                  // error={submitted && !gender}
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  // label="Giới tính"
+                  autoComplete="gender"
+                  select
+                  name="gender"
+                  error={errors.gender != null}
+                  helperText={errors.gender?.message}
+                >
+                  {gender.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Ngày sinh</Typography>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    value={valueBirthDate}
+                    onChange={(newValue) => {
+                      setValueBirthDate(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Mật khẩu
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="password"
-                    errors={errors.password}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                    isPassword={true}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Họ và tên
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="fullName"
-                    errors={errors.fullName}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Điện thoại
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="phone"
-                    // label="Tên vai trò"
-                    errors={errors.phone}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Email
-                  </Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="email"
-                    // label="Tên vai trò"
-                    errors={errors.email}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Chức vụ
-                  </Typography>
-                  <FormControl sx={{ width: '100%' }}>
-                    <Select
-                      onChange={handleChange}
-                      MenuProps={MenuProps}
-                      value={roleSelected}
-                    >
-                      {allRole.length > 0 ? (
-                        allRole.map((roleType, index) => (
-                          <MenuItem value={roleType.roleId} key={index}>
-                            {roleType.roleName}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem>
-                          Không có dữ liệu của danh sách công việc!
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Điện thoại</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="phone"
+                  // label="Tên vai trò"
+                  errors={errors.phone}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Email</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="email"
+                  // label="Tên vai trò"
+                  errors={errors.email}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Chức vụ</Typography>
+                <FormControl sx={{ width: '100%' }}>
+                  <Select
+                    onChange={handleChange}
+                    MenuProps={MenuProps}
+                    value={roleSelected}
+                  >
+                    {allRole.length > 0 ? (
+                      allRole.map((roleType, index) => (
+                        <MenuItem value={roleType.roleId} key={index}>
+                          {roleType.roleName}
                         </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                      ))
+                    ) : (
+                      <MenuItem>
+                        Không có dữ liệu của danh sách công việc!
+                      </MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -306,13 +348,13 @@ const CreatePersonnelPage = (props) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     display: 'flex',
-                    marginTop: '30px'
+                    marginTop: '30px',
                   }}
                 >
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
+                    className="submitButton"
                   >
                     Tạo mới
                   </Button>

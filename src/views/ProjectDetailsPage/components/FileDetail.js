@@ -1,21 +1,12 @@
 import React from 'react';
-import RenderImage from '../../../Components/Render/RenderImage';
-import { Box, Paper, Stack } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import RenderFileCard from '../../../Components/Render/RenderFileCard';
-import FloatingAddButton from '../../../Components/Button/Add/FloatingAddButton';
 
 const FileDetail = (props) => {
-  const blockElements = {
-    content: 'tabs-content',
-    panel: 'tabs-panel',
-    label: 'tabs-title',
-  };
   const { imageGet, docGet } = props;
-  console.log(imageGet);
-  console.log(docGet);
   return (
     <Tabs>
       <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>

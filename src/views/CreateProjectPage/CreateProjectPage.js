@@ -29,6 +29,7 @@ import DialogManagerList from './Components/DialogManagerList';
 import DialogWorkerList from './Components/DialogWorkerList';
 import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
+import { getUserByRoleApi } from '../../apis/User/getAllUser';
 import RenderImage from '../../Components/Render/RenderImage';
 import { Stack } from '@mui/system';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -51,11 +52,13 @@ const CreateProjectPage = (props) => {
   const [loading, setLoading] = useState('');
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
+  const [allUser, setAllUser] = React.useState([]);
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [userListChoice, setUserListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
 
   React.useEffect(() => {
@@ -84,40 +87,42 @@ const CreateProjectPage = (props) => {
       } catch (error) {
         console.log('Không thể lấy danh sách công nhân');
       }
+      try {
+        const listAllUser = await getUserByRoleApi(
+          14,
+          'BY_ROLE_ID',
+          0,
+          1000,
+          'createdAt',
+          false
+        );
+        setAllUser(listAllUser.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách người dùng');
+      }
     })();
   }, []);
   const submitForm = (data) => {
     const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
     const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
-    if (managerListChoice === 0 || workerListChoice === 0) {
-      handleCreateProject(
-        planEndDate,
-        planStartDate,
-        locationDetail,
-        null,
-        data.estimatedCost,
-        data.projectName,
-        null,
-        filesImage
-      );
-    } else {
-      handleCreateProject(
-        planEndDate,
-        planStartDate,
-        locationDetail,
-        managerListChoice,
-        data.estimatedCost,
-        data.projectName,
-        workerListChoice,
-        filesImage
-      );
-    }
+    handleCreateProject(
+      planEndDate,
+      planStartDate,
+      locationDetail,
+      managerListChoice,
+      userListChoice,
+      data.estimatedCost,
+      data.projectName,
+      workerListChoice,
+      filesImage
+    );
   };
   const handleCreateProject = async (
     planEndDate,
     planStartDate,
     location,
-    managerIdList,
+    ntvManagerIdList,
+    userManagerIdList,
     estimatedCost,
     projectName,
     workerIdList,
@@ -129,7 +134,7 @@ const CreateProjectPage = (props) => {
         typeof planEndDate,
         typeof planStartDate,
         typeof location,
-        typeof managerIdList,
+        typeof ntvManagerIdList,
         typeof estimatedCost,
         typeof projectName,
         typeof workerIdList,
@@ -139,7 +144,8 @@ const CreateProjectPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        managerIdList,
+        ntvManagerIdList,
+        userManagerIdList,
         estimatedCost,
         projectName,
         workerIdList,
@@ -152,7 +158,7 @@ const CreateProjectPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/project`);
+      // await window.location.replace(`/project`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -268,8 +274,6 @@ const CreateProjectPage = (props) => {
     }
     input.files = dt.files;
     setFilesImage(input.files);
-
-    // dispatch({ type: 'LOADING', newLoading: !loading });
   };
 
   const handleSelectManager = (options) => {
@@ -279,6 +283,13 @@ const CreateProjectPage = (props) => {
     }
     setManagerListChoice(getIdList);
   };
+  const handleSelectUser = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setUserListChoice(getIdList);
+  };
   const handleSelectWorker = (options) => {
     let getIdList = [];
     for (const option of options) {
@@ -286,7 +297,6 @@ const CreateProjectPage = (props) => {
     }
     setWokerListChoice(getIdList);
   };
-  console.log(allWorker);
   return (
     <Paper className="bodynonetab">
       <Typography variant="h6" color="#DD8501">
@@ -324,51 +334,37 @@ const CreateProjectPage = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              {/* <Grid item container sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    onClick={() => handleOpenManagerListDialog()}
-                  >
-                    Kỹ sư phụ trách
-                  </Button>
-                </Box>
+              <Grid item xs={12}>
+                <Typography variant="body2">Chủ đầu tư</Typography>
+                <Autocomplete
+                  multiple
+                  options={allUser}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  onChange={(e, option) => handleSelectUser(option)}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.fullName}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Chủ đầu tư" />
+                  )}
+                />
               </Grid>
-              <Grid item container columns={12} spacing={2}>
-                {managerListDetail ? (
-                  managerListDetail.map((managerID, index) => (
-                    <Grid item xs={4}>
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Kỹ sư phụ trách: {handleGetManagerName(managerID)}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
-                  </Grid>
-                )}
-              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2">Kỹ sư phụ trách</Typography>
                 <Autocomplete
                   multiple
                   options={allManager}
                   disableCloseOnSelect
-                  getOptionLabel={(option) => option.username}
+                  getOptionLabel={(option) => option.fullName}
                   onChange={(e, option) => handleSelectManager(option)}
                   renderOption={(props, option, { selected }) => (
                     <li {...props}>
@@ -378,7 +374,7 @@ const CreateProjectPage = (props) => {
                         style={{ marginRight: 8 }}
                         checked={selected}
                       />
-                      {option.username}
+                      {option.fullName}
                     </li>
                   )}
                   renderInput={(params) => (

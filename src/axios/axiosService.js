@@ -44,6 +44,21 @@ class AxiosService {
       },
     });
   }
+  postSendMessage(url, body, token) {
+    const formData = new FormData();
+    // if (body) {
+    //   for (let index = 0; index < body.file.length; index++) {
+    //     formData.append('file', body.file[index]);
+    //   }
+    // }
+
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   post3(url, body, token) {
     const formData = new FormData();
     const blueprintDTO = {
@@ -73,7 +88,8 @@ class AxiosService {
       planEndDate: body.planEndDate,
       planStartDate: body.planStartDate,
       location: body.location,
-      managerIdList: body.managerIdList,
+      ntvManagerIdList: body.ntvManagerIdList,
+      userManagerIdList: body.userManagerIdList,
       estimatedCost: body.estimatedCost,
       projectName: body.projectName,
       workerIdList: body.workerIdList,
@@ -177,6 +193,8 @@ class AxiosService {
       username: body.username,
       password: body.password,
       fullName: body.fullName,
+      gender: body.gender,
+      birthdate: body.birthdate,
     };
     const json = JSON.stringify(userDTO);
     formData.append('userDTO', new Blob([json], { type: 'application/json' }));
@@ -225,6 +243,7 @@ class AxiosService {
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
       scale: body.scale,
+      estimatedCost: body.estimatedCost,
     };
     const json = JSON.stringify(createPostModel);
     formData.append(
@@ -325,11 +344,12 @@ class AxiosService {
   putUpdateRequest(url, body, token) {
     const formData = new FormData();
     const requestDTO = {
+      requestId: body.requestId,
       projectId: body.projectId,
       requestDate: body.requestDate,
+      requestName: body.requestName,
       requestDesc: body.requestDesc,
       requestDetailList: body.requestDetailList,
-      requestName: body.requestName,
       requestTypeId: body.requestTypeId,
       requesterId: body.requesterId,
     };
@@ -357,6 +377,7 @@ class AxiosService {
       ownerName: body.ownerName,
       postCategoryId: body.postCategoryId,
       postTitle: body.postTitle,
+      estimatedCost: body.estimatedCost,
       scale: body.scale,
     };
     const json = JSON.stringify(updatePostModel);
@@ -366,6 +387,30 @@ class AxiosService {
     );
     for (let index = 0; index < body.fileList.length; index++) {
       formData.append('postFileList', body.fileList[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  putUpdateUser(url, body, token) {
+    const formData = new FormData();
+    const userDTO = {
+      userId: body.userId,
+      username: body.username,
+      roleId: body.roleId,
+      email: body.email,
+      phone: body.phone,
+      fullName: body.fullName,
+      gender: body.gender,
+      birthdate: body.birthdate,
+    };
+    const json = JSON.stringify(userDTO);
+    formData.append('userDTO', new Blob([json], { type: 'application/json' }));
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('userAvatar', body.file[index]);
     }
     return this.intance.put(url, formData, {
       headers: {

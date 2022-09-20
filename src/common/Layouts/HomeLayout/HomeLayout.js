@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Link } from 'react-router-dom';
 // import { BrowserRouter as Router } from 'react-router-dom';
 
 import { styled, useTheme } from '@mui/material/styles';
@@ -18,9 +18,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
-
 import {
   Apps,
   Menu,
@@ -31,11 +30,11 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
     width: 250,
@@ -118,7 +117,7 @@ const Drawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
-
+// var id = userInfor.id;
 const listItems = [
   // {
   //   listIcon: <Home />,
@@ -151,6 +150,13 @@ const listItems = [
     listText: 'Tin nhắn',
   },
   {
+    listIcon: <PersonIcon />,
+    // path: `/userProfile/${userInfor.id}`,
+    path: '#',
+    // path: '#',
+    listText: 'Hồ sơ',
+  },
+  {
     listIcon: <LogoutIcon />,
     path: '/',
     listText: 'Đăng xuất',
@@ -163,8 +169,6 @@ const HomeLayoutRoute = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
-  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -231,9 +235,14 @@ const HomeLayoutRoute = (props) => {
                     src="https://i.ibb.co/rx5DFbs/avatar.png"
                     alt="Juaneme8"
                   /> */}
-                  <h3 style={{ marginRight: '35px', marginLeft: '8px' }}>
-                    {userInfor.fullName}
-                  </h3>
+                  <Route>
+                    <Typography
+                      variant="h6"
+                      style={{ marginRight: '35px', marginLeft: '8px' }}
+                    >
+                      {userInfor.fullName}
+                    </Typography>
+                  </Route>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? (
                       <ChevronRightIcon />
@@ -287,7 +296,7 @@ const HomeLayoutRoute = (props) => {
                         </ListItem>
                       </NavLink>
                     ) : userInfor.authorID === '24' &&
-                      (index <= 1 || index >= 5 || index === 3) ? (
+                      (index <= 1 || index >= 4 || index === 3) ? (
                       <NavLink
                         to={listItem.path}
                         key={index}

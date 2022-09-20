@@ -123,7 +123,7 @@ const CreateRequestProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      // await window.location.replace(`/projectDetailsManager/${id}`);
+      await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',

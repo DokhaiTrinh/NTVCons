@@ -14,6 +14,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
 import RenderImage from '../../../Components/Render/RenderImage';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
+import Header from '../../../Components/Tab/Header';
+import IconButtonCus from '../../../Components/Button/IconButtonCus';
+
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 export const Blueprint = (props) => {
@@ -99,7 +102,16 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div className="bodynonetab">
+    <div >
+      {Header(`/createBlueprint/${id}`)}
+      {userInfor.authorID !== '54' ? null : (
+        <IconButtonCus
+          onClick={() => {
+            // `/editProjectDetails/${id}`;
+          }}
+          icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
+        />
+      )}
       <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item xs={11}>
@@ -141,35 +153,27 @@ export const Blueprint = (props) => {
             )} */}
         </Grid>
         <Divider sx={{ marginBottom: '20px' }}></Divider>
-        <Grid container rowSpacing={{ xs: 5 }}>
+        <Grid container spacing={5}>
           <Grid item xs="4">
-            <Typography variant="caption">
-              Tên bản vẽ
-            </Typography>
+            <Typography variant="caption">Tên bản vẽ</Typography>
             <Typography variant="body1">
               {blueprintDetail.blueprintName}
             </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="caption">
-              Người thiết kế
-            </Typography>
+            <Typography variant="caption">Người thiết kế</Typography>
             <Typography variant="body1">
               {blueprintDetail.designerName}
             </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="caption">
-              Giá bản vẽ
-            </Typography>
+            <Typography variant="caption">Giá bản vẽ</Typography>
             <Typography variant="body1">
               {blueprintDetail.estimatedCost} VND
             </Typography>
           </Grid>
           <Grid item xs="4">
-            <Typography variant="caption">
-              Hình ảnh
-            </Typography>
+            <Typography variant="caption">Hình ảnh</Typography>
 
             {/* <input
                 type="file"

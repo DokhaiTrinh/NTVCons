@@ -89,7 +89,7 @@ export const CREATE_REQUEST_WITH_FILE =
 export const UPDATE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1.1/updateRequest';
 export const UPDATE_REQUEST_WITH_FILE =
-  'http://niemtinvang.herokuapp.com/request/v1/updateRequest/withFile';
+  'http://niemtinvang.herokuapp.com/request/v1/editRequest/withFile';
 export const DELETE_REQUEST =
   'http://niemtinvang.herokuapp.com/request/v1/deleteRequest';
 export const GET_ALL_REQUEST =
@@ -124,10 +124,16 @@ export const DELETE_WORKER =
 //API LINK CỦA USER
 export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
 export const GET_BY_ID = 'http://niemtinvang.herokuapp.com/user/v1/getByParam';
+export const GET_BY_ROLE =
+  'http://niemtinvang.herokuapp.com/user/v1/getAllByParam';
 export const CREATE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/createUser';
 export const CREATE_USER_WITH_FILE =
   'http://niemtinvang.herokuapp.com/user/v1/createUser/withFile';
+export const UPDATE_USER_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/user/v1/updateUser/withFile';
+export const UPDATE_USER =
+  'http://niemtinvang.herokuapp.com/user/v1/updateUser/';
 export const DELETE_USER =
   'http://niemtinvang.herokuapp.com/user/v1/deleteUser';
 //API LINK CỦA MANAGER
@@ -181,3 +187,16 @@ export const SEND_EMAIL_GET_OTP =
   'http://niemtinvang.herokuapp.com/resetPasswordOTPEmail';
 export const VALIDATE_OTP = 'http://niemtinvang.herokuapp.com/validateOTP';
 export const RESET_PASSWORD = 'http://niemtinvang.herokuapp.com/resetPassword';
+
+export const GET_USER_CONVERSATIONS =
+  'http://niemtinvang.herokuapp.com/conversation/v1/getUserConversations';
+export const GET_BY_CONVERSATION_ID =
+  'http://niemtinvang.herokuapp.com/message/v1/getByConversationId';
+export const SEND_MESSAGE_AUTHENTICATED =
+  'http://niemtinvang.herokuapp.com/message/v1/sendMessageAuthenticated';
+export const CREATE_CONVERSATION_BY_AUTHENTICATED =
+  'http://niemtinvang.herokuapp.com/conversation/v1/createConversationForAuthenticated';
+export const SEEN_MEESAGE =
+  'http://niemtinvang.herokuapp.com/message/v1/seenMessageAuthenticated';
+export const SET_CONSULTANT_FOR_CHAT =
+  'http://niemtinvang.herokuapp.com/conversation/v1/setConsultantForChat';

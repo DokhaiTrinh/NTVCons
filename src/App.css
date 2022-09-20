@@ -91,22 +91,23 @@
     color: #696969;
 }
 
-.MuiTextField-root{
+/* .MuiTextField-root fieldset{
     background: #F1F1F1;
-    outline-color: transparent !important;
+    border-color: green;
+} */
+
+.MuiTextField-root fieldset{
+    border-color: #DD8501;
 }
 
-.MuiTextField-root:focus{
-    outline: none;
-}
+/* 
+.MuiOutlinedInput-root fieldset{
+    border-color: #DD8501;
+} */
+
 
 .MuiFormControl-root{
     background: #F1F1F1;
-}
-
-.Mui-selected{
-    
-    color: #DD8501;
 }
 
 .MuiSpeedDial-root{
