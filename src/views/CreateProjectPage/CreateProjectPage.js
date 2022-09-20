@@ -5,9 +5,10 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
+  Checkbox,
+  Autocomplete,
 } from '@mui/material';
-import axios from 'axios';
-import { Image } from 'cloudinary-react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
@@ -15,115 +16,148 @@ import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import swal from 'sweetalert2-react';
-import Moment from 'react-moment';
-import { createProjectApi } from '../../apis/Project/createProject';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Swal from 'sweetalert2';
+import moment from 'moment';
+import { createProjectApi1 } from '../../apis/Project/createProject';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import DialogLocation from './Components/DialogLocation';
+import DialogManagerList from './Components/DialogManagerList';
+import DialogWorkerList from './Components/DialogWorkerList';
+import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
+import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
+import { getUserByRoleApi } from '../../apis/User/getAllUser';
+import RenderImage from '../../Components/Render/RenderImage';
+import { Stack } from '@mui/system';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 const CreateProjectPage = (props) => {
-  const [valueStart, setValueStart] = React.useState(new Date());
-  const [valueEnd, setValueEnd] = React.useState(new Date());
+  const [valuePlanStartDate, setValuePlanStartDate] = React.useState(
+    new Date()
+  );
+  const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
+  const [locationDetail, setLocationDetail] = React.useState();
 
-  // const [imageSelected, setImageSelected] = useState('');
-  // const [imageData, setImageData] = useState('');
-  // const date = `${current.getDate()}/${
-  //   current.getMonth() + 1
-  // }/${current.getFullYear()}`;
+  // Dữ liệu list manager này phải là array. Để thêm dữ liệu zô array ở thằng report có mẫu á.
+  const [managerListDetail, setManagerListDetail] = React.useState([]);
+  const [openLocationDialog, setOpenLocationDialog] = useState(false);
+  const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
 
-  const handleGetDate = (date) => {
-    const getDate = date.substring(0, 10);
-    const getDateCom = getDate.split('-');
-    const getDateReformat = ''.concat(
-      getDateCom[2],
-      '-',
-      getDateCom[1],
-      '-',
-      getDateCom[0]
-    );
-    return getDateReformat;
-  };
-
+  const [workerListDetail, setWorkerListDetail] = React.useState([]);
+  const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
-  console.log(valueStart);
+  const [allManager, setAllManager] = React.useState([]);
+  const [allWorker, setAllWorker] = React.useState([]);
+  const [allUser, setAllUser] = React.useState([]);
+  const [filesImage, setFilesImage] = useState([]);
+  const [selectedImages, setSelectedImage] = useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [managerListChoice, setManagerListChoice] = React.useState([]);
+  const [userListChoice, setUserListChoice] = React.useState([]);
+  const [workerListChoice, setWokerListChoice] = React.useState([]);
 
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const listAllManager = await getAllManagerApi1(
+          0,
+          1000,
+          44,
+          'BY_ROLE_ID',
+          'createdAt',
+          true
+        );
+        setAllManager(listAllManager.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách kỹ sư');
+      }
+      try {
+        const listAllWorker = await getAllWorkerApi1(
+          0,
+          1000,
+          'createdAt',
+          true
+        );
+        setAllWorker(listAllWorker.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách công nhân');
+      }
+      try {
+        const listAllUser = await getUserByRoleApi(
+          14,
+          'BY_ROLE_ID',
+          0,
+          1000,
+          'createdAt',
+          false
+        );
+        setAllUser(listAllUser.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách người dùng');
+      }
+    })();
+  }, []);
   const submitForm = (data) => {
-    console.log(data);
+    const planStartDate = moment(valuePlanStartDate).format('YYYY-MM-DD HH:mm');
+    const planEndDate = moment(valuePlanEndDate).format('YYYY-MM-DD HH:mm');
     handleCreateProject(
-      data.actualEndDate,
-      data.actualStartDate,
-      data.addressNumber,
-      data.area,
-      data.blueprintEstimateCost,
-      data.city,
-      data.coordinate,
-      data.country,
-      data.designerName,
-      data.district,
-      data.planEndDate,
-      data.planStartDate,
-      data.projectActualCost,
-      data.projectBlueprintName,
-      data.projectEstimateCost,
+      planEndDate,
+      planStartDate,
+      locationDetail,
+      managerListChoice,
+      data.estimatedCost,
       data.projectName,
-      data.province,
-      data.street,
-      data.ward
+      workerListChoice,
+      filesImage
     );
   };
   const handleCreateProject = async (
-    actualEndDate,
-    actualStartDate,
-    addressNumber,
-    area,
-    blueprintEstimateCost,
-    city,
-    coordinate,
-    country,
-    designerName,
-    district,
     planEndDate,
     planStartDate,
-    projectActualCost,
-    projectBlueprintName,
-    projectEstimateCost,
+    location,
+    managerIdList,
+    estimatedCost,
     projectName,
-    province,
-    street,
-    ward
+    workerIdList,
+    fileList
   ) => {
     try {
       setLoading(true);
-      await createProjectApi({
-        actualEndDate,
-        actualStartDate,
-        addressNumber,
-        area,
-        blueprintEstimateCost,
-        city,
-        coordinate,
-        country,
-        designerName,
-        district,
+      console.log(
+        typeof planEndDate,
+        typeof planStartDate,
+        typeof location,
+        typeof managerIdList,
+        typeof estimatedCost,
+        typeof projectName,
+        typeof workerIdList,
+        typeof fileList
+      );
+      await createProjectApi1({
         planEndDate,
         planStartDate,
-        projectActualCost,
-        projectBlueprintName,
-        projectEstimateCost,
+        location,
+        managerIdList,
+        estimatedCost,
         projectName,
-        province,
-        street,
-        ward,
+        workerIdList,
+        fileList,
       });
       setLoading(false);
-      await swal.fire({
+      await Swal.fire({
         icon: 'success',
         text: 'Tạo dự án thành công',
         timer: 3000,
         showConfirmButton: false,
       });
+      await window.location.replace(`/project`);
     } catch (error) {
-      await swal.fire({
+      await Swal.fire({
         icon: 'error',
         text: error.response.data,
         timer: 3000,
@@ -134,52 +168,15 @@ const CreateProjectPage = (props) => {
   };
   const valideSchema = yup
     .object({
-      addressNumber: yup.number(),
-      area: yup.string().min(5, 'Tên khu vực phải lớn hơn 5'),
-      blueprintEstimateCost: yup
+      estimatedCost: yup
         .number()
-        .min(1, 'Giá tiền phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ'),
-      city: yup
-        .string()
-        .min(5, 'Tên thành phố phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      coordinate: yup
-        .string()
-        .min(5, 'Tên điều phối phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      country: yup
-        .string()
-        .min(5, 'Tên quốc gia phải lớn hơn 5')
-        .max(50, 'Tên thành phố không được quá 50'),
-      designerName: yup
-        .string()
-        .min(5, 'Người thiết kế phải có tên lớn hon 5')
-        .required('Phải nhập tên người thiết kế'),
-      district: yup
-        .string()
-        .min(5, 'Tên quận phải lớn hon 5')
-        .max(50, ' Tên quận không được lớn hơn 50'),
-      projectActualCost: yup
-        .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
-        .typeError('Giá tiền phải là số tính theo VNĐ'),
-      projectBlueprintName: yup
-        .string()
-        .min(5, 'Tên bản vẽ phải lớn hơn 5')
-        .required('Phải nhập bản vẽ'),
-      projectEstimateCost: yup
-        .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
+        .min(100000000, 'Giá trị thấp nhất phải là 100.000.000 VNĐ')
         .typeError('Giá tiền phải là số tính theo VNĐ'),
       projectName: yup
         .string()
         .min(5, 'Tên dự án phải lớn hơn 5')
         .max(50, 'Tên dự án không được lớn hơn 50')
-        .required(),
-      province: yup.string(),
-      street: yup.string(),
-      ward: yup.string(),
+        .required('Tên dự án đã trùng với dự án khác!!'),
     })
     .required();
   const {
@@ -189,19 +186,11 @@ const CreateProjectPage = (props) => {
   } = useForm({
     resolver: yupResolver(valideSchema),
   });
-
- 
-  // const handleChangeDate = (date) => {
-  //   // console.log(date);
-  //   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   let dateString =  new Date(date).toLocaleDateString([],options);
-    
-  // } 
-  // const uploadImage = () => {
+  // const uploadImage = (e) => {
   //   const formData = new FormData();
+  //   console.log(bluePrintDetail);
   //   formData.append('file', imageSelected);
   //   formData.append('upload_preset', 'u78fm100');
-
   //   const postImage = async () => {
   //     try {
   //       const response = await axios.post(
@@ -215,229 +204,487 @@ const CreateProjectPage = (props) => {
   //     }
   //   };
   //   postImage();
+  //   e.preventDefault();
   // };
+  const handleOpenLocationDialog = () => {
+    setOpenLocationDialog(true);
+  };
+  const handleCloseLocationDialog = () => {
+    setOpenLocationDialog(false);
+  };
+  // const handleOpenManagerListDialog = () => {
+  //   setOpenManagerListDialog(true);
+  // };
+  const handleCloseManagerListDialog = () => {
+    setOpenManagerListDialog(false);
+  };
+  // const handleOpenWorkerDialog = () => {
+  //   setOpenWorkerListDialog(true);
+  // };
+  const handleCloseWorkerDialog = () => {
+    setOpenWorkerListDialog(false);
+  };
 
+  // const handleGetManagerName = (managerID) => {
+  //   if (allManager.length > 0) {
+  //     for (const manager of allManager) {
+  //       if (manager.userId === managerID) {
+  //         return manager.username;
+  //       }
+  //     }
+  //   }
+  //   return '';
+  // };
+  // const handleGetWorkerName = (workerId) => {
+  //   if (allWorker.length > 0) {
+  //     for (const worker of allWorker) {
+  //       if (worker.workerId === workerId) {
+  //         return worker.fullName;
+  //       }
+  //     }
+  //   }
+  // };
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+  const handleDeleteImage = (photo, indexImage) => {
+    const index = selectedImages.indexOf(photo);
+    if (index > -1) {
+      selectedImages.splice(index, 1);
+      // dispatch({ type: "LOADING", newLoading: !loading });
+    }
+    const dt = new DataTransfer();
+    const input = document.getElementById('files');
+    const { files } = input;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+    }
+    input.files = dt.files;
+    setFilesImage(input.files);
+  };
+
+  const handleSelectManager = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setManagerListChoice(getIdList);
+  };
+  console.log(setManagerListChoice);
+  const handleSelectUser = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setUserListChoice(getIdList);
+  };
+  console.log(setUserListChoice);
+  const handleSelectWorker = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.workerId);
+    }
+    setWokerListChoice(getIdList);
+  };
   return (
-    <div>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
+    <Paper className="bodynonetab">
+      <Typography variant="h6" color="#DD8501">
         TẠO MỚI DỰ ÁN
       </Typography>
       <Divider></Divider>
-      <Box sx={{ paddingLeft: '10px', paddingTop: '10px', width: '40%' }}>
-        <Typography variant="body1" color="#DD8501" fontWeight="bold">
-          Thông tin dự án
-        </Typography>
-        <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-        <Box sx={{ width: '100%', height: '20px' }}></Box>
-        <form onSubmit={handleSubmit(submitForm)}>
-          <Grid container spacing={2}>
-            {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Mã dự án
-              </Typography>
-              <TextField
-                id="project-name"
-                placeholder="Mã dự án"
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid> */}
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên dự án
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectName"
-                label="Tên dự án"
-                errors={errors.projectName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Tên Bản vẽ
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectBlueprintName"
-                errors={errors.projectBlueprintName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá bản vẽ
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="blueprintEstimateCost"
-                errors={errors.blueprintEstimateCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Người thiết kế
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="designerName"
-                errors={errors.designerName}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid container item xs={12} spacing={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            paddingLeft: '10px',
+            paddingTop: '10px',
+            width: '40%',
+            marginBottom: '30px',
+          }}
+        >
+          <form onSubmit={handleSubmit(submitForm)}>
+            <Typography variant="body1" color="#DD8501" fontWeight="bold">
+              Thông tin dự án
+            </Typography>
+            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2" color="#DD8501">
-                  Thời gian dự kiến
-                </Typography>
+                <Typography variant="body2">Tên dự án</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="projectName"
+                  errors={errors.projectName}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">Bắt đầu dự kiến</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  
-                  openTo="year"
-                  views={['year', 'month', 'day']}
-                  value={valueEnd}
-                  format="DD-MM-YYYY HH:ss"
-                  onChange={(newValue) => {
-                    setValueStart(newValue);
-                  }}
+              <Grid item xs={12}>
+                <Typography variant="body2">Chủ đầu tư</Typography>
+                <Autocomplete
+                  multiple
+                  options={allUser}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  onChange={(e, option) => handleSelectUser(option)}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.fullName}
+                    </li>
+                  )}
                   renderInput={(params) => (
-                    <TextField {...params} fullWidth />
+                    <TextField {...params} placeholder="Chủ đầu tư" />
                   )}
                 />
-                </LocalizationProvider>
               </Grid>
-              {/* <Grid item xs={6}>
-                <Typography variant="body2">Kết thúc dự kiến</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                  
-                    openTo="year"
-                    views={['year', 'month', 'day']}
-                    value={valueEnd}
-                    onChange={(newValue) => {
-                      setValueEnd(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid> */}
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Kỹ sư phụ trách
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="city"
-                label="Địa chỉ"
-                errors={errors.city}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Địa chỉ
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="city"
-                label="Địa chỉ"
-                errors={errors.city}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá dự kiến
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectEstimateCost"
-                label="Giá dự kiến"
-                errors={errors.projectEstimateCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Giá thực tế
-              </Typography>
-              <TextFieldComponent
-                register={register}
-                name="projectActualCost"
-                label="Giá thực té"
-                errors={errors.projectActualCost}
-                variant="outlined"
-                sx={{ width: '100%' }}
-              />
-            </Grid>
-            {/* <Grid item xs={12}>
-              <Typography variant="body2" color="#DD8501">
-                Chọn file
-              </Typography>
-              <input
-                type="file"
-                name="file"
-                onChange={(event) => {
-                  setImageSelected(event.target.files[0]);
-                }}
-              />
-            </Grid> */}
-            {/* <Grid>
-              {imageData && (
-                <Image
-                  cloudName="niem-tin-vang"
-                  publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
+              <Grid item xs={12}>
+                <Typography variant="body2">Kỹ sư phụ trách</Typography>
+                <Autocomplete
+                  multiple
+                  options={allManager}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  onChange={(e, option) => handleSelectManager(option)}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.fullName}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Kỹ sư" />
+                  )}
                 />
-              )}
-            </Grid> */}
-
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  style={{
-                    backgroundColor: '#DD8501',
-                    borderRadius: 50,
-                    width: '200px',
-                    alignSelf: 'center',
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Chi phí ước tính</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="estimatedCost"
+                  errors={errors.estimatedCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                  label="VNĐ"
+                />
+              </Grid>
+              <Grid container item xs={12} spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Thời gian dự kiến</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Bắt đầu dự kiến</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={valuePlanStartDate}
+                      onChange={(newValue) => {
+                        setValuePlanStartDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2">Kết thúc dự kiến</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DateTimePicker
+                      renderInput={(props) => <TextField {...props} />}
+                      value={valuePlanEndDate}
+                      onChange={(newValue) => {
+                        setValuePlanEndDate(newValue);
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
+              {/* <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
                   }}
-                  // onClick={uploadImage}
                 >
-                  Lưu
-                </Button>
-              </Box>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#DD8501',
+                      borderRadius: 50,
+                      width: '200px',
+                      alignSelf: 'center',
+                    }}
+                    onClick={() => handleOpenBluePrintDialog()}
+                  >
+                    Chi tiết bản vẽ
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {bluePrintDetail ? (
+                  <Grid item xs={4}>
+                    <Box sx={{ width: '100%' }}>
+                      <Card sx={{ width: '100%' }}>
+                        <CardContent>
+                          <Typography>
+                            Tên bản vẽ: {bluePrintDetail.blueprintName}
+                          </Typography>
+                          <Typography>
+                            Nhà thiết kế: {bluePrintDetail.designerName}
+                          </Typography>
+                          <Typography>
+                            Giá bản vẽ: {bluePrintDetail.estimatedCost}{' '}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của bản vẽ chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid> */}
+
+              <Grid item xs={12}>
+                <Typography variant="body2">Công nhân</Typography>
+                <Autocomplete
+                  multiple
+                  options={allWorker}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.fullName}
+                  onChange={(e, option) => handleSelectWorker(option)}
+                  renderOption={(props, option, { selected }) =>
+                    option.isAvailable ? (
+                      <li {...props}>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {option.fullName}
+                      </li>
+                    ) : null
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Công nhân" />
+                  )}
+                />
+              </Grid>
+              <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleOpenLocationDialog()}
+                  >
+                    Địa điểm thi công
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12}>
+                {locationDetail ? (
+                  <Paper className="tag">
+                    <Stack direction="row" spacing={1}>
+                      <Typography>{locationDetail.addressNumber},</Typography>
+                      <Typography>{locationDetail.street},</Typography>
+                      <Typography>{locationDetail.ward},</Typography>
+                      <Typography>{locationDetail.district},</Typography>
+                      <Typography>{locationDetail.city}</Typography>
+                    </Stack>
+                  </Paper>
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu!</div>
+                  </Grid>
+                )}
+              </Grid>
+              {/* <Grid item container sx={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'left',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleOpenWorkerDialog()}
+                  >
+                    Danh sách công nhân
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container columns={12} spacing={2}>
+                {workerListDetail ? (
+                  workerListDetail.map((workerId, index) => (
+                    <Grid item xs={4}>
+                      <Box sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%' }}>
+                          <CardContent>
+                            <Typography>
+                              Công nhân: {handleGetWorkerName(workerId)}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid> */}
+              <Grid item container xs={12}>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
+
+                <div className="result">{RenderImage(selectedImages)}</div>
+                {/* <input type="file" multiple {...register("file")} /> */}
+              </Grid>
+              {/* <Grid item xs={12}>
+                <Typography variant="body2">
+                  Người quản lý
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="createdBy"
+                  errors={errors.createdBy}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid> */}
+              {/* <Grid item xs={12}>
+                <Typography variant="body2">
+                  Giá chính thức
+                </Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="actualCost"
+                  errors={errors.actualCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid> */}
+
+              {/* <Grid item xs={12}>
+                <Typography variant="body2">
+                  Chọn file
+                </Typography>
+                <inputF
+                  type="file"
+                  name="file"
+                  onChange={(event) => {
+                    setImageSelected(event.target.files[0]);
+                  }}
+                />
+              </Grid>
+              <Grid>
+                {imageData && (
+                  <Image
+                    cloudName="niem-tin-vang"
+                    publicId={`http://res.cloudinary.com/niem-tin-vang/image/upload/v1655116089/${imageData.public_id}`}
+                  />
+                )}
+              </Grid> */}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="submitButton"
+                    // onClick={(event) => uploadImage(event)}
+                  >
+                    Tạo mới dự án
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
+        </Box>
       </Box>
-    </div>
+      <Dialog open={openLocationDialog} onClose={handleCloseLocationDialog}>
+        <DialogLocation
+          handleCloseLocationDialog={handleCloseLocationDialog}
+          setLocationDetail={setLocationDetail}
+          locationDetail={locationDetail}
+        ></DialogLocation>
+      </Dialog>
+      {/* <Dialog open={openBluePrintDialog} onClose={handleCloseBluePrintDialog}>
+        <DialogBluePrint
+          handleCloseBluePrintDialog={handleCloseBluePrintDialog}
+          setBluePrintDetail={setBluePrintDetail}
+          bluePrintDetail={bluePrintDetail}
+        ></DialogBluePrint>
+      </Dialog> */}
+      <Dialog
+        open={openManagerListDialog}
+        onClose={handleCloseManagerListDialog}
+      >
+        <DialogManagerList
+          handleCloseManagerListDialog={handleCloseManagerListDialog}
+          allManager={allManager}
+          setManagerListDetail={setManagerListDetail}
+          managerListDetail={managerListDetail}
+        ></DialogManagerList>
+      </Dialog>
+      <Dialog open={openWorkerListDialog} onClose={handleCloseWorkerDialog}>
+        <DialogWorkerList
+          handleCloseWorkerDialog={handleCloseWorkerDialog}
+          allWorker={allWorker}
+          setWorkerListDetail={setWorkerListDetail}
+          workerListDetail={workerListDetail}
+        ></DialogWorkerList>
+      </Dialog>
+    </Paper>
   );
 };
 

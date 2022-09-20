@@ -83,7 +83,7 @@ const WorkDetailsPage = (props) => {
                     <Box>
                         <Grid container>
                             <Grid item xs={12}>
-                                <IconButton aria-label="edit report" component={Link} to={('/editReport')} sx={{ height: "100%"}}>
+                                <IconButton aria-label="edit report" component={Link} to={('/updateTask')} sx={{ height: "100%"}}>
                                     <Box sx={{height: "30px" }}>
 
                                         <EditOutlinedIcon fontSize="large" />

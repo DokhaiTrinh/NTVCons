@@ -1,14 +1,7 @@
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import { Add } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import OutputOutlinedIcon from '@mui/icons-material/OutputOutlined';
 import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -19,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { getAllProjectApi } from '../../apis/Project/getAllProject';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -96,11 +90,16 @@ const ProjectPage = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
-  console.log(pageNo, pageSize, sortBy, sortType);
+
   const [allProject, setAllProject] = React.useState([]);
-  console.log(allProject);
+  const [totalPage, setTotalPage] = React.useState();
+  const [managerList, setManagerList] = React.useState();
+  const handleChangePage = (event, value) => {
+    dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
+  };
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -108,139 +107,45 @@ const ProjectPage = (props) => {
           pageNo,
           pageSize,
           sortBy,
-          sortType,
+          sortTypeAsc,
         });
         setAllProject(listAllProject.data);
+        setTotalPage(listAllProject.data[0].totalPage);
+        setManagerList(listAllProject.data.projectWorkerList);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType]);
-
+  }, [pageNo, pageSize, sortBy, sortTypeAsc, loading]);
   return (
     <div>
-      <Grid container justify="center">
-        <Grid container md="8">
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ margin: '20px' }}
-            >
-              <IconButton
-                aria-label="add"
-                sx={{ alignSelf: 'center', backgroundColor: '#DD8501' }}
-                component={Link}
-                to={'/createProject'}
-              >
-                <Add sx={{ color: 'white' }}></Add>
-              </IconButton>
-            </Box>
-          </Grid>
-          <Grid item>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ height: '100%' }}
-            >
-              <Typography variant="body1">Danh sách dự án</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid item md="4">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: '20px',
-              border: 2,
-              borderColor: '#DD8501',
-              borderRadius: '10px',
-            }}
-          >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Tìm kiếm"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Box>
-        </Grid>
-      </Grid>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Tất cả" {...a11yProps(0)} />
-            <Tab label="Chờ" {...a11yProps(1)} />
-            <Tab label="Đang thực hiện" {...a11yProps(2)} />
-            <Tab label="Hoàn thành" {...a11yProps(3)} />
-            <Tab label="Tạm dừng" {...a11yProps(4)} />
-            <Tab label="Đã hủy" {...a11yProps(5)} />
-            <Box sx={{ flex: 1 }}></Box>
-            <IconButton aria-label="export">
-              <Box>
-                <OutputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Xuất</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="import">
-              <Box>
-                <InputOutlinedIcon />
-                <div>
-                  <Typography variant="button">Nhập</Typography>
-                </div>
-              </Box>
-            </IconButton>
-            <IconButton aria-label="setting">
-              <Box>
-                <SettingsOutlinedIcon />
-                <div>
-                  <Typography variant="button">Cài đặt</Typography>
-                </div>
-              </Box>
-            </IconButton>
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <Box width="100%">
-            {allProject ? (
-              allProject.length > 0 ? (
-                <ProjectTable allProject={allProject}></ProjectTable>
-              ) : (
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Tất cả" {...a11yProps(0)} />
+          <Box sx={{ flex: 1 }}></Box>
+        </Tabs>
+        <div className='body'>
+          <TabPanel value={value} index={0}>
+            <Box width="100%">
+              {/* {allProject ? (
+              allProject.length > 0 ? ( */}
+              <ProjectTable
+                allProject={allProject}
+                totalPage={totalPage}
+              ></ProjectTable>
+              {/* ) : (
                 <div>Không có dữ liệu để hiển thị</div>
               )
-            ) : null}
-          </Box>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ProjectTable></ProjectTable>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          Item Five
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
-        </TabPanel>
+            ) : null} */}
+            </Box>
+          </TabPanel>
+        </div>
       </Box>
     </div>
   );

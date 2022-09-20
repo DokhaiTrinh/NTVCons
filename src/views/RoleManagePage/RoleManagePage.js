@@ -8,10 +8,11 @@ import InputBase from '@mui/material/InputBase';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-// import { RoleTable } from './components/RoleTable';
+import { RoleTable } from './components/RoleTable';
 import { Link } from 'react-router-dom';
 import { getAllRoleApi } from './../../apis/Role/GetAllRole';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
+import Header from '../../Components/Tab/Header';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -38,56 +39,14 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-const a11yProps = (index) => {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-};
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
+
 const RoleManagePage = (props) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [{ pageNo, pageSize, sortBy, sortType, loading }, dispatch] =
+  const [{ pageNo, pageSize, sortBy, sortTypeAsc, loading }, dispatch] =
     useStateValue();
 
   const [allRole, setAllRole] = React.useState([]);
@@ -99,19 +58,19 @@ const RoleManagePage = (props) => {
           pageNo,
           pageSize,
           sortBy,
-          sortType,
+          sortTypeAsc,
         });
         setAllRole(listAllRole.data);
       } catch (error) {
         console.log('Không thể lấy danh sách role');
       }
     })();
-  }, [pageNo, pageSize, sortBy, sortType]);
+  }, [pageNo, pageSize, sortBy, sortTypeAsc]);
   console.log(allRole);
 
   return (
     <div>
-      <Grid container justify="center">
+      {/* <Grid container justify="center">
         <Grid container md="8">
           <Grid item>
             <Box
@@ -141,31 +100,8 @@ const RoleManagePage = (props) => {
             </Box>
           </Grid>
         </Grid>
-        <Grid item md="4">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: '20px',
-              border: 2,
-              borderColor: '#DD8501',
-              borderRadius: '10px',
-            }}
-          >
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Tìm kiếm"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Box>
-        </Grid>
-      </Grid>
-      <Box sx={{ width: '100%' }}>
+      </Grid> */}
+      {/* <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
             variant="scrollable"
@@ -177,13 +113,20 @@ const RoleManagePage = (props) => {
             <Tab label="Tất cả" {...a11yProps(0)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0}> */}
           <Box width="100%">
-            {/* <RoleTable></RoleTable> */}
-         
+            <RoleTable allRole={allRole}></RoleTable>
+            {/* {allRole ? (
+              allRole.length > 0 ? (
+                <RoleTable allRole={allRole}></RoleTable>
+             
+              ) : (
+                <div>Không có dữ liệu để hiển thị</div>
+              )
+            ) : null} */}
           </Box>
-        </TabPanel>
-      </Box>
+        {/* </TabPanel> */}
+      {/* </Box> */}
     </div>
   );
 };
