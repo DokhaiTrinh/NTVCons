@@ -184,6 +184,8 @@ const ChatPage = (props) => {
         setMsgInputValue('');
       } else {
         await createConversationByAuthenticated(managerChoice.userId, message,filesImage);
+        await handleGetConversationById(conversationId);
+        setMsgInputValue('');
       }
     } catch (error) {
       console.log("Lỗi sảy ra khi gửi tin nhắn " + error.message);
@@ -239,7 +241,7 @@ const ChatPage = (props) => {
                 ))
               ) : (
                 <></>
-                
+
               )
             ) : (
               <Conversation
