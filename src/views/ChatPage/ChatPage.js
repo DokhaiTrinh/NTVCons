@@ -90,15 +90,13 @@ const ChatPage = (props) => {
   });
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
- 
+
     if (e.target.files) {
       const fileArray = Array.from(e.target.files).map((file) =>
         URL.createObjectURL(file)
       );
       setSelectedImage((prevImages) => prevImages.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
-
-      
     }
   };
   React.useEffect(() => {
@@ -132,13 +130,11 @@ const ChatPage = (props) => {
         }
       })();
     }
-  }, [conversationId,conversationById]);
-
+  }, [conversationId, conversationById]);
 
   const handleGetConversationById = async (conversationId) => {
     try {
-
-      if(conversationId){
+      if (conversationId) {
         const listConversationById = await getConversationsById(
           conversationId,
           0,
@@ -151,18 +147,20 @@ const ChatPage = (props) => {
         // }
         setConversationById(listConversationById.data);
         setConversationId(conversationId);
-      }
-      else{
-        if(managerChoice){
+      } else {
+        if (managerChoice) {
           for (const user of userConversation) {
-            if(user.user1Id === managerChoice.userId || user.user2Id === managerChoice.userId){
+            if (
+              user.user1Id === managerChoice.userId ||
+              user.user2Id === managerChoice.userId
+            ) {
               const listConversationById = await getConversationsById(
                 user.conversationId,
                 0,
                 200,
                 'messageId',
                 true
-              )
+              );
               setConversationById(listConversationById.data);
               setConversationId(user.conversationId);
             }
@@ -175,27 +173,29 @@ const ChatPage = (props) => {
     }
   };
 
-
-  const handleSend = async(message) => {
+  const handleSend = async (message) => {
     try {
       if (conversationId) {
-        await sendMessageAuthenticated(conversationId, message,filesImage);
+        await sendMessageAuthenticated(conversationId, message, filesImage);
         await handleGetConversationById(conversationId);
         setMsgInputValue('');
       } else {
-        await createConversationByAuthenticated(managerChoice.userId, message,filesImage);
+        await createConversationByAuthenticated(
+          managerChoice.userId,
+          message,
+          filesImage
+        );
         await handleGetConversationById(conversationId);
         setMsgInputValue('');
       }
     } catch (error) {
-      console.log("Lỗi sảy ra khi gửi tin nhắn " + error.message);
+      console.log('Lỗi sảy ra khi gửi tin nhắn ' + error.message);
     }
   };
   const handleSelectUser = async (options) => {
     setManagerChoice(options);
   };
 
- 
   return (
     <div
       style={{
@@ -241,11 +241,9 @@ const ChatPage = (props) => {
                 ))
               ) : (
                 <></>
-
               )
             ) : (
               <Conversation
-
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
@@ -259,24 +257,22 @@ const ChatPage = (props) => {
         <ChatContainer>
           <MessageList>
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-            {
-              conversationById.length > 0 ? (
-                conversationById.map((m) => (
-                  <Message
-                    key={m.senderId}
-                    model={{
-                      message: m.message,
-                      sentTime: '15 mins ago',
-                      // sender: 'Zoe',
-                      direction:
-                        m.senderId === userInfor.id ? 'outgoing' : 'incoming',
-                    }}
-                  ></Message>
-                ))
-              ) : (
-                <div>Bắt đầu cuộc trò chuyện...</div>
-              )
-            }
+            {conversationById.length > 0 ? (
+              conversationById.map((m) => (
+                <Message
+                  key={m.senderId}
+                  model={{
+                    message: m.message,
+                    sentTime: '15 mins ago',
+                    // sender: 'Zoe',
+                    direction:
+                      m.senderId === userInfor.id ? 'outgoing' : 'incoming',
+                  }}
+                ></Message>
+              ))
+            ) : (
+              <div>Bắt đầu cuộc trò chuyện...</div>
+            )}
           </MessageList>
           <div
             as={MessageInput}
@@ -289,7 +285,6 @@ const ChatPage = (props) => {
               padding: '5px',
             }}
           >
-        
             <input
               {...register('files')}
               type="file"
@@ -303,10 +298,9 @@ const ChatPage = (props) => {
               onChange={setMsgInputValue}
               value={msgInputValue}
               attachButton={false}
-            style={{
-            width: '80%',
-              
-            }}
+              style={{
+                width: '80%',
+              }}
             />
           </div>
         </ChatContainer>
