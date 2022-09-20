@@ -1,12 +1,15 @@
 import './styles.css';
-import React, { useRef } from 'react';
+import * as React from 'react';
+import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
-  Paper,
-  Autocomplete,
-  Box,
+  Divider,
   Typography,
-  Checkbox,
+  Box,
   TextField,
+  Grid,
+  Paper,
+  Checkbox,
+  Autocomplete,
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -17,18 +20,38 @@ import {
   Message,
   MessageInput,
   Avatar,
+  AvatarGroup,
+  Button,
   Conversation,
+  ConversationHeader,
+  StarButton,
+  VoiceCallButton,
+  VideoCallButton,
+  InfoButton,
   ConversationList,
+  AttachmentButton,
+  InputToolbox,
+  Loader,
+  TypingIndicator,
+  StatusList,
+  Status,
   Sidebar,
+  Search,
   MessageSeparator,
+  action,
+  ExpansionPanel,
 } from '@chatscope/chat-ui-kit-react';
 import { getUserConversations } from '../../apis/Message/getUserConversations';
 import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
 import { createConversationByAuthenticated } from '../../apis/Message/createConverstationByAuthenticate';
 import { getAllUserApi1 } from './../../apis/User/getAllUser';
-import SearchField from '../../Components/TextField/SearchField';
+import { setConsultantForChat } from '../../apis/Message/setConsultantForChat';
+import { seenMessageAuthenticated } from '../../apis/Message/seenMessageAuthenticated';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -48,8 +71,6 @@ const ChatPage = (props) => {
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
-  const fileInput = useRef();
-
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -69,13 +90,15 @@ const ChatPage = (props) => {
   });
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
-
+ 
     if (e.target.files) {
       const fileArray = Array.from(e.target.files).map((file) =>
         URL.createObjectURL(file)
       );
       setSelectedImage((prevImages) => prevImages.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+
+      
     }
   };
   React.useEffect(() => {
@@ -109,97 +132,77 @@ const ChatPage = (props) => {
         }
       })();
     }
-  }, [conversationId]);
+  }, [conversationId,conversationById]);
+
+
   const handleGetConversationById = async (conversationId) => {
     try {
-      const listConversationById = await getConversationsById(
-        conversationId,
-        0,
-        200,
-        'messageId',
-        true
-      );
-      if (listConversationById.data.length > 0) {
-        setManagerChoice(undefined);
+
+      if(conversationId){
+        const listConversationById = await getConversationsById(
+          conversationId,
+          0,
+          200,
+          'messageId',
+          true
+        );
+        // if (listConversationById.data.length > 0) {
+        //   setManagerChoice(undefined);
+        // }
+        setConversationById(listConversationById.data);
+        setConversationId(conversationId);
       }
-      setConversationById(listConversationById.data);
-      setConversationId(conversationId);
+      else{
+        if(managerChoice){
+          for (const user of userConversation) {
+            if(user.user1Id === managerChoice.userId || user.user2Id === managerChoice.userId){
+              const listConversationById = await getConversationsById(
+                user.conversationId,
+                0,
+                200,
+                'messageId',
+                true
+              )
+              setConversationById(listConversationById.data);
+              setConversationId(user.conversationId);
+            }
+          }
+        }
+      }
     } catch (error) {
       console.log('Không có dữ liệu của tin nhắn!!');
+      setConversationById([]);
     }
   };
-  console.log(managerChoice);
-  const handleSend = (message) => {
-    if (conversationId) {
-      handleSendMessage(conversationId, message);
-      setMsgInputValue('');
-    } else {
-      handleSendMessage(managerChoice.userId, message);
-    }
 
-    // dispatchAction(
-    //   getAllMessagesActions.getAllMessages(chatRoomId, page, perPage)
-    // );
+
+  const handleSend = async(message) => {
+    try {
+      if (conversationId) {
+        await sendMessageAuthenticated(conversationId, message,filesImage);
+        await handleGetConversationById(conversationId);
+        setMsgInputValue('');
+      } else {
+        await createConversationByAuthenticated(managerChoice.userId, message,filesImage);
+        await handleGetConversationById(conversationId);
+        setMsgInputValue('');
+      }
+    } catch (error) {
+      console.log("Lỗi sảy ra khi gửi tin nhắn " + error.message);
+    }
   };
   const handleSelectUser = async (options) => {
     setManagerChoice(options);
-    const listConversationById = await getConversationsById(
-      conversationId,
-      0,
-      200,
-      'messageId',
-      true
-    );
-    console.log(listConversationById.data);
-    if (listConversationById.data.length > 0) {
-      setConversationById(listConversationById.data);
-      setConversationId(conversationId);
-    } else {
-    }
   };
-  const handleSendMessage = async (conversationId, message) => {
-    try {
-      await sendMessageAuthenticated(conversationId, message);
 
-      await handleGetConversationById(conversationId);
-    } catch (error) {
-      try {
-        await createConversationByAuthenticated(conversationId, message);
-        await handleGetConversationById(conversationId);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-  // const handleCreateConversationForAuthenticated = async (
-  //   targetUserId,
-  //   message
-  // ) => {
-  //   try {
-
-  //   } catch (error) {}
-  // };
-
+ 
   return (
-    <Paper
+    <div
       style={{
-        position: 'absolute',
-        top: '92px',
-        bottom: '32px',
-        right: '32px',
-        left: '92px',
+        height: '600px',
+        position: 'relative',
       }}
-      elevation={0}
     >
-      <input
-        {...register('files')}
-        type="file"
-        hidden
-        ref={fileInput}
-        id="files"
-        multiple
-        onChange={handleChangeFile}
-      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
@@ -208,15 +211,7 @@ const ChatPage = (props) => {
             getOptionLabel={(option) => option.fullName}
             onChange={(e, option) => handleSelectUser(option)}
             renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  // icon={icon}
-                  // checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.fullName}
-              </li>
+              <li {...props}>{option.fullName}</li>
             )}
             renderInput={(params) => (
               <TextField
@@ -229,7 +224,6 @@ const ChatPage = (props) => {
               />
             )}
           />
-          <Box sx={{ padding: '10px' }}>{/* <SearchField /> */}</Box>
           <ConversationList>
             {!managerChoice ? (
               userConversation.length > 0 ? (
@@ -247,13 +241,15 @@ const ChatPage = (props) => {
                 ))
               ) : (
                 <></>
+
               )
             ) : (
               <Conversation
+
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
-                onClick={() => handleGetConversationById(managerChoice.userId)}
+                onClick={() => handleGetConversationById(conversationId)}
               >
                 <Avatar src="#" />
               </Conversation>
@@ -263,7 +259,7 @@ const ChatPage = (props) => {
         <ChatContainer>
           <MessageList>
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-            {!managerChoice || conversationById.length !== 0 ? (
+            {
               conversationById.length > 0 ? (
                 conversationById.map((m) => (
                   <Message
@@ -278,45 +274,44 @@ const ChatPage = (props) => {
                   ></Message>
                 ))
               ) : (
-                <div>Bắt đầu cuộc trò chuyện với </div>
+                <div>Bắt đầu cuộc trò chuyện...</div>
               )
-            ) : (
-              <div>Bắt đầu cuộc trò chuyện với </div>
-            )}
+            }
           </MessageList>
-          {/* <div
+          <div
             as={MessageInput}
             style={{
               display: 'flex',
               flexDirection: 'row',
               borderTop: '1px dashed #d1dbe4',
+              justifyContent: 'flex-start',
+              width: '100%',
+              padding: '5px',
             }}
-          > */}
-          <MessageInput
-            placeholder="Nhập tin nhắn của bạn.."
-            onSend={handleSend}
-            onChange={setMsgInputValue}
-            value={msgInputValue}
-            onAttachClick={() => {
-              fileInput.current.click();
+          >
+        
+            <input
+              {...register('files')}
+              type="file"
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
+            <MessageInput
+              placeholder="Nhập tin nhắn của bạn.."
+              onSend={handleSend}
+              onChange={setMsgInputValue}
+              value={msgInputValue}
+              attachButton={false}
+            style={{
+            width: '80%',
+              
             }}
-          />
-          <input
-            {...register('files')}
-            type="file"
-            hidden
-            ref={fileInput}
-            id="files"
-            multiple
-            onChange={handleChangeFile}
-          />
-          <div className="label-holder">
-            <label htmlFor="file" className="img-upload"></label>
+            />
           </div>
-          {/* </div> */}
         </ChatContainer>
       </MainContainer>
-    </Paper>
+    </div>
   );
 };
 export default ChatPage;
