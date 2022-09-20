@@ -198,12 +198,25 @@ const ChatPage = (props) => {
   };
 
   return (
-    <div
+    <Paper
       style={{
-        height: '600px',
-        position: 'relative',
+        position: 'absolute',
+        top: '92px',
+        bottom: '32px',
+        right: '32px',
+        left: '92px',
       }}
+      elevation={0}
     >
+      <input
+        {...register('files')}
+        type="file"
+        hidden
+        ref={fileInput}
+        id="files"
+        multiple
+        onChange={handleChangeFile}
+      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
@@ -286,27 +299,31 @@ const ChatPage = (props) => {
               padding: '5px',
             }}
           >
-            <input
-              {...register('files')}
-              type="file"
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
             <MessageInput
               placeholder="Nhập tin nhắn của bạn.."
               onSend={handleSend}
               onChange={setMsgInputValue}
               value={msgInputValue}
-              attachButton={false}
-              style={{
-                width: '80%',
+              onAttachClick={() => {
+                fileInput.current.click();
               }}
             />
+            <input
+              {...register('files')}
+              type="file"
+              hidden
+              ref={fileInput}
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
+            <div className="label-holder">
+              <label htmlFor="file" className="img-upload"></label>
+            </div>
           </div>
         </ChatContainer>
       </MainContainer>
-    </div>
+    </Paper>
   );
 };
 export default ChatPage;
