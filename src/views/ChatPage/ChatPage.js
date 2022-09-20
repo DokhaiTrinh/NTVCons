@@ -1,5 +1,5 @@
 import './styles.css';
-import * as React from 'react';
+import React, { useRef } from 'react';
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Divider,
@@ -71,6 +71,7 @@ const ChatPage = (props) => {
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const fileInput = useRef();
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
