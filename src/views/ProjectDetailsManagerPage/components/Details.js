@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
-  const { allProjectDetails, managerList, workerList } = props;
+  const { allProjectDetails, managerList, workerList, userList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
   console.log(allProjectDetails);
@@ -86,6 +86,25 @@ const Details = (props) => {
               </Typography>
               <Typography variant="body1">
                 {allProjectDetails.projectName}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="caption">Chủ đầu tư</Typography>
+              <Typography variant="body1">
+                {userList ? (
+                  userList.map((userList, index) => (
+                    <Typography
+                      sx={{
+                        witdh: '100%',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {userList.manager.fullName}
+                    </Typography>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
               </Typography>
             </Grid>
             <Grid item xs="4">

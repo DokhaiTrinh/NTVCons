@@ -71,6 +71,7 @@ const ProjectDetailsPage = (props) => {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
+  const [userList, setUserList] = React.useState();
   const [blueprint, setBlueprint] = React.useState();
   const [projectName, setProjectName] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
@@ -91,6 +92,7 @@ const ProjectDetailsPage = (props) => {
         setAllProjectDetails(listAllProjectDetails.data);
         setManagerList(listAllProjectDetails.data.projectManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
+        setUserList(listAllProjectDetails.data.userManagerList);
         if (listAllProjectDetails.data) {
           if (listAllProjectDetails.data.fileList.length > 0) {
             let arrayImgLink = [];
@@ -164,6 +166,7 @@ const ProjectDetailsPage = (props) => {
                 allProjectDetails={allProjectDetails}
                 managerList={managerList}
                 workerList={workerList}
+                userList={userList}
                 blueprint={blueprint}
               />
             ) : (
