@@ -1,4 +1,5 @@
 import './App.css';
+import './themes/main.scss';
 import { history } from './common/history';
 import { Router, Switch } from 'react-router-dom';
 import { HOME_ROUTES, LOGIN_ROUTES } from './contants/Index';

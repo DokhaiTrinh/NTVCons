@@ -102,7 +102,7 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div className="bodynonetab">
+    <div >
       {Header(`/createBlueprint/${id}`)}
       {userInfor.authorID !== '54' ? null : (
         <IconButtonCus
@@ -153,7 +153,7 @@ export const Blueprint = (props) => {
             )} */}
         </Grid>
         <Divider sx={{ marginBottom: '20px' }}></Divider>
-        <Grid container rowSpacing={{ xs: 5 }}>
+        <Grid container spacing={5}>
           <Grid item xs="4">
             <Typography variant="caption">Tên bản vẽ</Typography>
             <Typography variant="body1">

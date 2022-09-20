@@ -53,7 +53,7 @@ const Details = (props) => {
             )}
           </Stack>
           <Divider sx={{ marginBottom: '20px' }}></Divider>
-          <Grid container rowSpacing={{ xs: 5 }}>
+          <Grid container spacing={5}>
             <Grid item xs="4">
               <Typography variant="caption">Mã dự án</Typography>
               <Typography variant="body1">
