@@ -239,6 +239,7 @@ const ChatPage = (props) => {
                 ))
               ) : (
                 <></>
+                
               )
             ) : (
               <Conversation
