@@ -308,7 +308,6 @@ const ChatPage = (props) => {
               
             }}
             />
-
           </div>
         </ChatContainer>
       </MainContainer>
