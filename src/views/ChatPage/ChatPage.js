@@ -1,5 +1,5 @@
 import './styles.css';
-import React, { useRef } from 'react';
+import * as React from 'react';
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Divider,
@@ -65,13 +65,13 @@ const ChatPage = (props) => {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAZlBMVEUOHCyclYufmI0AECZvbGkAACCjm5AIGCoxOUIAEycAFSgLGisNHCwEFykDFyljY2N9enUlLjkACCKWkIc+Q0lmZmWIhH0bJjN/e3YVIjGSjYRAREpbXF0tND54dXGEgHpKTVFTVVcfARIMAAADVklEQVR4nO3ciXaiMABA0ZA4lhBEcV+r/v9PTtA6FUVGLXOyzLtf4DtktVghAAAAAAAAAAAAAAAAAAAAAABAuIwej9XAuP4Y/4xR5XY+6U11pI1GL4ZrmSQyGaXZIHf9cTqXa7Gt+ipSfqZ64PoTdcuoYjj56js3jtJxRM/RqMUwueo7Ny6nqohjPtr1Zbi+6Ts1JqNpFsGak2eLxr5z4zItAp+PRtfn313jaT66/pTvM2p1N//uGvv7YOdjNf/ant/VWJ3qABsv+/szzmtOWHtHrldP950a7XwM6QxglJk9Mz7rjcvpOJCxWs2/v60vzY37qc78b7R9s1fGZ60xWW58PwMYu7+/Oj5vGr0+A9yer99qrM4AheuSZnZ/n8kf9p0a7RnAyzVHly+vnw8bq/no3faYbd5dX5obe749xNy8s0G0NW6166a6bNttYJJMxq6b6lSv68L+L9dNdRRSSKF7FFJIoXsUUkihexRSSKF7FFJIoXsUUkihexRSSKF7FFJIoXsUUkihexRSSKF7FL5Oxl4oR8p1U13XhXJdevb6ZbeFUo5K396E7rJQyvlBfLguutVdoUyWB+PfO9BdFUopZztV+NfXUaHs749KebbCXHTwFrScfKbGs5e7r5iy/7M8uR7ulNe/0Bt//uTHQNXq6evwvMjz+buJMumlYw9Xz1sfi7cS7ePbikB+XJntXk+Uk9FmpT0fnt+K3frFxzeZpdrLze+RbPdKX39+XKmPkPqsLJ0825d82tUlmOH5LZs+k2gf37DMwlhd7mSbJx7f/mBXl8CG5x+5PvzlcCP3UxXi8Pymju17xjys1bOJaj2Ey6O/h+tnGT1s+38taaArzLU8m7Ukpt59P/GGvO0+HEWhMC13qTgKRV48TIykUBgxepAYS6Ew+b45MZpCu2k0XxfjKRRm1ZgYUaEoyqbEmArtjbjhv4FEVdh46Y+rsCkxskKhN7eX/tgKhTrEXmgTZeSFuap/rxFf4e33GjEW1i/9MRbWL/1RFopc9/pxF15/rxFpoR2ol0t/rIX2Rvx16Y+20F4Xz5f+eAvtUzxdFyMuFKaw10Xp2zuHnRqU8/5chf53mVaDxSHqRyiqgRp5IAAAAAAAAAAAAAAAAAAAAAAA/4Hf0gU2cK/EibwAAAAASUVORK5CYII=';
   const [userConversation, setUserConversation] = React.useState([]);
   const [conversationById, setConversationById] = React.useState([]);
+  const [statusChange, setStatusChange] = React.useState(false);
   const [conversationId, setConversationId] = React.useState();
   // const [ip, setIP] = React.useState('');
   const [msgInputValue, setMsgInputValue] = React.useState('');
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
-  const fileInput = useRef();
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -115,27 +115,29 @@ const ChatPage = (props) => {
         console.log('Không thể lấy danh sách người dùng');
       }
     })();
-    if (conversationId) {
-      (async () => {
-        try {
-          const listConversationById = await getConversationsById(
-            conversationId,
-            0,
-            200,
-            'messageId',
-            true
-          );
-          setConversationById(listConversationById.data);
-        } catch (error) {
-          console.log('Không có dữ liệu của tin nhắn!!');
-        }
-      })();
-    }
-  }, [conversationId, conversationById]);
+    // if (conversationId) {
+    //   (async () => {
+    //     try {
+    //       const listConversationById = await getConversationsById(
+    //         conversationId,
+    //         0,
+    //         200,
+    //         'messageId',
+    //         true
+    //       );
+    //       setConversationById(listConversationById.data);
+    //     } catch (error) {
+    //       console.log('Không có dữ liệu của tin nhắn!!');
+    //     }
+    //   })();
+    // }
+  }, [conversationId, conversationById, statusChange]);
 
   const handleGetConversationById = async (conversationId) => {
     try {
+      console.log(managerChoice);
       if (conversationId) {
+        console.log('convert ' + conversationId);
         const listConversationById = await getConversationsById(
           conversationId,
           0,
@@ -143,19 +145,19 @@ const ChatPage = (props) => {
           'messageId',
           true
         );
-        // if (listConversationById.data.length > 0) {
-        //   setManagerChoice(undefined);
-        // }
-        setConversationById(listConversationById.data);
-        setConversationId(conversationId);
+        if (listConversationById.data.length > 0) {
+          setConversationById(listConversationById.data);
+          setConversationId(conversationId);
+        }
       } else {
         if (managerChoice) {
+          let listConversationById = null;
           for (const user of userConversation) {
             if (
               user.user1Id === managerChoice.userId ||
               user.user2Id === managerChoice.userId
             ) {
-              const listConversationById = await getConversationsById(
+              listConversationById = await getConversationsById(
                 user.conversationId,
                 0,
                 200,
@@ -165,6 +167,10 @@ const ChatPage = (props) => {
               setConversationById(listConversationById.data);
               setConversationId(user.conversationId);
             }
+          }
+          if (listConversationById === null) {
+            console.log('HIII');
+            setConversationById([]);
           }
         }
       }
@@ -186,7 +192,26 @@ const ChatPage = (props) => {
           message,
           filesImage
         );
-        await handleGetConversationById(conversationId);
+
+        const listAllConversation = await getUserConversations();
+        console.log(listAllConversation.data);
+        for (const user of listAllConversation.data) {
+          if (
+            user.user1Id === managerChoice.userId ||
+            user.user2Id === managerChoice.userId
+          ) {
+            const listConversationById = await getConversationsById(
+              user.conversationId,
+              0,
+              200,
+              'messageId',
+              true
+            );
+            setConversationById(listConversationById.data);
+            setConversationId(user.conversationId);
+          }
+        }
+        setUserConversation(listAllConversation.data);
         setMsgInputValue('');
       }
     } catch (error) {
@@ -194,29 +219,17 @@ const ChatPage = (props) => {
     }
   };
   const handleSelectUser = async (options) => {
+    setConversationId(undefined);
     setManagerChoice(options);
   };
 
   return (
-    <Paper
+    <div
       style={{
-        position: 'absolute',
-        top: '92px',
-        bottom: '32px',
-        right: '32px',
-        left: '92px',
+        height: '600px',
+        position: 'relative',
       }}
-      elevation={0}
     >
-      <input
-        {...register('files')}
-        type="file"
-        hidden
-        ref={fileInput}
-        id="files"
-        multiple
-        onChange={handleChangeFile}
-      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
@@ -261,7 +274,7 @@ const ChatPage = (props) => {
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
-                onClick={() => handleGetConversationById(conversationId)}
+                onClick={() => handleGetConversationById()}
               >
                 <Avatar src="#" />
               </Conversation>
@@ -299,31 +312,27 @@ const ChatPage = (props) => {
               padding: '5px',
             }}
           >
+            <input
+              {...register('files')}
+              type="file"
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
             <MessageInput
               placeholder="Nhập tin nhắn của bạn.."
               onSend={handleSend}
               onChange={setMsgInputValue}
               value={msgInputValue}
-              onAttachClick={() => {
-                fileInput.current.click();
+              attachButton={false}
+              style={{
+                width: '80%',
               }}
             />
-            <input
-              {...register('files')}
-              type="file"
-              hidden
-              ref={fileInput}
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
-            <div className="label-holder">
-              <label htmlFor="file" className="img-upload"></label>
-            </div>
           </div>
         </ChatContainer>
       </MainContainer>
-    </Paper>
+    </div>
   );
 };
 export default ChatPage;
