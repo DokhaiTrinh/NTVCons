@@ -411,7 +411,7 @@ const EditProejectDetailsPage = (props) => {
                     options={allWorker}
                     disableCloseOnSelect
                     defaultValue={[allWorker.projectWorkerList]}
-                    getOptionLabel={(option) => option.username}
+                    getOptionLabel={(option) => option}
                     onChange={(e, option) => handleSelectWorker(option)}
                     renderOption={(props, option, { selected }) =>
                       option.isAvailable ? (

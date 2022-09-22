@@ -132,9 +132,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Trạng thái
-              </Typography>
+              <Typography variant="caption">Trạng thái</Typography>
               <Box
                 sx={{
                   width: '50%',
@@ -146,8 +144,8 @@ const Details = (props) => {
                   variant="body1"
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: 'left',
+                    justifyContent: 'left',
                     color: 'green',
                   }}
                 >
@@ -155,7 +153,12 @@ const Details = (props) => {
                 </Typography>
               </Box>
             </Grid>
-
+            <Grid item xs="4">
+              <Typography variant="caption">Ngày tạo</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.createdAt}
+              </Typography>
+            </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến

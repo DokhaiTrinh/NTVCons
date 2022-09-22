@@ -11,10 +11,10 @@ const FileDetail = (props) => {
     <Tabs>
       <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>
         <TabList>
-        <Stack direction='row'>
-          <Tab>Hình ảnh</Tab>
-          <Tab>Tài liệu</Tab>
-        </Stack>
+          <Stack direction="row">
+            <Tab>Hình ảnh</Tab>
+            <Tab>Tài liệu</Tab>
+          </Stack>
         </TabList>
       </Paper>
       <Paper
@@ -22,7 +22,7 @@ const FileDetail = (props) => {
           width: '100%',
           // top: '205px',
           padding: '32px',
-          borderRadius: '0'
+          borderRadius: '0',
         }}
       >
         <TabPanel>
@@ -52,9 +52,7 @@ const FileDetail = (props) => {
             // <div>Không có tệp đi kèm!!</div>
             <></>
           )} */}
-          {
-            RenderFileCard(docGet)
-          }
+          {RenderFileCard(docGet)}
         </TabPanel>
       </Paper>
     </Tabs>

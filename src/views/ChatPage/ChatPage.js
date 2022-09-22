@@ -1,5 +1,5 @@
 import './styles.css';
-import * as React from 'react';
+import React, { useRef } from 'react';
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Divider,
@@ -74,6 +74,8 @@ const ChatPage = (props) => {
   const [messages, setMessages] = React.useState([]);
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const fileInput = useRef();
+
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
   //   const res = await axios.get('https://geolocation-db.com/json/');
@@ -190,7 +192,7 @@ const ChatPage = (props) => {
       setConversationById([]);
     }
   };
-
+  console.log(conversationById);
   const handleSend = async (message) => {
     try {
       if (conversationId) {
@@ -235,12 +237,25 @@ const ChatPage = (props) => {
   };
 
   return (
-    <div
+    <Paper
       style={{
-        height: '600px',
-        position: 'relative',
+        position: 'absolute',
+        top: '92px',
+        bottom: '32px',
+        right: '32px',
+        left: '92px',
       }}
+      elevation={0}
     >
+      <input
+        {...register('files')}
+        type="file"
+        hidden
+        ref={fileInput}
+        id="files"
+        multiple
+        onChange={handleChangeFile}
+      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
@@ -324,7 +339,7 @@ const ChatPage = (props) => {
                               },
                             }}
                           >
-                            <Avatar src={m.avatarLink} name="Joe" />
+                            {/* <Avatar src={m.avatarLink} name="Joe" /> */}
                           </Message>
                         ))
                       : null
@@ -363,10 +378,22 @@ const ChatPage = (props) => {
                 width: '80%',
               }}
             />
+            <input
+              {...register('files')}
+              type="file"
+              hidden
+              ref={fileInput}
+              id="files"
+              multiple
+              onChange={handleChangeFile}
+            />
+            <div className="label-holder">
+              <label htmlFor="file" className="img-upload"></label>
+            </div>
           </div>
         </ChatContainer>
       </MainContainer>
-    </div>
+    </Paper>
   );
 };
 export default ChatPage;
