@@ -65,6 +65,7 @@ const ChatPage = (props) => {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAZlBMVEUOHCyclYufmI0AECZvbGkAACCjm5AIGCoxOUIAEycAFSgLGisNHCwEFykDFyljY2N9enUlLjkACCKWkIc+Q0lmZmWIhH0bJjN/e3YVIjGSjYRAREpbXF0tND54dXGEgHpKTVFTVVcfARIMAAADVklEQVR4nO3ciXaiMABA0ZA4lhBEcV+r/v9PTtA6FUVGLXOyzLtf4DtktVghAAAAAAAAAAAAAAAAAAAAAABAuIwej9XAuP4Y/4xR5XY+6U11pI1GL4ZrmSQyGaXZIHf9cTqXa7Gt+ipSfqZ64PoTdcuoYjj56js3jtJxRM/RqMUwueo7Ny6nqohjPtr1Zbi+6Ts1JqNpFsGak2eLxr5z4zItAp+PRtfn313jaT66/pTvM2p1N//uGvv7YOdjNf/ant/VWJ3qABsv+/szzmtOWHtHrldP950a7XwM6QxglJk9Mz7rjcvpOJCxWs2/v60vzY37qc78b7R9s1fGZ60xWW58PwMYu7+/Oj5vGr0+A9yer99qrM4AheuSZnZ/n8kf9p0a7RnAyzVHly+vnw8bq/no3faYbd5dX5obe749xNy8s0G0NW6166a6bNttYJJMxq6b6lSv68L+L9dNdRRSSKF7FFJIoXsUUkihexRSSKF7FFJIoXsUUkihexRSSKF7FFJIoXsUUkihexRSSKF7FL5Oxl4oR8p1U13XhXJdevb6ZbeFUo5K396E7rJQyvlBfLguutVdoUyWB+PfO9BdFUopZztV+NfXUaHs749KebbCXHTwFrScfKbGs5e7r5iy/7M8uR7ulNe/0Bt//uTHQNXq6evwvMjz+buJMumlYw9Xz1sfi7cS7ePbikB+XJntXk+Uk9FmpT0fnt+K3frFxzeZpdrLze+RbPdKX39+XKmPkPqsLJ0825d82tUlmOH5LZs+k2gf37DMwlhd7mSbJx7f/mBXl8CG5x+5PvzlcCP3UxXi8Pymju17xjys1bOJaj2Ey6O/h+tnGT1s+38taaArzLU8m7Ukpt59P/GGvO0+HEWhMC13qTgKRV48TIykUBgxepAYS6Ew+b45MZpCu2k0XxfjKRRm1ZgYUaEoyqbEmArtjbjhv4FEVdh46Y+rsCkxskKhN7eX/tgKhTrEXmgTZeSFuap/rxFf4e33GjEW1i/9MRbWL/1RFopc9/pxF15/rxFpoR2ol0t/rIX2Rvx16Y+20F4Xz5f+eAvtUzxdFyMuFKaw10Xp2zuHnRqU8/5chf53mVaDxSHqRyiqgRp5IAAAAAAAAAAAAAAAAAAAAAAA/4Hf0gU2cK/EibwAAAAASUVORK5CYII=';
   const [userConversation, setUserConversation] = React.useState([]);
   const [conversationById, setConversationById] = React.useState([]);
+  const [statusChange, setStatusChange] = React.useState(false);
   const [conversationId, setConversationId] = React.useState();
   // const [ip, setIP] = React.useState('');
   const [msgInputValue, setMsgInputValue] = React.useState('');
@@ -90,15 +91,13 @@ const ChatPage = (props) => {
   });
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
- 
+
     if (e.target.files) {
       const fileArray = Array.from(e.target.files).map((file) =>
         URL.createObjectURL(file)
       );
       setSelectedImage((prevImages) => prevImages.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
-
-      
     }
   };
   React.useEffect(() => {
@@ -116,29 +115,29 @@ const ChatPage = (props) => {
         console.log('Không thể lấy danh sách người dùng');
       }
     })();
-    if (conversationId) {
-      (async () => {
-        try {
-          const listConversationById = await getConversationsById(
-            conversationId,
-            0,
-            200,
-            'messageId',
-            true
-          );
-          setConversationById(listConversationById.data);
-        } catch (error) {
-          console.log('Không có dữ liệu của tin nhắn!!');
-        }
-      })();
-    }
-  }, [conversationId,conversationById]);
-
+    // if (conversationId) {
+    //   (async () => {
+    //     try {
+    //       const listConversationById = await getConversationsById(
+    //         conversationId,
+    //         0,
+    //         200,
+    //         'messageId',
+    //         true
+    //       );
+    //       setConversationById(listConversationById.data);
+    //     } catch (error) {
+    //       console.log('Không có dữ liệu của tin nhắn!!');
+    //     }
+    //   })();
+    // }
+  }, [conversationId, conversationById, statusChange]);
 
   const handleGetConversationById = async (conversationId) => {
     try {
-
-      if(conversationId){
+      console.log(managerChoice);
+      if (conversationId) {
+        console.log('convert ' + conversationId);
         const listConversationById = await getConversationsById(
           conversationId,
           0,
@@ -146,26 +145,32 @@ const ChatPage = (props) => {
           'messageId',
           true
         );
-        // if (listConversationById.data.length > 0) {
-        //   setManagerChoice(undefined);
-        // }
-        setConversationById(listConversationById.data);
-        setConversationId(conversationId);
-      }
-      else{
-        if(managerChoice){
+        if (listConversationById.data.length > 0) {
+          setConversationById(listConversationById.data);
+          setConversationId(conversationId);
+        }
+      } else {
+        if (managerChoice) {
+          let listConversationById = null;
           for (const user of userConversation) {
-            if(user.user1Id === managerChoice.userId || user.user2Id === managerChoice.userId){
-              const listConversationById = await getConversationsById(
+            if (
+              user.user1Id === managerChoice.userId ||
+              user.user2Id === managerChoice.userId
+            ) {
+              listConversationById = await getConversationsById(
                 user.conversationId,
                 0,
                 200,
                 'messageId',
                 true
-              )
+              );
               setConversationById(listConversationById.data);
               setConversationId(user.conversationId);
             }
+          }
+          if (listConversationById === null) {
+            console.log('HIII');
+            setConversationById([]);
           }
         }
       }
@@ -175,27 +180,49 @@ const ChatPage = (props) => {
     }
   };
 
-
-  const handleSend = async(message) => {
+  const handleSend = async (message) => {
     try {
       if (conversationId) {
-        await sendMessageAuthenticated(conversationId, message,filesImage);
+        await sendMessageAuthenticated(conversationId, message, filesImage);
         await handleGetConversationById(conversationId);
         setMsgInputValue('');
       } else {
-        await createConversationByAuthenticated(managerChoice.userId, message,filesImage);
-        await handleGetConversationById(conversationId);
+        await createConversationByAuthenticated(
+          managerChoice.userId,
+          message,
+          filesImage
+        );
+
+        const listAllConversation = await getUserConversations();
+        console.log(listAllConversation.data);
+        for (const user of listAllConversation.data) {
+          if (
+            user.user1Id === managerChoice.userId ||
+            user.user2Id === managerChoice.userId
+          ) {
+            const listConversationById = await getConversationsById(
+              user.conversationId,
+              0,
+              200,
+              'messageId',
+              true
+            );
+            setConversationById(listConversationById.data);
+            setConversationId(user.conversationId);
+          }
+        }
+        setUserConversation(listAllConversation.data);
         setMsgInputValue('');
       }
     } catch (error) {
-      console.log("Lỗi sảy ra khi gửi tin nhắn " + error.message);
+      console.log('Lỗi sảy ra khi gửi tin nhắn ' + error.message);
     }
   };
   const handleSelectUser = async (options) => {
+    setConversationId(undefined);
     setManagerChoice(options);
   };
 
- 
   return (
     <div
       style={{
@@ -241,15 +268,13 @@ const ChatPage = (props) => {
                 ))
               ) : (
                 <></>
-
               )
             ) : (
               <Conversation
-
                 name={managerChoice.username}
                 lastSenderName={managerChoice.username}
                 info={managerChoice.lastMessage}
-                onClick={() => handleGetConversationById(conversationId)}
+                onClick={() => handleGetConversationById()}
               >
                 <Avatar src="#" />
               </Conversation>
@@ -259,24 +284,22 @@ const ChatPage = (props) => {
         <ChatContainer>
           <MessageList>
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-            {
-              conversationById.length > 0 ? (
-                conversationById.map((m) => (
-                  <Message
-                    key={m.senderId}
-                    model={{
-                      message: m.message,
-                      sentTime: '15 mins ago',
-                      // sender: 'Zoe',
-                      direction:
-                        m.senderId === userInfor.id ? 'outgoing' : 'incoming',
-                    }}
-                  ></Message>
-                ))
-              ) : (
-                <div>Bắt đầu cuộc trò chuyện...</div>
-              )
-            }
+            {conversationById.length > 0 ? (
+              conversationById.map((m) => (
+                <Message
+                  key={m.senderId}
+                  model={{
+                    message: m.message,
+                    sentTime: '15 mins ago',
+                    // sender: 'Zoe',
+                    direction:
+                      m.senderId === userInfor.id ? 'outgoing' : 'incoming',
+                  }}
+                ></Message>
+              ))
+            ) : (
+              <div>Bắt đầu cuộc trò chuyện...</div>
+            )}
           </MessageList>
           <div
             as={MessageInput}
@@ -289,7 +312,6 @@ const ChatPage = (props) => {
               padding: '5px',
             }}
           >
-        
             <input
               {...register('files')}
               type="file"
@@ -303,10 +325,9 @@ const ChatPage = (props) => {
               onChange={setMsgInputValue}
               value={msgInputValue}
               attachButton={false}
-            style={{
-            width: '80%',
-              
-            }}
+              style={{
+                width: '80%',
+              }}
             />
           </div>
         </ChatContainer>
