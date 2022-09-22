@@ -41,6 +41,8 @@ import {
   action,
   ExpansionPanel,
 } from '@chatscope/chat-ui-kit-react';
+import Swal from 'sweetalert2';
+
 import { getUserConversations } from '../../apis/Message/getUserConversations';
 import { getConversationsById } from '../../apis/Message/getConversationById';
 import { sendMessageAuthenticated } from '../../apis/Message/sendMessageAuthenticated';
@@ -90,14 +92,23 @@ const ChatPage = (props) => {
     // resolver: yupResolver(valideSchema),
   });
   const handleChangeFile = (e) => {
-    setFilesImage(e.target.files);
+    let allFileSize = 0;
+    for (const file of e.target.files) {
+      allFileSize += file.size;
+    }
+    console.log(allFileSize);
+    if (allFileSize >= 52428800) {
+      Swal.fire('', 'File quá lớn xin vui lòng chọn nhỏ hơn 50MB', 'warning');
+    } else {
+      setFilesImage(e.target.files);
 
-    if (e.target.files) {
-      const fileArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setSelectedImage((prevImages) => prevImages.concat(fileArray));
-      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+      if (e.target.files) {
+        const fileArray = Array.from(e.target.files).map((file) =>
+          URL.createObjectURL(file)
+        );
+        setSelectedImage((prevImages) => prevImages.concat(fileArray));
+        Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+      }
     }
   };
   React.useEffect(() => {
@@ -286,16 +297,39 @@ const ChatPage = (props) => {
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
             {conversationById.length > 0 ? (
               conversationById.map((m) => (
-                <Message
-                  key={m.senderId}
-                  model={{
-                    message: m.message,
-                    sentTime: '15 mins ago',
-                    // sender: 'Zoe',
-                    direction:
-                      m.senderId === userInfor.id ? 'outgoing' : 'incoming',
-                  }}
-                ></Message>
+                <>
+                  <Message
+                    key={m.senderId}
+                    model={{
+                      message: m.message,
+                      sentTime: '15 mins ago',
+                      // sender: 'Zoe',
+                      direction:
+                        m.senderId === userInfor.id ? 'outgoing' : 'incoming',
+                    }}
+                  ></Message>
+                  {m.fileList
+                    ? m.fileList.length > 0
+                      ? m.fileList.map((fileImage) => (
+                          <Message
+                            type="image"
+                            model={{
+                              direction:
+                                m.senderId === userInfor.id
+                                  ? 'outgoing'
+                                  : 'incoming',
+                              payload: {
+                                src: fileImage.fileLink,
+                                width: '100%',
+                              },
+                            }}
+                          >
+                            <Avatar src={m.avatarLink} name="Joe" />
+                          </Message>
+                        ))
+                      : null
+                    : null}
+                </>
               ))
             ) : (
               <div>Bắt đầu cuộc trò chuyện...</div>
