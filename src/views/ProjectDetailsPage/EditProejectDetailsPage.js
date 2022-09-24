@@ -28,6 +28,9 @@ import CardContent from '@mui/material/CardContent';
 import DialogEditLocation from './components/DialogEditLocation';
 import { useParams } from 'react-router-dom';
 import { getProjectByParam } from '../../apis/Project/updateProject';
+import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
+import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
+import { getUserByRoleApi } from '../../apis/User/getAllUser';
 import { Stack } from '@mui/system';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -53,13 +56,17 @@ const EditProejectDetailsPage = (props) => {
     React.useState();
   const [allManager, setAllManager] = React.useState([]);
   const [allWorker, setAllWorker] = React.useState([]);
+  const [allUser, setAllUser] = React.useState([]);
+  const [managerDefault, setManagerDefault] = React.useState([]);
+  const [workerDefault, setWorkerDefault] = React.useState([]);
+  const [userDefault, setUserDefault] = React.useState([]);
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [managerListChoice, setManagerListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
-  const [workerList, setWorkerList] = React.useState();
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
+  console.log(allManager);
   React.useEffect(() => {
     (async () => {
       try {
@@ -71,10 +78,48 @@ const EditProejectDetailsPage = (props) => {
         setValuePlanEndDate(listAllProjectDetails.data.planEndDate);
         setProjectId(listAllProjectDetails.data.projectId);
         setUpdateLocationDetail(listAllProjectDetails.data.location);
-        setAllManager(listAllProjectDetails.data.projectManagerList);
-        setAllWorker(listAllProjectDetails.data.projectWorkerList);
+        setManagerDefault(listAllProjectDetails.data.ntvManagerList);
+        setWorkerDefault(listAllProjectDetails.data.projectWorkerList);
+        setUserDefault(listAllProjectDetails.data.userManagerList);
       } catch (error) {
         console.log('Không thể lấy danh sách dự án');
+      }
+      try {
+        const listAllManager = await getAllManagerApi1(
+          0,
+          1000,
+          44,
+          'BY_ROLE_ID',
+          'createdAt',
+          true
+        );
+        setAllManager(listAllManager.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách kỹ sư');
+      }
+      try {
+        const listAllWorker = await getAllWorkerApi1(
+          0,
+          1000,
+          'createdAt',
+          true
+        );
+        setAllWorker(listAllWorker.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách công nhân');
+      }
+      try {
+        const listAllUser = await getUserByRoleApi(
+          14,
+          'BY_ROLE_ID',
+          0,
+          1000,
+          'createdAt',
+          false
+        );
+        setAllUser(listAllUser.data);
+      } catch (error) {
+        console.log('Không thể lấy danh sách người dùng');
       }
     })();
   }, []);
@@ -116,8 +161,8 @@ const EditProejectDetailsPage = (props) => {
             planEndDate,
             planStartDate,
             updateLocationDetail,
-            null,
-            null,
+            managerListChoice,
+            workerListChoice,
             data.actualCost,
             data.estimatedCost,
             data.projectName
@@ -133,8 +178,8 @@ const EditProejectDetailsPage = (props) => {
     planEndDate,
     planStartDate,
     location,
-    managerListChoice,
-    workerListChoice,
+    ntvManagerIdList,
+    workerIdList,
     actualCost,
     estimatedCost,
     projectName
@@ -148,8 +193,8 @@ const EditProejectDetailsPage = (props) => {
         planEndDate,
         planStartDate,
         location,
-        managerListChoice,
-        workerListChoice,
+        ntvManagerIdList,
+        workerIdList,
         actualCost,
         estimatedCost,
         projectName,
@@ -237,6 +282,24 @@ const EditProejectDetailsPage = (props) => {
     }
     setWokerListChoice(getIdList);
   };
+  const handleGetManagerDefault = () => {
+    for (const managerD of managerDefault) {
+      for (const manager of allManager) {
+        if (managerD.manager.userId === manager.userId) {
+          return allManager[allManager.indexOf(manager)];
+        }
+      }
+    }
+  };
+  const handleGetWorkerDefault = () => {
+    for (const workerD of workerDefault) {
+      for (const worker of allWorker) {
+        if (workerD.worker.workerId === worker.workerId) {
+          return allManager[allWorker.indexOf(worker)];
+        }
+      }
+    }
+  };
   return (
     <div>
       <Typography
@@ -271,21 +334,6 @@ const EditProejectDetailsPage = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             {allProjectDetails ? (
               <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                  <Typography variant="body2">Mã dự án</Typography>
-                  <TextField
-                    {...register('projectId')}
-                    inputProps={{ readOnly: true }}
-                    name="projectId"
-                    variant="outlined"
-                    autoComplete="projectId"
-                    autoFocus
-                    defaultValue={allProjectDetails.projectId}
-                    error={errors.projectName != null}
-                    helperText={errors.projectId?.message}
-                    sx={{ width: '100%' }}
-                  />
-                </Grid> */}
                 <Grid item xs={12}>
                   <Typography variant="body2">Tên dự án</Typography>
                   <TextField
@@ -298,30 +346,35 @@ const EditProejectDetailsPage = (props) => {
                     sx={{ width: '100%' }}
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                   <Typography variant="body2">Kỹ sư phụ trách</Typography>
-                  <Autocomplete
-                    multiple
-                    options={allManager}
-                    disableCloseOnSelect
-                    getOptionLabel={(option) => option.manager.username}
-                    onChange={(e, option) => handleSelectManager(option)}
-                    renderOption={(props, option, { selected }) => (
-                      <li {...props}>
-                        <Checkbox
-                          icon={icon}
-                          checkedIcon={checkedIcon}
-                          style={{ marginRight: 8 }}
-                          checked={selected}
-                        />
-                        {option.manager.username}
-                      </li>
-                    )}
-                    renderInput={(params) => (
-                      <TextField {...params} placeholder="Kỹ sư" />
-                    )}
-                  />
-                </Grid> */}
+                  {allManager ? (
+                    allManager.length > 0 ? (
+                      <Autocomplete
+                        multiple
+                        options={allManager}
+                        disableCloseOnSelect
+                        defaultValue={[handleGetManagerDefault()]}
+                        getOptionLabel={(option) => option.fullName}
+                        onChange={(e, option) => handleSelectManager(option)}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props}>
+                            <Checkbox
+                              icon={icon}
+                              checkedIcon={checkedIcon}
+                              style={{ marginRight: 8 }}
+                              checked={selected}
+                            />
+                            {option.fullName}
+                          </li>
+                        )}
+                        renderInput={(params) => (
+                          <TextField {...params} placeholder="Kỹ sư" />
+                        )}
+                      />
+                    ) : null
+                  ) : null}
+                </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2">Chi phí ước tính</Typography>
                   <TextField
@@ -410,8 +463,10 @@ const EditProejectDetailsPage = (props) => {
                     multiple
                     options={allWorker}
                     disableCloseOnSelect
-                    defaultValue={[allWorker.projectWorkerList]}
-                    getOptionLabel={(option) => option}
+                    defaultValue={workerDefault.map((worker) => [
+                      worker.worker.fullName,
+                    ])}
+                    getOptionLabel={(option) => option.fullName}
                     onChange={(e, option) => handleSelectWorker(option)}
                     renderOption={(props, option, { selected }) =>
                       option.isAvailable ? (

@@ -41,12 +41,10 @@ const CreateProjectPage = (props) => {
   );
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState(new Date());
   const [locationDetail, setLocationDetail] = React.useState();
-
   // Dữ liệu list manager này phải là array. Để thêm dữ liệu zô array ở thằng report có mẫu á.
   const [managerListDetail, setManagerListDetail] = React.useState([]);
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
   const [openManagerListDialog, setOpenManagerListDialog] = useState(false);
-
   const [workerListDetail, setWorkerListDetail] = React.useState([]);
   const [openWorkerListDialog, setOpenWorkerListDialog] = useState(false);
   const [loading, setLoading] = useState('');
