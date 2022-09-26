@@ -17,8 +17,10 @@ export const GET_USER_FOR_DROP_DOWN =
   'http://niemtinvang.herokuapp.com/Project/v1/getUserForDropdown';
 export const CREATE_PROJECT_WITH_FILE =
   'http://niemtinvang.herokuapp.com/project/v1/createProject/withFile';
-export const CREATE_WITH_FILE =
+export const ADD_FILE_TO_PROJECT =
   'http://niemtinvang.herokuapp.com/project/v1/addFile';
+export const DELETE_FILE_IN_PROJECT =
+  'http://niemtinvang.herokuapp.com/project/v1/deleteFile';
 //Api link của role
 export const GET_ALL_ROLE = 'http://niemtinvang.herokuapp.com/role/v1/getAll';
 export const CREATE_ROLE =
@@ -45,7 +47,7 @@ export const GET_TASK_BY_ID =
   'http://niemtinvang.herokuapp.com/task/v1/getByParam';
 export const DELETE_TASK =
   'http://niemtinvang.herokuapp.com/task/v1/deleteTask';
-//Api link của RERPORT
+//Api link của REPORT
 export const GET_ALL_REPORT =
   'http://niemtinvang.herokuapp.com/report/v1/getAll';
 export const GET_REPORT_BY_PROJECT_ID =
@@ -98,6 +100,8 @@ export const GET_REQUEST_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/request/v1/getAllByParam';
 export const GET_REQUEST_ID =
   'http://niemtinvang.herokuapp.com/request/v1/getByParam';
+export const VERIFY_REQUEST =
+  'http://niemtinvang.herokuapp.com/request/v1/verifyRequest';
 //API link của REQUEST DETAIL
 export const CREATE_REQUEST_DETAIL = '';
 export const UPDATE_REQUEST_DETAIL = '';

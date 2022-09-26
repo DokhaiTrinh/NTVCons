@@ -14,3 +14,10 @@ export const createProjectApi1 = (data) => {
     userInfor.token
   );
 };
+export const addFileToProjectApi = (projectId) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.post(
+    `${API_LINK.ADD_FILE_TO_PROJECT}?projectId=${projectId}`,
+    userInfor.token
+  );
+};

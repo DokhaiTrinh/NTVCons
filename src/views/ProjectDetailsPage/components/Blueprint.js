@@ -12,8 +12,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
-import RenderImage from '../../../Components/Render/RenderImage';
-import RenderImageCard from '../../../Components/Render/RenderImageCard';
+// import RenderImage from '../../../Components/Render/RenderImage';
+// import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import Header from '../../../Components/Tab/Header';
 import IconButtonCus from '../../../Components/Button/IconButtonCus';
 import { Button, Stack } from '@mui/material';
@@ -35,36 +35,36 @@ export const Blueprint = (props) => {
           'BY_PROJECT_ID'
         );
         setBlueprintDetail(listAllBlueprint.data);
-        if (listAllBlueprint.data) {
-          if (listAllBlueprint.data.file.length > 0) {
-            let arrayImgLink = [];
-            let arrayDocLink = [];
-            for (
-              let index = 0;
-              index < listAllBlueprint.data.file.length;
-              index++
-            ) {
-              const element = listAllBlueprint.data.file;
-              if (element.fileName.split('.')[1] === 'docx') {
-                let objectDoc = {
-                  name: element.fileName,
-                  link: element.fileLink,
-                  id: element.fileId,
-                };
-                arrayDocLink.push(objectDoc);
-              } else {
-                arrayImgLink.push(element.fileLink);
-              }
-            }
-            setDocGet(arrayDocLink);
-            setImageGet(arrayImgLink);
-          }
-        }
-        // if (listAllBlueprint.data.file) {
-        //   let arrayLinkImg = [];
-        //   arrayLinkImg.push(listAllBlueprint.data.file.fileLink);
-        //   setImageGet(arrayLinkImg);
+        // if (listAllBlueprint.data) {
+        //   if (listAllBlueprint.data.file.length > 0) {
+        //     let arrayImgLink = [];
+        //     let arrayDocLink = [];
+        //     for (
+        //       let index = 0;
+        //       index < listAllBlueprint.data.file.length;
+        //       index++
+        //     ) {
+        //       const element = listAllBlueprint.data.file;
+        //       if (element.fileName.split('.')[1] === 'docx') {
+        //         let objectDoc = {
+        //           name: element.fileName,
+        //           link: element.fileLink,
+        //           id: element.fileId,
+        //         };
+        //         arrayDocLink.push(objectDoc);
+        //       } else {
+        //         arrayImgLink.push(element.fileLink);
+        //       }
+        //     }
+        //     setDocGet(arrayDocLink);
+        //     setImageGet(arrayImgLink);
+        //   }
         // }
+        if (listAllBlueprint.data.file) {
+          let arrayLinkImg = [];
+          arrayLinkImg.push(listAllBlueprint.data.file.fileLink);
+          setImageGet(arrayLinkImg);
+        }
       } catch (error) {
         console.log('Không thể lấy dữ liệu của bản vẽ!');
       }
@@ -81,6 +81,28 @@ export const Blueprint = (props) => {
       setSelectedImage((prevImages) => prevImages.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
     }
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+        // badgeContent={<CancelIcon />}
+        // onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '100%',
+              height: '100%',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   const handleDeleteImage = (photo, indexImage) => {
     const index = selectedImages.indexOf(photo);
@@ -192,9 +214,9 @@ export const Blueprint = (props) => {
               /> */}
               {/* <div className="label-holder">
                 <label htmlFor="file" className="img-upload"></label>
-              </div>
-              <div className="result">{RenderImage(imageGet)}</div> */}
-              {RenderImageCard(imageGet)}
+              </div> */}
+              <div className="result">{renderPhotos(imageGet)}</div>
+              {/* {RenderImageCard(imageGet)} */}
             </Grid>
           </Grid>
         </Paper>

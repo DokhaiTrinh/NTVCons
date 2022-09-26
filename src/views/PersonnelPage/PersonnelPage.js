@@ -8,7 +8,7 @@ import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { getAllWorkerApi } from './../../apis/Worker/getAllWorker';
 import { getAllRoleApi } from './../../apis/Role/GetAllRole';
 import { RoleTable } from '../RoleManagePage/components/RoleTable';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -111,10 +111,11 @@ const PersonnelPage = (props) => {
         >
           <Tab label="Nhân viên" {...a11yProps(0)} />
           <Tab label="Công nhân" {...a11yProps(1)} />
-          <Tab label="Vai trò" {...a11yProps(2)} />
+          {userInfor.authorID === '54' ? (
+            <Tab label="Vai trò" {...a11yProps(2)} />
+          ) : null}
         </Tabs>
-        <div className='body'>
-
+        <div className="body">
           <TabPanel value={value} index={0}>
             {allUser ? (
               <Box width="100%">
@@ -142,10 +143,7 @@ const PersonnelPage = (props) => {
           <TabPanel value={value} index={2}>
             {allRole ? (
               <Box width="100%">
-                <RoleTable
-                  allRole={allRole}
-                  totalPage={totalPage}
-                ></RoleTable>
+                <RoleTable allRole={allRole} totalPage={totalPage}></RoleTable>
               </Box>
             ) : (
               <div>Không có dữ liệu!</div>

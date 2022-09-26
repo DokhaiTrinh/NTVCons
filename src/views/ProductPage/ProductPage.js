@@ -97,18 +97,18 @@ const ProductPage = (props) => {
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={value}
-            onChange={handleChange}
-            aria-label=""
-          >
-            <Tab label="Dịch vụ" {...a11yProps(0)} />
-            <Tab label="Sản phẩm" {...a11yProps(1)} />
-            <Tab label="Thể loại" {...a11yProps(2)} />
-          </Tabs>
-        <div className='body'>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={value}
+          onChange={handleChange}
+          aria-label=""
+        >
+          <Tab label="Dịch vụ" {...a11yProps(0)} />
+          {/* <Tab label="Sản phẩm" {...a11yProps(1)} /> */}
+          <Tab label="Thể loại" {...a11yProps(1)} />
+        </Tabs>
+        <div className="body">
           <TabPanel value={value} index={0}>
             {allProduct ? (
               <Box width="100%">
@@ -121,10 +121,10 @@ const ProductPage = (props) => {
               <div>Không có dữ liệu</div>
             )}
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          {/* <TabPanel value={value} index={1}>
             Product
-          </TabPanel>
-          <TabPanel value={value} index={2}>
+          </TabPanel> */}
+          <TabPanel value={value} index={1}>
             {allCategory ? (
               <Box width="100%">
                 <CategoryTable

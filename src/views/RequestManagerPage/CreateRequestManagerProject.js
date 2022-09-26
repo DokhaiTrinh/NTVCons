@@ -99,16 +99,6 @@ const CreateRequestProject = (props) => {
   ) => {
     try {
       setLoading(true);
-      console.log(
-        typeof projectId,
-        typeof requestDate,
-        typeof requestDesc,
-        typeof requestDetailList,
-        typeof requestName,
-        typeof requestTypeId,
-        typeof requesterId,
-        typeof fileList
-      );
       await createRequestApi1({
         projectId,
         requestDate,
@@ -214,11 +204,8 @@ const CreateRequestProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper className='bodynonetab'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <Paper className="bodynonetab">
+      <Typography variant="h6" color="#DD8501">
         TẠO YÊU CẦU
       </Typography>
       <Divider></Divider>
@@ -244,9 +231,7 @@ const CreateRequestProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên yêu cầu
-                </Typography>
+                <Typography variant="body2">Tên yêu cầu</Typography>
                 <TextFieldComponent
                   register={register}
                   name="requestName"
@@ -256,9 +241,7 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thông tin yêu cầu
-                </Typography>
+                <Typography variant="body2">Thông tin yêu cầu</Typography>
                 <TextFieldComponent
                   register={register}
                   name="requestDesc"
@@ -268,14 +251,10 @@ const CreateRequestProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Ngày yêu cầu
-                </Typography>
+                <Typography variant="body2">Ngày yêu cầu</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DateTimePicker
-                    renderInput={(props) => (
-                      <TextField {...props} fullWidth />
-                    )}
+                    renderInput={(props) => <TextField {...props} fullWidth />}
                     value={valueRequestDate}
                     onChange={(newValue) => {
                       setValueRequestDate(newValue);
@@ -305,18 +284,11 @@ const CreateRequestProject = (props) => {
                 {requestDetail.length ? (
                   requestDetail.map((request, index) => (
                     <Grid item xs="4">
-
-                      <Paper sx={{ padding: '10px',}}>
-                            <Typography>
-                              {request.itemDesc}
-                            </Typography>
-                            <Typography>
-                              Số lượng:{request.itemAmount}
-                            </Typography>
-                            <Typography>
-                              Giá tiền: {request.itemPrice}{' '}
-                            </Typography>
-                            <Typography>Đơn vị: {request.itemUnit}</Typography>
+                      <Paper sx={{ padding: '10px' }}>
+                        <Typography>{request.itemDesc}</Typography>
+                        <Typography>Số lượng:{request.itemAmount}</Typography>
+                        <Typography>Giá tiền: {request.itemPrice} </Typography>
+                        <Typography>Đơn vị: {request.itemUnit}</Typography>
                       </Paper>
                     </Grid>
                   ))
@@ -327,9 +299,7 @@ const CreateRequestProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Loại yêu cầu
-                </Typography>
+                <Typography variant="body2">Loại yêu cầu</Typography>
                 <FormControl fullWidth>
                   <Select
                     onChange={handleChange}
@@ -351,19 +321,17 @@ const CreateRequestProject = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                  <Typography variant="body2">
-                    Tệp đính kèm
-                  </Typography>
-                  <input
-                    {...register('files')}
-                    type="file"
-                    id="files"
-                    multiple
-                    onChange={handleChangeFile}
-                  />
-                  <div className="label-holder">
-                    <label htmlFor="file" className="img-upload"></label>
-                  </div>
+                <Typography variant="body2">Tệp đính kèm</Typography>
+                <input
+                  {...register('files')}
+                  type="file"
+                  id="files"
+                  multiple
+                  onChange={handleChangeFile}
+                />
+                <div className="label-holder">
+                  <label htmlFor="file" className="img-upload"></label>
+                </div>
                 {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
@@ -379,7 +347,7 @@ const CreateRequestProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    className='submitButton'
+                    className="submitButton"
                   >
                     Lưu
                   </Button>

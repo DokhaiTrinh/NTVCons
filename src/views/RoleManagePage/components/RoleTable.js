@@ -17,10 +17,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import UpdateIcon from '@mui/icons-material/Update';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
-
+import DeleteRole from '../../../Components/Button/Delete/DeleteRole';
 const headCells = [
   {
     id: 'vaitriid',
@@ -49,11 +49,7 @@ const headCells = [
 ];
 
 const EnhancedTableHead = (props) => {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -61,8 +57,7 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -75,8 +70,8 @@ const EnhancedTableHead = (props) => {
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             > */}
-              {headCell.label}
-              {/* {orderBy === headCell.id ? (
+            {headCell.label}
+            {/* {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
@@ -162,38 +157,33 @@ export const RoleTable = (props) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header('/createRole')
-      }
+      {Header('/createRole')}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-            />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <EnhancedTableHead />
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allRole.map((row, index) => {
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell></TableCell>
                     <TableCell align="left">{row.roleId}</TableCell>
                     <TableCell align="left">{row.roleName}</TableCell>
                     <TableCell align="left">{row.updatedAt}</TableCell>
-                    <TableCell align="left">
-                      <IconButton
-                        aria-label="delete"
-                        color="warning"
-                        edge="start"
-                        size="large"
-                      // onClick={() => handleDeleteReport(row.reportId)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                    <TableCell align="left">{DeleteRole(row.roleId)}</TableCell>
                   </TableRow>
                 );
               })}
