@@ -218,7 +218,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export const PersonnelTable = (props) => {
-  
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('maduan');
   const [selected, setSelected] = React.useState([]);
@@ -335,7 +334,7 @@ export const PersonnelTable = (props) => {
                         <Avatar src="/broken-image.jpg" />
                       )}
                     </TableCell>
-                    <TableCell align="left">{row.username}</TableCell>
+                    <TableCell align="left">{row.fullName}</TableCell>
                     <TableCell align="left">{row.role.roleName}</TableCell>
                     <TableCell align="left">{row.role.updatedAt}</TableCell>
                     <TableCell align="left">{row.phone}</TableCell>

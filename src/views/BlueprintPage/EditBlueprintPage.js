@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Divider,
   Typography,
   Box,
+  TextField,
   Grid,
   Button,
-  Paper,
+  Paper
 } from '@mui/material';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createBlueprintApi } from '../../apis/Blueprint/createBlueprint';
@@ -13,19 +16,15 @@ import * as yup from 'yup';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { getAllProjectApi1 } from '../../apis/Project/getAllProject';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Select from '@mui/material/Select';
+import { useStateValue } from '../../common/StateProvider/StateProvider';
 import RenderImage from '../../Components/Render/RenderImage';
 import { useParams } from 'react-router-dom';
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-const CreateBlueprint = (props) => {
+const EditBlueprintPage = () => {
   const { id } = useParams();
   console.log(id);
   const [blueprint, setBlueprint] = React.useState([]);
@@ -157,8 +156,9 @@ const CreateBlueprint = (props) => {
   return (
     <Paper className='bodynonetab'>
       <Typography variant='h5'>
-        Tạo bản vẽ
+        Cập nhật bản vẽ
       </Typography>
+      <Divider/>
       <Box
         sx={{
           display: 'flex',
@@ -266,4 +266,5 @@ const CreateBlueprint = (props) => {
     </Paper>
   );
 };
-export default CreateBlueprint;
+
+export default EditBlueprintPage;

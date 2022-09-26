@@ -242,7 +242,7 @@ const UpdateTaskProject = (props) => {
   };
   return (
     <Paper className="bodynonetab" elevation="none">
-      <Typography variant="h6" color="#DD8501">
+      <Typography variant="h5">
         CẬP NHẬT CÔNG VIỆC
       </Typography>
       <Divider></Divider>
@@ -261,10 +261,6 @@ const UpdateTaskProject = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin công việc
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           {allTaskDetails ? (
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
@@ -389,7 +385,6 @@ const UpdateTaskProject = (props) => {
                   />
                   <div className="label-holder">
                     <label htmlFor="file" className="img-upload">
-                      Chọn hình
                     </label>
                   </div>
 

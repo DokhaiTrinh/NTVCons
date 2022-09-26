@@ -9,12 +9,12 @@ const FileDetail = (props) => {
   const { imageGet, docGet } = props;
   return (
     <Tabs>
-      <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>
+      <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0', boxShadow: "none"}}>
         <TabList>
-        <Stack direction='row'>
-          <Tab>Hình ảnh</Tab>
-          <Tab>Tài liệu</Tab>
-        </Stack>
+          <Stack direction="row">
+            <Tab>Hình ảnh</Tab>
+            <Tab>Tài liệu</Tab>
+          </Stack>
         </TabList>
       </Paper>
       <Paper
@@ -22,7 +22,8 @@ const FileDetail = (props) => {
           width: '100%',
           // top: '205px',
           padding: '32px',
-          borderRadius: '0'
+          borderRadius: '0',
+          boxShadow: 'none'
         }}
       >
         <TabPanel>
@@ -52,9 +53,7 @@ const FileDetail = (props) => {
             // <div>Không có tệp đi kèm!!</div>
             <></>
           )} */}
-          {
-            RenderFileCard(docGet)
-          }
+          {RenderFileCard(docGet)}
         </TabPanel>
       </Paper>
     </Tabs>

@@ -46,12 +46,11 @@ class AxiosService {
   }
   postSendMessage(url, body, token) {
     const formData = new FormData();
-    // if (body) {
-    //   for (let index = 0; index < body.file.length; index++) {
-    //     formData.append('file', body.file[index]);
-    //   }
-    // }
-
+    if (body) {
+      for (const file of body) {
+        formData.append('file', file);
+      }
+    }
     return this.intance.post(url, formData, {
       headers: {
         Authorization: `Bearer ${token}`,

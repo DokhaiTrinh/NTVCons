@@ -3,19 +3,13 @@ import Paper from '@mui/material/Paper';
 import { Divider, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import { Link, useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { useParams } from 'react-router-dom';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import Badge from '@mui/material/Badge';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
-import RenderImage from '../../../Components/Render/RenderImage';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
-import Header from '../../../Components/Tab/Header';
 import IconButtonCus from '../../../Components/Button/IconButtonCus';
+import AddButton from '../../../Components/Button/Add/AddButton';
+import { useHistory } from 'react-router-dom';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
@@ -26,6 +20,7 @@ export const Blueprint = (props) => {
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const history = useHistory();
   React.useEffect(() => {
     (async () => {
       try {
@@ -102,27 +97,35 @@ export const Blueprint = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div >
-      <Paper sx={{ width: '100%', mp: 2, padding: '32px' }} variant="elevation">
-        <Grid container xs={12}>
-          <Grid item xs={11} display='flex' justifyContent='start' alignItems='start'>
-
-            <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-              Thông tin bản vẽ
-            </Typography>
-          </Grid>
-          <Grid item xs={1} display='flex' justifyContent='end' alignItems='start'>
-            {userInfor.authorID !== '54' ? null : (
-              <IconButtonCus
-                onClick={() => {
-                  // `/editProjectDetails/${id}`;
-                }}
-                icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
-              />
-            )}
-          </Grid>
-
-        </Grid>
+    <div>
+      {
+        !blueprintDetail ?
+          <Paper sx={{ width: '100%', mb: 2, padding: '32px', boxShadow: 'none' }}>
+            {AddButton(`/createBlueprint/${id}`)}
+          </Paper>
+          : null
+      }
+      <Paper
+        className='bodynonetab'
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mb: 2 }}
+        >
+          <Typography variant="h5">
+            Thông tin bản vẽ
+          </Typography>
+          {userInfor.authorID !== '54' ? null : (
+            <IconButtonCus
+              onClick={() => {
+                history.push(`/editBlueprint/`);
+              }}
+              icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
+            />
+          )}
+        </Stack>
         {/* {userInfor.authorID !== '54' ? null : (
               <Grid item container xs={1}>
                 <Grid item xs={12}>
@@ -155,6 +158,7 @@ export const Blueprint = (props) => {
                 </Grid>
               </Grid>
             )} */}
+
         <Divider sx={{ marginBottom: '20px' }}></Divider>
         <Grid container spacing={5}>
           <Grid item xs="4">

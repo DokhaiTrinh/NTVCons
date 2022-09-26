@@ -644,7 +644,7 @@ const CreateProjectPage = (props) => {
                     className="submitButton"
                     // onClick={(event) => uploadImage(event)}
                   >
-                    Tạo mới dự án
+                    Lưu
                   </Button>
                 </Box>
               </Grid>

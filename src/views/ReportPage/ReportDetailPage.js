@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
-import { Dialog, Divider } from '@mui/material';
+import { Dialog, Divider, Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { getReportById } from '../../apis/Report/getReportByProjectId';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import { useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import RenderImage from '../../Components/Render/RenderImage';
 import FileDetail from '../ProjectDetailsPage/components/FileDetail';
 
 const ReportDetailPage = (props) => {
@@ -101,7 +98,7 @@ const ReportDetailPage = (props) => {
       className='bodynonetab'
       elevation='none'
     >
-      <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+      <Typography variant="h5" sx={{ marginBottom: '20px' }}>
         Thông tin chung
       </Typography>
       <Divider sx={{ marginBottom: '20px' }}></Divider>
@@ -167,52 +164,58 @@ const ReportDetailPage = (props) => {
               )}
             </Typography>
           </Grid>
-          <Grid item xs="4">
-            <Typography variant="caption">
-              Báo cáo chi tiết
-            </Typography>
-                {allReportList ? (
-                  allReportList.map((reportDetail, index) => (
-                    <Paper sx={{padding: '10px'}}>
-                      <Typography>
-                        Thông tin báo cáo chi tiết: {reportDetail.itemDesc}
-                      </Typography>
-                      <Typography>
-                        Số lượng:
-                        {reportDetail.itemAmount}
-                      </Typography>
-                      <Typography>
-                        Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
-                      </Typography>
-                      <Typography>
-                        Đơn vị: {reportDetail.itemUnit}
-                      </Typography>
-                    </Paper>
-                  ))
-                ) : (
-                  <div>Không có dữ liệu</div>
-                )}
-          </Grid>
+
           <Grid item xs="4">
             <Box sx={{ width: '100%' }}>
               <Typography variant="caption">
                 Công việc chi tiết
               </Typography>
-                  {taskReportList ? (
-                    taskReportList.map((taskReport, index) => (
-                      <Paper sx={{padding: '10px'}}>
-                        <Typography>
-                          <Typography>
-                            Mã công việc chi tiết: {taskReport.taskReportId}
-                          </Typography>
-                          Tên công việc : {taskReport.taskNote}
-                        </Typography>
-                      </Paper>
-                    ))
-                  ) : (
-                    <div>No data!</div>
-                  )}
+              {taskReportList ? (
+                taskReportList.map((taskReport, index) => (
+                  <Paper sx={{ padding: '10px' }}>
+                    <Typography>
+                      <Typography>
+                        Mã công việc chi tiết: {taskReport.taskReportId}
+                      </Typography>
+                      Tên công việc : {taskReport.taskNote}
+                    </Typography>
+                  </Paper>
+                ))
+              ) : (
+                <div>No data!</div>
+              )}
             </Box>
+          </Grid>
+          <Grid item xs="12">
+            <Typography variant="caption">
+              Báo cáo chi tiết
+            </Typography>
+          </Grid>
+          <Grid item container xs="12" spacing={2}>
+            {allReportList ? (
+              allReportList.map((reportDetail, index) => (
+                <Grid item xs="3">
+
+                  <Paper sx={{ padding: '10px', width: "300px"}}>
+                    <Typography>
+                      Thông tin báo cáo chi tiết: {reportDetail.itemDesc}
+                    </Typography>
+                    <Typography>
+                      Số lượng:
+                      {reportDetail.itemAmount}
+                    </Typography>
+                    <Typography>
+                      Giá tiền: {reportDetail.itemPrice} VNĐ{' '}
+                    </Typography>
+                    <Typography>
+                      Đơn vị: {reportDetail.itemUnit}
+                    </Typography>
+                  </Paper>
+                </Grid>
+              ))
+              ) : (
+                <div>Không có dữ liệu</div>
+                )}
           </Grid>
           <Grid item xs="12">
             <FileDetail imageGet={imageGet} docGet={docGet} />

@@ -59,7 +59,7 @@ const TaskDetailPage = (props) => {
       <Paper
         className='bodynonetab' elevation='none'
       >
-        <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+        <Typography variant="h5">
           Thông tin công việc
         </Typography>
         <Divider sx={{ marginBottom: '20px' }}></Divider>

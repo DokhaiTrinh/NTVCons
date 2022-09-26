@@ -68,6 +68,7 @@
 }
 
 .MuiTypography-body2{
+    font-size: medium;
     color: #DD8501;
 }
 
@@ -151,6 +152,7 @@
 
 .bodynonetab{
     padding: 32px;
+    box-shadow: none;
 }
 
 .table{

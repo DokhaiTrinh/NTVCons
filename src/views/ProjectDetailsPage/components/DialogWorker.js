@@ -269,8 +269,7 @@ const DialogWorker = (props) => {
 
   const isSelected = (admin) => selected.indexOf(admin) !== -1;
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%'}}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
@@ -354,7 +353,6 @@ const DialogWorker = (props) => {
           default={1}
         /> */}
       </Paper>
-    </Box>
   );
 };
 

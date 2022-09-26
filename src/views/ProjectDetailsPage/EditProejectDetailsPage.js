@@ -7,6 +7,7 @@ import {
   Button,
   Checkbox,
   Autocomplete,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -238,11 +239,9 @@ const EditProejectDetailsPage = (props) => {
     setWokerListChoice(getIdList);
   };
   return (
-    <div>
+    <Paper className='bodynonetab' elevation={0}>
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         CẬP NHẬT DỰ ÁN
       </Typography>
@@ -262,12 +261,6 @@ const EditProejectDetailsPage = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin dự án
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
-
           <form onSubmit={handleSubmit(submitForm)}>
             {allProjectDetails ? (
               <Grid container spacing={2}>
@@ -338,6 +331,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
+                    <Divider />
                     <Typography variant="body2">Thời gian dự kiến</Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -371,6 +365,7 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid container item xs={12} spacing={1}>
                   <Grid item xs={12}>
+                    <Divider />
                     <Typography variant="body2">
                       Thời gian chính thức
                     </Typography>
@@ -411,7 +406,7 @@ const EditProejectDetailsPage = (props) => {
                     options={allWorker}
                     disableCloseOnSelect
                     defaultValue={[allWorker.projectWorkerList]}
-                    getOptionLabel={(option) => option.username}
+                    getOptionLabel={(option) => option}
                     onChange={(e, option) => handleSelectWorker(option)}
                     renderOption={(props, option, { selected }) =>
                       option.isAvailable ? (
@@ -462,14 +457,14 @@ const EditProejectDetailsPage = (props) => {
                       //   handleOpenUpdateLocationDialog('CreateNewLocation')
                       // }
                     ></Button> */}
-                    Chi tiết địa điểm
+                    <Typography variant="body2">Chi tiết địa điểm</Typography>
                   </Box>
                 </Grid>
                 <Grid item container columns={12} spacing={2}>
                   {updateLocationDetail ? (
                     <Grid
                       item
-                      xs={4}
+                      xs={12}
                       onClick={() =>
                         handleOpenUpdateLocationDialog(
                           'UpdateLocation',
@@ -477,42 +472,41 @@ const EditProejectDetailsPage = (props) => {
                         )
                       }
                     >
-                      <Box sx={{ width: '100%' }}>
-                        <Card sx={{ width: '100%' }}>
-                          <CardContent>
-                            <Typography>
-                              Số nhà: {updateLocationDetail.addressNumber}
-                            </Typography>
-                            <Typography>
-                              Tên đường:{updateLocationDetail.street}
-                            </Typography>
-                            <Typography>
-                              Quận: {updateLocationDetail.district}{' '}
-                            </Typography>
-                            <Typography>
-                              Thành phố: {updateLocationDetail.city}
-                            </Typography>
-                            <Typography>
-                              Khu vực: {updateLocationDetail.ward}
-                            </Typography>
-                            <Typography>
-                              Địa bàn tỉnh: {updateLocationDetail.province}
-                            </Typography>
-                            <Typography>
-                              Quốc gia: {updateLocationDetail.country}
-                            </Typography>
-                            <Typography>
-                              Diện tích: {updateLocationDetail.area}
-                            </Typography>
-                            <Typography>
-                              Điều phối: {updateLocationDetail.coordinate}
-                            </Typography>
-                            {/* <Typography>
+                      <Paper sx={{ width: '100%', padding: '10px' }}>
+                        {/* <Stack direction={'row'} sx={{ width: '100%', padding: '10px' }}> */}
+
+                        <Typography>
+                          Số nhà: {updateLocationDetail.addressNumber}
+                        </Typography>
+                        <Typography>
+                          Tên đường:{updateLocationDetail.street}
+                        </Typography>
+                        <Typography>
+                          Quận: {updateLocationDetail.district}{' '}
+                        </Typography>
+                        <Typography>
+                          Thành phố: {updateLocationDetail.city}
+                        </Typography>
+                        <Typography>
+                          Khu vực: {updateLocationDetail.ward}
+                        </Typography>
+                        <Typography>
+                          Địa bàn tỉnh: {updateLocationDetail.province}
+                        </Typography>
+                        <Typography>
+                          Quốc gia: {updateLocationDetail.country}
+                        </Typography>
+                        <Typography>
+                          Diện tích: {updateLocationDetail.area}
+                        </Typography>
+                        <Typography>
+                          Điều phối: {updateLocationDetail.coordinate}
+                        </Typography>
+                        {/* </Stack> */}
+                        {/* <Typography>
                                 Mã địa chỉ: {updateLocationDetail.locationId}
                               </Typography> */}
-                          </CardContent>
-                        </Card>
-                      </Box>
+                      </Paper>
                     </Grid>
                   ) : (
                     <Grid
@@ -570,15 +564,10 @@ const EditProejectDetailsPage = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      style={{
-                        backgroundColor: '#DD8501',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
-                      // onClick={uploadImage}
+                      className='submitButton'
+                    // onClick={uploadImage}
                     >
-                      Cập nhật dự án
+                      Lưu
                     </Button>
                   </Box>
                 </Grid>
@@ -596,10 +585,10 @@ const EditProejectDetailsPage = (props) => {
           setUpdateLocationDetail={setUpdateLocationDetail}
           updateLocationDetail={updateLocationDetail}
           actionUpdateLocation={actionUpdateLocation}
-          // itemDetailLocationUpdate={itemDetailLocationUpdate}
+        // itemDetailLocationUpdate={itemDetailLocationUpdate}
         ></DialogEditLocation>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

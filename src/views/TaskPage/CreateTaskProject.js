@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
@@ -222,11 +223,9 @@ const CreateTaskProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         TẠO CÔNG VIỆC
       </Typography>
@@ -246,10 +245,6 @@ const CreateTaskProject = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin công việc
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
@@ -392,15 +387,10 @@ const CreateTaskProject = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
+                    className='submitButton'
                     // onClick={uploadImage}
                   >
-                    Lưu công việc
+                    Lưu
                   </Button>
                 </Box>
               </Grid>
@@ -415,7 +405,7 @@ const CreateTaskProject = (props) => {
           userListDetail={userListDetail}
         ></DialogTaskAssgin>
       </Dialog> */}
-    </div>
+    </Paper>
   );
 };
 

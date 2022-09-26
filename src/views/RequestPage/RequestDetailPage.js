@@ -43,7 +43,7 @@ function RequestDetailPage() {
       className='bodynonetab'
       elevation='none'
     >
-      <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+      <Typography variant="h5">
         Thông tin chung
       </Typography>
       <Divider sx={{ marginBottom: '20px' }}></Divider>
@@ -118,7 +118,7 @@ function RequestDetailPage() {
           <Grid item container xs="12" spacing={1}>
             {requestDetail ? (
               requestDetail.map((req, index) => (
-                <Grid item xs="4">
+                <Grid item xs="3">
                   <Paper sx={{ padding: '10px' }}>
                     {/* <Typography>
                             Mã yêu cầu chi tiết: {req.requestDetailId}

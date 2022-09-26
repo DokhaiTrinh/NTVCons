@@ -22,7 +22,6 @@ const Details = (props) => {
   const { allProjectDetails, managerList, workerList, userList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
-  console.log(allProjectDetails);
   const handleOpenWorkerDialog = () => {
     setOpenWorkerDialog(true);
   };
@@ -224,7 +223,12 @@ const Details = (props) => {
           </Grid>
         </Paper>
       </Box>
-      <Dialog open={openWorkerDialog} onClose={handleCloseWorkerDialog}>
+      <Dialog open={openWorkerDialog} onClose={handleCloseWorkerDialog} PaperProps={{
+        sx: {
+          width: "100%",
+          maxWidth: "1300px!important",
+        },
+      }}>
         <DialogWorker workerList={workerList}></DialogWorker>
       </Dialog>
     </div>

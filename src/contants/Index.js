@@ -47,6 +47,7 @@ import OTPPage from '../views/ForgotPassword/OTPPage';
 import UpdateWorkerPage from '../views/PersonnelPage/UpdateWorkerPage';
 import UpdatePersonnelPage from '../views/PersonnelPage/UpdatePersonnelPage';
 import UserProfile from '../views/UserProfile/UserProfile';
+import EditBlueprintPage from '../views/BlueprintPage/EditBlueprintPage';
 export const HOME_ROUTES = [
   // {
   //   path: '/home',
@@ -203,6 +204,12 @@ export const HOME_ROUTES = [
     name: 'Edit Report Page',
     exact: true,
     component: EditReportPage,
+  },
+  {
+    path: '/editBlueprint',
+    name: 'Edit Blueprint Page',
+    exact: true,
+    component: EditBlueprintPage,
   },
   {
     path: '/editProjectDetails/:id',

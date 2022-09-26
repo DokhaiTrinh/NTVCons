@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const Details = (props) => {
-  const { allProjectDetails, managerList, workerList } = props;
+  const { allProjectDetails, managerList, workerList, userList } = props;
   const { id } = useParams();
   const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
   console.log(allProjectDetails);
@@ -89,6 +89,25 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
+              <Typography variant="caption">Chủ đầu tư</Typography>
+              <Typography variant="body1">
+                {userList ? (
+                  userList.map((userList, index) => (
+                    <Typography
+                      sx={{
+                        witdh: '100%',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {userList.manager.fullName}
+                    </Typography>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Kỹ sư quản lý
               </Typography>
@@ -113,9 +132,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Trạng thái
-              </Typography>
+              <Typography variant="caption">Trạng thái</Typography>
               <Box
                 sx={{
                   width: '50%',
@@ -127,8 +144,8 @@ const Details = (props) => {
                   variant="body1"
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: 'left',
+                    justifyContent: 'left',
                     color: 'green',
                   }}
                 >
@@ -136,7 +153,12 @@ const Details = (props) => {
                 </Typography>
               </Box>
             </Grid>
-
+            <Grid item xs="4">
+              <Typography variant="caption">Ngày tạo</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.createdAt}
+              </Typography>
+            </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Thời gian bắt đầu dự kiến

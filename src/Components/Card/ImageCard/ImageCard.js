@@ -1,13 +1,18 @@
 import React from 'react'
-import { Card, CardActions, CardMedia, IconButton, Paper } from '@mui/material';
+import { Card, CardActions, CardMedia, IconButton, Paper, AppBar, Dialog, Toolbar, Typography, Button, Slide } from '@mui/material';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 const options = ['Xóa'];
 const ITEM_HEIGHT = 48;
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 export const ImageCard = (image) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [zoom, setZoom] = React.useState(false);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -15,8 +20,16 @@ export const ImageCard = (image) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleDialogOpen = () => {
+        setZoom(true);
+    };
+    const handleDialogClose = () => {
+        setZoom(false);
+        console.log(zoom);
+    };
+
     return (
-        <Paper elevation={8}>
+        <Paper elevation={5}>
             <Card className='card'>
                 <CardMedia
                     component="img"
@@ -24,10 +37,24 @@ export const ImageCard = (image) => {
                     className='img'
                 />
                 <CardActions className='cardActions'>
-                    <IconButton>
+                    <IconButton
+                        onClick={handleDialogOpen}
+                    >
                         <ZoomInIcon />
-
                     </IconButton>
+                    <Dialog
+                        open={zoom}
+                        onClose={handleDialogClose}
+                        TransitionComponent={Transition}
+                        PaperProps={{
+                            sx: {
+                                width: "100%",
+                                maxWidth: "1300px!important",
+                            },
+                        }}
+                    >
+                        <img src={image} />
+                    </Dialog>
                     {window.location.pathname.includes('projectDetails') ?
                         <IconButton
                             aria-label="more"
@@ -66,7 +93,6 @@ export const ImageCard = (image) => {
                         ))}
                     </Menu>
                 </CardActions>
-
             </Card>
         </Paper>
     )
