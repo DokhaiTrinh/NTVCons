@@ -80,20 +80,12 @@ const DialogTaskReport = (props) => {
 
   return (
     <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
-        CÔNG VIỆC CHI TIẾT
-      </Typography>
-      <Divider></Divider>
-      <Typography variant="body1" color="#DD8501" fontWeight="bold">
-        Thông tin công việc chi tiết
-      </Typography>
-      <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
       <form onSubmit={handleSubmit(submitForm)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
+          <Typography variant="body2">
+              Tên công việc
+            </Typography>
             <FormControl sx={{ width: '100%' }}>
               <Select
                 onChange={handleChange}

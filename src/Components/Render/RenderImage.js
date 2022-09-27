@@ -26,17 +26,17 @@ export default function RenderImage(src) {
                 src={photo}
                 key={index}
               /> */}
-        <ImageList sx={{ height: '150px' }} cols={3} rowHeight={150}>
+        <ImageList sx={{ height: '150px' }} cols={2} rowHeight={150}>
           {src.map((photo, index) => (
             <ImageListItem key={photo}>
               <img
                 src={photo}
                 key={index}
-                style={{ objectFit: 'cover', width: 150 }}
-                onMouseOver={() => setIsShown(true)}
-                onMouseOut={() => setIsShown(false)}
+                style={{ objectFit: 'fill', width: "150px" }}
+                // onMouseOver={() => setIsShown(true)}
+                // onMouseOut={() => setIsShown(false)}
               />
-              {isShown && (
+              {/* {isShown && (
                 <Box
                   sx={{
                     height: '150px',
@@ -51,7 +51,7 @@ export default function RenderImage(src) {
                 >
                   <ZoomInIcon fontSize="large" />
                 </Box>
-              )}
+              )} */}
             </ImageListItem>
           ))}
         </ImageList>

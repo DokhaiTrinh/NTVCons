@@ -49,11 +49,11 @@ export const ImageCard = (image) => {
                         PaperProps={{
                             sx: {
                                 width: "100%",
-                                maxWidth: "1300px!important",
+                                maxWidth: "1000px!important",
                             },
                         }}
                     >
-                        <img src={image} />
+                        <img src={image} width='1000px'/>
                     </Dialog>
                     {window.location.pathname.includes('projectDetails') ?
                         <IconButton

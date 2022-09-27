@@ -245,8 +245,8 @@ const CreateReportProject = (props) => {
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
   return (
-    <Paper sx={{ padding: '32px' }}>
-      <Typography variant="h6" color="#DD8501">
+    <Paper className='bodynonetab'>
+      <Typography variant="h5">
         TẠO BÁO CÁO
       </Typography>
       <Divider></Divider>
@@ -265,10 +265,6 @@ const CreateReportProject = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin báo cáo
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -276,8 +272,10 @@ const CreateReportProject = (props) => {
                   Hình ảnh
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <Box sx={{ width: "150px" }}>
+                    <UploadImage onChange={handleChangeFile} />
+                  </Box>
+                  {RenderImage(selectedImages)}
                 </Stack>
               </Grid>
               <Grid item xs={12}>
@@ -419,6 +417,7 @@ const CreateReportProject = (props) => {
                   type="file"
                   id="files"
                   multiple
+                  accept=".xlsx,.xls,.doc, .docx"
                   onChange={handleChangeFile}
                 />
                 <div className="label-holder">
@@ -442,7 +441,7 @@ const CreateReportProject = (props) => {
                     variant="contained"
                     className="submitButton"
                   >
-                    Tạo báo cáo
+                    Lưu
                   </Button>
                 </Box>
               </Grid>

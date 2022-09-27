@@ -29,7 +29,8 @@ export const DeleteReport = (reportId) => {
         'Xóa thành công!',
         'Dự án của bạn đã được xóa thành công.',
         'success'
-      );
+        );
+        window.location.reload();
       dispatch({ type: 'LOADING', newLoading: !loading });
     } catch (error) {}
   };

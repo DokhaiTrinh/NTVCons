@@ -50,17 +50,6 @@ const DialogReportProject = (props) => {
 
   return (
     <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
-        BÁO CÁO CHI TIẾT
-      </Typography>
-      <Divider></Divider>
-      <Typography variant="body1" color="#DD8501" fontWeight="bold">
-        Thông tin báo cáo chi tiết
-      </Typography>
-      <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
       <form onSubmit={handleSubmit(submitForm)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>

@@ -5,24 +5,27 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-export default function UploadImage(setSelectedImage, setFilesImage) {
+const UploadImage = (props) => {
+  const {onChange} = props;
   const valideSchema = yup.object({}).required();
   const { register } = useForm({
     resolver: yupResolver(valideSchema),
   });
-  const handleChangeFile = (e) => {
-    setFilesImage(e.target.files);
+  // const handleChangeFile = (e) => {
+  //   props.setFilesImage(e.target.files);
 
-    if (e.target.files) {
-      const fileArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setSelectedImage((prevImages) => prevImages.concat(fileArray));
-      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
-    }
-  };
+  //   console.log("sfas");
+  //   if (e.target.files) {
+  //     const fileArray = Array.from(e.target.files).map((file) =>
+  //       URL.createObjectURL(file)
+  //     );
+  //     props.setSelectedImage((prevImages) => prevImages.concat(fileArray));
+  //     Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+  //     console.log(props.selectedImages)
+  //   }
+  // };
   return (
-    <Button aria-label="upload picture" component="label" variant="contained">
+    <Button aria-label="upload picture" component="label" variant="contained" sx={{width: "150px", height: "150px"}}>
       <input
         {...register('files')}
         type="file"
@@ -30,9 +33,11 @@ export default function UploadImage(setSelectedImage, setFilesImage) {
         multiple
         hidden
         accept="image/*"
-        onChange={() => handleChangeFile}
+        onChange={onChange}
       />
       <PhotoCamera fontSize="large" />
     </Button>
   );
 }
+
+export default UploadImage;

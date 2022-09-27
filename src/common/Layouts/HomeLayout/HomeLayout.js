@@ -18,14 +18,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Button from '@mui/material/Button';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import { NavLink } from 'react-router-dom';
 import {
   Apps,
-  Menu,
   ContactMail,
-  AssignmentInd,
-  Home,
 } from '@material-ui/icons';
 import ChatIcon from '@mui/icons-material/Chat';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -125,7 +122,7 @@ const listItems = [
   //   listText: 'Trang chủ',
   // },
   {
-    listIcon: <AssignmentInd />,
+    listIcon: <HomeWorkIcon />,
     path: '/project',
     listText: 'Dự án',
   },
