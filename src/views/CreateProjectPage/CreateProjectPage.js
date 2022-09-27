@@ -169,6 +169,7 @@ const CreateProjectPage = (props) => {
       setLoading(false);
     }
   };
+  
   const valideSchema = yup
     .object({
       estimatedCost: yup
