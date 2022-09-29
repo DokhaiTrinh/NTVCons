@@ -23,7 +23,8 @@ const FileDetail = (props) => {
           // top: '205px',
           padding: '32px',
           borderRadius: '0',
-          boxShadow: 'none'
+          boxShadow: 'none',
+          // backgroundColor: '#F1F1F1'
         }}
       >
         <TabPanel>

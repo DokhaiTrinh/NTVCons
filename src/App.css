@@ -132,7 +132,7 @@
 }
 
 .tag{
-    width: min-content;
+    width: 100%;
     padding: 5px 10px;
 }
 
@@ -157,4 +157,8 @@
 
 .table{
     padding: 32px;
+}
+
+.details{
+    padding: 10px
 }

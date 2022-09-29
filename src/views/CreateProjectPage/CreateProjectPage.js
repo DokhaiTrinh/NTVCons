@@ -300,7 +300,7 @@ const CreateProjectPage = (props) => {
   };
   return (
     <Paper className="bodynonetab">
-      <Typography variant="h6" color="#DD8501">
+      <Typography variant="h5">
         TẠO MỚI DỰ ÁN
       </Typography>
       <Divider></Divider>
@@ -320,10 +320,6 @@ const CreateProjectPage = (props) => {
           }}
         >
           <form onSubmit={handleSubmit(submitForm)}>
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
-              Thông tin dự án
-            </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2">Tên dự án</Typography>
@@ -515,16 +511,10 @@ const CreateProjectPage = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12}>
+              <Grid item xs={12}>
                 {locationDetail ? (
                   <Paper className="tag">
-                    <Stack direction="row" spacing={1}>
-                      <Typography>{locationDetail.addressNumber},</Typography>
-                      <Typography>{locationDetail.street},</Typography>
-                      <Typography>{locationDetail.ward},</Typography>
-                      <Typography>{locationDetail.district},</Typography>
-                      <Typography>{locationDetail.city}</Typography>
-                    </Stack>
+                      <Typography>{locationDetail.addressNumber}, {locationDetail.street}, {locationDetail.ward}, {locationDetail.district}, {locationDetail.city}</Typography>
                   </Paper>
                 ) : (
                   <Grid item sx={12}>
