@@ -167,14 +167,13 @@ import {
       // dispatch({ type: 'LOADING', newLoading: !loading });
     };
     return (
-      <Paper className='bodynonetab' elevation='none'>
+      <Paper className='bodynonetab'>
         <Typography
-          variant="h6"
-          color="#DD8501"
+          variant="h5"
         >
           Cập nhật hồ sơ công nhân
         </Typography>
-        <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+        <Divider></Divider>
         <Box
           sx={{
             display: 'flex',
@@ -191,18 +190,14 @@ import {
             }}
           >
             <form onSubmit={handleSubmit(submitForm)}>
-              <Typography variant="body1" color="#DD8501" fontWeight="bold">
-                Sơ yếu lý lịch
-              </Typography>
-              <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
               <Grid container spacing={2}>
                 <Grid item>
                   <Typography variant="body2">
                     Ảnh đại diện
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <UploadImage onChange={handleChangeFile} />
+                  {RenderImage(selectedImages)}
                 </Stack>
                   {/* <Box
                     sx={{
@@ -337,21 +332,12 @@ import {
                 <Grid item container columns={12}>
                   {locationDetail ? (
                     <Paper className='tag'>
-                      <Stack direction='row' spacing={1}>
                         <Typography>
-                          {locationDetail.addressNumber},
-                        </Typography>
-                        <Typography>
-                        {locationDetail.street},
-                        </Typography>
-                        <Typography>
-                          {locationDetail.ward},
-                        </Typography>
-                        <Typography>
-                          {locationDetail.district},
-                        </Typography>
-                        <Typography>
-                          { locationDetail.city}
+                          {locationDetail.addressNumber}, &nbsp;
+                        {locationDetail.street},&nbsp;
+                          {locationDetail.ward},&nbsp;
+                          {locationDetail.district},&nbsp;
+                          { locationDetail.city}&nbsp;
                         </Typography>
                         {/* <Typography>
                           Địa bàn tỉnh: {locationDetail.province}
@@ -365,7 +351,6 @@ import {
                         <Typography>
                           Điều phối: {locationDetail.coordinate}
                         </Typography> */}
-                      </Stack>
                     </Paper>
                   ) : (
                     <Grid item sx={12}>

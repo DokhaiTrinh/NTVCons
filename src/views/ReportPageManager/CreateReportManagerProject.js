@@ -272,10 +272,9 @@ const CreateReportProject = (props) => {
                   Hình ảnh
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <Box sx={{ width: "150px" }}>
                     <UploadImage onChange={handleChangeFile} />
-                  </Box>
-                  {RenderImage(selectedImages)}
+                  {/* {RenderImage(selectedImages, setFilesImage)} */}
+                  <RenderImage src={selectedImages} setFilesImage={setFilesImage} />
                 </Stack>
               </Grid>
               <Grid item xs={12}>
@@ -332,19 +331,17 @@ const CreateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item>
                 {reportDetail.length ? (
                   reportDetail.map((report, index) => (
-                    <Grid item xs={4}>
                       <Paper className="tag">
                         <Stack direction="row" spacing={1}>
-                          <Typography>{report.itemDesc}</Typography>
-                          <Typography>{report.itemAmount}</Typography>
-                          <Typography>{report.itemUnit}</Typography>
-                          <Typography>{report.itemPrice}&nbsp;VNĐ</Typography>
+                          <Typography>{report.itemDesc},&nbsp;
+                          {report.itemAmount},&nbsp;
+                          {report.itemUnit},&nbsp;
+                          {report.itemPrice}&nbsp;VNĐ</Typography>
                         </Stack>
                       </Paper>
-                    </Grid>
                   ))
                 ) : (
                   <Grid item sx={12}>
@@ -369,18 +366,14 @@ const CreateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item>
                 {taskReportDetail.length ? (
                   taskReportDetail.map((task, index) => (
-                    <Grid item xs={4}>
                       <Paper className="tag">
-                        <Stack direction="row" spacing={1}>
-                          <Typography>{task.taskId}</Typography>
-                          <Typography>{task.taskNote}</Typography>
-                          <Typography>&nbsp;{task.taskProgress}</Typography>
-                        </Stack>
+                          <Typography>{task.taskId},&nbsp;
+                          {task.taskNote},
+                          &nbsp;{task.taskProgress}</Typography>
                       </Paper>
-                    </Grid>
                   ))
                 ) : (
                   <Grid item sx={12}>

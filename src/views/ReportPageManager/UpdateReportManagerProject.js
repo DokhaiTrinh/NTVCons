@@ -301,7 +301,7 @@ const UpdateReportProject = (props) => {
   };
   return (
     <Paper sx={{ padding: '32px' }}>
-      <Typography variant="h6" color="#DD8501">
+      <Typography variant="h5">
         CẬP NHẬT BÁO CÁO
       </Typography>
       <Divider></Divider>
@@ -321,21 +321,21 @@ const UpdateReportProject = (props) => {
               marginBottom: '30px',
             }}
           >
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
-              Thông tin báo cáo
-            </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                  <Typography variant="body2" sx={{ marginBottom: '10px' }}>
+                <Grid item xs={12}>
+                  <Typography variant="body2">
                     Hình ảnh
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    {UploadImage(setSelectedImage, setFilesImage)}
-                    <div className="result">{RenderImage(selectedImages)}</div>
+                    <UploadImage onChange={handleChangeFile}/>
+                    <Box sx={{height: '150px', overflowX: 'scroll', display: "flex", flexDirection: "row",}}>
+
+                    {renderPhotos(selectedImages)}
+                    </Box>
+                    {/* <div className="result">{RenderImage(selectedImages)}</div> */}
                   </Stack>
-                </Grid> */}
+                </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2">Tên báo cáo</Typography>
                   <TextFieldComponent
@@ -393,13 +393,12 @@ const UpdateReportProject = (props) => {
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item container columns={12} spacing={2}>
+                <Grid item container xs={12} spacing={2}>
                   {updateReportDetail ? (
                     updateReportDetail.map((reportDetailItem, index) => (
                       <Grid
                         key={index}
                         item
-                        xs={4}
                         onClick={() =>
                           handleOpenUpdateReportDetailDialog(
                             'UpdateReport',
@@ -407,8 +406,7 @@ const UpdateReportProject = (props) => {
                           )
                         }
                       >
-                        <Box sx={{ width: '100%' }}>
-                          <Paper sx={{ width: '100%', padding: '10px'}}>
+                          <Paper className='tag'>
                               <Typography>
                                 Mã báo cáo chi tiết:{' '}
                                 {reportDetailItem.reportDetailId}
@@ -427,7 +425,6 @@ const UpdateReportProject = (props) => {
                                 Đơn vị: {reportDetailItem.itemUnit}
                               </Typography>
                           </Paper>
-                        </Box>
                       </Grid>
                     ))
                   ) : (
@@ -474,9 +471,7 @@ const UpdateReportProject = (props) => {
                           )
                         }
                       >
-                        <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%', minHeight: '200px' }}>
-                            <CardContent>
+                        <Paper className='tag'>
                               <Typography>
                                 Mã công việc:
                                 {taskDetailItem.taskReportId}
@@ -487,9 +482,7 @@ const UpdateReportProject = (props) => {
                               <Typography>
                                 Tiến độ: {taskDetailItem.taskProgress}
                               </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
+                        </Paper>
                       </Grid>
                     ))
                   ) : (
@@ -524,23 +517,24 @@ const UpdateReportProject = (props) => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={6}>
+                {/* <Grid item xs={12}>
+                <Typography variant="body2">Ảnh</Typography>
                   <input
                     {...register('files')}
                     type="file"
                     id="files"
                     multiple
+                    accept='image/*'
                     onChange={handleChangeFile}
                   />
                   <div className="label-holder">
                     <label htmlFor="file" className="img-upload">
-                      Chọn hình
                     </label>
                   </div>
 
                   <div className="result">{renderPhotos(selectedImages)}</div>
-                  {/* <input type="file" multiple {...register("file")} /> */}
-                </Grid>
+                  <input type="file" multiple {...register("file")} />
+                </Grid> */}
                 <Grid item xs={12}>
                   <Box
                     sx={{
@@ -555,7 +549,7 @@ const UpdateReportProject = (props) => {
                       variant="contained"
                       className="submitButton"
                     >
-                      Cập nhật
+                      Lưu
                     </Button>
                   </Box>
                 </Grid>

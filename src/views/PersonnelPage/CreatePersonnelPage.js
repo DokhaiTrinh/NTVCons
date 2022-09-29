@@ -189,7 +189,7 @@ const CreatePersonnelPage = (props) => {
   };
   return (
     <Paper className="bodynonetab" elevation="none">
-      <Typography variant="h6" color="#DD8501">
+      <Typography variant="h5">
         Tạo mới hồ sơ nhân viên
       </Typography>
       <Divider></Divider>
@@ -208,13 +208,6 @@ const CreatePersonnelPage = (props) => {
             marginBottom: '30px',
           }}
         >
-          {/* <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Ảnh đại diện
-          </Typography> */}
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Sơ yếu lý lịch
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -226,8 +219,8 @@ const CreatePersonnelPage = (props) => {
                   Ảnh đại diện
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <UploadImage onChange={handleChangeFile} />
+                  {RenderImage(selectedImages)}
                 </Stack>
               </Grid>
               <Grid item xs={12}>

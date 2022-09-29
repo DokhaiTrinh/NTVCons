@@ -64,11 +64,11 @@ const DialogUpdateTaskReport = (props) => {
       updateListTask = updateListTask.map((t) =>
         t.taskReportId === itemDetailTaskUpdate.taskReportId
           ? (t = {
-              ...t,
-              taskId: taskIdSelected,
-              taskNote: data.taskNote,
-              taskProgress: data.taskProgress,
-            })
+            ...t,
+            taskId: taskIdSelected,
+            taskNote: data.taskNote,
+            taskProgress: data.taskProgress,
+          })
           : t
       );
       setUpdateTaskDetail(updateListTask);
@@ -96,11 +96,9 @@ const DialogUpdateTaskReport = (props) => {
     setTaskIdSelected(event.target.value);
   };
   return (
-    <div>
+    <div className='dialog'>
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         CÔNG VIỆC CHI TIẾT
       </Typography>
@@ -112,21 +110,10 @@ const DialogUpdateTaskReport = (props) => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
-          }}
-        >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin công việc chi tiết
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Grid container spacing={2}>
+        <form onSubmit={handleSubmit(submitForm)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+
               <FormControl sx={{ width: '100%' }}>
                 <Select
                   onChange={handleChange}
@@ -146,94 +133,60 @@ const DialogUpdateTaskReport = (props) => {
                   )}
                 </Select>
               </FormControl>
-              <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thông tin công việc
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="taskNote"
-                  defaultValue={
-                    itemDetailTaskUpdate ? itemDetailTaskUpdate.taskNote : null
-                  }
-                  errors={errors.taskNote}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tiến độ
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="taskProgress"
-                  label="Tiến độ"
-                  defaultValue={
-                    itemDetailTaskUpdate
-                      ? itemDetailTaskUpdate.taskProgress
-                      : null
-                  }
-                  errors={errors.taskProgress}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  {actionUpdateTask ? (
-                    actionUpdateTask === 'UpdateTask' ? (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
-                      >
-                        Cập nhật
-                      </Button>
-                    ) : (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
-                      >
-                        Tạo mới
-                      </Button>
-                    )
-                  ) : null}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Lưu
-                  </Button>
-                </Box>
-              </Grid>
             </Grid>
-          </form>
-        </Box>
+            <Grid item xs={12}>
+              <Typography variant="body2">
+                Thông tin công việc
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="taskNote"
+                defaultValue={
+                  itemDetailTaskUpdate ? itemDetailTaskUpdate.taskNote : null
+                }
+                errors={errors.taskNote}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2">
+                Tiến độ
+              </Typography>
+              <TextFieldComponent
+                register={register}
+                name="taskProgress"
+                label="Tiến độ"
+                defaultValue={
+                  itemDetailTaskUpdate
+                    ? itemDetailTaskUpdate.taskProgress
+                    : null
+                }
+                errors={errors.taskProgress}
+                variant="outlined"
+                sx={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  display: 'flex',
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className='submitButton'
+                >
+                  Lưu
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </form>
       </Box>
     </div>
   );

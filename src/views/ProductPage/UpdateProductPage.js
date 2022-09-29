@@ -228,40 +228,32 @@ const UpdateProductPage = (props) => {
     });
   };
   return (
-    <div>
-      <Paper className="bodynonetab">
-        <Typography
-          variant="h6"
-          color="#DD8501"
-          sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
-        >
-          TẠO MỚI DỊCH VỤ
-        </Typography>
-        <Divider></Divider>
+    <Paper className="bodynonetab">
+      <Typography
+        variant="h5"
+      >
+        TẠO MỚI DỊCH VỤ
+      </Typography>
+      <Divider></Divider>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            paddingLeft: '10px',
+            paddingTop: '10px',
+            width: '40%',
+            marginBottom: '30px',
           }}
         >
-          <Box
-            sx={{
-              paddingLeft: '10px',
-              paddingTop: '10px',
-              width: '40%',
-              marginBottom: '30px',
-            }}
-          >
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
-              Thông tin dịch vụ
-            </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-            {postById ? (
-              <form onSubmit={handleSubmit(submitForm)}>
-                <Box sx={{ width: '100%', height: '20px' }}></Box>
-                <Grid container spacing={2}>
-                  {/* <Grid item xs={12}>
+          {postById ? (
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Grid container spacing={2}>
+                {/* <Grid item xs={12}>
                     <Typography variant="body2">Hình ảnh</Typography>
                     <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
                       {itemData.map((item) => (
@@ -276,7 +268,7 @@ const UpdateProductPage = (props) => {
                       ))}
                     </ImageList>
                   </Grid> */}
-                  {/* <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Box
                       sx={{ width: 164, height: 164 }}
                       display="flex"
@@ -293,156 +285,149 @@ const UpdateProductPage = (props) => {
                       </IconButton>
                     </Box>
                   </Grid> */}
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Tên dự án</Typography>
-                    <TextField
-                      {...register('postTitle')}
-                      // inputProps={{ readOnly: true }}
-                      name="postTitle"
-                      variant="outlined"
-                      autoComplete="postTitle"
-                      autoFocus
-                      defaultValue={postById.postTitle}
-                      error={errors.postTitle != null}
-                      helperText={errors.postTitle?.message}
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Chủ đầu tư</Typography>
-                    <TextFieldComponent
-                      register={register}
-                      name="ownerName"
-                      // label="Tên vai trò"
-                      errors={errors.ownerName}
-                      defaultValue={postById.ownerName}
-                      variant="outlined"
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Vị trí</Typography>
-                    <TextFieldComponent
-                      register={register}
-                      name="address"
-                      // label="Tên vai trò"
-                      errors={errors.address}
-                      defaultValue={postById.address}
-                      variant="outlined"
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Quy mô</Typography>
-                    <TextFieldComponent
-                      register={register}
-                      name="scale"
-                      // label="Tên vai trò"
-                      errors={errors.scale}
-                      defaultValue={postById.scale}
-                      variant="outlined"
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2">Thể loại</Typography>
-                    <FormControl sx={{ width: '100%' }}>
-                      <Select
-                        onChange={handleChange}
-                        MenuProps={MenuProps}
-                        value={categorySelected}
-                        defaultValue={postById.categorySelected}
-                      >
-                        {allCategory.length > 0 ? (
-                          allCategory.map((cateType, index) => (
-                            <MenuItem
-                              value={cateType.postCategoryId}
-                              key={index}
-                            >
-                              {cateType.postCategoryName}
-                            </MenuItem>
-                          ))
-                        ) : (
-                          <MenuItem>
-                            Không có dữ liệu của danh sách công việc!
-                          </MenuItem>
-                        )}
-                      </Select>
-                    </FormControl>
-                    <Grid item xs={12}>
-                      <Typography variant="body2">Tác giả</Typography>
-                      <TextFieldComponent
-                        register={register}
-                        name="authorName"
-                        // label="Tên vai trò"
-                        errors={errors.authorName}
-                        defaultValue={postById.authorName}
-                        variant="outlined"
-                        sx={{ width: '100%' }}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="body2">Giá dự kiến</Typography>
-                      <TextFieldComponent
-                        register={register}
-                        name="estimatedCost"
-                        // label="Tên vai trò"
-                        errors={errors.estimatedCost}
-                        variant="outlined"
-                        sx={{ width: '100%' }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <input
-                      {...register('files')}
-                      type="file"
-                      id="files"
-                      multiple
-                      onChange={handleChangeFile}
-                      accept="image/*"
-                    />
-                    <div className="label-holder">
-                      <label htmlFor="file" className="img-upload">
-                        Chọn hình
-                      </label>
-                    </div>
-
-                    <div className="result">{renderPhotos(selectedImages)}</div>
-                    {/* <input type="file" multiple {...register("file")} /> */}
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        display: 'flex',
-                      }}
+                <Grid item xs={12}>
+                  <Typography variant="body2">Tên dự án</Typography>
+                  <TextField
+                    {...register('postTitle')}
+                    // inputProps={{ readOnly: true }}
+                    name="postTitle"
+                    variant="outlined"
+                    autoComplete="postTitle"
+                    autoFocus
+                    defaultValue={postById.postTitle}
+                    error={errors.postTitle != null}
+                    helperText={errors.postTitle?.message}
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Chủ đầu tư</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="ownerName"
+                    // label="Tên vai trò"
+                    errors={errors.ownerName}
+                    defaultValue={postById.ownerName}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Vị trí</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="address"
+                    // label="Tên vai trò"
+                    errors={errors.address}
+                    defaultValue={postById.address}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Quy mô</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="scale"
+                    // label="Tên vai trò"
+                    errors={errors.scale}
+                    defaultValue={postById.scale}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Thể loại</Typography>
+                  <FormControl sx={{ width: '100%' }}>
+                    <Select
+                      onChange={handleChange}
+                      MenuProps={MenuProps}
+                      value={categorySelected}
+                      defaultValue={postById.categorySelected}
                     >
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        style={{
-                          backgroundColor: '#DD8501',
-                          borderRadius: 50,
-                          width: '200px',
-                          alignSelf: 'center',
-                        }}
-                      >
-                        Lưu
-                      </Button>
-                    </Box>
+                      {allCategory.length > 0 ? (
+                        allCategory.map((cateType, index) => (
+                          <MenuItem
+                            value={cateType.postCategoryId}
+                            key={index}
+                          >
+                            {cateType.postCategoryName}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem>
+                          Không có dữ liệu của danh sách công việc!
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Tác giả</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="authorName"
+                      // label="Tên vai trò"
+                      errors={errors.authorName}
+                      defaultValue={postById.authorName}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Giá dự kiến</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="estimatedCost"
+                      // label="Tên vai trò"
+                      errors={errors.estimatedCost}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
                   </Grid>
                 </Grid>
-              </form>
-            ) : (
-              <div>Không có dữ liệu</div>
-            )}
-          </Box>
+                <Grid item xs={12}>
+                <Typography variant="body2">Đính kèm</Typography>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    multiple
+                    onChange={handleChangeFile}
+                    accept="image/*"
+                  />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="img-upload"></label>
+                  </div>
+
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  {/* <input type="file" multiple {...register("file")} /> */}
+                </Grid>
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      className='submitButton'
+                    >
+                      Lưu
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </form>
+          ) : (
+            <div>Không có dữ liệu</div>
+          )}
         </Box>
-      </Paper>
-    </div>
+      </Box>
+    </Paper>
   );
 };
 

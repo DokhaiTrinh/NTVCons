@@ -170,10 +170,10 @@ export const CreateWorker = (props) => {
   };
   return (
     <Paper className="bodynonetab">
-      <Typography variant="h6" color="#DD8501">
+      <Typography variant="h5">
         Tạo mới hồ sơ công nhân
       </Typography>
-      <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+      <Divider></Divider>
       <Box
         sx={{
           display: 'flex',
@@ -190,18 +190,14 @@ export const CreateWorker = (props) => {
           }}
         >
           <form onSubmit={handleSubmit(submitForm)}>
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
-              Sơ yếu lý lịch
-            </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item>
                 <Typography variant="body2">
                   Ảnh đại diện
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <UploadImage onChange={handleChangeFile} />
+                  {RenderImage(selectedImages)}
                 </Stack>
                 {/* <Box
                   sx={{
@@ -381,7 +377,7 @@ export const CreateWorker = (props) => {
           locationDetail={locationDetail}
         ></DialogAddress>
       </Dialog>
-    </Paper>
+    </Paper >
   );
 };
 

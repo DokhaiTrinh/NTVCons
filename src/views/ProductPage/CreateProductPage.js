@@ -149,12 +149,22 @@ const CreateProductPage = (props) => {
     setCategorySelected(event.target.value);
   };
 
+  const handleChangeFile = (e) => {
+    setFilesImage(e.target.files);
+
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setSelectedImage((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+  };
+
   return (
     <Paper className="bodynonetab" elevation="none">
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         TẠO MỚI DỊCH VỤ
       </Typography>
@@ -174,12 +184,7 @@ const CreateProductPage = (props) => {
             marginBottom: '30px',
           }}
         >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin dịch vụ
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
-            <Box sx={{ width: '100%', height: '20px' }}></Box>
             <Grid container spacing={2}>
               {/* <Grid item xs={12}>
                 <Typography variant="body2">
@@ -224,8 +229,10 @@ const CreateProductPage = (props) => {
                   Ảnh dự án
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
+                  <Box sx={{ width: "150px" }}>
+                    <UploadImage onChange={handleChangeFile} />
+                  </Box>
+                  {RenderImage(selectedImages)}
                 </Stack>
               </Grid>
               <Grid item xs={12}>

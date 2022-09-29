@@ -105,8 +105,7 @@ const ProductPage = (props) => {
             aria-label=""
           >
             <Tab label="Dịch vụ" {...a11yProps(0)} />
-            <Tab label="Sản phẩm" {...a11yProps(1)} />
-            <Tab label="Thể loại" {...a11yProps(2)} />
+            <Tab label="Thể loại" {...a11yProps(1)} />
           </Tabs>
         <div className='body'>
           <TabPanel value={value} index={0}>
@@ -122,9 +121,6 @@ const ProductPage = (props) => {
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Product
-          </TabPanel>
-          <TabPanel value={value} index={2}>
             {allCategory ? (
               <Box width="100%">
                 <CategoryTable

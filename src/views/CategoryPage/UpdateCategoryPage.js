@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Paper,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -105,11 +106,9 @@ const UpdateCategoryPage = (props) => {
     }
   };
   return (
-    <div>
+    <Paper className='bodynonetab'>
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         CẬP NHẬT THỂ LOẠI
       </Typography>
@@ -122,11 +121,6 @@ const UpdateCategoryPage = (props) => {
         }}
       >
         <Box sx={{ paddingLeft: '10px', paddingTop: '10px', width: '40%' }}>
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Cập nhật thể loại
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           {categoryId ? (
             <form onSubmit={handleSubmit(submitForm)}>
               <Grid container spacing={2}>
@@ -166,12 +160,7 @@ const UpdateCategoryPage = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
-                      style={{
-                        backgroundColor: '#DD8501',
-                        borderRadius: 50,
-                        width: '200px',
-                        alignSelf: 'center',
-                      }}
+                      className='submitButton'
                     >
                       {loading ? (
                         <>
@@ -191,7 +180,7 @@ const UpdateCategoryPage = (props) => {
           )}
         </Box>
       </Box>
-    </div>
+    </Paper>
   );
 };
 

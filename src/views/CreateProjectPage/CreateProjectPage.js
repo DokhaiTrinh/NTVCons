@@ -398,7 +398,7 @@ const CreateProjectPage = (props) => {
                   <Typography variant="body2">Bắt đầu dự kiến</Typography>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => <TextField {...props} fullWidth/>}
                       value={valuePlanStartDate}
                       onChange={(newValue) => {
                         setValuePlanStartDate(newValue);
@@ -410,7 +410,7 @@ const CreateProjectPage = (props) => {
                   <Typography variant="body2">Kết thúc dự kiến</Typography>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
+                      renderInput={(props) => <TextField {...props} fullWidth/>}
                       value={valuePlanEndDate}
                       onChange={(newValue) => {
                         setValuePlanEndDate(newValue);

@@ -54,11 +54,9 @@ export const DialogAddress = (props) => {
   };
   console.log(errors);
   return (
-    <div>
+    <div className='bodynonetab'>
       <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
+        variant="h5"
       >
         ĐỊA CHỈ
       </Typography>
@@ -70,19 +68,6 @@ export const DialogAddress = (props) => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
-          }}
-        >
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin địa chỉ
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <Box sx={{ width: '100%', height: '20px' }}></Box>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -214,7 +199,6 @@ export const DialogAddress = (props) => {
             </Grid>
           </form>
         </Box>
-      </Box>
     </div>
   );
 };
