@@ -15,3 +15,10 @@ export const getAllWorkerApi1 = (pageNo, pageSize, sortBy, sortTypeAsc) => {
     userInfor.token
   );
 };
+export const getWorkerByIdApi = (workerId, searchType) => {
+  const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+  return axiosService.get(
+    `${API_LINK.GET_BY_WORKER_ID}?searchParam=${workerId}&searchType=${searchType}`,
+    userInfor.token
+  );
+};

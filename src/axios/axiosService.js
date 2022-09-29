@@ -58,6 +58,25 @@ class AxiosService {
       },
     });
   }
+  postSendFiles(url, body, token) {
+    const formData = new FormData();
+    // for (let file of body) {
+    //   console.log(file);
+    //   formData.append('projectDocList', file);
+    // }
+    console.log(body.length);
+    for (let index = 0; index < body.length; index++) {
+      formData.append('projectDocList', body[index]);
+    }
+    console.log(formData);
+    return this.intance.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   post3(url, body, token) {
     const formData = new FormData();
     const blueprintDTO = {
@@ -215,7 +234,7 @@ class AxiosService {
       fullName: body.fullName,
       socialSecurityCode: body.socialSecurityCode,
       gender: body.gender,
-      birthday: body.birthday,
+      birthdate: body.birthdate,
       birthPlace: body.birthPlace,
     };
     const json = JSON.stringify(workerDTO);
@@ -260,6 +279,7 @@ class AxiosService {
     });
   }
   put(url, body, token) {
+    console.log(body);
     return this.intance.put(url, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -405,6 +425,30 @@ class AxiosService {
       fullName: body.fullName,
       gender: body.gender,
       birthdate: body.birthdate,
+    };
+    const json = JSON.stringify(userDTO);
+    formData.append('userDTO', new Blob([json], { type: 'application/json' }));
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('userAvatar', body.file[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+  putUpdateWorker(url, body, token) {
+    const formData = new FormData();
+    const userDTO = {
+      workerId: body.workerId,
+      address: body.address,
+      citizenId: body.citizenId,
+      fullName: body.fullName,
+      socialSecurityCode: body.socialSecurityCode,
+      gender: body.gender,
+      birthdate: body.birthdate,
+      birthPlace: body.birthPlace,
     };
     const json = JSON.stringify(userDTO);
     formData.append('userDTO', new Blob([json], { type: 'application/json' }));

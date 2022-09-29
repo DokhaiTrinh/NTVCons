@@ -25,7 +25,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useParams } from 'react-router-dom';
 import FileDetail from './components/FileDetail';
-
+import FloatingAddButton from '../../Components/Button/Add/FloatingAddButton';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -90,7 +90,7 @@ const ProjectDetailsPage = (props) => {
           'BY_ID'
         );
         setAllProjectDetails(listAllProjectDetails.data);
-        setManagerList(listAllProjectDetails.data.projectManagerList);
+        setManagerList(listAllProjectDetails.data.ntvManagerList);
         setWorkerList(listAllProjectDetails.data.projectWorkerList);
         setUserList(listAllProjectDetails.data.userManagerList);
         if (listAllProjectDetails.data) {
@@ -202,6 +202,7 @@ const ProjectDetailsPage = (props) => {
               docGet={docGet}
             ></FileDetail>
           </TabPanel>
+          <FloatingAddButton projectId={projectId} />
         </div>
       </Box>
     </div>

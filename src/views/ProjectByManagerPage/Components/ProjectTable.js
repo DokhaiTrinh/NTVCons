@@ -22,12 +22,12 @@ import Header from '../../../Components/Tab/Header';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const headCells = [
-  {
-    id: 'nguoiquantri',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người quản trị',
-  },
+  // {
+  //   id: 'nguoiquantri',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Người quản trị',
+  // },
   {
     id: 'maduan',
     numeric: false,
@@ -40,12 +40,12 @@ const headCells = [
     disablePadding: false,
     label: 'Tên dự án',
   },
-  {
-    id: 'nguoithamgia',
-    numeric: false,
-    disablePadding: false,
-    label: 'Người tham gia',
-  },
+  // {
+  //   id: 'nguoithamgia',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Người tham gia',
+  // },
   {
     id: 'batdau',
     numeric: false,
@@ -251,17 +251,17 @@ export const ProjectTable = (props) => {
                         : { background: 'white' }
                     }
                   >
-                    <TableCell
+                    {/* <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       align="left"
                     >
                       {row.createdBy}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="left">{row.projectId}</TableCell>
                     <TableCell align="left">{row.projectName}</TableCell>
-                    <TableCell align="left">{row.manager}</TableCell>
+                    {/* <TableCell align="left">{row.manager}</TableCell> */}
                     <TableCell align="left">{row.planStartDate}</TableCell>
                     <TableCell align="left">{row.planEndDate}</TableCell>
                     <TableCell align="left">{row.createdAt}</TableCell>

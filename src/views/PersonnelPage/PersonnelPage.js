@@ -109,7 +109,7 @@ const PersonnelPage = (props) => {
           value={value}
           onChange={handleChange}
         >
-          <Tab label="Nhân viên" {...a11yProps(0)} />
+          <Tab label="Thành viên" {...a11yProps(0)} />
           <Tab label="Công nhân" {...a11yProps(1)} />
           {userInfor.authorID === '54' ? (
             <Tab label="Vai trò" {...a11yProps(2)} />

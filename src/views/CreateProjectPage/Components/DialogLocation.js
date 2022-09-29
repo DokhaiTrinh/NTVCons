@@ -14,7 +14,7 @@ const DialogLocation = (props) => {
     .object({
       addressNumber: yup
         .string()
-        .min(0, 'Địa chỉ phải là số lớn hơn 0!')
+        .min(5, 'Địa chỉ phải là số lớn hơn 5!')
         .required(),
       area: yup.string().required(),
       city: yup.string().required('Phải có tên thành phố'),

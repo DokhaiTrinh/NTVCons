@@ -34,6 +34,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
+const id = userInfor.id;
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -151,8 +152,8 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    // path: `/userProfile/${userInfor.id}`,
-    path: '#',
+    path: `/userProfile/${id}`,
+    // path: '#',
     listText: 'Hồ sơ',
   },
   {
@@ -250,9 +251,7 @@ const HomeLayoutRoute = (props) => {
                     )}
                   </IconButton>
                 </DrawerHeader>
-
                 <Divider />
-
                 <List>
                   {listItems.map((listItem, index) =>
                     userInfor.authorID === '54' &&
@@ -294,8 +293,26 @@ const HomeLayoutRoute = (props) => {
                           <ListItemText primary={listItem.listText} />
                         </ListItem>
                       </NavLink>
+                    ) : userInfor.authorID === '14' &&
+                      (index <= 1 || index >= 4) ? (
+                      <NavLink
+                        to={listItem.path}
+                        key={index}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <ListItem
+                          className={classes.listItem}
+                          button
+                          key={index}
+                        >
+                          <ListItemIcon className={classes.listItem}>
+                            {listItem.listIcon}
+                          </ListItemIcon>
+                          <ListItemText primary={listItem.listText} />
+                        </ListItem>
+                      </NavLink>
                     ) : userInfor.authorID === '24' &&
-                      (index <= 1 || index >= 4 || index === 3) ? (
+                      (index <= 0 || index >= 2) ? (
                       <NavLink
                         to={listItem.path}
                         key={index}

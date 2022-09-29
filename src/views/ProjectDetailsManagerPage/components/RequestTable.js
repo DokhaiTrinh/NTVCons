@@ -10,12 +10,14 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import { visuallyHidden } from '@mui/utils';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
 import UpdateButton from '../../../Components/Button/UpdateButton';
@@ -77,11 +79,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -167,6 +165,37 @@ const EnhancedTableToolbar = (props) => {
     </Toolbar>
   );
 };
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+const a11yProps = (index) => {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+};
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -184,6 +213,7 @@ export default function RequestTable(props) {
   const [{ loading }, dispatch] = useStateValue();
   const [totalPage, setTotalPage] = React.useState();
   const [pageNum, setPageNum] = React.useState(0);
+  const [valueStatus, setValue] = React.useState('PENDING');
   const handleChangePage = (event, value) => {
     setPageNum(value - 1);
   };
@@ -206,35 +236,69 @@ export default function RequestTable(props) {
     })();
   }, [pageNum]);
   console.log(allRequestDetails);
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
 
+    //Chỗ này code sort. Mã search 13399
+  };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(`/createRequestManager/${projectId}`)
-      }
+      {Header(`/createRequestManager/${projectId}`)}
+      <Box sx={{ marginBottom: '20px' }}></Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
+        <Tabs
+          value={valueStatus}
+          onChange={handleChange}
+          sx={{ position: 'relative !important', width: '100% !important' }}
+        >
+          <Tab label="Duyệt" value="APPROVED" />
+          <Tab label="Đang chờ" value="PENDING" />
+          <Tab label="Bị hủy" value="DENIED" />
+        </Tabs>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+
+        {/* <TabPanel value="APRROVED">
+          Duyệt XX
+        </TabPanel>
+        <TabPanel value="PEDING">
+          Đang chờ
+        </TabPanel>
+        <TabPanel value="DENY">
+          Bị hủy
+        </TabPanel> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
-              {allRequestDetails.map((row, index) => {
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
+              {allRequestDetails.map((row, index) =>
                 // const isItemSelected = isSelected(row.admin);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                row.status === valueStatus ? (
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
-                      id={labelId}
                       scope="row"
+                      // padding="none"
                       align="left"
                     >
                       {row.requestId}
@@ -246,27 +310,23 @@ export default function RequestTable(props) {
                     </TableCell>
                     <TableCell align="left">{row.requester.username}</TableCell>
                     <TableCell align="left">
-                      {
-                        DetailButton(`/requestDetailsManager/${row.requestId}`)
-                      }
+                      {DetailButton(`/requestDetailsManager/${row.requestId}`)}
                     </TableCell>
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                        {
-                          UpdateButton(`/updateRequestDetailsManager/${row.requestId}`)
-                        }
+                        {UpdateButton(
+                          `/updateRequestDetailsManager/${row.requestId}`
+                        )}
                       </TableCell>
                     ) : null}
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                        {
-                          DeleteRequest(row.requestId)
-                        }
+                        {DeleteRequest(row.requestId)}
                       </TableCell>
                     ) : null}
                   </TableRow>
-                );
-              })}
+                ) : null
+              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -280,4 +340,79 @@ export default function RequestTable(props) {
       />
     </Box>
   );
+  // return (
+  //   <Box sx={{ width: '100%' }}>
+  //     {Header(`/createRequestManager/${projectId}`)}
+  //     <Paper sx={{ width: '100%', mb: 2 }}>
+  //       {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+  //       <TableContainer>
+  //         <Table sx={{ minWidth: 750 }}>
+  //           <EnhancedTableHead
+  //             numSelected={selected.length}
+  //             order={order}
+  //             orderBy={orderBy}
+  //           />
+  //           <TableBody
+  //             sx={{
+  //               [`& .${tableCellClasses.root}`]: {
+  //                 borderBottom: 'none',
+  //               },
+  //             }}
+  //           >
+  //             {allRequestDetails.map((row, index) => {
+  //               // const isItemSelected = isSelected(row.admin);
+  //               const labelId = `enhanced-table-checkbox-${index}`;
+  //               return (
+  //                 <TableRow
+  //                   style={
+  //                     index % 2
+  //                       ? { background: '#FAFAFA' }
+  //                       : { background: 'white' }
+  //                   }
+  //                 >
+  //                   <TableCell
+  //                     component="th"
+  //                     id={labelId}
+  //                     scope="row"
+  //                     align="left"
+  //                   >
+  //                     {row.requestId}
+  //                   </TableCell>
+  //                   <TableCell align="left">{row.requestDesc}</TableCell>
+  //                   <TableCell align="left">{row.requestDate}</TableCell>
+  //                   <TableCell align="left">
+  //                     {row.requestType.requestTypeName}
+  //                   </TableCell>
+  //                   <TableCell align="left">{row.requester.username}</TableCell>
+  //                   <TableCell align="left">
+  //                     {DetailButton(`/requestDetailsManager/${row.requestId}`)}
+  //                   </TableCell>
+  //                   {userInfor.authorID === '44' ? (
+  //                     <TableCell align="left">
+  //                       {UpdateButton(
+  //                         `/updateRequestDetailsManager/${row.requestId}`
+  //                       )}
+  //                     </TableCell>
+  //                   ) : null}
+  //                   {userInfor.authorID === '44' ? (
+  //                     <TableCell align="left">
+  //                       {DeleteRequest(row.requestId)}
+  //                     </TableCell>
+  //                   ) : null}
+  //                 </TableRow>
+  //               );
+  //             })}
+  //           </TableBody>
+  //         </Table>
+  //       </TableContainer>
+  //     </Paper>
+  //     <Pagination
+  //       count={totalPage + 1}
+  //       variant="outlined"
+  //       shape="rounded"
+  //       onChange={handleChangePage}
+  //       default={1}
+  //     />
+  //   </Box>
+  // );
 }

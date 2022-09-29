@@ -56,9 +56,6 @@ const UserProfile = (props) => {
       }
     })();
   }, []);
-  console.log(userName);
-  console.log(roleId);
-  console.log(userId);
   const submitForm = (data) => {
     const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
     Swal.fire({
@@ -226,7 +223,7 @@ const UserProfile = (props) => {
           <TabList>
             <Stack direction="row">
               <Tab>Hồ sơ</Tab>
-              <Tab>Mật khẩu</Tab>
+              {/* <Tab>Mật khẩu</Tab> */}
             </Stack>
           </TabList>
         </Paper>
@@ -368,7 +365,7 @@ const UserProfile = (props) => {
               <div>Không có dữ liệu của yêu cầu!!</div>
             )}
           </TabPanel>
-          <TabPanel>
+          {/* <TabPanel>
             <Typography variant="h6" sx={{ marginBottom: '20px' }}>
               Đặt lại mật khẩu
             </Typography>
@@ -428,7 +425,7 @@ const UserProfile = (props) => {
             ) : (
               <div>Không có dữ liệu của yêu cầu!!</div>
             )}
-          </TabPanel>
+          </TabPanel> */}
         </Paper>
       </Tabs>
     </div>

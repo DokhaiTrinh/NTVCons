@@ -11,6 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useHistory } from 'react-router-dom';
 import { getBlueprintByProjectIdApi } from '../../../apis/Blueprint/getBlueprintByProjectId';
 // import RenderImage from '../../../Components/Render/RenderImage';
 // import RenderImageCard from '../../../Components/Render/RenderImageCard';
@@ -27,6 +28,7 @@ export const Blueprint = (props) => {
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
+  const history = useHistory();
   React.useEffect(() => {
     (async () => {
       try {
@@ -144,7 +146,7 @@ export const Blueprint = (props) => {
             {userInfor.authorID !== '54' ? null : (
               <IconButtonCus
                 onClick={() => {
-                  // `/editProjectDetails/${id}`;
+                  history.push(`/editBlueprint/${id}`);
                 }}
                 icon={<EditOutlinedIcon style={{ color: 'gray' }} />}
               />

@@ -26,6 +26,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useParams } from 'react-router-dom';
 import DialogReportDetail from './Components/DialogReportDetail';
 import DialogTaskReport from './Components/DialogTaskReport';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
 import { getAllReportTypeApi } from '../../apis/ReportTypes/getAllReportTypes';
@@ -60,39 +62,13 @@ const CreateReportProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    // if (reportDetail.length === 0 || taskReportDetail.length === 0) {
-    //   handleCreateReport(
-    //     idN,
-    //     reportDate,
-    //     data.reportDesc,
-    //     null,
-    //     reportTypeSelected,
-    //     // idUser,
-    //     data.reportName,
-    //     null,
-    //     filesImage
-    //   );
-    // } else {
-    //   handleCreateReport(
-    //     idN,
-    //     reportDate,
-    //     data.reportDesc,
-    //     reportDetail,
-    //     reportTypeSelected,
-    //     // idUser,
-    //     data.reportName,
-    //     taskReportDetail,
-    //     filesImage
-    //   );
-    // }
-    if (reportDetail === 0 || taskReportDetail.length === 0) {
+    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
       handleCreateReport(
         idN,
         reportDate,
         data.reportDesc,
-        reportDetail,
+        null,
         reportTypeSelected,
-        // idUser,
         data.reportName,
         null,
         filesImage
@@ -104,7 +80,6 @@ const CreateReportProject = (props) => {
         data.reportDesc,
         reportDetail,
         reportTypeSelected,
-        // idUser,
         data.reportName,
         taskReportDetail,
         filesImage
@@ -124,24 +99,12 @@ const CreateReportProject = (props) => {
   ) => {
     try {
       setLoading(true);
-      console.log(
-        typeof projectId,
-        typeof reportDate,
-        typeof reportDesc,
-        typeof reportDetailList,
-        typeof reportTypeId,
-        typeof reporterId,
-        typeof reportName,
-        typeof taskReportList,
-        typeof fileList
-      );
       await createReportApi1({
         projectId,
         reportDate,
         reportDesc,
         reportDetailList,
         reportTypeId,
-        // reporterId,
         reportName,
         taskReportList,
         fileList,
@@ -153,7 +116,7 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      // await window.location.replace(`/projectDetailsManager/${id}`);
+      await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -339,7 +302,7 @@ const CreateReportProject = (props) => {
                   reportDetail.map((report, index) => (
                     <Grid item xs={4}>
                       <Paper className="tag">
-                        <Stack direction="row" spacing={1}>
+                        <Stack spacing={2}>
                           <Typography>{report.itemDesc}</Typography>
                           <Typography>{report.itemAmount}</Typography>
                           <Typography>{report.itemUnit}</Typography>
@@ -376,7 +339,7 @@ const CreateReportProject = (props) => {
                   taskReportDetail.map((task, index) => (
                     <Grid item xs={4}>
                       <Paper className="tag">
-                        <Stack direction="row" spacing={1}>
+                        <Stack direction="column" spacing={1}>
                           <Typography>{task.taskId}</Typography>
                           <Typography>{task.taskNote}</Typography>
                           <Typography>&nbsp;{task.taskProgress}</Typography>

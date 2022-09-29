@@ -8,7 +8,6 @@ import {
   Stack,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { createUserApi1 } from './../../apis/User/createUser';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -18,8 +17,15 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TextFieldComponent from '../../Components/TextField/textfield';
+import moment from 'moment';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { updateUserApi } from '../../apis/User/updateUser';
 import { getUserByIdApi } from '../../apis/User/getAllUser';
 import { useParams } from 'react-router-dom';
 
@@ -36,6 +42,7 @@ const MenuProps = {
 
 const UpdatePersonnelPage = (props) => {
   const { id } = useParams();
+  const idN = parseFloat(id);
   const [dob, setDob] = React.useState(new Date());
   const [joinDate, setJoinDate] = React.useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -46,6 +53,14 @@ const UpdatePersonnelPage = (props) => {
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
   const [userId, setUserId] = React.useState();
+  const [userName, setUserName] = React.useState();
+  const [roleId, setRoleId] = React.useState();
+  const [password, setPassword] = React.useState();
+  const [email, setEmail] = React.useState();
+  const [phone, setPhone] = React.useState();
+  const [fullName, setFullName] = React.useState();
+  const [gender1, setGender] = React.useState();
+  const [valueBirthDate, setValueBirthDate] = React.useState(new Date());
   React.useEffect(() => {
     (async () => {
       try {
@@ -57,6 +72,13 @@ const UpdatePersonnelPage = (props) => {
       try {
         const listUser = await getUserByIdApi(id, 'BY_ID');
         setUserId(listUser.data);
+        setValueBirthDate(listUser.data.birthdate);
+        setUserName(listUser.data.username);
+        setPassword(listUser.data.password);
+        setEmail(listUser.data.email);
+        setPhone(listUser.data.phone);
+        setFullName(listUser.data.fullName);
+        setGender(listUser.data.gender);
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
@@ -65,20 +87,12 @@ const UpdatePersonnelPage = (props) => {
   console.log(userId);
   const validateSchema = yup
     .object({
-      username: yup
-        .string()
-        .min(5, 'Tên đăng nhập phải lớn hoặc hoặc bàng 6 kí tự')
-        .required('Tên đăng nhập không được để trống'),
       phone: yup
         .string()
         .required('Số điện thoại không được để trống!')
         .matches(phoneRegExp, 'Số điện thoại không xác thực !')
         .min(10, 'Phải đúng 10 số')
         .max(10, 'Không được quá 10 số'),
-      password: yup
-        .string()
-        .min(6, 'Mật khẩu phải lớn hơn 6 kí tự')
-        .required('Mật khẩu không được để trống'),
       fullName: yup
         .string()
         .min(6, 'Tên người dùng phải lớn hơn 6 kí tự')
@@ -95,54 +109,88 @@ const UpdatePersonnelPage = (props) => {
   });
 
   const submitForm = (data) => {
-    //   handleUpdateUser(
-    //     data.email,
-    //     data.phone,
-    //     roleSelected,
-    //     data.username,
-    //     data.password,
-    //     data.fullName,
-    //     filesImage
-    //   );
+    const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
+    Swal.fire({
+      title: 'Cập nhật yêu cầu ?',
+      target: document.getElementById('form-modal12'),
+      text: 'Lưu ý cập nhật sẽ thay đổi dữ liệu của yêu cầu!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#25723F',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'CẬP NHẬT',
+      cancelButtonText: 'KHÔNG CẬP NHẬT',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleUpdateUser(
+          idN,
+          userName,
+          roleSelected,
+          // password,
+          email,
+          phone,
+          fullName,
+          gender1,
+          planBirthDate,
+          filesImage
+        );
+      }
+    });
   };
-  // const handleUpdateUser = async (
-  //   email,
-  //   phone,
-  //   roleId,
-  //   username,
-  //   password,
-  //   fullName,
-  //   file
-  // ) => {
-  //   try {
-  //     setLoading(true);
-  //     await createUserApi1({
-  //       email,
-  //       phone,
-  //       roleId,
-  //       username,
-  //       password,
-  //       fullName,
-  //       file,
-  //     });
-  //     setLoading(false);
-  //     await Swal.fire({
-  //       icon: 'success',
-  //       text: 'Tạo nhân viên thành công',
-  //       timer: 3000,
-  //       showConfirmButton: false,
-  //     });
-  //     // window.location.replace('/personnel');
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       text: error.response.data,
-  //       timer: 2000,
-  //       showConfirmButton: false,
-  //     });
-  //     setLoading(false);
-  //   }
-  // };
+  const handleUpdateUser = async (
+    userId,
+    username,
+    roleId,
+    // password,
+    email,
+    phone,
+    fullName,
+    gender1,
+    birthdate,
+    file
+  ) => {
+    try {
+      setLoading(true);
+      await updateUserApi({
+        userId,
+        username,
+        roleId,
+        // password,
+        email,
+        phone,
+        fullName,
+        gender1,
+        birthdate,
+        file,
+      });
+      setLoading(false);
+      await Swal.fire({
+        icon: 'success',
+        text: 'Cập nhật vai trò thành công',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+      window.location.replace('/personnel');
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: error.response.data,
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      setLoading(false);
+    }
+  };
+  const gender = [
+    {
+      value: 'MALE',
+      label: 'Nam',
+    },
+    {
+      value: 'FEMALE',
+      label: 'Nữ',
+    },
+  ];
   const handleChange = (event) => {
     setRoleSelected(event.target.value);
   };
@@ -163,6 +211,7 @@ const UpdatePersonnelPage = (props) => {
       selectedImages.splice(index, 1);
       // dispatch({ type: "LOADING", newLoading: !loading });
     }
+
     const dt = new DataTransfer();
     const input = document.getElementById('files');
     const { files } = input;
@@ -171,9 +220,33 @@ const UpdatePersonnelPage = (props) => {
       const file = files[i];
       if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
     }
+
     input.files = dt.files;
     setFilesImage(input.files);
+
     // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   return (
     <Paper className="bodynonetab" elevation="none">
@@ -205,107 +278,118 @@ const UpdatePersonnelPage = (props) => {
             </Typography>
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <form onSubmit={handleSubmit(submitForm)}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="body2"
-                    color="#DD8501"
-                    sx={{ marginBottom: '10px' }}
-                  >
-                    Ảnh đại diện
-                  </Typography>
-                  {/* <Stack direction="row" alignItems="center" spacing={2}>
-                    {UploadImage(setSelectedImage, setFilesImage)}
-                    <div className="result">{RenderImage(selectedImages)}</div>
-                  </Stack> */}
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Tên đăng nhập</Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="username"
-                    defaultValue={userId.username}
-                    errors={errors.username}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Họ và tên</Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="fullName"
-                    defaultValue={userId.fullName}
-                    errors={errors.fullName}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Điện thoại</Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="phone"
-                    // label="Tên vai trò"
-                    defaultValue={userId.phone}
-                    errors={errors.phone}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Email</Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="email"
-                    // label="Tên vai trò"
-                    errors={errors.email}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Chức vụ</Typography>
-                  <FormControl sx={{ width: '100%' }}>
-                    <Select
-                      onChange={handleChange}
-                      MenuProps={MenuProps}
-                      value={roleSelected}
-                    >
-                      {allRole.length > 0 ? (
-                        allRole.map((roleType, index) => (
-                          <MenuItem value={roleType.roleId} key={index}>
-                            {roleType.roleName}
+              <Box sx={{ width: '500px' }}>
+                <Stack direction="column" spacing={2}>
+                  <Grid item xs={6}>
+                    <input
+                      {...register('files')}
+                      type="file"
+                      id="files"
+                      accept="image/*"
+                      onChange={handleChangeFile}
+                    />
+                    {/* <div className="label-holder">
+                      <label htmlFor="file" className="img-upload">
+                        Chọn hình
+                      </label>
+                    </div> */}
+
+                    <div className="result">{renderPhotos(selectedImages)}</div>
+                    {/* <input type="file" multiple {...register("file")} /> */}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Tên đăng nhập</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="username"
+                      inputProps={{ readOnly: true }}
+                      defaultValue={userId.username}
+                      errors={errors.username}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Họ và tên</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="fullName"
+                      inputProps={{ readOnly: true }}
+                      defaultValue={userId.fullName}
+                      errors={errors.fullName}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Điện thoại</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="phone"
+                      // label="Tên vai trò"
+                      defaultValue={userId.phone}
+                      inputProps={{ readOnly: true }}
+                      errors={errors.phone}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Email</Typography>
+                    <TextFieldComponent
+                      register={register}
+                      name="email"
+                      // label="Tên vai trò"
+                      inputProps={{ readOnly: true }}
+                      defaultValue={userId.email}
+                      errors={errors.email}
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Chức vụ</Typography>
+                    <FormControl sx={{ width: '100%' }}>
+                      <Select
+                        onChange={handleChange}
+                        MenuProps={MenuProps}
+                        value={roleSelected}
+                      >
+                        {allRole.length > 0 ? (
+                          allRole.map((roleType, index) => (
+                            <MenuItem value={roleType.roleId} key={index}>
+                              {roleType.roleName}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem>
+                            Không có dữ liệu của danh sách công việc!
                           </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem>
-                          Không có dữ liệu của danh sách công việc!
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      width: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      display: 'flex',
-                      marginTop: '30px',
-                    }}
-                  >
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      className="submitButton"
+                        )}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        display: 'flex',
+                        marginTop: '30px',
+                      }}
                     >
-                      Lưu
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className="submitButton"
+                      >
+                        Lưu
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Stack>
+              </Box>
             </form>
           </Box>
         ) : (

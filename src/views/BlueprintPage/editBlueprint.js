@@ -23,7 +23,7 @@ import Select from '@mui/material/Select';
 import { useStateValue } from '../../common/StateProvider/StateProvider';
 import RenderImage from '../../Components/Render/RenderImage';
 import { useParams } from 'react-router-dom';
-const editBlueprint = () => {
+const editBlueprint = (props) => {
   return <div>editBlueprint</div>;
 };
 

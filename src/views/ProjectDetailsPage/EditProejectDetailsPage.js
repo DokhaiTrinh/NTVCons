@@ -46,7 +46,7 @@ const EditProejectDetailsPage = (props) => {
   );
   const [valuePlanStartDate, setValuePlanStartDate] = React.useState();
   const [valuePlanEndDate, setValuePlanEndDate] = React.useState();
-  const [updateLocationDetail, setUpdateLocationDetail] = React.useState([]);
+  const [updateLocationDetail, setUpdateLocationDetail] = React.useState();
   const [openLocationDialog, setOpenLocationDialog] = useState(false);
   const [loading, setLoading] = useState('');
   const [allProjectDetails, setAllProjectDetails] = React.useState();
@@ -64,6 +64,7 @@ const EditProejectDetailsPage = (props) => {
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [managerListChoice, setManagerListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
+  const [userListChoice, setUserListChoice] = React.useState([]);
   // const [imageSelected, setImageSelected] = useState('');
   // const [imageData, setImageData] = useState('');
   console.log(allManager);
@@ -221,12 +222,12 @@ const EditProejectDetailsPage = (props) => {
     .object({
       actualCost: yup
         .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
+        .min(100000000, 'Giá tiền phải ít nhất là 100.000.000 VNĐ')
         .typeError('Giá tiền phải là số tính theo VNĐ')
         .required(),
       estimatedCost: yup
         .number()
-        .min(1, 'Số lượng phải lớn hơn 0')
+        .min(100000000, 'Giá tiền phải ít nhất là 100.000.000 VNĐ')
         .typeError('Giá tiền phải là số tính theo VNĐ'),
       projectName: yup
         .string()
@@ -282,6 +283,13 @@ const EditProejectDetailsPage = (props) => {
     }
     setWokerListChoice(getIdList);
   };
+  const handleSelectUser = (options) => {
+    let getIdList = [];
+    for (const option of options) {
+      getIdList.push(option.userId);
+    }
+    setUserListChoice(getIdList);
+  };
   const handleGetManagerDefault = () => {
     for (const managerD of managerDefault) {
       for (const manager of allManager) {
@@ -291,11 +299,20 @@ const EditProejectDetailsPage = (props) => {
       }
     }
   };
+  const handleGetUserDefault = () => {
+    for (const userD of userDefault) {
+      for (const manager of allUser) {
+        if (userD.manager.userId === manager.userId) {
+          return allUser[allUser.indexOf(manager)];
+        }
+      }
+    }
+  };
   const handleGetWorkerDefault = () => {
     for (const workerD of workerDefault) {
       for (const worker of allWorker) {
         if (workerD.worker.workerId === worker.workerId) {
-          return allManager[allWorker.indexOf(worker)];
+          return allWorker[allWorker.indexOf(worker)];
         }
       }
     }
@@ -346,6 +363,35 @@ const EditProejectDetailsPage = (props) => {
                     sx={{ width: '100%' }}
                   />
                 </Grid>
+                {/* <Grid item xs={12}>
+                  <Typography variant="body2">Chủ đầu tư</Typography>
+                  {allUser ? (
+                    allUser.length > 0 ? (
+                      <Autocomplete
+                        multiple
+                        options={allUser}
+                        disableCloseOnSelect
+                        defaultValue={[handleGetUserDefault()]}
+                        getOptionLabel={(option) => option.fullName}
+                        onChange={(e, option) => handleSelectUser(option)}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props}>
+                            <Checkbox
+                              icon={icon}
+                              checkedIcon={checkedIcon}
+                              style={{ marginRight: 8 }}
+                              checked={selected}
+                            />
+                            {option.fullName}
+                          </li>
+                        )}
+                        renderInput={(params) => (
+                          <TextField {...params} placeholder="Chủ đầu tư" />
+                        )}
+                      />
+                    ) : null
+                  ) : null}
+                </Grid> */}
                 <Grid item xs={12}>
                   <Typography variant="body2">Kỹ sư phụ trách</Typography>
                   {allManager ? (
@@ -459,32 +505,34 @@ const EditProejectDetailsPage = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2">Công nhân</Typography>
-                  <Autocomplete
-                    multiple
-                    options={allWorker}
-                    disableCloseOnSelect
-                    defaultValue={workerDefault.map((worker) => [
-                      worker.worker.fullName,
-                    ])}
-                    getOptionLabel={(option) => option.fullName}
-                    onChange={(e, option) => handleSelectWorker(option)}
-                    renderOption={(props, option, { selected }) =>
-                      option.isAvailable ? (
-                        <li {...props}>
-                          <Checkbox
-                            icon={icon}
-                            checkedIcon={checkedIcon}
-                            style={{ marginRight: 8 }}
-                            checked={selected}
-                          />
-                          {option.fullName}
-                        </li>
-                      ) : null
-                    }
-                    renderInput={(params) => (
-                      <TextField {...params} placeholder="Công nhân" />
-                    )}
-                  />
+                  {allWorker ? (
+                    allWorker.length > 0 ? (
+                      <Autocomplete
+                        multiple
+                        options={allWorker}
+                        disableCloseOnSelect
+                        defaultValue={[handleGetWorkerDefault()]}
+                        getOptionLabel={(option) => option.fullName}
+                        onChange={(e, option) => handleSelectWorker(option)}
+                        renderOption={(props, option, { selected }) =>
+                          option.isAvailable ? (
+                            <li {...props}>
+                              <Checkbox
+                                icon={icon}
+                                checkedIcon={checkedIcon}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                              />
+                              {option.fullName}
+                            </li>
+                          ) : null
+                        }
+                        renderInput={(params) => (
+                          <TextField {...params} placeholder="Công nhân" />
+                        )}
+                      />
+                    ) : null
+                  ) : null}
                 </Grid>
                 <Grid item container sx={12}>
                   <Box

@@ -19,7 +19,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { deleteCategoryApi } from './../../../apis/CategoryPost/deleteCategory';
 import Swal from 'sweetalert2';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { TableBody, Table } from '@mui/material';
 import UpdateButton from '../../../Components/Button/UpdateButton';
@@ -65,11 +65,7 @@ const headCells = [
 ];
 
 const EnhancedTableHead = (props) => {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -77,8 +73,7 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -174,16 +169,15 @@ EnhancedTableToolbar.propTypes = {
 
 export const CategoryTable = (props) => {
   const { allCategory } = props;
-  const [{loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
+  const [{ loading, sortBy, sortTypeAsc }, dispatch] = useStateValue();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('ngaythem');
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    
-    //Chỗ này code sort. Mã search 13399
 
+    //Chỗ này code sort. Mã search 13399
   };
   const handleDeleteCategory = (id) => {
     Swal.fire({
@@ -209,14 +203,12 @@ export const CategoryTable = (props) => {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(`/createCategory/`)
-      }
+      {Header(`/createCategory/`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -226,24 +218,30 @@ export const CategoryTable = (props) => {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allCategory ? (
                 allCategory.map((row, index) => {
                   return (
-                    <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                    <TableRow
+                      style={
+                        index % 2
+                          ? { background: '#FAFAFA' }
+                          : { background: 'white' }
+                      }
+                    >
                       <TableCell></TableCell>
                       <TableCell align="left">{row.postCategoryId}</TableCell>
                       <TableCell align="left">{row.postCategoryName}</TableCell>
                       <TableCell align="left">{row.postCategoryDesc}</TableCell>
                       <TableCell align="left">{row.createdAt}</TableCell>
                       <TableCell align="left">
-                        {
-                          UpdateButton(`/updateCategory/${row.postCategoryId}`)
-                        }
+                        {UpdateButton(`/updateCategory/${row.postCategoryId}`)}
                       </TableCell>
                       <TableCell align="left">
                         <IconButton

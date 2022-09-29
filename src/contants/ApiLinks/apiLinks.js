@@ -124,7 +124,10 @@ export const GET_ALL_WORKER =
   'http://niemtinvang.herokuapp.com/worker/v1/getAll';
 export const DELETE_WORKER =
   'http://niemtinvang.herokuapp.com/worker/v1/deleteWorker';
-
+export const UPDATE_WORKER_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/worker/v1/updateWorker/withFile';
+export const GET_BY_WORKER_ID =
+  'http://niemtinvang.herokuapp.com/worker/v1/getByParam';
 //API LINK CỦA USER
 export const GET_ALL_USER = 'http://niemtinvang.herokuapp.com/user/v1/getAll';
 export const GET_BY_ID = 'http://niemtinvang.herokuapp.com/user/v1/getByParam';

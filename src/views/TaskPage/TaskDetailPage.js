@@ -24,6 +24,7 @@ const TaskDetailPage = (props) => {
       try {
         const listAllTaskDetail = await getTaskByIdApi(id, 'BY_ID');
         setAllTaskDetail(listAllTaskDetail.data);
+
         if (listAllTaskDetail.data) {
           if (listAllTaskDetail.data.fileList.length > 0) {
             let arrayImgLink = [];
@@ -56,53 +57,37 @@ const TaskDetailPage = (props) => {
   }, []);
   console.log(allTaskDetail);
   return (
-      <Paper
-        className='bodynonetab' elevation='none'
-      >
-        <Typography variant="h6" sx={{ marginBottom: '20px' }}>
-          Thông tin công việc
-        </Typography>
-        <Divider sx={{ marginBottom: '20px' }}></Divider>
-        {allTaskDetail ? (
-          <Grid container spacing={2}>
-            <Grid item xs="4">
-              <Typography variant="caption">
-                Tên công việc
-              </Typography>
-              <Typography variant="body1">{allTaskDetail.taskName}</Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="caption">
-                Mô tả công việc
-              </Typography>
-              <Typography variant="body1">{allTaskDetail.taskDesc}</Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="caption">
-                Kỹ sư phụ trách
-              </Typography>
-              {/* <Typography variant="body1">
-                {allTaskDetail.taskAssignment.assignee.username}
-              </Typography> */}
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="caption">
-                Ngày nhận việc
-              </Typography>
-              <Typography variant="body1">
-                {allTaskDetail.planStartDate}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="caption">
-                Ngày kết thúc
-              </Typography>
-              <Typography variant="body1">
-                {allTaskDetail.planEndDate}
-              </Typography>
-            </Grid>
-            <Grid container item xs="12">
-              {/* <Grid item xs="4">
+    <Paper className="bodynonetab" elevation="none">
+      <Typography variant="h6" sx={{ marginBottom: '20px' }}>
+        Thông tin công việc
+      </Typography>
+      <Divider sx={{ marginBottom: '20px' }}></Divider>
+      {allTaskDetail ? (
+        <Grid container spacing={2}>
+          <Grid item xs="4">
+            <Typography variant="caption">Tên công việc</Typography>
+            <Typography variant="body1">{allTaskDetail.taskName}</Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">Mô tả công việc</Typography>
+            <Typography variant="body1">{allTaskDetail.taskDesc}</Typography>
+          </Grid>
+          {/* <Grid item xs="4">
+            <Typography variant="caption">Kỹ sư phụ trách</Typography>
+            <Typography variant="body1">{taskAssign.assignee.email}</Typography>
+          </Grid> */}
+          <Grid item xs="4">
+            <Typography variant="caption">Ngày nhận việc</Typography>
+            <Typography variant="body1">
+              {allTaskDetail.planStartDate}
+            </Typography>
+          </Grid>
+          <Grid item xs="4">
+            <Typography variant="caption">Ngày kết thúc</Typography>
+            <Typography variant="body1">{allTaskDetail.planEndDate}</Typography>
+          </Grid>
+          <Grid container item xs="12">
+            {/* <Grid item xs="4">
                 <Typography variant="caption">
                   Hình ảnh
                 </Typography>
@@ -128,17 +113,17 @@ const TaskDetailPage = (props) => {
                 // <div>Không có tệp đi kèm!!</div>
                 <></>
               )} */}
-              <FileDetail
-                // projectId={projectId}
-                imageGet={imageGet}
-                docGet={docGet}
-              ></FileDetail>
-            </Grid>
+            <FileDetail
+              // projectId={projectId}
+              imageGet={imageGet}
+              docGet={docGet}
+            ></FileDetail>
           </Grid>
-        ) : (
-          <div>Loading ...</div>
-        )}
-      </Paper>
+        </Grid>
+      ) : (
+        <div>Loading ...</div>
+      )}
+    </Paper>
   );
 };
 

@@ -139,39 +139,29 @@ function RequestDetailPage() {
                 </Typography>
               </Grid>
               <Grid item container xs="4">
-                <Typography variant="body1" color="gray">
-                  Chi tiết yêu cầu
-                </Typography>
-                <Card sx={{ width: '100%' }}>
-                  <CardContent>
-                    {requestDetail ? (
-                      requestDetail.map((req, index) => (
-                        <Card
-                          sx={{
-                            width: '100%',
-                            padding: '10px',
-                            marginBottom: '10px',
-                          }}
-                        >
-                          {/* <Typography>
+                <Typography variant="caption">Chi tiết yêu cầu</Typography>
+              </Grid>
+              <Grid item container xs="12" spacing={1}>
+                {requestDetail ? (
+                  requestDetail.map((req, index) => (
+                    <Grid item xs="4">
+                      <Paper sx={{ padding: '10px' }}>
+                        {/* <Typography>
                             Mã yêu cầu chi tiết: {req.requestDetailId}
                           </Typography> */}
-                          <Typography>
-                            Thông tin yêu cầu chi tiết: {req.itemDesc}
-                          </Typography>
-                          <Typography>
-                            Số lượng:
-                            {req.itemAmount}
-                          </Typography>
-                          <Typography>Giá tiền: {req.itemPrice} VNĐ</Typography>
-                          <Typography>Đơn vị: {req.itemUnit}</Typography>
-                        </Card>
-                      ))
-                    ) : (
-                      <div>Không có dữ liệu!!</div>
-                    )}
-                  </CardContent>
-                </Card>
+                        <Typography>{req.itemDesc}</Typography>
+                        <Typography>
+                          Số lượng:
+                          {req.itemAmount}
+                        </Typography>
+                        <Typography>Giá tiền: {req.itemPrice} VNĐ</Typography>
+                        <Typography>Đơn vị: {req.itemUnit}</Typography>
+                      </Paper>
+                    </Grid>
+                  ))
+                ) : (
+                  <div>Không có dữ liệu!!</div>
+                )}
               </Grid>
               <Grid container item xs="12">
                 {/* <Grid item xs="4">

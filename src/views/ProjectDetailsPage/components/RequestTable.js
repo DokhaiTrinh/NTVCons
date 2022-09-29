@@ -14,12 +14,14 @@ import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import InfoIcon from '@mui/icons-material/Info';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import { deleteRequestApi } from '../../../apis/Request/deleteRequest';
 import { getRequestByProjectIdApi } from '../../../apis/Request/getRequestByProjectId';
 import { useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody, TableRow } from '@mui/material';
 import Header from '../../../Components/Tab/Header';
 
@@ -129,11 +131,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -237,6 +235,37 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+const a11yProps = (index) => {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+};
 
 export default function RequestTable(props) {
   const [order, setOrder] = React.useState('asc');
@@ -246,7 +275,9 @@ export default function RequestTable(props) {
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [{ loading }, dispatch] = useStateValue();
   const [totalPage, setTotalPage] = React.useState();
+  const { projectId } = props;
   const [pageNum, setPageNum] = React.useState(0);
+  const [valueStatus, setValue] = React.useState('PENDING');
   const handleChangePage = (event, value) => {
     setPageNum(value - 1);
   };
@@ -294,7 +325,7 @@ export default function RequestTable(props) {
         'success'
       );
       dispatch({ type: 'LOADING', newLoading: !loading });
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -302,16 +333,35 @@ export default function RequestTable(props) {
     setOrderBy(property);
 
     //Chỗ này code sort. Mã search 13399
-
   };
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(``)
-      }
+      {Header(``)}
+      <Box sx={{ marginBottom: '20px' }}></Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
+        <Tabs
+          value={valueStatus}
+          onChange={handleChange}
+          sx={{ position: 'relative !important', width: '100% !important' }}
+        >
+          <Tab label="Duyệt" value="APPROVED" />
+          <Tab label="Đang chờ" value="PENDING" />
+          <Tab label="Bị hủy" value="DENIED" />
+        </Tabs>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+
+        {/* <TabPanel value="APRROVED">
+          Duyệt XX
+        </TabPanel>
+        <TabPanel value="PEDING">
+          Đang chờ
+        </TabPanel>
+        <TabPanel value="DENY">
+          Bị hủy
+        </TabPanel> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
@@ -319,19 +369,25 @@ export default function RequestTable(props) {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
-              {allRequestDetails.map((row, index) => {
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
+              {allRequestDetails.map((row, index) =>
                 // const isItemSelected = isSelected(row.admin);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                row.status === valueStatus ? (
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
-                      id={labelId}
                       scope="row"
                       // padding="none"
                       align="left"
@@ -362,8 +418,8 @@ export default function RequestTable(props) {
                       </Route> */}
                     </TableCell>
                   </TableRow>
-                );
-              })}
+                ) : null
+              )}
             </TableBody>
           </Table>
         </TableContainer>

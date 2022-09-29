@@ -156,7 +156,7 @@ const CreateProjectPage = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      // await window.location.replace(`/project`);
+      await window.location.replace(`/project`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
@@ -385,10 +385,10 @@ const CreateProjectPage = (props) => {
                 <TextFieldComponent
                   register={register}
                   name="estimatedCost"
+                  label="Chi phí ước tính phải ít nhất 100.000.000 VN"
                   errors={errors.estimatedCost}
                   variant="outlined"
                   sx={{ width: '100%' }}
-                  label="VNĐ"
                 />
               </Grid>
               <Grid container item xs={12} spacing={1}>
@@ -512,7 +512,7 @@ const CreateProjectPage = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12}>
+              <Grid item container columns={4}>
                 {locationDetail ? (
                   <Paper className="tag">
                     <Stack direction="row" spacing={1}>

@@ -29,12 +29,14 @@ const RequestDetailPage = () => {
   const [violation, setViolation] = React.useState(true);
   const [requestId, setRequestId] = React.useState();
   const submitForm = (data) => {
+    console.log(data);
     handleVerifyReport(requestId, data.verifyNote, violation);
   };
 
   const handleVerifyReport = async (requestId, verifyNote, isApproved) => {
     try {
-      await verifyRequestApi1(requestId, verifyNote, isApproved);
+      console.log(requestId, verifyNote, isApproved);
+      await verifyRequestApi1({ requestId, verifyNote, isApproved });
       Swal.fire({
         icon: 'success',
         text: 'Xử lí báo cáo thành công',
@@ -205,7 +207,7 @@ const RequestDetailPage = () => {
         <form onSubmit={handleSubmit(submitForm)}>
           <TextFieldComponent
             register={register}
-            name="staffMessage"
+            name="verifyNote"
             label="Lời nhắn của quản trị viên*"
             errors={errors.verifyNote}
             multiline={true}
@@ -218,7 +220,7 @@ const RequestDetailPage = () => {
               autoFocus
               variant="contained"
               type="submit"
-              onClick={ConfirmViolation}
+              // onClick={ConfirmViolation}
               sx={{ backgroundColor: '#FF0000' }}
             >
               Đồng ý

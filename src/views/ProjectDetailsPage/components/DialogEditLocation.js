@@ -27,7 +27,6 @@ const DialogEditLocation = (props) => {
         .required('Tên vùng phải khác biệt')
         .typeError('Tên vùng đã bị trùng!!!'),
       country: yup.string().required('Phải có tên quốc gia!'),
-      locationId: yup.number().required(),
       district: yup.string().required('Phải có tên đường!!!'),
       province: yup.string(),
       street: yup.string().required('Phải có tên đường'),
@@ -49,19 +48,41 @@ const DialogEditLocation = (props) => {
       city: data.city,
       coordinate: data.coordinate,
       country: data.country,
-      updatedBy: data.updatedBy,
       district: data.district,
       province: data.province,
       street: data.street,
       ward: data.ward,
-      locationId: data.locationId,
     };
-    if (actionUpdateLocation === 'CreateNewLocation') {
-      setUpdateLocationDetail((updateLocationDetail) => [
-        ...updateLocationDetail,
-        updateDetailLocation,
-      ]);
+    if (!updateLocationDetail) {
+      if (actionUpdateLocation === 'CreateNewReport') {
+        setUpdateLocationDetail([updateLocationDetail]);
+      }
     } else {
+      if (actionUpdateLocation === 'CreateNewLocation') {
+        setUpdateLocationDetail((updateLocationDetail) => [
+          ...updateLocationDetail,
+          updateDetailLocation,
+        ]);
+      } else {
+        let updateLocation = [...updateLocationDetail];
+        updateLocation = updateLocation.map((u) =>
+          u.locationId === updateLocationDetail.locationId
+            ? (u = {
+                ...u,
+                addressNumber: data.addressNumber,
+                area: data.area,
+                city: data.city,
+                coordinate: data.coordinate,
+                country: data.country,
+                district: data.district,
+                province: data.province,
+                street: data.street,
+                ward: data.ward,
+              })
+            : u
+        );
+        setUpdateLocationDetail(updateLocation);
+      }
     }
     props.handleCloseUpdateLocationDialog();
   };
@@ -104,8 +125,8 @@ const DialogEditLocation = (props) => {
                   name="addressNumber"
                   errors={errors.addressNumber}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.addressNumber
+                    updateLocationDetail
+                      ? updateLocationDetail.addressNumber
                       : null
                   }
                   variant="outlined"
@@ -119,9 +140,7 @@ const DialogEditLocation = (props) => {
                   name="street"
                   errors={errors.street}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.street
-                      : null
+                    updateLocationDetail ? updateLocationDetail.street : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -134,9 +153,7 @@ const DialogEditLocation = (props) => {
                   name="district"
                   errors={errors.district}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.district
-                      : null
+                    updateLocationDetail ? updateLocationDetail.district : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -149,9 +166,7 @@ const DialogEditLocation = (props) => {
                   name="city"
                   errors={errors.city}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.city
-                      : null
+                    updateLocationDetail ? updateLocationDetail.city : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -164,9 +179,7 @@ const DialogEditLocation = (props) => {
                   name="ward"
                   errors={errors.ward}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.ward
-                      : null
+                    updateLocationDetail ? updateLocationDetail.ward : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -179,9 +192,7 @@ const DialogEditLocation = (props) => {
                   name="province"
                   errors={errors.province}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.province
-                      : null
+                    updateLocationDetail ? updateLocationDetail.province : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -194,9 +205,7 @@ const DialogEditLocation = (props) => {
                   name="country"
                   errors={errors.country}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.country
-                      : null
+                    updateLocationDetail ? updateLocationDetail.country : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -209,9 +218,7 @@ const DialogEditLocation = (props) => {
                   name="area"
                   errors={errors.area}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.area
-                      : null
+                    updateLocationDetail ? updateLocationDetail.area : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
@@ -224,15 +231,15 @@ const DialogEditLocation = (props) => {
                   name="coordinate"
                   errors={errors.coordinate}
                   defaultValue={
-                    itemDetailLocationUpdate
-                      ? itemDetailLocationUpdate.coordinate
+                    updateLocationDetail
+                      ? updateLocationDetail.coordinate
                       : null
                   }
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2">Mã địa chỉ</Typography>
                 <TextFieldComponent
                   register={register}
@@ -246,7 +253,7 @@ const DialogEditLocation = (props) => {
                   variant="outlined"
                   sx={{ width: '100%' }}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12}>
                 <Box
@@ -257,18 +264,25 @@ const DialogEditLocation = (props) => {
                     display: 'flex',
                   }}
                 >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Cập nhật
-                  </Button>
+                  {actionUpdateLocation ? (
+                    actionUpdateLocation === 'UpdateLocation' ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className="submitButton"
+                      >
+                        Cập nhật
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className="submitButton"
+                      >
+                        Tạo mới
+                      </Button>
+                    )
+                  ) : null}
                 </Box>
               </Grid>
             </Grid>

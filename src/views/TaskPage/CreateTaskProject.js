@@ -70,6 +70,7 @@ const CreateTaskProject = (props) => {
       }
     })();
   }, []);
+  console.log(projectByManager);
   // React.useEffect(() => {
   //   (async () => {
   //     try {

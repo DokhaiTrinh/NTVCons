@@ -53,15 +53,16 @@ const ProjectDetailsPage = (props) => {
     setValue(newValue);
   };
   const [
-    { projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType },
+    { projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType, loading },
     dispatch,
   ] = useStateValue();
   const [allProjectDetails, setAllProjectDetails] = React.useState();
-  const [allReportDetails, setAllReportDetails] = React.useState([]);
+  const [allReportDetails, setAllReportDetails] = React.useState();
   const [allRequestDetails, setAllRequestDetails] = React.useState([]);
   const [managerList, setManagerList] = React.useState();
   const [workerList, setWorkerList] = React.useState();
   const [userList, setUserList] = React.useState();
+  const [blueprint, setBlueprint] = React.useState();
   const [totalPage, setTotalPage] = React.useState();
   const [imageGet, setImageGet] = React.useState([]);
   const [docGet, setDocGet] = React.useState([]);
@@ -121,7 +122,7 @@ const ProjectDetailsPage = (props) => {
         console.log('Không thể lấy danh sách báo cáo');
       }
     })();
-  }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType]);
+  }, [projectId, pageNo, pageSize, sortBy, sortTypeAsc, searchType, loading]);
   return (
     <div>
       <Box sx={{ minWidth: 120 }}></Box>
@@ -150,6 +151,7 @@ const ProjectDetailsPage = (props) => {
                 managerList={managerList}
                 workerList={workerList}
                 userList={userList}
+                blueprint={blueprint}
               />
             ) : (
               <div>Không có dữ liệu!!</div>
@@ -184,7 +186,7 @@ const ProjectDetailsPage = (props) => {
               imageGet={imageGet}
               docGet={docGet}
             ></FileDetail>
-            <FloatingAddButton />
+            <FloatingAddButton projectId={projectId} />
           </TabPanel>
         </div>
       </Box>

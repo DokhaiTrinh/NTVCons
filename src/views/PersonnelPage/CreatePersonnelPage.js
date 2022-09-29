@@ -320,7 +320,7 @@ const CreatePersonnelPage = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">Chức vụ</Typography>
+                <Typography variant="body2">Vai trò</Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
