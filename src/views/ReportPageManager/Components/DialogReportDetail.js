@@ -14,16 +14,24 @@ const DialogReportProject = (props) => {
     .object({
       itemAmount: yup
         .number()
-        .typeError('amount is invalide')
+        .typeError('Nhập sai số lượng!!')
         .min(1, 'Số lượng phải lớn hơn 0!')
         .required(),
-      itemDesc: yup.string().required(),
+      itemDesc: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required(),
       itemPrice: yup
         .number()
-        .typeError('Price is invalide')
+        .typeError('Giá tiền không đúng!!!')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lườngf'),
+      itemUnit: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -49,11 +57,8 @@ const DialogReportProject = (props) => {
   };
 
   return (
-    <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <div className="dialog">
+      <Typography variant="h6" color="#DD8501">
         BÁO CÁO CHI TIẾT
       </Typography>
       <Divider></Divider>
@@ -64,9 +69,7 @@ const DialogReportProject = (props) => {
       <form onSubmit={handleSubmit(submitForm)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Thông tin báo cáo chi tiết
-            </Typography>
+            <Typography variant="body2">Thông tin báo cáo chi tiết</Typography>
             <TextFieldComponent
               register={register}
               name="itemDesc"
@@ -76,9 +79,7 @@ const DialogReportProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Số lượng
-            </Typography>
+            <Typography variant="body2">Số lượng</Typography>
             <TextFieldComponent
               register={register}
               name="itemAmount"
@@ -88,9 +89,7 @@ const DialogReportProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Giá tiền
-            </Typography>
+            <Typography variant="body2">Giá tiền</Typography>
             <TextFieldComponent
               register={register}
               name="itemPrice"
@@ -101,9 +100,7 @@ const DialogReportProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Đơn vị tính
-            </Typography>
+            <Typography variant="body2">Đơn vị tính</Typography>
             <TextFieldComponent
               register={register}
               name="itemUnit"
@@ -124,7 +121,7 @@ const DialogReportProject = (props) => {
               <Button
                 type="submit"
                 variant="contained"
-                className='submitButton'
+                className="submitButton"
               >
                 Lưu
               </Button>

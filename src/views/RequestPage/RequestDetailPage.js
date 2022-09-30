@@ -39,14 +39,14 @@ const RequestDetailPage = () => {
       await verifyRequestApi1({ requestId, verifyNote, isApproved });
       Swal.fire({
         icon: 'success',
-        text: 'Xử lí báo cáo thành công',
+        text: 'Xử lí yêu cầu thành công',
         timer: 2000,
         showConfirmButton: false,
       });
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: 'Xử lí tác vụ không thành công',
+        text: 'Xử lí tác vụ không thành công!!!',
         timer: 1000,
         showConfirmButton: false,
       });
@@ -156,7 +156,7 @@ const RequestDetailPage = () => {
           <Grid item xs="4">
             <Typography variant="caption">Người yêu cầu</Typography>
             <Typography variant="body1" paragraph>
-              {allRequestList.requester.username}
+              {allRequestList.requester.fullName}
             </Typography>
           </Grid>
           <Grid item xs="4">

@@ -31,6 +31,8 @@ import { getAllWorkerApi1 } from '../../apis/Worker/getAllWorker';
 import { getAllManagerApi1 } from '../../apis/ProjectManager/getAllManager';
 import { getUserByRoleApi } from '../../apis/User/getAllUser';
 import RenderImage from '../../Components/Render/RenderImage';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { Stack } from '@mui/system';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -128,16 +130,6 @@ const CreateProjectPage = (props) => {
   ) => {
     try {
       setLoading(true);
-      console.log(
-        typeof planEndDate,
-        typeof planStartDate,
-        typeof location,
-        typeof ntvManagerIdList,
-        typeof estimatedCost,
-        typeof projectName,
-        typeof workerIdList,
-        typeof fileList
-      );
       await createProjectApi1({
         planEndDate,
         planStartDate,
@@ -295,11 +287,13 @@ const CreateProjectPage = (props) => {
     }
     setWokerListChoice(getIdList);
   };
+  const handleRemoveLocation = (itemRemove) => {
+    let result = locationDetail.filter((item) => item !== itemRemove);
+    setLocationDetail(result);
+  };
   return (
     <Paper className="bodynonetab">
-      <Typography variant="h6" color="#DD8501">
-        TẠO MỚI DỰ ÁN
-      </Typography>
+      <Typography variant="h5">TẠO MỚI DỰ ÁN</Typography>
       <Divider></Divider>
       <Box
         sx={{
@@ -317,10 +311,10 @@ const CreateProjectPage = (props) => {
           }}
         >
           <form onSubmit={handleSubmit(submitForm)}>
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
+            {/* <Typography variant="body1" color="#DD8501" fontWeight="bold">
               Thông tin dự án
             </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+            <Divider sx={{ bgcolor: '#DD8501' }}></Divider> */}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body2">Tên dự án</Typography>
@@ -512,18 +506,16 @@ const CreateProjectPage = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={4}>
+              <Grid item xs={12}>
                 {locationDetail ? (
-                  <Paper className="tag">
-                    <Stack direction="row" spacing={1}>
-                      <Typography>{locationDetail.addressNumber},</Typography>
-                      <Typography>{locationDetail.street},</Typography>
-                      <Typography>{locationDetail.ward},</Typography>
-                      <Typography>{locationDetail.district},</Typography>
-                      <Typography>{locationDetail.city}</Typography>
-                    </Stack>
-                  </Paper>
+                  // <Paper className="tag">
+                  <Typography>
+                    {locationDetail.addressNumber} {locationDetail.street}, P{' '}
+                    {locationDetail.ward}, Q. {locationDetail.district}, TP{' '}
+                    {locationDetail.city}, {locationDetail.country}
+                  </Typography>
                 ) : (
+                  // </Paper>
                   <Grid item sx={12}>
                     <div>Không có dữ liệu!</div>
                   </Grid>

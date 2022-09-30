@@ -151,10 +151,10 @@ const ProjectDetailsPage = (props) => {
           aria-label=""
         >
           <Tab label="Chi tiết" {...a11yProps(0)} />
-          <Tab label="Báo cáo" {...a11yProps(1)} />
+          <Tab label="Bản vẽ" {...a11yProps(1)} />
           <Tab label="Công việc" {...a11yProps(2)} />
-          <Tab label="Yêu cầu" {...a11yProps(3)} />
-          <Tab label="Bản vẽ" {...a11yProps(4)} />
+          <Tab label="Báo cáo" {...a11yProps(3)} />
+          <Tab label="Yêu cầu" {...a11yProps(4)} />
           <Tab label="Tệp đi kèm" {...a11yProps(5)} />
           <Box sx={{ flex: 1 }}></Box>
           <Box></Box>
@@ -173,7 +173,7 @@ const ProjectDetailsPage = (props) => {
               <div>Không có dữ liệu!!</div>
             )}
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={3}>
             <ReportTable
               projectId={projectId}
               allReportDetails={allReportDetails}
@@ -183,13 +183,13 @@ const ProjectDetailsPage = (props) => {
           <TabPanel value={value} index={2}>
             <TaskTable projectId={projectId}></TaskTable>
           </TabPanel>
-          <TabPanel value={value} index={3}>
+          <TabPanel value={value} index={4}>
             <RequestTable
               projectId={projectId}
               allRequestDetails={allRequestDetails}
             ></RequestTable>
           </TabPanel>
-          <TabPanel value={value} index={4}>
+          <TabPanel value={value} index={1}>
             <Blueprint
               projectId={projectId}
               allRequestDetails={allRequestDetails}
@@ -201,8 +201,8 @@ const ProjectDetailsPage = (props) => {
               imageGet={imageGet}
               docGet={docGet}
             ></FileDetail>
+            <FloatingAddButton projectId={projectId} />
           </TabPanel>
-          <FloatingAddButton projectId={projectId} />
         </div>
       </Box>
     </div>

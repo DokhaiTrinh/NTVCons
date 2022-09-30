@@ -155,14 +155,6 @@ const ReportDetailPage = (props) => {
             </Grid>
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
-                Người báo cáo
-              </Typography>
-              <Typography variant="body1" paragraph>
-                {allReportDetail.reporterId}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
                 Loại báo cáo
               </Typography>
               <Typography variant="body1" paragraph>

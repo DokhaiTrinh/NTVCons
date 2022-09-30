@@ -189,6 +189,8 @@ export const GET_BLUEPRINT_BY_PROJECT_ID =
   'http://niemtinvang.herokuapp.com/blueprint/v1/getByParam';
 export const GET_ALL_BLUEPRINT =
   'http://niemtinvang.herokuapp.com/blueprint/v1/getAll';
+export const UPDATE_BLUEPRINT_WITH_FILE =
+  'http://niemtinvang.herokuapp.com/blueprint/v1/updateBlueprint/withFile';
 //API LINK CỦA RESETPASSWORD
 export const SEND_EMAIL_GET_OTP =
   'http://niemtinvang.herokuapp.com/resetPasswordOTPEmail';

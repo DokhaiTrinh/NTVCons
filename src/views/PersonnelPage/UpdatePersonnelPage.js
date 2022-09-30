@@ -60,6 +60,7 @@ const UpdatePersonnelPage = (props) => {
   const [phone, setPhone] = React.useState();
   const [fullName, setFullName] = React.useState();
   const [gender1, setGender] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
   const [valueBirthDate, setValueBirthDate] = React.useState(new Date());
   React.useEffect(() => {
     (async () => {
@@ -79,12 +80,18 @@ const UpdatePersonnelPage = (props) => {
         setPhone(listUser.data.phone);
         setFullName(listUser.data.fullName);
         setGender(listUser.data.gender);
+        if (listUser.data.file) {
+          let arrayLinkImg = [];
+          arrayLinkImg.push(listUser.data.file.fileLink);
+          setImageGet(arrayLinkImg);
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
     })();
   }, []);
   console.log(userId);
+  console.log(imageGet);
   const validateSchema = yup
     .object({
       phone: yup
@@ -248,6 +255,28 @@ const UpdatePersonnelPage = (props) => {
       );
     });
   };
+  const renderPhotos1 = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+        // badgeContent={<CancelIcon />}
+        // onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '100%',
+              height: '100%',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <Paper className="bodynonetab" elevation="none">
       <Typography variant="h6" color="#DD8501">
@@ -280,22 +309,8 @@ const UpdatePersonnelPage = (props) => {
             <form onSubmit={handleSubmit(submitForm)}>
               <Box sx={{ width: '500px' }}>
                 <Stack direction="column" spacing={2}>
-                  <Grid item xs={6}>
-                    <input
-                      {...register('files')}
-                      type="file"
-                      id="files"
-                      accept="image/*"
-                      onChange={handleChangeFile}
-                    />
-                    {/* <div className="label-holder">
-                      <label htmlFor="file" className="img-upload">
-                        Chọn hình
-                      </label>
-                    </div> */}
-
-                    <div className="result">{renderPhotos(selectedImages)}</div>
-                    {/* <input type="file" multiple {...register("file")} /> */}
+                  <Grid item xs={12}>
+                    <div className="result">{renderPhotos1(imageGet)}</div>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2">Tên đăng nhập</Typography>
@@ -368,6 +383,17 @@ const UpdatePersonnelPage = (props) => {
                         )}
                       </Select>
                     </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2">Hình ảnh cập nhật</Typography>
+                    <input
+                      {...register('files')}
+                      type="file"
+                      id="files"
+                      accept="image/*"
+                      onChange={handleChangeFile}
+                    />
+                    <div className="result">{renderPhotos(selectedImages)}</div>
                   </Grid>
                   <Grid item xs={12}>
                     <Box

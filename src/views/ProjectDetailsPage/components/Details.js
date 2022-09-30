@@ -154,12 +154,7 @@ const Details = (props) => {
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
                 {allProjectDetails.location.ward}, Q{' '}
-                {allProjectDetails.location.district}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="caption">Thành phố</Typography>
-              <Typography variant="body1">
+                {allProjectDetails.location.district},{' '}
                 {allProjectDetails.location.country}
               </Typography>
             </Grid>
@@ -177,6 +172,18 @@ const Details = (props) => {
               </Typography>
               <Typography variant="body1">
                 {allProjectDetails.planEndDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="caption">Giá tiền dự kiến</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.estimatedCost} VNĐ
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="caption">Giá tiền chính thức</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualCost} VNĐ
               </Typography>
             </Grid>
             <Grid item xs="12">

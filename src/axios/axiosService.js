@@ -462,6 +462,30 @@ class AxiosService {
       },
     });
   }
+  putUpdateBlueprint(url, body, token) {
+    const formData = new FormData();
+    const blueprintDTO = {
+      blueprintId: body.blueprintId,
+      projectId: body.projectId,
+      designerName: body.desginerName,
+      blueprintName: body.blueprintName,
+      estimatedCost: body.estimatedCost,
+    };
+    const json = JSON.stringify(blueprintDTO);
+    formData.append(
+      'blueprintDTO',
+      new Blob([json], { type: 'application/json' })
+    );
+    for (let index = 0; index < body.file.length; index++) {
+      formData.append('blueprintDoc', body.file[index]);
+    }
+    return this.intance.put(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   delete(url, token) {
     return this.intance.delete(url, {
       headers: { Authorization: `Bearer ${token}` },

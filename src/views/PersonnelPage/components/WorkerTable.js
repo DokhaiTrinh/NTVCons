@@ -18,7 +18,7 @@ import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
 import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody } from '@mui/material';
-import DeletePost from '../../../Components/Button/Delete/DeletePost';
+import DeleteWorker from '../../../Components/Button/Delete/DeleteWorker';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import Header from '../../../Components/Tab/Header';
 
@@ -301,9 +301,7 @@ export const WorkerTable = (props) => {
                       <TableCell align="left">
                         {row.socialSecurityCode}
                       </TableCell>
-                      <TableCell align="left">
-                        {row.createdAt}
-                      </TableCell>
+                      <TableCell align="left">{row.createdAt}</TableCell>
                       <TableCell align="left">
                         {/* <IconButton
                           component={Link}
@@ -316,7 +314,7 @@ export const WorkerTable = (props) => {
                         {UpdateButton(`/updateWorker/${row.workerId}`)}
                       </TableCell>
                       <TableCell align="left">
-                        {DeletePost(row.workerId)}
+                        {DeleteWorker(row.workerId)}
                       </TableCell>
                     </TableRow>
                   );

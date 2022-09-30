@@ -42,6 +42,7 @@ const UserProfile = (props) => {
   const [userName, setUserName] = React.useState();
   const [roleId, setRoleId] = React.useState();
   const [password, setPassword] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -51,6 +52,11 @@ const UserProfile = (props) => {
         setUserName(listUser.data.username);
         setRoleId(listUser.data.role.roleId);
         setPassword(listUser.data.password);
+        if (listUser.data.file) {
+          let arrayLinkImg = [];
+          arrayLinkImg.push(listUser.data.file.fileLink);
+          setImageGet(arrayLinkImg);
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
@@ -216,6 +222,28 @@ const UserProfile = (props) => {
       );
     });
   };
+  const renderPhotos1 = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+        // badgeContent={<CancelIcon />}
+        // onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '80%',
+              height: '80%',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <div>
       <Tabs>
@@ -252,25 +280,12 @@ const UserProfile = (props) => {
                   <Box sx={{ width: '500px' }}>
                     <Stack direction="column" spacing={2}>
                       <Stack direction="column">
-                        <Grid item xs={6}>
-                          <input
-                            {...register('files')}
-                            type="file"
-                            id="files"
-                            accept="image/*"
-                            onChange={handleChangeFile}
-                          />
-                          <div className="label-holder">
-                            <label htmlFor="file" className="img-upload">
-                              Chọn hình
-                            </label>
-                          </div>
-
+                        <Grid item xs={12}>
                           <div className="result">
-                            {renderPhotos(selectedImages)}
+                            {renderPhotos1(imageGet)}
                           </div>
-                          {/* <input type="file" multiple {...register("file")} /> */}
                         </Grid>
+
                         <Typography variant="body2">Họ và tên</Typography>
                         <TextFieldComponent
                           register={register}
@@ -340,6 +355,25 @@ const UserProfile = (props) => {
                           ))}
                         </TextField>
                       </Stack>
+                      <Grid item xs={6}>
+                        <input
+                          {...register('files')}
+                          type="file"
+                          id="files"
+                          accept="image/*"
+                          onChange={handleChangeFile}
+                        />
+                        <div className="label-holder">
+                          <label htmlFor="file" className="img-upload">
+                            Chọn hình
+                          </label>
+                        </div>
+
+                        <div className="result">
+                          {renderPhotos(selectedImages)}
+                        </div>
+                        {/* <input type="file" multiple {...register("file")} /> */}
+                      </Grid>
                       <Stack justifyContent="center">
                         <Box
                           sx={{

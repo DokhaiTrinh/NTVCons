@@ -21,16 +21,24 @@ const DialogRequestProject = (props) => {
     .object({
       itemAmount: yup
         .number()
-        .typeError('Amount is invalide')
+        .typeError('Nhập sai số lượng!!')
         .min(1, 'Số lượng phải lớn hơn 0!')
         .required(),
-      itemDesc: yup.string().required(),
+      itemDesc: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required(),
       itemPrice: yup
         .number()
-        .typeError('Price is invalide')
+        .typeError('Giá tiền không đúng!!!')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lường'),
+      itemUnit: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -56,11 +64,8 @@ const DialogRequestProject = (props) => {
   };
 
   return (
-    <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <div className="dialog">
+      <Typography variant="h6" color="#DD8501">
         CHI TIẾT YÊU CẦU
       </Typography>
       <Divider></Divider>
@@ -71,9 +76,7 @@ const DialogRequestProject = (props) => {
       <form onSubmit={handleSubmit(submitForm)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Thông tin yêu cầu chi tiết
-            </Typography>
+            <Typography variant="body2">Thông tin yêu cầu chi tiết</Typography>
             <TextFieldComponent
               register={register}
               name="itemDesc"
@@ -83,9 +86,7 @@ const DialogRequestProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Số lượng
-            </Typography>
+            <Typography variant="body2">Số lượng</Typography>
             <TextFieldComponent
               register={register}
               name="itemAmount"
@@ -95,27 +96,23 @@ const DialogRequestProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Giá tiền
-            </Typography>
-            <TextFieldComponent
-              register={register}
-              name="itemPrice"
-              label="Giá tiền (VNĐ)"
-              errors={errors.itemPrice}
-              variant="outlined"
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2">
-              Đơn vị tính
-            </Typography>
+            <Typography variant="body2">Đơn vị tính</Typography>
             <TextFieldComponent
               register={register}
               name="itemUnit"
               label="Đơn vị"
               errors={errors.itemUnit}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Giá tiền</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemPrice"
+              label="Giá tiền (VNĐ)"
+              errors={errors.itemPrice}
               variant="outlined"
               sx={{ width: '100%' }}
             />
@@ -132,7 +129,7 @@ const DialogRequestProject = (props) => {
               <Button
                 type="submit"
                 variant="contained"
-                className='submitButton'
+                className="submitButton"
               >
                 Lưu
               </Button>

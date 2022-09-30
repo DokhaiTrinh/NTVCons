@@ -110,6 +110,12 @@ const headCells = [
     label: 'Người yêu cầu',
   },
   {
+    id: 'ghichu',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ghi chú',
+  },
+  {
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
@@ -351,17 +357,6 @@ export default function RequestTable(props) {
           <Tab label="Đang chờ" value="PENDING" />
           <Tab label="Bị hủy" value="DENIED" />
         </Tabs>
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-
-        {/* <TabPanel value="APRROVED">
-          Duyệt XX
-        </TabPanel>
-        <TabPanel value="PEDING">
-          Đang chờ
-        </TabPanel>
-        <TabPanel value="DENY">
-          Bị hủy
-        </TabPanel> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
@@ -399,7 +394,10 @@ export default function RequestTable(props) {
                     <TableCell align="left">
                       {row.requestType.requestTypeName}
                     </TableCell>
-                    <TableCell align="left">{row.requester.username}</TableCell>
+                    <TableCell align="left">{row.requester.fullName}</TableCell>
+                    <TableCell align="left">
+                      {row.requester.verifyNote}
+                    </TableCell>
                     <TableCell align="left">
                       <IconButton
                         size="large"

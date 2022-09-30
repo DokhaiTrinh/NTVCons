@@ -13,8 +13,8 @@ import { addFileToProject } from '../../../apis/ProjectManager/addFileToProject'
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 
 const actions = [
-  { icon: <ImageIcon />, name: 'Hình ảnh', operation: 'image' },
-  { icon: <FilePresentIcon />, name: 'Tệp', operation: 'file' },
+  { icon: <ImageIcon />, name: 'Hình ảnh: ', operation: 'image' },
+  { icon: <FilePresentIcon />, name: 'Tệp: ', operation: 'file' },
 ];
 export const FloatingAddButton = ({ projectId }) => {
   const inputRef = React.useRef();
@@ -64,7 +64,7 @@ export const FloatingAddButton = ({ projectId }) => {
       console.log(fileDocx);
       let files;
       if (filesImage && !fileDocx) {
-        files = filesImage; 
+        files = filesImage;
       } else if (filesImage && fileDocx) {
         files = [...filesImage, ...fileDocx];
       } else {
@@ -113,13 +113,13 @@ export const FloatingAddButton = ({ projectId }) => {
       >
         Những tệp thêm vào:
         <div className="label-holder">
-          Hình ảnh
+          Hình ảnh: 
           {selectedImages ? (
             <div className="result">{RenderImage(selectedImages)}</div>
           ) : null}
         </div>
         <div>
-          Tài liệu
+          Tài liệu: 
           {fileDocx
             ? fileDocx.length > 0
               ? Array.from(fileDocx).map((file) => (

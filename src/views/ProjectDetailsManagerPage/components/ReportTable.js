@@ -22,7 +22,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 import { useStateValue } from '../../../common/StateProvider/StateProvider';
 import Pagination from '@mui/material/Pagination';
-import { tableCellClasses } from "@mui/material/TableCell";
+import { tableCellClasses } from '@mui/material/TableCell';
 import DeleteReport from '../../../Components/Button/Delete/DeleteReport';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import DetailButton from '../../../Components/Button/DetailButton';
@@ -56,6 +56,12 @@ const headCells = [
     label: 'Loại báo cáo',
   },
   {
+    id: 'ngaytao',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ngày tạo',
+  },
+  {
     id: 'Chitiet',
     numeric: false,
     disablePadding: false,
@@ -76,11 +82,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -179,29 +181,32 @@ export default function ReportTable(props) {
   const handleChangePage = (event, value) => {
     dispatch({ type: 'CHANGE_PAGENO', newPageNo: value - 1 });
   };
-  
+
   return (
     <Box sx={{ width: '100%' }}>
-      {
-        Header(`/createReportManager/${projectId}`)
-      }
+      {Header(`/createReportManager/${projectId}`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-            />
-            <TableBody sx={{
-              [`& .${tableCellClasses.root}`]: {
-                borderBottom: "none"
-              }
-            }}>
+            <EnhancedTableHead order={order} orderBy={orderBy} />
+            <TableBody
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
               {allReportDetails.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow style={index % 2 ? { background: "#FAFAFA" } : { background: "white" }}>
+                  <TableRow
+                    style={
+                      index % 2
+                        ? { background: '#FAFAFA' }
+                        : { background: 'white' }
+                    }
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
@@ -211,29 +216,26 @@ export default function ReportTable(props) {
                       {row.reportId}
                     </TableCell>
                     <TableCell align="left">{row.reportName}</TableCell>
-                    <TableCell align="left">
-                      {(row.reportDate)}
-                    </TableCell>
+                    <TableCell align="left">{row.reportDate}</TableCell>
                     <TableCell align="left">
                       {row.reportType.reportTypeName}
                     </TableCell>
                     <TableCell align="left">
-                      {
-                        DetailButton(`/reportDetailsManager/${row.reportId}`)
-                      }
+                      {row.createdAt}
+                    </TableCell>
+                    <TableCell align="left">
+                      {DetailButton(`/reportDetailsManager/${row.reportId}`)}
                     </TableCell>
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                        {
-                          UpdateButton(`/updateReportDetailsManager/${row.reportId}`)
-                        }
+                        {UpdateButton(
+                          `/updateReportDetailsManager/${row.reportId}`
+                        )}
                       </TableCell>
                     ) : null}
                     {userInfor.authorID === '44' ? (
                       <TableCell align="left">
-                       {
-                         DeleteReport(row.reportId)
-                       }
+                        {DeleteReport(row.reportId)}
                       </TableCell>
                     ) : null}
                   </TableRow>
@@ -243,13 +245,13 @@ export default function ReportTable(props) {
           </Table>
         </TableContainer>
       </Paper>
-        <Pagination
-          count={totalPage + 1}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChangePage}
-          default={1}
-        />
+      <Pagination
+        count={totalPage + 1}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChangePage}
+        default={1}
+      />
     </Box>
   );
 }

@@ -1,6 +1,6 @@
-import './styles.css';
 import React, { useRef } from 'react';
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import './styles.css';
+// import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Divider,
   Typography,
@@ -228,7 +228,7 @@ const ChatPage = (props) => {
         setMsgInputValue('');
       }
     } catch (error) {
-      console.log('Lỗi sảy ra khi gửi tin nhắn ' + error.message);
+      console.log('Lỗi xảy ra khi gửi tin nhắn ' + error.message);
     }
   };
   const handleSelectUser = async (options) => {
@@ -247,15 +247,6 @@ const ChatPage = (props) => {
       }}
       elevation={0}
     >
-      <input
-        {...register('files')}
-        type="file"
-        hidden
-        ref={fileInput}
-        id="files"
-        multiple
-        onChange={handleChangeFile}
-      />
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Autocomplete
@@ -307,6 +298,17 @@ const ChatPage = (props) => {
             )}
           </ConversationList>
         </Sidebar>
+        <input
+          {...register('files')}
+          type="file"
+          hidden
+          ref={fileInput}
+          id="files"
+          onChange={handleChangeFile}
+        />
+        <div className="label-holder">
+          <label htmlFor="file" className="img-upload"></label>
+        </div>
         <ChatContainer>
           <MessageList>
             {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
@@ -350,47 +352,16 @@ const ChatPage = (props) => {
               <div>Bắt đầu cuộc trò chuyện...</div>
             )}
           </MessageList>
-          <div
-            as={MessageInput}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              borderTop: '1px dashed #d1dbe4',
-              justifyContent: 'flex-start',
-              width: '100%',
-              padding: '5px',
+
+          <MessageInput
+            placeholder="Nhập tin nhắn của bạn.."
+            onSend={handleSend}
+            onChange={setMsgInputValue}
+            value={msgInputValue}
+            onAttachClick={() => {
+              fileInput.current.click();
             }}
-          >
-            <input
-              {...register('files')}
-              type="file"
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
-            <MessageInput
-              placeholder="Nhập tin nhắn của bạn.."
-              onSend={handleSend}
-              onChange={setMsgInputValue}
-              value={msgInputValue}
-              attachButton={false}
-              style={{
-                width: '80%',
-              }}
-            />
-            <input
-              {...register('files')}
-              type="file"
-              hidden
-              ref={fileInput}
-              id="files"
-              multiple
-              onChange={handleChangeFile}
-            />
-            <div className="label-holder">
-              <label htmlFor="file" className="img-upload"></label>
-            </div>
-          </div>
+          />
         </ChatContainer>
       </MainContainer>
     </Paper>

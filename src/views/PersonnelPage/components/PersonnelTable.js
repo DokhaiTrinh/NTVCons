@@ -20,7 +20,7 @@ import Header from '../../../Components/Tab/Header';
 
 import DeleteUser from '../../../Components/Button/Delete/DeleteUser';
 import UpdateButton from '../../../Components/Button/UpdateButton';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -339,10 +339,16 @@ export const PersonnelTable = (props) => {
                     <TableCell align="left">{row.role.updatedAt}</TableCell>
                     <TableCell align="left">{row.phone}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
-                    <TableCell align="left">
-                      {UpdateButton(`/updatePersonnel/${row.userId}`)}
-                    </TableCell>
-                    <TableCell align="left">{DeleteUser(row.userId)}</TableCell>
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        {UpdateButton(`/updatePersonnel/${row.userId}`)}
+                      </TableCell>
+                    ) : null}
+                    {userInfor.authorID === '54' ? (
+                      <TableCell align="left">
+                        {DeleteUser(row.userId)}
+                      </TableCell>
+                    ) : null}
                   </TableRow>
                 );
               })}

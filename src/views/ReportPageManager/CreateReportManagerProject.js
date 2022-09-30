@@ -120,7 +120,7 @@ const CreateReportProject = (props) => {
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: 'Tạo báo cáo không thành công',
+        text: 'Tạo báo cáo không thành công!!!',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -188,12 +188,14 @@ const CreateReportProject = (props) => {
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
     }
   };
+
   const handleDeleteImage = (photo, indexImage) => {
     const index = selectedImages.indexOf(photo);
     if (index > -1) {
       selectedImages.splice(index, 1);
       // dispatch({ type: "LOADING", newLoading: !loading });
     }
+
     const dt = new DataTransfer();
     const input = document.getElementById('files');
     const { files } = input;
@@ -202,10 +204,41 @@ const CreateReportProject = (props) => {
       const file = files[i];
       if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
     }
+
     input.files = dt.files;
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
+  const handleRemoveReport = (itemRemove) => {
+    let result = reportDetail.filter((item) => item !== itemRemove);
+    setReportDetail(result);
+  };
+  const handleRemoveTask = (itemRemove) => {
+    let result = taskReportDetail.filter((item) => item !== itemRemove);
+    setTaskReportDetail(result);
   };
   return (
     <Paper sx={{ padding: '32px' }}>
@@ -234,7 +267,7 @@ const CreateReportProject = (props) => {
           <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography variant="body2" sx={{ marginBottom: '10px' }}>
                   Hình ảnh
                 </Typography>
@@ -242,7 +275,7 @@ const CreateReportProject = (props) => {
                   {UploadImage(setSelectedImage, setFilesImage)}
                   <div className="result">{RenderImage(selectedImages)}</div>
                 </Stack>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2">Tên báo cáo</Typography>
                 <TextFieldComponent
@@ -297,19 +330,48 @@ const CreateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12} spacing={4}>
                 {reportDetail.length ? (
                   reportDetail.map((report, index) => (
-                    <Grid item xs={4}>
-                      <Paper className="tag">
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        '& > :not(style)': {
+                          // m: 1,
+                          mt: 4,
+                          ml: 4,
+                          width: 300,
+                          height: 200,
+                        },
+                      }}
+                    >
+                      <Paper className="tag" elevation={4}>
                         <Stack spacing={2}>
-                          <Typography>{report.itemDesc}</Typography>
-                          <Typography>{report.itemAmount}</Typography>
-                          <Typography>{report.itemUnit}</Typography>
-                          <Typography>{report.itemPrice}&nbsp;VNĐ</Typography>
+                          <Badge
+                            badgeContent={
+                              <CancelIcon
+                                sx={{
+                                  color: '#030303 !important',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => handleRemoveReport(report)}
+                              />
+                            }
+                          ></Badge>
+                          <Typography noWrap>{report.itemDesc}</Typography>
+                          <Typography noWrap>
+                            Số lượng: {report.itemAmount}
+                          </Typography>
+                          <Typography noWrap>
+                            Đơn vị: {report.itemUnit}
+                          </Typography>
+                          <Typography noWrap>
+                            Giá tiền: {report.itemPrice}&nbsp;VNĐ
+                          </Typography>
                         </Stack>
                       </Paper>
-                    </Grid>
+                    </Box>
                   ))
                 ) : (
                   <Grid item sx={12}>
@@ -317,6 +379,50 @@ const CreateReportProject = (props) => {
                   </Grid>
                 )}
               </Grid>
+              {/* <Grid item container columns={12} spacing={2}>
+                {reportDetail.length > 0 ? (
+                  reportDetail.map((report, index) => (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        '& > :not(style)': {
+                          // m: 1,
+                          mt: 4,
+                          ml: 4,
+                          width: 300,
+                          height: 200,
+                        },
+                      }}
+                    >
+                      <Badge
+                        badgeContent={
+                          <CancelIcon
+                            sx={{
+                              color: '#DA6969 !important',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => handleRemoveReport(report)}
+                          />
+                        }
+                      >
+                        <Paper className="tag">
+                          <Stack direction="row" spacing={1}>
+                            <Typography>{report.itemDesc}</Typography>
+                            <Typography>{report.itemAmount}</Typography>
+                            <Typography>{report.itemUnit}</Typography>
+                            <Typography>{report.itemPrice}&nbsp;VNĐ</Typography>
+                          </Stack>
+                        </Paper>
+                      </Badge>
+                    </Box>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu của báo cáo chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid> */}
               <Grid item container sx={12}>
                 <Box
                   sx={{
@@ -334,18 +440,40 @@ const CreateReportProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={2}>
+              <Grid item container columns={12} spacing={4}>
                 {taskReportDetail.length ? (
                   taskReportDetail.map((task, index) => (
-                    <Grid item xs={4}>
-                      <Paper className="tag">
-                        <Stack direction="column" spacing={1}>
-                          <Typography>{task.taskId}</Typography>
-                          <Typography>{task.taskNote}</Typography>
-                          <Typography>&nbsp;{task.taskProgress}</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        '& > :not(style)': {
+                          // m: 1,
+                          mt: 4,
+                          ml: 4,
+                          width: 100,
+                          height: 100,
+                        },
+                      }}
+                    >
+                      <Paper className="tag" elevation={4}>
+                        <Stack spacing={0}>
+                          <Badge
+                            badgeContent={
+                              <CancelIcon
+                                sx={{
+                                  color: '#030303 !important',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => handleRemoveTask(task)}
+                              />
+                            }
+                          ></Badge>
+                          <Typography>Thông tin: {task.taskNote}</Typography>
+                          <Typography>Tiến độ: {task.taskProgress}</Typography>
                         </Stack>
                       </Paper>
-                    </Grid>
+                    </Box>
                   ))
                 ) : (
                   <Grid item sx={12}>
@@ -353,6 +481,21 @@ const CreateReportProject = (props) => {
                   </Grid>
                 )}
               </Grid>
+              {/* <Grid item>
+                {taskReportDetail.length ? (
+                  taskReportDetail.map((task, index) => (
+                    <Paper className="tag">
+                      <Typography noWrap>
+                        {task.taskId}, {task.taskNote}, {task.taskProgress}
+                      </Typography>
+                    </Paper>
+                  ))
+                ) : (
+                  <Grid item sx={12}>
+                    <div>Không có dữ liệu chi tiết!</div>
+                  </Grid>
+                )}
+              </Grid> */}
               <Grid item xs={12}>
                 <Typography variant="body2">Loại báo cáo</Typography>
                 <FormControl sx={{ width: '100%' }}>
@@ -388,7 +531,7 @@ const CreateReportProject = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
+                <div className="result">{renderPhotos(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

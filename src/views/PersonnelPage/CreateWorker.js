@@ -26,7 +26,8 @@ import CardContent from '@mui/material/CardContent';
 import moment from 'moment';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
-
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 export const CreateWorker = (props) => {
   const [loading, setLoading] = useState(false);
   const [locationDetail, setLocationDetail] = React.useState();
@@ -70,7 +71,7 @@ export const CreateWorker = (props) => {
 
   const submitForm = (data) => {
     const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
-    console.log(data);
+
     handleCreateWorker(
       locationDetail,
       data.citizenId,
@@ -168,6 +169,28 @@ export const CreateWorker = (props) => {
     setFilesImage(input.files);
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
   return (
     <Paper className="bodynonetab">
       <Typography variant="h6" color="#DD8501">
@@ -196,13 +219,23 @@ export const CreateWorker = (props) => {
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item>
-                <Typography variant="body2">
-                  Ảnh đại diện
-                </Typography>
+                <Typography variant="body2">Ảnh đại diện</Typography>
                 <Stack direction="row" alignItems="center" spacing={2}>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    accept="image/*"
+                    onChange={handleChangeFile}
+                  />
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <div className="result">{renderPhotos(selectedImages)}</div>
+                  </Stack>
+                </Stack>
+                {/* <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}
                   <div className="result">{RenderImage(selectedImages)}</div>
-                </Stack>
+                </Stack> */}
                 {/* <Box
                   sx={{
                     width: '100%',
@@ -323,29 +356,13 @@ export const CreateWorker = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12}>
+              <Grid item xs={12}>
                 {locationDetail ? (
-                  <Paper className="tag">
-                    <Stack direction="row" spacing={1}>
-                      <Typography>{locationDetail.addressNumber},</Typography>
-                      <Typography>{locationDetail.street},</Typography>
-                      <Typography>{locationDetail.ward},</Typography>
-                      <Typography>{locationDetail.district},</Typography>
-                      <Typography>{locationDetail.city}</Typography>
-                      {/* <Typography>
-                        Địa bàn tỉnh: {locationDetail.province}
-                      </Typography>
-                      <Typography>
-                        Quốc gia: {locationDetail.country}
-                      </Typography>
-                      <Typography>
-                        Diện tích: {locationDetail.area}
-                      </Typography>
-                      <Typography>
-                        Điều phối: {locationDetail.coordinate}
-                      </Typography> */}
-                    </Stack>
-                  </Paper>
+                  <Typography>
+                    {locationDetail.addressNumber} {locationDetail.street}, P{' '}
+                    {locationDetail.ward}, Q. {locationDetail.district}, TP{' '}
+                    {locationDetail.city}, {locationDetail.country}
+                  </Typography>
                 ) : (
                   <Grid item sx={12}>
                     <div>Không có dữ liệu!</div>

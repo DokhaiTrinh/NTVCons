@@ -25,7 +25,7 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import { Table, TableBody, TableRow } from '@mui/material';
 import DeleteTask from '../../../Components/Button/Delete/DeleteTask';
 import UpdateButton from '../../../Components/Button/UpdateButton';
-import Header from '../../../Components/Tab/Header';
+import Header1 from '../../../Components/Tab/Header1';
 import DetailButton from '../../../Components/Button/DetailButton';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
@@ -228,7 +228,7 @@ export default function ReportTable(props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {Header(`/createTask/${id}`)}
+      {Header1(`/createTask/${id}`)}
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>

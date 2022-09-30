@@ -15,13 +15,8 @@ import * as yup from 'yup';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import { useForm } from 'react-hook-form';
 import { getAllProjectApi1 } from '../../apis/Project/getAllProject';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
-import Select from '@mui/material/Select';
-import { useStateValue } from '../../common/StateProvider/StateProvider';
-import RenderImage from '../../Components/Render/RenderImage';
 import { useParams } from 'react-router-dom';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -120,7 +115,7 @@ const CreateBlueprint = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      await window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -148,6 +143,7 @@ const CreateBlueprint = (props) => {
       selectedImages.splice(index, 1);
       // dispatch({ type: "LOADING", newLoading: !loading });
     }
+
     const dt = new DataTransfer();
     const input = document.getElementById('files');
     const { files } = input;
@@ -161,6 +157,28 @@ const CreateBlueprint = (props) => {
     setFilesImage(input.files);
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '100%',
+              height: '100%',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   return (
     <div>
@@ -188,21 +206,6 @@ const CreateBlueprint = (props) => {
             <Box sx={{ width: '100%', height: '20px' }}></Box>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                {/* <ImageList sx={{ width: '100%' }} cols={3} rowHeight={164}>
-                  {itemData.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList> */}
-              </Grid>
-
-              <Grid item xs={12}>
                 <Typography variant="body2">Tên bản vẽ</Typography>
                 <TextFieldComponent
                   register={register}
@@ -224,18 +227,20 @@ const CreateBlueprint = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+
               <Grid item xs={12}>
-                <Grid item xs={12}>
-                  <Typography variant="body2">Giá bản vẽ</Typography>
-                  <TextFieldComponent
-                    register={register}
-                    name="estimatedCost"
-                    // label="Tên vai trò"
-                    errors={errors.estimatedCost}
-                    variant="outlined"
-                    sx={{ width: '100%' }}
-                  />
-                </Grid>
+                <Typography variant="body2">Giá bản vẽ</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="estimatedCost"
+                  // label="Tên vai trò"
+                  errors={errors.estimatedCost}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Hình ảnh</Typography>
                 <input
                   {...register('files')}
                   type="file"
@@ -248,32 +253,33 @@ const CreateBlueprint = (props) => {
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
 
-                <div className="result">{RenderImage(selectedImages)}</div>
-                {/* <input type="file" multiple {...register("file")} /> */}
+                <div className="result">{renderPhotos(selectedImages)}</div>
               </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
+
+              {/* <input type="file" multiple {...register("file")} /> */}
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  display: 'flex',
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{
+                    backgroundColor: '#DD8501',
+                    borderRadius: 50,
+                    width: '200px',
+                    alignSelf: 'center',
                   }}
                 >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      backgroundColor: '#DD8501',
-                      borderRadius: 50,
-                      width: '200px',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    Lưu
-                  </Button>
-                </Box>
-              </Grid>
+                  Lưu
+                </Button>
+              </Box>
             </Grid>
           </form>
         </Box>

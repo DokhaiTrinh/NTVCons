@@ -14,7 +14,7 @@ const DialogLocation = (props) => {
     .object({
       addressNumber: yup
         .string()
-        .min(5, 'Địa chỉ phải là số lớn hơn 5!')
+        .min(1, 'Địa chỉ phải là số lớn hơn 5!')
         .required(),
       area: yup.string().required(),
       city: yup.string().required('Phải có tên thành phố'),
@@ -53,20 +53,15 @@ const DialogLocation = (props) => {
     props.handleCloseLocationDialog();
   };
   return (
-    <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <div className="dialog">
+      <Typography variant="h6" color="#DD8501">
         ĐỊA CHỈ
       </Typography>
       <Divider></Divider>
       <form onSubmit={handleSubmit(submitForm)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Số nhà
-            </Typography>
+            <Typography variant="body2">Số nhà</Typography>
             <TextFieldComponent
               register={register}
               name="addressNumber"
@@ -76,9 +71,7 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Tên đường
-            </Typography>
+            <Typography variant="body2">Tên đường</Typography>
             <TextFieldComponent
               register={register}
               name="street"
@@ -88,33 +81,7 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Quận
-            </Typography>
-            <TextFieldComponent
-              register={register}
-              name="district"
-              errors={errors.district}
-              variant="outlined"
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2">
-              Thành phố
-            </Typography>
-            <TextFieldComponent
-              register={register}
-              name="city"
-              errors={errors.city}
-              variant="outlined"
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2">
-              Khu vực
-            </Typography>
+            <Typography variant="body2">Phường</Typography>
             <TextFieldComponent
               register={register}
               name="ward"
@@ -124,9 +91,27 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Địa bàn tỉnh
-            </Typography>
+            <Typography variant="body2">Quận</Typography>
+            <TextFieldComponent
+              register={register}
+              name="district"
+              errors={errors.district}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Thành phố</Typography>
+            <TextFieldComponent
+              register={register}
+              name="city"
+              errors={errors.city}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Địa bàn tỉnh</Typography>
             <TextFieldComponent
               register={register}
               name="province"
@@ -136,9 +121,7 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Quốc gia
-            </Typography>
+            <Typography variant="body2">Quốc gia</Typography>
             <TextFieldComponent
               register={register}
               name="country"
@@ -148,9 +131,7 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Diện tích
-            </Typography>
+            <Typography variant="body2">Diện tích</Typography>
             <TextFieldComponent
               register={register}
               name="area"
@@ -160,9 +141,7 @@ const DialogLocation = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body2">
-              Điều phối
-            </Typography>
+            <Typography variant="body2">Điều phối</Typography>
             <TextFieldComponent
               register={register}
               name="coordinate"
@@ -183,7 +162,7 @@ const DialogLocation = (props) => {
               <Button
                 type="submit"
                 variant="contained"
-                className='submitButton'
+                className="submitButton"
               >
                 Lưu
               </Button>

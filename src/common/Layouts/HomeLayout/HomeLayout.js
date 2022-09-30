@@ -18,6 +18,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
 import {
@@ -126,9 +127,9 @@ const listItems = [
   //   listText: 'Trang chủ',
   // },
   {
-    listIcon: <AssignmentInd />,
+    listIcon: <HomeWorkIcon />,
     path: '/project',
-    listText: 'Dự án',
+    listText: 'Danh sách dự án',
   },
   {
     listIcon: <AssignmentIndIcon />,

@@ -24,6 +24,7 @@ import TableRow from '@mui/material/TableRow';
 import { TableBody, Table } from '@mui/material';
 import UpdateButton from '../../../Components/Button/UpdateButton';
 import Header from '../../../Components/Tab/Header';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const headCells = [
   {
@@ -243,19 +244,21 @@ export const CategoryTable = (props) => {
                       <TableCell align="left">
                         {UpdateButton(`/updateCategory/${row.postCategoryId}`)}
                       </TableCell>
-                      <TableCell align="left">
-                        <IconButton
-                          aria-label="delete"
-                          color="warning"
-                          edge="start"
-                          size="large"
-                          onClick={() =>
-                            handleDeleteCategory(row.postCategoryId)
-                          }
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
+                      {userInfor.authorID === '54' ? (
+                        <TableCell align="left">
+                          <IconButton
+                            aria-label="delete"
+                            color="warning"
+                            edge="start"
+                            size="large"
+                            onClick={() =>
+                              handleDeleteCategory(row.postCategoryId)
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   );
                 })

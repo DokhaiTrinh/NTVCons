@@ -5,6 +5,7 @@ import {
   TextField,
   Grid,
   Button,
+  Stack,
   Paper,
 } from '@mui/material';
 import axios from 'axios';
@@ -37,6 +38,7 @@ import { replaceColor } from '@cloudinary/url-gen/actions/adjust';
 import Badge from '@mui/material/Badge';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RenderImage from '../../Components/Render/RenderImage';
+import { OverflowList } from '@blueprintjs/core';
 
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const ITEM_HEIGHT = 48;
@@ -203,6 +205,32 @@ const CreateRequestProject = (props) => {
 
     // dispatch({ type: 'LOADING', newLoading: !loading });
   };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
+  const handleRemoveRequest = (itemRemove) => {
+    let result = requestDetail.filter((item) => item !== itemRemove);
+    setRequestDetail(result);
+  };
   return (
     <Paper className="bodynonetab">
       <Typography variant="h6" color="#DD8501">
@@ -280,17 +308,48 @@ const CreateRequestProject = (props) => {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item container columns={12} spacing={1}>
+              <Grid item container columns={12} spacing={4}>
                 {requestDetail.length ? (
                   requestDetail.map((request, index) => (
-                    <Grid item xs="4">
-                      <Paper sx={{ padding: '10px' }}>
-                        <Typography>{request.itemDesc}</Typography>
-                        <Typography>Số lượng:{request.itemAmount}</Typography>
-                        <Typography>Giá tiền: {request.itemPrice} </Typography>
-                        <Typography>Đơn vị: {request.itemUnit}</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        '& > :not(style)': {
+                          // m: 1,
+                          mt: 4,
+                          ml: 4,
+                          width: 300,
+                          height: 200,
+                        },
+                      }}
+                    >
+                      <Paper className="tag" elevation={4}>
+                        <Stack spacing={2}>
+                          <Badge
+                            badgeContent={
+                              <CancelIcon
+                                sx={{
+                                  color: '#030303 !important',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => handleRemoveRequest(request)}
+                              />
+                            }
+                          ></Badge>
+                          <Typography noWrap>{request.itemDesc}</Typography>
+                          <Typography noWrap>
+                            Số lượng: {request.itemAmount}
+                          </Typography>
+                          <Typography noWrap>
+                            Đơn vị: {request.itemUnit}
+                          </Typography>
+                          <Typography noWrap>
+                            Giá tiền: {request.itemPrice} VNĐ
+                          </Typography>
+                        </Stack>
                       </Paper>
-                    </Grid>
+                    </Box>
                   ))
                 ) : (
                   <Grid item sx={12}>
@@ -332,7 +391,7 @@ const CreateRequestProject = (props) => {
                 <div className="label-holder">
                   <label htmlFor="file" className="img-upload"></label>
                 </div>
-                {/* <div className="result">{RenderImage(selectedImages)}</div> */}
+                <div className="result">{renderPhotos(selectedImages)}</div>
                 {/* <input type="file" multiple {...register("file")} /> */}
               </Grid>
               <Grid item xs={12}>

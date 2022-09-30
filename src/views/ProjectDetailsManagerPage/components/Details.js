@@ -73,7 +73,7 @@ const Details = (props) => {
           <Divider sx={{ marginBottom: '20px' }}></Divider>
           <Grid container rowSpacing={{ xs: 5 }}>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Mã dự án
               </Typography>
               <Typography variant="body1">
@@ -81,7 +81,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Tên dự án
               </Typography>
               <Typography variant="body1">
@@ -108,7 +108,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Kỹ sư quản lý
               </Typography>
               <Typography sx={{ width: '100%' }}>
@@ -160,7 +160,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Thời gian bắt đầu dự kiến
               </Typography>
               <Typography variant="body1">
@@ -168,7 +168,7 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Thời gian kết thúc dự kiến
               </Typography>
               <Typography variant="body1">
@@ -176,26 +176,17 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Địa chỉ
-              </Typography>
+              <Typography variant="caption">Địa chỉ</Typography>
               <Typography variant="body1">
                 {allProjectDetails.location.addressNumber},{' '}
                 {allProjectDetails.location.street}, P{' '}
                 {allProjectDetails.location.ward}, Q{' '}
-                {allProjectDetails.location.district}
-              </Typography>
-            </Grid>
-            <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Thành phố
-              </Typography>
-              <Typography variant="body1">
+                {allProjectDetails.location.district},{' '}
                 {allProjectDetails.location.country}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Thời gian bắt đầu thực tế
               </Typography>
               <Typography variant="body1">
@@ -203,11 +194,23 @@ const Details = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption" color="gray">
                 Thời gian kết thúc thực tế
               </Typography>
               <Typography variant="body1">
                 {allProjectDetails.planEndDate}
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="caption">Giá tiền dự kiến</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.estimatedCost} VNĐ
+              </Typography>
+            </Grid>
+            <Grid item xs="4">
+              <Typography variant="caption">Giá tiền chính thức</Typography>
+              <Typography variant="body1">
+                {allProjectDetails.actualCost} VNĐ
               </Typography>
             </Grid>
             <Grid item xs="12">

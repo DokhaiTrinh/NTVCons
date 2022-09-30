@@ -127,7 +127,7 @@ function RequestDetailPage() {
                   Người yêu cầu
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  {allRequestList.requester.username}
+                  {allRequestList.requester.fullName}
                 </Typography>
               </Grid>
               <Grid item xs="4">

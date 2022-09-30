@@ -27,6 +27,9 @@ import UploadImage from '../../Components/Upload/UploadImage';
 import { useParams } from 'react-router-dom';
 import { getWorkerByIdApi } from '../../apis/Worker/getAllWorker';
 import { updateWorkerApi } from '../../apis/Worker/updateWorker';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 const UpdateWorkerPage = (props) => {
   const { id } = useParams();
   console.log(id);
@@ -42,11 +45,17 @@ const UpdateWorkerPage = (props) => {
   const [filesImage, setFilesImage] = useState([]);
   const [selectedImages, setSelectedImage] = useState([]);
   const [workerId, setWorkerId] = React.useState();
+  const [imageGet, setImageGet] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
         const listWorker = await getWorkerByIdApi(id, 'BY_ID');
         setWorkerId(listWorker.data);
+        if (listWorker.data.file) {
+          let arrayLinkImg = [];
+          arrayLinkImg.push(listWorker.data.file.fileLink);
+          setImageGet(arrayLinkImg);
+        }
       } catch (error) {
         console.log('Không thể lấy danh sách người dùng');
       }
@@ -171,6 +180,7 @@ const UpdateWorkerPage = (props) => {
       selectedImages.splice(index, 1);
       // dispatch({ type: "LOADING", newLoading: !loading });
     }
+
     const dt = new DataTransfer();
     const input = document.getElementById('files');
     const { files } = input;
@@ -179,9 +189,55 @@ const UpdateWorkerPage = (props) => {
       const file = files[i];
       if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
     }
+
     input.files = dt.files;
     setFilesImage(input.files);
+
     // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
+  };
+  const renderPhotos1 = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+        // badgeContent={<CancelIcon />}
+        // onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '100%',
+              height: '100%',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   return (
     <Paper className="bodynonetab" elevation="none">
@@ -211,32 +267,9 @@ const UpdateWorkerPage = (props) => {
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item>
-                <Typography variant="body2">Ảnh đại diện</Typography>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
-                </Stack>
-                {/* <Box
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <input
-                      {...register('files')}
-                      type="file"
-                      id="files"
-                      // multiple
-                      onChange={handleChangeFile}
-                    />
-                    <div className="label-holder">
-                      <label htmlFor="file" className="img-upload"></label>
-                    </div>
-  
-                    <div className="result">{RenderImage(selectedImages)}</div> */}
-                {/* <input type="file" multiple {...register("file")} /> */}
-                {/* </Box> */}
+                <Grid item xs={12}>
+                  <div className="result">{renderPhotos1(imageGet)}</div>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">Họ và tên</Typography>
@@ -365,6 +398,7 @@ const UpdateWorkerPage = (props) => {
                   </Grid>
                 )}
               </Grid>
+
               <Grid item xs={12}>
                 <Box
                   sx={{

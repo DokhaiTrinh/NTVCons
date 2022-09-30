@@ -127,11 +127,11 @@ const CreateTaskProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      // window.location.replace(`/projectDetails/${id}`);
+      window.location.replace(`/projectDetails/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: 'Tạo công việc thất bại',
+        text: 'Tạo công việc thất bại, vui lòng kiểm tra lại ngày!!',
         timer: 3000,
         showConfirmButton: false,
       });

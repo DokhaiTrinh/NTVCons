@@ -58,12 +58,17 @@ const headCells = [
     label: 'Người yêu cầu',
   },
   {
+    id: 'ghichu',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ghi chú',
+  },
+  {
     id: 'chitiet',
     numeric: false,
     disablePadding: false,
     label: '',
   },
-
   {
     id: 'capnhat',
     numeric: false,
@@ -308,7 +313,10 @@ export default function RequestTable(props) {
                     <TableCell align="left">
                       {row.requestType.requestTypeName}
                     </TableCell>
-                    <TableCell align="left">{row.requester.username}</TableCell>
+                    <TableCell align="left">{row.requester.fullName}</TableCell>
+                    <TableCell align="left">
+                      {row.requester.verifyNote}
+                    </TableCell>
                     <TableCell align="left">
                       {DetailButton(`/requestDetailsManager/${row.requestId}`)}
                     </TableCell>
