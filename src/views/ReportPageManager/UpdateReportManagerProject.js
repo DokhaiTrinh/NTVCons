@@ -396,52 +396,46 @@ const UpdateReportProject = (props) => {
                 <Grid item container columns={12} spacing={4}>
                   {updateReportDetail ? (
                     updateReportDetail.map((reportDetailItem, index) => (
-                      <Grid
-                        key={index}
-                        item
-                        xs={2}
+                      <Box
                         onClick={() =>
                           handleOpenUpdateReportDetailDialog(
                             'UpdateReport',
                             reportDetailItem
                           )
                         }
+                        sx={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          '& > :not(style)': {
+                            // m: 1,
+                            mt: 4,
+                            ml: 4,
+                            width: 300,
+                            height: 200,
+                          },
+                        }}
                       >
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            '& > :not(style)': {
-                              // m: 1,
-                              mt: 4,
-                              ml: 4,
-                              width: 300,
-                              height: 200,
-                            },
-                          }}
-                        >
-                          <Paper className="tag" elevation={4}>
-                            <Stack spacing={2}>
-                              <Typography noWrap>
-                                Mã báo cáo chi tiết:{' '}
-                                {reportDetailItem.reportDetailId}
-                              </Typography>
-                              <Typography noWrap>
-                                {reportDetailItem.itemDesc}
-                              </Typography>
-                              <Typography noWrap>
-                                Số lượng: {reportDetailItem.itemAmount}
-                              </Typography>
-                              <Typography noWrap>
-                                Đơn vị: {reportDetailItem.itemUnit}
-                              </Typography>
-                              <Typography noWrap>
-                                Giá tiền: {reportDetailItem.itemPrice} VNĐ
-                              </Typography>
-                            </Stack>
-                          </Paper>
-                        </Box>
-                      </Grid>
+                        <Paper className="tag" elevation={4}>
+                          <Stack spacing={2}>
+                            <Typography noWrap>
+                              Mã báo cáo chi tiết:{' '}
+                              {reportDetailItem.reportDetailId}
+                            </Typography>
+                            <Typography noWrap>
+                              {reportDetailItem.itemDesc}
+                            </Typography>
+                            <Typography noWrap>
+                              Số lượng: {reportDetailItem.itemAmount}
+                            </Typography>
+                            <Typography noWrap>
+                              Đơn vị: {reportDetailItem.itemUnit}
+                            </Typography>
+                            <Typography noWrap>
+                              Giá tiền: {reportDetailItem.itemPrice} VNĐ
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                      </Box>
                     ))
                   ) : (
                     <Grid
