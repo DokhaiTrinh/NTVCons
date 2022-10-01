@@ -35,7 +35,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Avatar, makeStyles } from '@material-ui/core';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
-const id = userInfor.id;
+// const id = userInfor.id;
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -153,8 +153,8 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    path: `/userProfile/${id}`,
-    // path: '#',
+    // path: `/userProfile/${id}`,
+    path: '#',
     listText: 'Hồ sơ',
   },
   {

@@ -189,7 +189,7 @@ const UpdateReportProject = (props) => {
     } catch (error) {
       await Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: 'Cập nhật báo cáo không thành công!!!',
         timer: 3000,
         showConfirmButton: false,
       });

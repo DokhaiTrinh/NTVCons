@@ -173,7 +173,7 @@ const UpdatePersonnelPage = (props) => {
       setLoading(false);
       await Swal.fire({
         icon: 'success',
-        text: 'Cập nhật vai trò thành công',
+        text: 'Cập nhật thành viên thành công',
         timer: 3000,
         showConfirmButton: false,
       });
@@ -181,7 +181,7 @@ const UpdatePersonnelPage = (props) => {
     } catch (error) {
       Swal.fire({
         icon: 'error',
-        text: error.response.data,
+        text: "Cập nhật thành viên không thành công!!",
         timer: 2000,
         showConfirmButton: false,
       });

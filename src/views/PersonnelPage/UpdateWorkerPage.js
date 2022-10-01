@@ -46,11 +46,13 @@ const UpdateWorkerPage = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const [workerId, setWorkerId] = React.useState();
   const [imageGet, setImageGet] = React.useState([]);
+  const [location, setLocation] = React.useState({});
   React.useEffect(() => {
     (async () => {
       try {
         const listWorker = await getWorkerByIdApi(id, 'BY_ID');
         setWorkerId(listWorker.data);
+        setLocation(listWorker.data.address);
         if (listWorker.data.file) {
           let arrayLinkImg = [];
           arrayLinkImg.push(listWorker.data.file.fileLink);
@@ -95,58 +97,61 @@ const UpdateWorkerPage = (props) => {
   const submitForm = (data) => {
     const planBirthDate = moment(valueBirthDate).format('YYYY-MM-DD');
     console.log(data);
-    //   handleUpdateWorker(
-    //     locationDetail,
-    //     data.citizenId,
-    //     data.fullName,
-    //     data.socialSecurityCode,
-    //     data.gender,
-    //     planBirthDate,
-    //     data.birthPlace,
-    //     filesImage
-    //   );
+    handleUpdateWorker(
+      id,
+      location,
+      data.citizenId,
+      data.fullName,
+      data.socialSecurityCode,
+      data.gender,
+      planBirthDate,
+      data.birthPlace,
+      filesImage
+    );
   };
 
-  // const handleUpdateWorker = async (
-  //   address,
-  //   citizenId,
-  //   fullName,
-  //   socialSecurityCode,
-  //   gender,
-  //   birthday,
-  //   birthPlace,
-  //   file
-  // ) => {
-  //   try {
-  //     setLoading(true);
-  //     await UpdateWorkerApi1({
-  //       address,
-  //       citizenId,
-  //       fullName,
-  //       socialSecurityCode,
-  //       gender,
-  //       birthday,
-  //       birthPlace,
-  //       file,
-  //     });
-  //     setLoading(false);
-  //     await Swal.fire({
-  //       icon: 'success',
-  //       text: 'Tạo công nhân thành công',
-  //       timer: 3000,
-  //       showConfirmButton: false,
-  //     });
-  //     window.location.replace('/personnel');
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       text: error.response.data,
-  //       timer: 2000,
-  //       showConfirmButton: false,
-  //     });
-  //     setLoading(false);
-  //   }
-  // };
+  const handleUpdateWorker = async (
+    workerId,
+    address,
+    citizenId,
+    fullName,
+    socialSecurityCode,
+    gender,
+    birthday,
+    birthPlace,
+    file
+  ) => {
+    try {
+      setLoading(true);
+      await updateWorkerApi({
+        workerId,
+        address,
+        citizenId,
+        fullName,
+        socialSecurityCode,
+        gender,
+        birthday,
+        birthPlace,
+        file,
+      });
+      setLoading(false);
+      await Swal.fire({
+        icon: 'success',
+        text: 'Cập nhật công nhân thành công',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+      window.location.replace('/personnel');
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: 'Cập nhật công nhân không thành công!!',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      setLoading(false);
+    }
+  };
   const handleOpenLocationDialog = () => {
     setOpenLocationDialog(true);
   };
@@ -252,174 +257,180 @@ const UpdateWorkerPage = (props) => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            paddingLeft: '10px',
-            paddingTop: '10px',
-            width: '40%',
-            marginBottom: '30px',
-          }}
-        >
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Typography variant="body1" color="#DD8501" fontWeight="bold">
-              Sơ yếu lý lịch
-            </Typography>
-            <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-            <Grid container spacing={2}>
-              <Grid item>
+        {workerId ? (
+          <Box
+            sx={{
+              paddingLeft: '10px',
+              paddingTop: '10px',
+              width: '40%',
+              marginBottom: '30px',
+            }}
+          >
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Typography variant="body1" color="#DD8501" fontWeight="bold">
+                Sơ yếu lý lịch
+              </Typography>
+              <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Grid item xs={12}>
+                    <div className="result">{renderPhotos1(imageGet)}</div>
+                  </Grid>
+                </Grid>
                 <Grid item xs={12}>
-                  <div className="result">{renderPhotos1(imageGet)}</div>
+                  <Typography variant="body2">Họ và tên</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="fullName"
+                    // label="Tên vai trò"
+                    defaultValue={workerId.fullName}
+                    errors={errors.fullName}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Ngày sinh</Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      value={valueBirthDate}
+                      onChange={(newValue) => {
+                        setValueBirthDate(newValue);
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Giới tính</Typography>
+                  <TextField
+                    {...register('gender')}
+                    // error={submitted && !gender}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="Giới tính"
+                    autoComplete="gender"
+                    select
+                    name="gender"
+                    //defaultValue={accountProfileData.gender}
+                    error={errors.gender != null}
+                    helperText={errors.gender?.message}
+                  >
+                    {gender.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Nơi sinh</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="birthPlace"
+                    // label="Tên vai trò"
+                    defaultValue={workerId.birthPlace}
+                    errors={errors.birthPlace}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Căn cước công dân</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="citizenId"
+                    // label="Tên vai trò"
+                    defaultValue={workerId.citizenId}
+                    errors={errors.citizenId}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Số bảo hiểm</Typography>
+                  <TextFieldComponent
+                    register={register}
+                    name="socialSecurityCode"
+                    // label="Tên vai trò"
+                    defaultValue={workerId.socialSecurityCode}
+                    errors={errors.socialSecurityCode}
+                    variant="outlined"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2">Hình ảnh cập nhật</Typography>
+                  <input
+                    {...register('files')}
+                    type="file"
+                    id="files"
+                    accept="image/*"
+                    onChange={handleChangeFile}
+                  />
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                </Grid>
+                {/* <Grid item sx={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'left',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => handleOpenLocationDialog()}
+                    >
+                      Địa chỉ
+                    </Button>
+                  </Box>
+                </Grid> */}
+                {/* <Grid item container columns={12}>
+                  {locationDetail ? (
+                    <Paper className="tag">
+                      <Stack direction="row" spacing={1}>
+                        <Typography>{locationDetail.addressNumber},</Typography>
+                        <Typography>{locationDetail.street},</Typography>
+                        <Typography>{locationDetail.ward},</Typography>
+                        <Typography>{locationDetail.district},</Typography>
+                        <Typography>{locationDetail.city}</Typography>
+                      </Stack>
+                    </Paper>
+                  ) : (
+                    <Grid item sx={12}>
+                      <div>Không có dữ liệu!</div>
+                    </Grid>
+                  )}
+                </Grid> */}
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      className="submitButton"
+                    >
+                      Lưu
+                    </Button>
+                  </Box>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Họ và tên</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="fullName"
-                  // label="Tên vai trò"
-                  errors={errors.fullName}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Ngày sinh</Typography>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    value={valueBirthDate}
-                    onChange={(newValue) => {
-                      setValueBirthDate(newValue);
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Giới tính</Typography>
-                <TextField
-                  {...register('gender')}
-                  // error={submitted && !gender}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  label="Giới tính"
-                  autoComplete="gender"
-                  select
-                  name="gender"
-                  //defaultValue={accountProfileData.gender}
-                  error={errors.gender != null}
-                  helperText={errors.gender?.message}
-                >
-                  {gender.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Nơi sinh</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="birthPlace"
-                  // label="Tên vai trò"
-                  errors={errors.birthPlace}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Căn cước công dân</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="citizenId"
-                  // label="Tên vai trò"
-                  errors={errors.citizenId}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Số bảo hiểm</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="socialSecurityCode"
-                  // label="Tên vai trò"
-                  errors={errors.socialSecurityCode}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item sx={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'left',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    onClick={() => handleOpenLocationDialog()}
-                  >
-                    Địa chỉ
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid item container columns={12}>
-                {locationDetail ? (
-                  <Paper className="tag">
-                    <Stack direction="row" spacing={1}>
-                      <Typography>{locationDetail.addressNumber},</Typography>
-                      <Typography>{locationDetail.street},</Typography>
-                      <Typography>{locationDetail.ward},</Typography>
-                      <Typography>{locationDetail.district},</Typography>
-                      <Typography>{locationDetail.city}</Typography>
-                      {/* <Typography>
-                          Địa bàn tỉnh: {locationDetail.province}
-                        </Typography>
-                        <Typography>
-                          Quốc gia: {locationDetail.country}
-                        </Typography>
-                        <Typography>
-                          Diện tích: {locationDetail.area}
-                        </Typography>
-                        <Typography>
-                          Điều phối: {locationDetail.coordinate}
-                        </Typography> */}
-                    </Stack>
-                  </Paper>
-                ) : (
-                  <Grid item sx={12}>
-                    <div>Không có dữ liệu!</div>
-                  </Grid>
-                )}
-              </Grid>
-
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    className="submitButton"
-                  >
-                    Lưu
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
-        </Box>
+            </form>
+          </Box>
+        ) : (
+          <div>Không có dữ liệu của yêu cầu!!</div>
+        )}
       </Box>
       <Dialog open={openLocationDialog} onClose={handleCloseLocationDialog}>
         <DialogAddress
