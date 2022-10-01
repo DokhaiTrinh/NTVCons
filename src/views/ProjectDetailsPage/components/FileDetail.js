@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../../Components/Tab/Tab.css';
 import RenderImageCard from '../../../Components/Render/RenderImageCard';
 import RenderFileCard from '../../../Components/Render/RenderFileCard';
-
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 const FileDetail = (props) => {
   const { imageGet, docGet } = props;
   return (
@@ -12,8 +12,17 @@ const FileDetail = (props) => {
       <Paper sx={{ width: 'min-content', borderRadius: '10px 10px 0 0' }}>
         <TabList>
           <Stack direction="row">
-            <Tab>Hình ảnh</Tab>
-            <Tab>Tài liệu</Tab>
+            {userInfor.authorID === '54' ||
+            userInfor.authorID === '44' ||
+            userInfor.authorID === '24' ? (
+              <Tab>Hình ảnh</Tab>
+            ) : null}
+            {userInfor.authorID === '54' ||
+            userInfor.authorID === '44' ||
+            userInfor.authorID === '24' ||
+            userInfor.authorID === '14' ? (
+              <Tab>Tài liệu</Tab>
+            ) : null}
           </Stack>
         </TabList>
       </Paper>

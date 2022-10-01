@@ -14,6 +14,7 @@ import RequestTable from './components/RequestTable';
 import { getReportByProjectIdApi } from '../../apis/Report/getReportByProjectId';
 import { getProjectByParam } from '../../apis/Project/getProjectById';
 import FloatingAddButton from '../../Components/Button/Add/FloatingAddButton';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -134,59 +135,110 @@ const ProjectDetailsPage = (props) => {
           onChange={handleChange}
           aria-label=""
         >
-          <Tab label="Chi tiết" {...a11yProps(0)} />
-          <Tab label="Bản vẽ" {...a11yProps(1)} />
-          <Tab label="Công việc" {...a11yProps(2)} />
-          <Tab label="Báo cáo" {...a11yProps(3)} />
-          <Tab label="Yêu cầu" {...a11yProps(4)} />
-          <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ||
+          userInfor.authorID === '14' ? (
+            <Tab label="Chi tiết" {...a11yProps(0)} />
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ||
+          userInfor.authorID === '14' ? (
+            <Tab label="Bản vẽ" {...a11yProps(1)} />
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <Tab label="Công việc" {...a11yProps(2)} />
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <Tab label="Báo cáo" {...a11yProps(3)} />
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <Tab label="Yêu cầu" {...a11yProps(4)} />
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <Tab label="Tệp đi kèm" {...a11yProps(5)} />
+          ) : null}
           <Box sx={{ flex: 1 }}></Box>
           <Box></Box>
         </Tabs>
         <div className="body">
-          <TabPanel value={value} index={0}>
-            {allProjectDetails ? (
-              <Details
-                allProjectDetails={allProjectDetails}
-                managerList={managerList}
-                workerList={workerList}
-                userList={userList}
-                blueprint={blueprint}
-              />
-            ) : (
-              <div>Không có dữ liệu!!</div>
-            )}
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            {allReportDetails ? (
-              <ReportTable
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ||
+          userInfor.authorID === '14' ? (
+            <TabPanel value={value} index={0}>
+              {allProjectDetails ? (
+                <Details
+                  allProjectDetails={allProjectDetails}
+                  managerList={managerList}
+                  workerList={workerList}
+                  userList={userList}
+                  blueprint={blueprint}
+                />
+              ) : (
+                <div>Không có dữ liệu!!</div>
+              )}
+            </TabPanel>
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ||
+          userInfor.authorID === '14' ? (
+            <TabPanel value={value} index={3}>
+              {allReportDetails ? (
+                <ReportTable
+                  projectId={projectId}
+                  allReportDetails={allReportDetails}
+                  totalPage={totalPage}
+                ></ReportTable>
+              ) : (
+                <div>Không có dữ liệu!</div>
+              )}
+            </TabPanel>
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <TabPanel value={value} index={2}>
+              <TaskTable projectId={projectId}></TaskTable>
+            </TabPanel>
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ? (
+            <TabPanel value={value} index={4}>
+              <RequestTable
                 projectId={projectId}
-                allReportDetails={allReportDetails}
-                totalPage={totalPage}
-              ></ReportTable>
-            ) : (
-              <div>Không có dữ liệu!</div>
-            )}
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <TaskTable projectId={projectId}></TaskTable>
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <RequestTable
-              projectId={projectId}
-              allRequestDetails={allRequestDetails}
-            ></RequestTable>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Blueprint projectId={projectId}></Blueprint>
-          </TabPanel>
+                allRequestDetails={allRequestDetails}
+              ></RequestTable>
+            </TabPanel>
+          ) : null}
+          {userInfor.authorID === '54' ||
+          userInfor.authorID === '44' ||
+          userInfor.authorID === '24' ||
+          userInfor.authorID === '14' ? (
+            <TabPanel value={value} index={1}>
+              <Blueprint projectId={projectId}></Blueprint>
+            </TabPanel>
+          ) : null}
           <TabPanel value={value} index={5}>
             <FileDetail
               projectId={projectId}
               imageGet={imageGet}
               docGet={docGet}
             ></FileDetail>
-            <FloatingAddButton projectId={projectId} />
+            {userInfor.authorID === '54' || userInfor.authorID === '44' ? (
+              <FloatingAddButton projectId={projectId} />
+            ) : null}
           </TabPanel>
         </div>
       </Box>

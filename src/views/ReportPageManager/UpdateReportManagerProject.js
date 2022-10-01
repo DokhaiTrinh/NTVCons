@@ -393,13 +393,13 @@ const UpdateReportProject = (props) => {
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item container columns={12} spacing={2}>
+                <Grid item container columns={12} spacing={4}>
                   {updateReportDetail ? (
                     updateReportDetail.map((reportDetailItem, index) => (
                       <Grid
                         key={index}
                         item
-                        xs={4}
+                        xs={2}
                         onClick={() =>
                           handleOpenUpdateReportDetailDialog(
                             'UpdateReport',
@@ -407,25 +407,38 @@ const UpdateReportProject = (props) => {
                           )
                         }
                       >
-                        <Box sx={{ width: '100%' }}>
-                          <Paper sx={{ width: '100%', padding: '10px'}}>
-                              <Typography>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            '& > :not(style)': {
+                              // m: 1,
+                              mt: 4,
+                              ml: 4,
+                              width: 300,
+                              height: 200,
+                            },
+                          }}
+                        >
+                          <Paper className="tag" elevation={4}>
+                            <Stack spacing={2}>
+                              <Typography noWrap>
                                 Mã báo cáo chi tiết:{' '}
                                 {reportDetailItem.reportDetailId}
                               </Typography>
-                              <Typography>
-                                Thông tin báo cáo chi tiết:{' '}
+                              <Typography noWrap>
                                 {reportDetailItem.itemDesc}
                               </Typography>
-                              <Typography>
+                              <Typography noWrap>
                                 Số lượng: {reportDetailItem.itemAmount}
                               </Typography>
-                              <Typography>
-                                Giá tiền: {reportDetailItem.itemPrice}
-                              </Typography>
-                              <Typography>
+                              <Typography noWrap>
                                 Đơn vị: {reportDetailItem.itemUnit}
                               </Typography>
+                              <Typography noWrap>
+                                Giá tiền: {reportDetailItem.itemPrice} VNĐ
+                              </Typography>
+                            </Stack>
                           </Paper>
                         </Box>
                       </Grid>
@@ -440,7 +453,7 @@ const UpdateReportProject = (props) => {
                     </Grid>
                   )}
                 </Grid>
-                <Grid item container sx={12}>
+                {/* <Grid item container sx={12}>
                   <Box
                     sx={{
                       width: '100%',
@@ -501,7 +514,7 @@ const UpdateReportProject = (props) => {
                       Không có chi tiết báo cáo!!!
                     </Grid>
                   )}
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <Typography variant="body2">Loại báo cáo</Typography>
                   <FormControl sx={{ width: '100%' }}>
@@ -563,7 +576,7 @@ const UpdateReportProject = (props) => {
             </form>
           </Box>
         ) : (
-          <Typography variant='h5'>Loading... </Typography>
+          <Typography variant="h5">Loading... </Typography>
         )}
       </Box>
       <Dialog

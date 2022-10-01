@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   Paper,
+  Stack,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -361,23 +362,33 @@ const UpdateRequest = () => {
                           )
                         }
                       >
-                        <Box sx={{ width: '100%' }}>
-                          <Card sx={{ width: '100%' }}>
-                            <CardContent>
-                              <Typography>
-                                Thông tin báo cáo chi tiết: {request.itemDesc}
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            '& > :not(style)': {
+                              // m: 1,
+                              mt: 4,
+                              ml: 4,
+                              width: 300,
+                              height: 200,
+                            },
+                          }}
+                        >
+                          <Paper className="tag" elevation={4}>
+                            <Stack spacing={2}>
+                              <Typography noWrap>{request.itemDesc}</Typography>
+                              <Typography noWrap>
+                                Số lượng: {request.itemAmount}
                               </Typography>
-                              <Typography>
-                                Số lượng:{request.itemAmount}
-                              </Typography>
-                              <Typography>
-                                Giá tiền: {request.itemPrice}{' '}
-                              </Typography>
-                              <Typography>
+                              <Typography noWrap>
                                 Đơn vị: {request.itemUnit}
                               </Typography>
-                            </CardContent>
-                          </Card>
+                              <Typography noWrap>
+                                Giá tiền: {request.itemPrice} VNĐ
+                              </Typography>
+                            </Stack>
+                          </Paper>
                         </Box>
                       </Grid>
                     ))

@@ -219,19 +219,27 @@ export const CreateWorker = (props) => {
             <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
             <Grid container spacing={2}>
               <Grid item>
-                <Typography variant="body2">Ảnh đại diện</Typography>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  <input
-                    {...register('files')}
-                    type="file"
-                    id="files"
-                    accept="image/*"
-                    onChange={handleChangeFile}
-                  />
-                  <Stack direction="row" alignItems="center" spacing={2}>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body2"
+                    color="#DD8501"
+                    sx={{ marginBottom: '10px' }}
+                  >
+                    Ảnh đại diện
+                  </Typography>
+                  <Grid item xs={12}>
                     <div className="result">{renderPhotos(selectedImages)}</div>
-                  </Stack>
-                </Stack>
+                    <div>
+                      <input
+                        {...register('files')}
+                        type="file"
+                        id="files"
+                        accept="image/*"
+                        onChange={handleChangeFile}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
                 {/* <Stack direction="row" alignItems="center" spacing={2}>
                   {UploadImage(setSelectedImage, setFilesImage)}
                   <div className="result">{RenderImage(selectedImages)}</div>

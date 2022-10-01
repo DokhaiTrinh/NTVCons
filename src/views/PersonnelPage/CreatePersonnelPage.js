@@ -21,6 +21,8 @@ import { getAllRoleApi1 } from '../../apis/Role/GetAllRole';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Badge from '@mui/material/Badge';
+import CancelIcon from '@mui/icons-material/Cancel';
 import TextFieldComponent from '../../Components/TextField/textfield';
 import RenderImage from '../../Components/Render/RenderImage';
 import UploadImage from '../../Components/Upload/UploadImage';
@@ -169,12 +171,14 @@ const CreatePersonnelPage = (props) => {
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
     }
   };
+
   const handleDeleteImage = (photo, indexImage) => {
     const index = selectedImages.indexOf(photo);
     if (index > -1) {
       selectedImages.splice(index, 1);
       // dispatch({ type: "LOADING", newLoading: !loading });
     }
+
     const dt = new DataTransfer();
     const input = document.getElementById('files');
     const { files } = input;
@@ -183,9 +187,33 @@ const CreatePersonnelPage = (props) => {
       const file = files[i];
       if (index !== i) dt.items.add(file); // here you exclude the file. thus removing it.
     }
+
     input.files = dt.files;
     setFilesImage(input.files);
+
     // dispatch({ type: 'LOADING', newLoading: !loading });
+  };
+  const renderPhotos = (src) => {
+    return src.map((photo, index) => {
+      return (
+        <Badge
+          badgeContent={<CancelIcon />}
+          onClick={() => handleDeleteImage(photo, index)}
+        >
+          <img
+            style={{
+              width: '150px',
+              height: '150px',
+              // borderRadius: "50%",
+              marginRight: '5px',
+              marginBottom: '5px',
+            }}
+            src={photo}
+            key={index}
+          />
+        </Badge>
+      );
+    });
   };
   return (
     <Paper className="bodynonetab" elevation="none">
@@ -225,10 +253,18 @@ const CreatePersonnelPage = (props) => {
                 >
                   Ảnh đại diện
                 </Typography>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  {UploadImage(setSelectedImage, setFilesImage)}
-                  <div className="result">{RenderImage(selectedImages)}</div>
-                </Stack>
+                <Grid item xs={12}>
+                  <div className="result">{renderPhotos(selectedImages)}</div>
+                  <div>
+                    <input
+                      {...register('files')}
+                      type="file"
+                      id="files"
+                      accept="image/*"
+                      onChange={handleChangeFile}
+                    />
+                  </div>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2">Tên đăng nhập</Typography>

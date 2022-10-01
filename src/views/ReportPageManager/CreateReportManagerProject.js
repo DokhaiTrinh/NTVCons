@@ -62,7 +62,7 @@ const CreateReportProject = (props) => {
   const [selectedImages, setSelectedImage] = useState([]);
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
+    if (reportDetail.length === 0 || taskReportDetail === 0) {
       handleCreateReport(
         idN,
         reportDate,
@@ -86,13 +86,13 @@ const CreateReportProject = (props) => {
       );
     }
   };
+
   const handleCreateReport = async (
     projectId,
     reportDate,
     reportDesc,
     reportDetailList,
     reportTypeId,
-    // reporterId,
     reportName,
     taskReportList,
     fileList
@@ -116,7 +116,7 @@ const CreateReportProject = (props) => {
         timer: 3000,
         showConfirmButton: false,
       });
-      await window.location.replace(`/projectDetailsManager/${id}`);
+      // await window.location.replace(`/projectDetailsManager/${id}`);
     } catch (error) {
       await Swal.fire({
         icon: 'error',

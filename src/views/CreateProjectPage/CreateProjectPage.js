@@ -508,7 +508,7 @@ const CreateProjectPage = (props) => {
               </Grid>
               <Grid item xs={12}>
                 {locationDetail ? (
-                  // <Paper className="tag">
+                  // <Paper className="tag"
                   <Typography>
                     {locationDetail.addressNumber} {locationDetail.street}, P{' '}
                     {locationDetail.ward}, Q. {locationDetail.district}, TP{' '}

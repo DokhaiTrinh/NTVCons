@@ -26,6 +26,8 @@ import CardContent from '@mui/material/CardContent';
 import { useParams } from 'react-router-dom';
 import FileDetail from './components/FileDetail';
 import FloatingAddButton from '../../Components/Button/Add/FloatingAddButton';
+const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -201,7 +203,9 @@ const ProjectDetailsPage = (props) => {
               imageGet={imageGet}
               docGet={docGet}
             ></FileDetail>
-            <FloatingAddButton projectId={projectId} />
+            {userInfor.authorID === '54' || userInfor.authorID === '44' ? (
+              <FloatingAddButton projectId={projectId} />
+            ) : null}
           </TabPanel>
         </div>
       </Box>
