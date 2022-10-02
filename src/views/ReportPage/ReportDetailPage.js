@@ -23,7 +23,7 @@ const ReportDetailPage = (props) => {
   const [docGet, setDocGet] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
   const [isShown, setIsShown] = useState(false);
-
+  const [reporter, setReporter] = React.useState([]);
   React.useEffect(() => {
     (async () => {
       try {
@@ -31,6 +31,7 @@ const ReportDetailPage = (props) => {
         setAllReportDetail(listAllReportDetail.data);
         setAllReportList(listAllReportDetail.data.reportDetailList);
         setTaskReportList(listAllReportDetail.data.taskReportList);
+        setReporter(listAllReportDetail.data.reporter);
         if (listAllReportDetail.data) {
           if (listAllReportDetail.data.fileList.length > 0) {
             let arrayImgLink = [];
@@ -61,8 +62,7 @@ const ReportDetailPage = (props) => {
       }
     })();
   }, []);
-  console.log(imageGet);
-  console.log(docGet);
+  console.log(reporter);
   const handleChangeFile = (e) => {
     setFilesImage(e.target.files);
 
@@ -130,12 +130,13 @@ const ReportDetailPage = (props) => {
               {allReportDetail.reportDesc}
             </Typography>
           </Grid>
-          <Grid item xs="4">
+          {/* <Grid item xs="4">
             <Typography variant="caption">Người báo cáo</Typography>
             <Typography variant="body1" paragraph>
-              {allReportDetail.reporterId}
+              
+              Nguyễn Văn Hùng
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid item xs="4">
             <Typography variant="caption">Loại báo cáo</Typography>
             <Typography variant="body1" paragraph>
@@ -165,7 +166,7 @@ const ReportDetailPage = (props) => {
                 </Paper>
               ))
             ) : (
-              <div>Không có dữ liệu</div>
+              <div>Không có dữ liệu của báo cáo!!!</div>
             )}
           </Grid>
           <Grid item xs="4">
@@ -175,15 +176,16 @@ const ReportDetailPage = (props) => {
                 taskReportList.map((taskReport, index) => (
                   <Paper sx={{ padding: '10px' }}>
                     <Typography>
-                      <Typography>
-                        Mã công việc chi tiết: {taskReport.taskReportId}
-                      </Typography>
+                      Mã công việc chi tiết: {taskReport.taskReportId}
+                    </Typography>
+                    <Typography>
                       Tên công việc : {taskReport.taskNote}
                     </Typography>
+                    <Typography>Tiến độ : {taskReport.taskProgress}</Typography>
                   </Paper>
                 ))
               ) : (
-                <div>No data!</div>
+                <div>Không có dữ liệu của công việc!!!</div>
               )}
             </Box>
           </Grid>

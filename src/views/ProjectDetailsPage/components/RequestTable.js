@@ -395,9 +395,7 @@ export default function RequestTable(props) {
                       {row.requestType.requestTypeName}
                     </TableCell>
                     <TableCell align="left">{row.requester.fullName}</TableCell>
-                    <TableCell align="left">
-                      {row.requester.verifyNote}
-                    </TableCell>
+                    <TableCell align="left">{row.verifyNote}</TableCell>
                     <TableCell align="left">
                       <IconButton
                         size="large"

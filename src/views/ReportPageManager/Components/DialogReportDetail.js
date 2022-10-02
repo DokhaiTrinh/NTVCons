@@ -19,7 +19,7 @@ const DialogReportProject = (props) => {
         .required(),
       itemDesc: yup
         .string()
-        .min(3, 'Số ký tự phải lớn hơn 3')
+        .min(2, 'Số ký tự phải lớn hơn 2')
         .max(50, 'Ký tự nhỏ hơn 50 ký tự')
         .required(),
       itemPrice: yup
@@ -89,22 +89,22 @@ const DialogReportProject = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="body2">Đơn vị tính</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemUnit"
+              errors={errors.itemUnit}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Typography variant="body2">Giá tiền</Typography>
             <TextFieldComponent
               register={register}
               name="itemPrice"
               label="VNĐ"
               errors={errors.itemPrice}
-              variant="outlined"
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2">Đơn vị tính</Typography>
-            <TextFieldComponent
-              register={register}
-              name="itemUnit"
-              errors={errors.itemUnit}
               variant="outlined"
               sx={{ width: '100%' }}
             />

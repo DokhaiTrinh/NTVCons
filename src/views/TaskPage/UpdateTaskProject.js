@@ -356,7 +356,7 @@ const UpdateTaskProject = (props) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid> */}
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <Typography variant="body2">Kỹ sư quản lý</Typography>
                   <FormControl sx={{ width: '100%' }}>
                     <Select
@@ -378,7 +378,7 @@ const UpdateTaskProject = (props) => {
                       )}
                     </Select>
                   </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={6}>
                   <input
                     {...register('files')}

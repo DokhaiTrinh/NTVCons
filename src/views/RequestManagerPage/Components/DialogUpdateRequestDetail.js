@@ -27,16 +27,24 @@ const DialogUpdateRequestDetail = (props) => {
     .object({
       itemAmount: yup
         .number()
-        .typeError('Amount is invalide')
+        .typeError('Nhập sai số lượng!!')
         .min(1, 'Số lượng phải lớn hơn 0!')
         .required(),
-      itemDesc: yup.string().required(),
+      itemDesc: yup
+        .string()
+        .min(2, 'Số ký tự phải lớn hơn 2')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required(),
       itemPrice: yup
         .number()
-        .typeError('Price is invalide')
+        .typeError('Giá tiền không đúng!!!')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lườngf'),
+      itemUnit: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -150,22 +158,6 @@ const DialogUpdateRequestDetail = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">Giá tiền</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemPrice"
-                  label="Giá tiền (VNĐ)"
-                  defaultValue={
-                    itemDetailRequestUpdate
-                      ? itemDetailRequestUpdate.itemPrice
-                      : null
-                  }
-                  errors={errors.itemPrice}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
                 <Typography variant="body2">Đơn vị tính</Typography>
                 <TextFieldComponent
                   register={register}
@@ -181,6 +173,23 @@ const DialogUpdateRequestDetail = (props) => {
                   sx={{ width: '100%' }}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2">Giá tiền</Typography>
+                <TextFieldComponent
+                  register={register}
+                  name="itemPrice"
+                  label="Giá tiền (VNĐ)"
+                  defaultValue={
+                    itemDetailRequestUpdate
+                      ? itemDetailRequestUpdate.itemPrice
+                      : null
+                  }
+                  errors={errors.itemPrice}
+                  variant="outlined"
+                  sx={{ width: '100%' }}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <Box
                   sx={{

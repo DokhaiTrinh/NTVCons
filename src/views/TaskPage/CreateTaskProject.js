@@ -317,7 +317,7 @@ const CreateTaskProject = (props) => {
                           value={managerType.manager.userId}
                           key={index}
                         >
-                          {managerType.manager.username}
+                          {managerType.manager.fullName}
                         </MenuItem>
                       ))
                     ) : (

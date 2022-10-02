@@ -51,7 +51,7 @@ const MenuProps = {
 const CreateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  var idUser = parseFloat(userInfor.authorID);
+  var idUser = parseFloat(userInfor.id);
   const [valueReportDate, setValueReportDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openReportDetailDialog, setOpenReportDetailDialog] = useState(false);
@@ -66,10 +66,7 @@ const CreateReportProject = (props) => {
 
   const submitForm = (data) => {
     const reportDate = moment(valueReportDate).format('YYYY-MM-DD HH:mm');
-    if (
-      reportDetail.length === 0 ||
-      taskReportDetail.length === 0 
-    ) {
+    if (reportDetail.length === 0 || taskReportDetail.length === 0) {
       handleCreateReport(
         idN,
         reportDate,
@@ -304,9 +301,7 @@ const CreateReportProject = (props) => {
           <form onSubmit={handleSubmit(submitForm)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Tên báo cáo
-                </Typography>
+                <Typography variant="body2">Tên báo cáo</Typography>
                 <TextFieldComponent
                   register={register}
                   name="reportName"
@@ -316,9 +311,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thông tin báo cáo
-                </Typography>
+                <Typography variant="body2">Thông tin báo cáo</Typography>
                 <TextFieldComponent
                   register={register}
                   name="reportDesc"
@@ -328,9 +321,7 @@ const CreateReportProject = (props) => {
                 />
               </Grid>
               <Grid item container xs={12}>
-                <Typography variant="body2">
-                  Ngày báo cáo
-                </Typography>
+                <Typography variant="body2">Ngày báo cáo</Typography>
                 <Grid item xs={12}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
@@ -444,9 +435,7 @@ const CreateReportProject = (props) => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Loại báo cáo
-                </Typography>
+                <Typography variant="body2">Loại báo cáo</Typography>
                 <FormControl sx={{ width: '100%' }}>
                   <Select
                     onChange={handleChange}
@@ -468,9 +457,7 @@ const CreateReportProject = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2">
-                  Người báo cáo
-                </Typography>
+                <Typography variant="body2">Người báo cáo</Typography>
                 <TextFieldComponent
                   register={register}
                   name="reporterId"

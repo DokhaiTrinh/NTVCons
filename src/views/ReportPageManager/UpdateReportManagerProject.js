@@ -52,7 +52,7 @@ const UpdateReportProject = (props) => {
   const { id } = useParams();
   const idN = parseFloat(id);
   const [projectId, setProjectId] = useState();
-  var idUser = parseFloat(userInfor.authorID);
+  var idUser = parseFloat(userInfor.id);
   const [actionUpdateReport, setActionUpdateReport] = useState();
   const [actionUpdateTask, setActionUpdateTask] = useState();
   const [itemDetailReportUpdate, setItemDetailReportUpdate] = useState();

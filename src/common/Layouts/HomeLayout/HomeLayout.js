@@ -153,7 +153,7 @@ const listItems = [
   },
   {
     listIcon: <PersonIcon />,
-    // path: `/userProfile/${id}`,
+    // path: `/userProfile/${userInfor.id}`,
     path: '#',
     listText: 'Hồ sơ',
   },

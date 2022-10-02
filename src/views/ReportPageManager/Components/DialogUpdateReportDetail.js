@@ -23,16 +23,24 @@ const DialogUpdateReportDetail = (props) => {
     .object({
       itemAmount: yup
         .number()
-        .typeError('Phải nhập số lượng!!')
+        .typeError('Nhập sai số lượng!!')
         .min(1, 'Số lượng phải lớn hơn 0!')
         .required(),
-      itemDesc: yup.string().required(),
+      itemDesc: yup
+        .string()
+        .min(2, 'Số ký tự phải lớn hơn 2')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required(),
       itemPrice: yup
         .number()
-        .typeError('Phải nhập giá!!')
+        .typeError('Giá tiền không đúng!!!')
         .min(1, 'Giá tiền phải lớn hơn 0!')
         .required(),
-      itemUnit: yup.string().required('Đơn vị đo lường'),
+      itemUnit: yup
+        .string()
+        .min(3, 'Số ký tự phải lớn hơn 3')
+        .max(50, 'Ký tự nhỏ hơn 50 ký tự')
+        .required('Đơn vị đo lường'),
     })
     .required();
   const {
@@ -80,116 +88,105 @@ const DialogUpdateReportDetail = (props) => {
     props.handleCloseUpdateReportDetailDialog();
   };
   return (
-    <div className='dialog'>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-      >
+    <div className="dialog">
+      <Typography variant="h6" color="#DD8501">
         BÁO CÁO CHI TIẾT
       </Typography>
       <Divider></Divider>
-          <Typography variant="body1" color="#DD8501" fontWeight="bold">
-            Thông tin báo cáo chi tiết
-          </Typography>
-          <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="body2">
-                  Thông tin báo cáo chi tiết
-                </Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemDesc"
-                  defaultValue={
-                    itemDetailReportUpdate
-                      ? itemDetailReportUpdate.itemDesc
-                      : null
-                  }
-                  errors={errors.itemDesc}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Số lượng</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemAmount"
-                  defaultValue={
-                    itemDetailReportUpdate
-                      ? itemDetailReportUpdate.itemAmount
-                      : null
-                  }
-                  errors={errors.itemAmount}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Giá tiền</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemPrice"
-                  label="Giá tiền (VNĐ)"
-                  defaultValue={
-                    itemDetailReportUpdate
-                      ? itemDetailReportUpdate.itemPrice
-                      : null
-                  }
-                  errors={errors.itemPrice}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">Đơn vị tính</Typography>
-                <TextFieldComponent
-                  register={register}
-                  name="itemUnit"
-                  label="Đơn vị"
-                  defaultValue={
-                    itemDetailReportUpdate
-                      ? itemDetailReportUpdate.itemUnit
-                      : null
-                  }
-                  errors={errors.itemUnit}
-                  variant="outlined"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  {actionUpdateReport ? (
-                    actionUpdateReport === 'UpdateReport' ? (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        className='submitButton'
-                      >
-                        Cập nhật
-                      </Button>
-                    ) : (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        className='submitButton'
-                      >
-                        Tạo mới
-                      </Button>
-                    )
-                  ) : null}
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
+      <Typography variant="body1" color="#DD8501" fontWeight="bold">
+        Thông tin báo cáo chi tiết
+      </Typography>
+      <Divider sx={{ bgcolor: '#DD8501' }}></Divider>
+      <form onSubmit={handleSubmit(submitForm)}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="body2">Thông tin báo cáo chi tiết</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemDesc"
+              defaultValue={
+                itemDetailReportUpdate ? itemDetailReportUpdate.itemDesc : null
+              }
+              errors={errors.itemDesc}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Số lượng</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemAmount"
+              defaultValue={
+                itemDetailReportUpdate
+                  ? itemDetailReportUpdate.itemAmount
+                  : null
+              }
+              errors={errors.itemAmount}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Đơn vị tính</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemUnit"
+              label="Đơn vị"
+              defaultValue={
+                itemDetailReportUpdate ? itemDetailReportUpdate.itemUnit : null
+              }
+              errors={errors.itemUnit}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">Giá tiền</Typography>
+            <TextFieldComponent
+              register={register}
+              name="itemPrice"
+              label="Giá tiền (VNĐ)"
+              defaultValue={
+                itemDetailReportUpdate ? itemDetailReportUpdate.itemPrice : null
+              }
+              errors={errors.itemPrice}
+              variant="outlined"
+              sx={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex',
+              }}
+            >
+              {actionUpdateReport ? (
+                actionUpdateReport === 'UpdateReport' ? (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="submitButton"
+                  >
+                    Cập nhật
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="submitButton"
+                  >
+                    Tạo mới
+                  </Button>
+                )
+              ) : null}
+            </Box>
+          </Grid>
+        </Grid>
+      </form>
     </div>
   );
 };

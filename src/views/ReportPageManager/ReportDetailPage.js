@@ -113,7 +113,7 @@ const ReportDetailPage = (props) => {
         {allReportDetail ? (
           <Grid container spacing={2}>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
+              <Typography variant="caption">
                 Mã dự án
                 {/* <a href={allReportDetail.fileList[1].fileLink} >Download</a> */}
               </Typography>
@@ -122,37 +122,35 @@ const ReportDetailPage = (props) => {
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Mã báo cáo
-              </Typography>
+              <Typography variant="caption">Mã báo cáo</Typography>
               <Typography variant="body1">
                 {allReportDetail.reportId}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Tên báo cáo
-              </Typography>
+              <Typography variant="caption">Tên báo cáo</Typography>
               <Typography variant="body1">
                 {allReportDetail.reportName}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Ngày báo cáo
-              </Typography>
+              <Typography variant="caption">Ngày báo cáo</Typography>
               <Typography variant="body1">
                 {allReportDetail.reportDate}
               </Typography>
             </Grid>
             <Grid item xs="4">
-              <Typography variant="body1" color="gray">
-                Mô tả báo cáo
-              </Typography>
+              <Typography variant="caption">Mô tả báo cáo</Typography>
               <Typography variant="body1">
                 {allReportDetail.reportDesc}
               </Typography>
             </Grid>
+            {/* <Grid item xs="4">
+              <Typography variant="caption">Người báo cáo</Typography>
+              <Typography variant="body1" paragraph>
+                Nguyễn Văn Hùng
+              </Typography>
+            </Grid> */}
             <Grid item xs="4">
               <Typography variant="body1" color="gray">
                 Loại báo cáo
@@ -184,7 +182,7 @@ const ReportDetailPage = (props) => {
                   </Paper>
                 ))
               ) : (
-                <div>Không có dữ liệu</div>
+                <div>Không có dữ liệu của báo cáo!!!</div>
               )}
             </Grid>
             <Grid item xs="4">
@@ -194,15 +192,18 @@ const ReportDetailPage = (props) => {
                   taskReportList.map((taskReport, index) => (
                     <Paper sx={{ padding: '10px' }}>
                       <Typography>
-                        <Typography>
-                          Mã công việc chi tiết: {taskReport.taskReportId}
-                        </Typography>
+                        Mã công việc chi tiết: {taskReport.taskReportId}
+                      </Typography>
+                      <Typography>
                         Tên công việc : {taskReport.taskNote}
+                      </Typography>
+                      <Typography>
+                        Tiến độ : {taskReport.taskProgress}
                       </Typography>
                     </Paper>
                   ))
                 ) : (
-                  <div>No data!</div>
+                  <div>Không có dữ liệu của công việc!!!</div>
                 )}
               </Box>
             </Grid>

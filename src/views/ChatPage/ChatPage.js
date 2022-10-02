@@ -54,6 +54,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
+import { SettingsPhoneTwoTone } from '@material-ui/icons';
 const userInfor = JSON.parse(localStorage.getItem('USERINFOR'));
 
 const ChatPage = (props) => {
@@ -75,6 +76,7 @@ const ChatPage = (props) => {
   const [filesImage, setFilesImage] = React.useState([]);
   const [selectedImages, setSelectedImage] = React.useState([]);
   const fileInput = useRef();
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // const [value, setValue] = React.useState('');
   // const getData = async () => {
@@ -138,6 +140,7 @@ const ChatPage = (props) => {
     //         'messageId',
     //         true
     //       );
+    //       delay(5000);
     //       setConversationById(listConversationById.data);
     //     } catch (error) {
     //       console.log('Không có dữ liệu của tin nhắn!!');
@@ -145,7 +148,7 @@ const ChatPage = (props) => {
     //   })();
     // }
   }, [conversationId, conversationById, statusChange]);
-
+  console.log(delay);
   const handleGetConversationById = async (conversationId) => {
     try {
       console.log(managerChoice);
@@ -182,7 +185,6 @@ const ChatPage = (props) => {
             }
           }
           if (listConversationById === null) {
-            console.log('HIII');
             setConversationById([]);
           }
         }

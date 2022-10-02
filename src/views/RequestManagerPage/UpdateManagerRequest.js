@@ -47,7 +47,7 @@ const MenuProps = {
 const UpdateRequest = () => {
   const { id } = useParams();
   const idN = parseFloat(id);
-  var idUser = parseFloat(userInfor.authorID);
+  var idUser = parseFloat(userInfor.id);
   const [valueRequestDate, setValueRequestDate] = React.useState(new Date());
   const [loading, setLoading] = useState('');
   const [openUpdateRequestDetailDialog, setOpenUpdateRequestDetailDialog] =
@@ -246,12 +246,8 @@ const UpdateRequest = () => {
     });
   };
   return (
-    <Paper>
-      <Typography
-        variant="h6"
-        color="#DD8501"
-        sx={{ marginTop: '20px', marginBottom: '20px', marginLeft: '30px' }}
-      >
+    <Paper sx={{ padding: '32px' }}>
+      <Typography variant="h6" color="#DD8501">
         CẬP NHẬT YÊU CẦU
       </Typography>
       <Divider></Divider>
@@ -348,49 +344,43 @@ const UpdateRequest = () => {
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item container columns={12} spacing={2}>
+                <Grid item container columns={12} spacing={4}>
                   {requestDetail ? (
                     requestDetail.map((request, index) => (
-                      <Grid
-                        key={index}
-                        item
-                        xs={4}
+                      <Box
                         onClick={() =>
                           handleOpenUpdateRequestDetailDialog(
                             'UpdateRequest',
                             request
                           )
                         }
+                        sx={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          '& > :not(style)': {
+                            // m: 1,
+                            mt: 4,
+                            ml: 4,
+                            width: 300,
+                            height: 200,
+                          },
+                        }}
                       >
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            '& > :not(style)': {
-                              // m: 1,
-                              mt: 4,
-                              ml: 4,
-                              width: 300,
-                              height: 200,
-                            },
-                          }}
-                        >
-                          <Paper className="tag" elevation={4}>
-                            <Stack spacing={2}>
-                              <Typography noWrap>{request.itemDesc}</Typography>
-                              <Typography noWrap>
-                                Số lượng: {request.itemAmount}
-                              </Typography>
-                              <Typography noWrap>
-                                Đơn vị: {request.itemUnit}
-                              </Typography>
-                              <Typography noWrap>
-                                Giá tiền: {request.itemPrice} VNĐ
-                              </Typography>
-                            </Stack>
-                          </Paper>
-                        </Box>
-                      </Grid>
+                        <Paper className="tag" elevation={4}>
+                          <Stack spacing={2}>
+                            <Typography noWrap>{request.itemDesc}</Typography>
+                            <Typography noWrap>
+                              Số lượng: {request.itemAmount}
+                            </Typography>
+                            <Typography noWrap>
+                              Đơn vị: {request.itemUnit}
+                            </Typography>
+                            <Typography noWrap>
+                              Giá tiền: {request.itemPrice} VNĐ
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                      </Box>
                     ))
                   ) : (
                     <Grid

@@ -60,7 +60,7 @@ const CreateProjectPage = (props) => {
   const [managerListChoice, setManagerListChoice] = React.useState([]);
   const [userListChoice, setUserListChoice] = React.useState([]);
   const [workerListChoice, setWokerListChoice] = React.useState([]);
-
+  console.log(allWorker);
   React.useEffect(() => {
     (async () => {
       try {
@@ -559,7 +559,8 @@ const CreateProjectPage = (props) => {
                   </Grid>
                 )}
               </Grid> */}
-              <Grid item container xs={12}>
+              <Grid item xs={12}>
+                <Typography variant="body2">Tệp đính kèm</Typography>
                 <input
                   {...register('files')}
                   type="file"

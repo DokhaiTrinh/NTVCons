@@ -138,8 +138,8 @@ const LoginPage = (props) => {
       <Paper
         elevation={10}
         style={{
-          height: '70vh',
-          width: '60vh',
+          height: '80vh',
+          width: '70vh',
           margin: 'auto',
           display: 'flex',
           justifyContent: 'center',
@@ -159,7 +159,6 @@ const LoginPage = (props) => {
               <Typography variant="h5">Đăng&nbsp;nhập</Typography>
               <TextField
                 {...register('username')}
-                // error={submitted && !username}
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -167,9 +166,7 @@ const LoginPage = (props) => {
                 autoComplete="username"
                 autoFocus
                 name="username"
-                // value={username}
                 error={errors.username != null}
-                // onChange={handleChange}
                 helperText={errors.username?.message}
               />
               <TextField

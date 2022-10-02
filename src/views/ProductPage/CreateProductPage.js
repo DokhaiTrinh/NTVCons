@@ -81,7 +81,10 @@ const CreateProductPage = (props) => {
         .string()
         .min(5, 'Tên quy mô phải lớn hoặc hoặc bằng 6 kí tự')
         .required('Tên quy mô không được để trống'),
-      estimatedCost: yup.number().required(),
+      estimatedCost: yup
+        .number()
+        .min(1000000000, 'Giá dự kiến phải ít nhất 1 tỷ VNĐ')
+        .required(),
     })
     .required();
 

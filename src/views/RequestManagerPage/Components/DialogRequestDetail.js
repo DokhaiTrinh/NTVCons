@@ -26,7 +26,7 @@ const DialogRequestProject = (props) => {
         .required(),
       itemDesc: yup
         .string()
-        .min(3, 'Số ký tự phải lớn hơn 3')
+        .min(2, 'Số ký tự phải lớn hơn 2')
         .max(50, 'Ký tự nhỏ hơn 50 ký tự')
         .required(),
       itemPrice: yup
